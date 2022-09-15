@@ -29,8 +29,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     @IBOutlet weak var descriptionTextArea: MDCOutlinedTextArea!
     @IBOutlet weak var uploadButton: MDCButton!
     @IBOutlet weak var cancelButton: MDCButton!
-
     var createNodeViewModel: CreateNodeViewModel?
+    var createTaskViewModel: CreateTaskViewModel?
     var isRenameNode = false
 
     var enableUploadButton = false {
@@ -98,6 +98,14 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - Private Utils
 
     func addLocalization() {
+        if createNodeViewModel != nil {
+            addLocalizationForNodes()
+        } else if createTaskViewModel != nil {
+            addLocalizationForTasks()
+        }
+    }
+    
+    private func addLocalizationForNodes() {
         let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if createNodeViewType == .rename {
             uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
@@ -110,6 +118,23 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
         titleCreate.text = createNodeViewModel?.createAction()
+    }
+    
+    private func addLocalizationForTasks() {
+        
+        let title = createTaskViewModel?.title
+        let uploadButtonTitle = createTaskViewModel?.uploadButtonTitle
+        let taskName = createTaskViewModel?.taskName
+        let taskDescription = createTaskViewModel?.taskDescription
+        
+        uploadButton.setTitle(uploadButtonTitle, for: .normal)
+        nameTextField.text = taskName
+        descriptionTextArea.textView.text = taskDescription
+        cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
+        descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
+        nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
+        titleCreate.text = title
+        enableUploadButton(for: nameTextField.text)
     }
 
     private func getTitleAndExtensionForRenameNode() -> (name: String, extensionn: String) {

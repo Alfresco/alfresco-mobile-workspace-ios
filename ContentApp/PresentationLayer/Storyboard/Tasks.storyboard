@@ -143,21 +143,6 @@
             </objects>
             <point key="canvasLocation" x="-14" y="73"/>
         </scene>
-        <!--Create Task View Controller-->
-        <scene sceneID="Pgz-Lf-O2d">
-            <objects>
-                <viewController storyboardIdentifier="CreateTaskViewController" id="NU7-HY-5SP" customClass="CreateTaskViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="WXA-Bd-Bgq">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="KLu-KW-dLE"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ULW-4l-202" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-19" y="736"/>
-        </scene>
         <!--Task Detail View Controller-->
         <scene sceneID="OU4-4x-WUG">
             <objects>

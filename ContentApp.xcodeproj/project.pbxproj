@@ -215,9 +215,7 @@
 		C963196127DA0CFD00BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
 		C963196227DA0EF800BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
 		C96870EE289D37D0000E4DA0 /* TaskPropertiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96870ED289D37D0000E4DA0 /* TaskPropertiesViewModel.swift */; };
-		C9688BA328D1AE600020206C /* CreateTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9688BA228D1AE600020206C /* CreateTaskViewController.swift */; };
-		C9688BA528D1AE780020206C /* CreateTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9688BA428D1AE780020206C /* CreateTaskViewModel.swift */; };
-		C9688BA728D1AE8A0020206C /* CreateTaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9688BA628D1AE8A0020206C /* CreateTaskController.swift */; };
+		C9688BA928D2DEAD0020206C /* CreateTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9688BA828D2DEAD0020206C /* CreateTaskViewModel.swift */; };
 		C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */; };
 		C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC602726959C00912015 /* SearchListComponentViewController.swift */; };
 		C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */; };
@@ -937,9 +935,7 @@
 		C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBannerService.swift; sourceTree = "<group>"; };
 		C963196027DA0CFD00BE8746 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		C96870ED289D37D0000E4DA0 /* TaskPropertiesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskPropertiesViewModel.swift; sourceTree = "<group>"; };
-		C9688BA228D1AE600020206C /* CreateTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTaskViewController.swift; sourceTree = "<group>"; };
-		C9688BA428D1AE780020206C /* CreateTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTaskViewModel.swift; sourceTree = "<group>"; };
-		C9688BA628D1AE8A0020206C /* CreateTaskController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTaskController.swift; sourceTree = "<group>"; };
+		C9688BA828D2DEAD0020206C /* CreateTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTaskViewModel.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
 		C973EC602726959C00912015 /* SearchListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewController.swift; sourceTree = "<group>"; };
 		C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewModel.swift; sourceTree = "<group>"; };
@@ -2054,16 +2050,6 @@
 			path = "Task Properties";
 			sourceTree = "<group>";
 		};
-		C9688BA128D1AE470020206C /* Create Task */ = {
-			isa = PBXGroup;
-			children = (
-				C9688BA228D1AE600020206C /* CreateTaskViewController.swift */,
-				C9688BA628D1AE8A0020206C /* CreateTaskController.swift */,
-				C9688BA428D1AE780020206C /* CreateTaskViewModel.swift */,
-			);
-			path = "Create Task";
-			sourceTree = "<group>";
-		};
 		C973EC5F2726957C00912015 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -2188,7 +2174,6 @@
 				C9A7598D289BB0CC006603E0 /* Task Detail */,
 				C9205C7C28A12B6A00DEF5AC /* Task Comments */,
 				C92EBB1E28B13B4D003DFA15 /* Task Attachments */,
-				C9688BA128D1AE470020206C /* Create Task */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2776,6 +2761,7 @@
 				E335E730253865CF0036E090 /* ActionMenuViewModel.swift */,
 				E3EB8EA2253ED44C005CA0D9 /* NodeActionsViewModel.swift */,
 				E3A433A62566CBF0000DD886 /* CreateNodeViewModel.swift */,
+				C9688BA828D2DEAD0020206C /* CreateTaskViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -3980,6 +3966,7 @@
 				133825D526300DC6000FFD4E /* String+Paths.swift in Sources */,
 				F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */,
 				C993504727D8DB2B00E2B849 /* SyncSharedNodes.swift in Sources */,
+				C9688BA928D2DEAD0020206C /* CreateTaskViewModel.swift in Sources */,
 				C9205C7E28A12B9300DEF5AC /* TaskCommentsViewController.swift in Sources */,
 				F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */,
 				F168F46E262488150002D3A5 /* PhotoGalleryDataSource.swift in Sources */,
@@ -3988,7 +3975,6 @@
 				C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,
-				C9688BA528D1AE780020206C /* CreateTaskViewModel.swift in Sources */,
 				B9DBB21B256537840098CF18 /* OperationQueueService.swift in Sources */,
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,
 				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
@@ -4164,7 +4150,6 @@
 				C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */,
 				C98C1292271E87BF001C84D6 /* SearchTextComponentViewController.swift in Sources */,
 				E382C59D251A40820000D561 /* GetContentServicesServerInformation.swift in Sources */,
-				C9688BA728D1AE8A0020206C /* CreateTaskController.swift in Sources */,
 				B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */,
 				B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */,
 				B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */,
@@ -4235,7 +4220,6 @@
 				C973EC692726BD7D00912015 /* ListItemTableViewCell.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
-				C9688BA328D1AE600020206C /* CreateTaskViewController.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				C93A246628A628D8005F46C2 /* TaskAttachmentModel.swift in Sources */,
 				F14E68922617066A002FDEF9 /* SessionPreview.swift in Sources */,

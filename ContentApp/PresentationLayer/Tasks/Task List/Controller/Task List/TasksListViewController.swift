@@ -36,7 +36,8 @@ class TasksListViewController: SystemSearchViewController {
     let regularCellHeight: CGFloat = 60.0
     let sectionCellHeight: CGFloat = 54.0
     var sortFilterView: TasksSortAndFilterView?
-    
+    private var dialogTransitionController: MDCDialogTransitionController?
+
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +53,8 @@ class TasksListViewController: SystemSearchViewController {
         registerCells()
         addSortAndFilterView()
         getTaskList()
-        
+        self.dialogTransitionController = MDCDialogTransitionController()
+
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -188,12 +190,19 @@ class TasksListViewController: SystemSearchViewController {
     // MARK: - IBActions
     
     @IBAction func createTaskButtonAction(_ sender: Any) {
-        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.createTask) as? CreateTaskViewController {
-            viewController.coordinatorServices = coordinatorServices
-            let navigationController = UINavigationController(rootViewController: viewController)
-            self.present(navigationController, animated: true, completion: nil)
-        }
+        
+        let viewController = CreateNodeSheetViewControler.instantiateViewController()
+        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
+                                                      delegate: self,
+                                                      createTaskViewType: .createTask,
+                                                      task: nil)
+        
+        viewController.coordinatorServices = coordinatorServices
+        viewController.createTaskViewModel = createTaskViewModel
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = dialogTransitionController
+        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        self.present(viewController, animated: true)
     }
     
     @objc func settingsButtonTapped() {
@@ -383,5 +392,13 @@ extension TasksListViewController {
         self.viewModel.filterParams.state = nil
         self.viewModel.filterParams.text = nil
         self.handlePullToRefresh()
+    }
+}
+
+// MARK: - Create Task View Model Delegate
+extension TasksListViewController: CreateTaskViewModelDelegate {
+    
+    func handleCreatedTask(task: TaskNode?, error: Error?, isUpdate: Bool) {
+        AlfrescoLog.debug("***** handleCreatedTask ********")
     }
 }
