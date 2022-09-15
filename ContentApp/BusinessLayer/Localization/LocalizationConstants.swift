@@ -335,5 +335,6 @@ struct LocalizationConstants {
         static let userName = NSLocalizedString("user-name", comment: "")
         static let commentTitle = NSLocalizedString("comment-title", comment: "")
         static let sendButton = NSLocalizedString("send-button", comment: "")
+        static let descriptionTitle = NSLocalizedString("description-title", comment: "")
     }
 }

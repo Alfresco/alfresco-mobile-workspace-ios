@@ -339,6 +339,7 @@
 "user-name" = "User name";
 "comment-title" = "Comment";
 "send-button" = "Send button";
+"description-title" = "Description";
 
 // MARK: - Task filters
 "Due date" = "Due date";

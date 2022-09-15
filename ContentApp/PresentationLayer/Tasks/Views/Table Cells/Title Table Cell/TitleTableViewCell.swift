@@ -26,6 +26,9 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        baseView.isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = true
+        subTitleLabel.isAccessibilityElement = true
     }
     
     func setup(viewModel: RowViewModel) {
@@ -37,9 +40,13 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {        
-        baseView.accessibilityIdentifier = "title"
-        baseView.accessibilityLabel = LocalizationConstants.Accessibility.title
-        baseView.accessibilityValue = titleLabel.text
+        titleLabel.accessibilityIdentifier = "title"
+        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
+        titleLabel.accessibilityValue = titleLabel.text
+        
+        subTitleLabel.accessibilityIdentifier = "sub-title"
+        subTitleLabel.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
+        subTitleLabel.accessibilityValue = subTitleLabel.text
     }
     
     // MARK: - Apply Themes and Localization
