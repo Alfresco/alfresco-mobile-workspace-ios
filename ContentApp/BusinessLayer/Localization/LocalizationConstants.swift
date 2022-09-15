@@ -318,6 +318,7 @@ struct LocalizationConstants {
         static let completeTitle = NSLocalizedString("complete-title", comment: "")
         static let newTask = NSLocalizedString("new-task", comment: "")
         static let editTask = NSLocalizedString("edit-task", comment: "")
+        static let nextTitle = NSLocalizedString("next-title", comment: "")
     }
     
     struct Accessibility {
