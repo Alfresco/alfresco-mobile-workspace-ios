@@ -33,6 +33,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     var createNodeViewModel: CreateNodeViewModel?
     var createTaskViewModel: CreateTaskViewModel?
     var isRenameNode = false
+    let maxLength = 255
 
     var enableUploadButton = false {
         didSet {
@@ -42,7 +43,6 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     
     typealias TaskOperationCallBack = (_ task: TaskNode?, _ title: String?, _ description: String?) -> Void
     var callBack: TaskOperationCallBack?
-
 
     // MARK: - View Life Cycle
 
@@ -214,6 +214,12 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
         enableUploadButton(for: textField.updatedText(for: range, replacementString: string))
+        
+        if createTaskViewModel != nil {
+            let currentString = (textField.text ?? "") as NSString
+            let newString = currentString.replacingCharacters(in: range, with: string)
+            return newString.count <= maxLength
+        }
         return true
     }
 
