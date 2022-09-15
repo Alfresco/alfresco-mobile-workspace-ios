@@ -121,6 +121,21 @@ class TaskPropertiesViewModel: NSObject {
         }
         return false
     }
+    
+    var completedDate: Date? {
+        return task?.endDate
+    }
+    
+    func geCompletedDate() -> String? {
+        if isTaskCompleted {
+            if let endDate = completedDate?.dateString(format: "dd MMM yyyy") {
+                return endDate
+            } else {
+                return nil
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: - Show Preview

@@ -54,6 +54,11 @@ class TaskDetailController: NSObject {
     func buildViewModel() {
         var rowViewModels = [RowViewModel]()
         rowViewModels.append(titleCellVM())
+        
+        if viewModel.isTaskCompleted {
+            rowViewModels.append(completedDateCellVM())
+        }
+        
         rowViewModels.append(dueDateCellVM())
         
         if priorityCellVM() != nil {
@@ -61,7 +66,11 @@ class TaskDetailController: NSObject {
         }
         
         rowViewModels.append(assignedCellVM())
-        rowViewModels.append(statusCellVM())
+        
+        if !viewModel.isTaskCompleted {
+            rowViewModels.append(statusCellVM())
+        }
+        
         rowViewModels.append(identifierCellVM())
         
         /* comments */
@@ -99,6 +108,11 @@ class TaskDetailController: NSObject {
     // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
         let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: viewModel.taskDescription)
+        return rowVM
+    }
+    
+    private func completedDateCellVM() -> InfoTableCellViewModel {
+        let rowVM = InfoTableCellViewModel(imageName: "ic-completed-task", title: LocalizationConstants.Tasks.completed, value: viewModel.geCompletedDate())
         return rowVM
     }
     
