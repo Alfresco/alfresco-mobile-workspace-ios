@@ -38,6 +38,7 @@ struct KeyConstants {
         static let edition = "kEdition"
         static let displayFirstName = "kSaveDiplayFirstName"
         static let displayLastName = "kSaveDiplayLastName"
+        static let apsUserId = "kAPSUserId"
     }
     struct Notification {
         static let showLoginScreen = "kShowLoginScreenNotification"

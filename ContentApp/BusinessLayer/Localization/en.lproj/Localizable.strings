@@ -352,6 +352,7 @@
 "user-name" = "User name";
 "comment-title" = "Comment";
 "send-button" = "Send button";
+"description-title" = "Description";
 
 // MARK: - Task filters
 "Due date" = "Due date";
@@ -359,3 +360,11 @@
 "Task Name" = "Task Name";
 "Active" = "Active";
 "Completed" = "Completed";
+
+// MARK: - Task Operations
+"no-description" = "No description";
+
+// MARK: - New Task
+"new-task" = "New Task";
+"edit-task" = "Edit Task";
+"next-title" = "Next";
