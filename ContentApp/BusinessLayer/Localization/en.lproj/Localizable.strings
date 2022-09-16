@@ -350,3 +350,8 @@
 
 // MARK: - Task Operations
 "no-description" = "No description";
+
+// MARK: - New Task
+"new-task" = "New Task";
+"edit-task" = "Edit Task";
+"next-title" = "Next";

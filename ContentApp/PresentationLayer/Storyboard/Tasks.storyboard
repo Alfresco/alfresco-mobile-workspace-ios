@@ -92,6 +92,20 @@
                                     <constraint firstItem="kOC-im-tG6" firstAttribute="centerY" secondItem="F0l-Ge-myc" secondAttribute="centerY" constant="-100" id="yWb-XH-Q9Q"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffm-nb-9fp" customClass="MDCFloatingButton">
+                                <rect key="frame" x="342" y="783" width="56" height="56"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createButton">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="56" id="Gcy-x3-gkz"/>
+                                    <constraint firstAttribute="height" constant="56" id="Jkt-Rg-2tM"/>
+                                </constraints>
+                                <state key="normal" image="ic-button-create"/>
+                                <connections>
+                                    <action selector="createTaskButtonAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="FZx-su-wTd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -101,6 +115,8 @@
                             <constraint firstAttribute="trailing" secondItem="V7q-Hm-CnH" secondAttribute="trailing" id="CoW-bg-wO7"/>
                             <constraint firstItem="gvR-A6-WdZ" firstAttribute="top" secondItem="V7q-Hm-CnH" secondAttribute="bottom" constant="10" id="Fgr-3k-v8P"/>
                             <constraint firstItem="F0l-Ge-myc" firstAttribute="top" secondItem="5Gf-kf-zOp" secondAttribute="top" id="H7W-0o-GpC"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="ffm-nb-9fp" secondAttribute="trailing" constant="16" id="JUC-Nh-nIU"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="ffm-nb-9fp" secondAttribute="bottom" constant="23" id="WT5-mH-iUS"/>
                             <constraint firstItem="V7q-Hm-CnH" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="XyJ-61-fEV"/>
                             <constraint firstItem="V7q-Hm-CnH" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="YMd-W8-4hX"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="F0l-Ge-myc" secondAttribute="trailing" id="e1D-Y5-N9b"/>
@@ -114,6 +130,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="5Gf-kf-zOp" id="yXU-pa-2nV"/>
+                        <outlet property="createTaskButton" destination="ffm-nb-9fp" id="02W-0e-Nmh"/>
                         <outlet property="emptyListImageView" destination="kOC-im-tG6" id="qrD-cX-kHL"/>
                         <outlet property="emptyListSubtitle" destination="ebw-AU-3z7" id="dsS-OV-boQ"/>
                         <outlet property="emptyListTitle" destination="wIo-J7-c6i" id="IkJ-xf-Fop"/>
@@ -447,6 +464,7 @@
         </designable>
     </designables>
     <resources>
+        <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-send-message" width="28" height="28"/>
         <image name="ic-send-message-unselected" width="28" height="28"/>
         <systemColor name="labelColor">
