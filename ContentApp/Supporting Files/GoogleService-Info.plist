@@ -7,7 +7,7 @@
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.471005699027-3rikujvd5qsag6kpuaptv3vte8cqpukj</string>
 	<key>API_KEY</key>
-	<string>INSERT_YOUR_API_KEY_HERE</string>
+	<string>INSERT_API_KEY_HERE</string>
 	<key>GCM_SENDER_ID</key>
 	<string>471005699027</string>
 	<key>PLIST_VERSION</key>
@@ -21,7 +21,7 @@
 	<key>IS_ADS_ENABLED</key>
 	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<true/>
 	<key>IS_APPINVITE_ENABLED</key>
 	<true/>
 	<key>IS_GCM_ENABLED</key>
