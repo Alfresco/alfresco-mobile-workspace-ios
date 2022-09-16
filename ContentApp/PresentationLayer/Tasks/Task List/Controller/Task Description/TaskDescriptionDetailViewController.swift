@@ -68,7 +68,6 @@ class TaskDescriptionDetailViewController: SystemSearchViewController {
     }
 }
 
-
 // MARK: - Table View Data Source and Delegates
 extension TaskDescriptionDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
