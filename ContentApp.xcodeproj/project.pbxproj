@@ -202,7 +202,6 @@
 		C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */; };
 		C956D8B4282FB5CB00E16A70 /* Array+PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = C956D8B3282FB5CB00E16A70 /* Array+PDF.swift */; };
 		C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
-		C957AC5D28AAAF5200086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
 		C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */; };
 		C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A2B28BE01CD007841F4 /* mockTasks.json */; };
 		C95B2A2E28BE0621007841F4 /* mockTasks.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A2B28BE01CD007841F4 /* mockTasks.json */; };
@@ -4741,7 +4740,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4767,7 +4766,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AMW_AppStore_Profile;
