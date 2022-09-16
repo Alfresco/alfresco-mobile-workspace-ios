@@ -32,7 +32,7 @@ class TaskPropertiesViewModel: NSObject {
     }
     
     var taskDescription: String? {
-        return task?.description ?? LocalizationConstants.Tasks.noDescription
+        return task?.description
     }
     
     var userName: String? {

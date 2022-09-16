@@ -36,10 +36,6 @@ class CreateTaskViewModel: TaskPropertiesViewModel {
         return LocalizationConstants.Tasks.newTask
     }
     
-    var taskDescription: String? {
-        return task?.description
-    }
-    
     var uploadButtonTitle: String? {
         if task != nil {
             return LocalizationConstants.General.save

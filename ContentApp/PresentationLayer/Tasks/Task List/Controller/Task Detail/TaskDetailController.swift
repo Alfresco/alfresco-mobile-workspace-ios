@@ -21,6 +21,7 @@ import UIKit
 class TaskDetailController: NSObject {
     let viewModel: TaskDetailViewModel
     var currentTheme: PresentationTheme?
+    var didSelectReadMoreActionForDescription: (() -> Void)?
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -107,7 +108,15 @@ class TaskDetailController: NSObject {
     
     // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: viewModel.taskDescription)
+        var taskDescription = viewModel.taskDescription ?? ""
+        if taskDescription.isEmpty {
+            taskDescription = LocalizationConstants.Tasks.noDescription
+        }
+
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription)
+        rowVM.didSelectReadMoreAction = {
+            self.didSelectReadMoreActionForDescription?()
+        }
         return rowVM
     }
     
