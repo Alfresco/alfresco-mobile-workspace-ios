@@ -29,6 +29,7 @@ class TasksListViewModel: NSObject {
     var rawTasks: [TaskNode] = []
     var services: CoordinatorServices
     lazy var filterParams = TaskListFilterParams()
+    var isTasksConfigured = false
     
     init(services: CoordinatorServices) {
         self.services = services
@@ -111,5 +112,30 @@ class TasksListViewModel: NSObject {
                 }
             })
         }
+    }
+}
+
+// MARK: - Task Operation APIs
+extension TasksListViewModel {
+    
+    func createTask(params: TaskBodyCreate, completionHandler: @escaping ((_ data: TaskNode?, _ error: Error?) -> Void)) {
+        
+        self.isLoading.value = true
+        services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            
+            TasksAPI.createTask(params: params) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                if data != nil {
+                    let taskNodes = TaskNodeOperations.processNodes(for: [data!])
+                    if !taskNodes.isEmpty {
+                        completionHandler(taskNodes.first, nil)
+                    }
+                } else {
+                    completionHandler(nil, error)
+                }
+            }
+        })
     }
 }
