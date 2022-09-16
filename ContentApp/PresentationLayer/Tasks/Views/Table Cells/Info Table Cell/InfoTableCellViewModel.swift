@@ -24,6 +24,12 @@ class InfoTableCellViewModel: RowViewModel {
     var title: String?
     var value: String?
     var isHideDivider = true
+    var isEditMode = false
+    var isHideEditImage: Bool {
+        return !isEditMode
+    }
+    var didSelectEditInfo: (() -> Void)?
+    var didSelectValue: (() -> Void)?
 
     func cellIdentifier() -> String {
         return "InfoTableViewCell"
@@ -32,11 +38,13 @@ class InfoTableCellViewModel: RowViewModel {
     init(imageName: String?,
          title: String?,
          value: String?,
-         isHideDivider: Bool = true) {
+         isHideDivider: Bool = true,
+         isEditMode: Bool) {
         self.imageName = imageName
         self.title = title
         self.value = value
         self.isHideDivider = isHideDivider
+        self.isEditMode = isEditMode
     }
     
     var image: UIImage? {

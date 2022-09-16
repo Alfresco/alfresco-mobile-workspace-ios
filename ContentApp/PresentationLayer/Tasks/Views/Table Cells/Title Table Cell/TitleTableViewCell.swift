@@ -17,11 +17,13 @@
 //
 
 import UIKit
+import MaterialComponents
 
 class TitleTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var editImageView: UIImageView!
     var viewModel: TitleTableCellViewModel?
     var activeTheme: PresentationTheme?
 
@@ -30,19 +32,31 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         baseView.isAccessibilityElement = false
         titleLabel.isAccessibilityElement = true
         subTitleLabel.isAccessibilityElement = true
-        
+        addTapGesture()
+    }
+    
+    private func addTapGesture() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         tapGestureRecognizer.numberOfTapsRequired = 1
         subTitleLabel.isUserInteractionEnabled = true
         subTitleLabel.addGestureRecognizer(tapGestureRecognizer)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.editTaskAction(_:)))
+        tapGesture.numberOfTapsRequired = 1
+        editImageView.isUserInteractionEnabled = true
+        editImageView.addGestureRecognizer(tapGesture)
     }
-    
+
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         let isViewAllButtonVisible = viewModel?.isViewAllButtonVisible ?? false
         let isHideReadMore = viewModel?.isHideReadMore ?? false
         if isViewAllButtonVisible && isHideReadMore == false {
             viewModel?.didSelectReadMoreAction?()
         }
+    }
+    
+    @objc func editTaskAction(_ sender: UITapGestureRecognizer? = nil) {
+        viewModel?.didSelectEditTitle?()
     }
     
     func setup(viewModel: RowViewModel) {
@@ -56,6 +70,7 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
                 self.subTitleLabel.attributedText = self.textWithReadMore()
             }
         }
+        editImageView.isHidden = viewModel.isHideEditImage
         addAccessibility()
     }
     
@@ -72,10 +87,14 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
+       
         self.activeTheme = currentTheme
         self.backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         subTitleLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
+        
+        editImageView.image = UIImage(named: "ic-edit-icon")
+        editImageView.tintColor = currentTheme.onSurfaceColor
     }
     
     private func textWithReadMore() -> NSAttributedString? {

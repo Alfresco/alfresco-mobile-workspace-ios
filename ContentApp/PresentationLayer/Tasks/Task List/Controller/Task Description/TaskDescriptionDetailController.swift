@@ -50,7 +50,10 @@ class TaskDescriptionDetailController: NSObject {
             taskDescription = LocalizationConstants.Tasks.noDescription
         }
 
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription, isHideReadMore: true)
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName,
+                                            subTitle: taskDescription,
+                                            isHideReadMore: true,
+                                            isEditMode: false)
         return rowVM
     }
 }

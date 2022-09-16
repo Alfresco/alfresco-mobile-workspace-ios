@@ -28,6 +28,8 @@ class TaskDetailViewController: SystemSearchViewController {
     @IBOutlet weak var completeTaskButton: MDCButton!
     var viewModel: TaskDetailViewModel { return controller.viewModel }
     lazy var controller: TaskDetailController = { return TaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
+    let buttonWidth = 45.0
+    var editButton = UIButton(type: .custom)
     
     // MARK: - View did load
     override func viewDidLoad() {
@@ -46,6 +48,7 @@ class TaskDetailViewController: SystemSearchViewController {
         getTaskAttachments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
         checkForCompleteTaskButton()
+        addEditButton()
         
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -113,6 +116,9 @@ class TaskDetailViewController: SystemSearchViewController {
         completeTaskButton.setTitle(LocalizationConstants.Tasks.completeTitle, for: .normal)
         completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeTaskButton.setShadowColor(.clear, for: .normal)
+        
+        editButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
+        editButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
     
     func startLoading() {
@@ -347,5 +353,39 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+// MARK: - Edit flow
+extension TaskDetailViewController {
+    
+    private func addEditButton() {
+        editButton.accessibilityIdentifier = "edit-done-button"
+        editButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: buttonWidth)
+        editButton.addTarget(self,
+                               action: #selector(editButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+
+        let searchBarButtonItem = UIBarButtonItem(customView: editButton)
+        searchBarButtonItem.accessibilityIdentifier = "barButton"
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: buttonWidth)
+        currWidth?.isActive = true
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: buttonWidth)
+        currHeight?.isActive = true
+        self.navigationItem.rightBarButtonItem = searchBarButtonItem
+    }
+    
+    @objc func editButtonTapped() {
+        AlfrescoLog.debug("edit button tapped")
+        viewModel.isEditTask = !viewModel.isEditTask
+        updateUI()
+        controller.buildViewModel()
+    }
+    
+    func updateUI() {
+        if viewModel.isEditTask {
+            editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+        }
     }
 }

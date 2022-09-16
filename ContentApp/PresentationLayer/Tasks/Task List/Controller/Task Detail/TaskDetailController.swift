@@ -113,20 +113,29 @@ class TaskDetailController: NSObject {
             taskDescription = LocalizationConstants.Tasks.noDescription
         }
 
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription)
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription, isEditMode: viewModel.isEditTask)
         rowVM.didSelectReadMoreAction = {
             self.didSelectReadMoreActionForDescription?()
+        }
+        rowVM.didSelectEditTitle = {
+            print("---- did Select Edit Title -----")
         }
         return rowVM
     }
     
     private func completedDateCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-completed-task", title: LocalizationConstants.Tasks.completed, value: viewModel.geCompletedDate())
+        let rowVM = InfoTableCellViewModel(imageName: "ic-completed-task", title: LocalizationConstants.Tasks.completed, value: viewModel.geCompletedDate(), isEditMode: false)
         return rowVM
     }
     
     private func dueDateCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate())
+        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate(), isEditMode: viewModel.isEditTask)
+        rowVM.didSelectValue = {
+            print("---- did Select change date -----")
+        }
+        rowVM.didSelectEditInfo = {
+            print("---- did Select reset date -----")
+        }
         return rowVM
     }
     
@@ -139,24 +148,31 @@ class TaskDetailController: NSObject {
             let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
                                                    priority: priorityText,
                                                    priorityTextColor: textColor,
-                                                   priorityBackgroundColor: backgroundColor)
+                                                   priorityBackgroundColor: backgroundColor,
+                                                   isEditMode: viewModel.isEditTask)
+            rowVM.didSelectEditPriority = {
+                print("---- did Select edit priority -----")
+            }
             return rowVM
         }
         return nil
     }
     
     private func assignedCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.userName)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.userName, isEditMode: viewModel.isEditTask)
+        rowVM.didSelectEditInfo = {
+            print("---- did Select change assignee -----")
+        }
         return rowVM
     }
     
     private func statusCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-status-icon", title: LocalizationConstants.Tasks.status, value: viewModel.status)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-status-icon", title: LocalizationConstants.Tasks.status, value: viewModel.status, isEditMode: false)
         return rowVM
     }
     
     private func identifierCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: false)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: false, isEditMode: false)
         return rowVM
     }
     
@@ -208,7 +224,7 @@ class TaskDetailController: NSObject {
     
     // MARK: - Attachments
     private func spaceCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: "", subTitle: nil)
+        let rowVM = TitleTableCellViewModel(title: "", subTitle: nil, isEditMode: false)
         return rowVM
     }
     

@@ -34,6 +34,7 @@ struct LocalizationConstants {
         static let done = NSLocalizedString("done", comment: "")
         static let rename = NSLocalizedString("rename", comment: "")
         static let update = NSLocalizedString("update", comment: "")
+        static let edit = NSLocalizedString("edit", comment: "")
     }
 
     struct Buttons {

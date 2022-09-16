@@ -317,11 +317,13 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
         showTaskDetails(for: taskNode)
     }
     
-    private func showTaskDetails(for taskNode: TaskNode?) {
+    private func showTaskDetails(for taskNode: TaskNode?, isOpenAfterTaskCreation: Bool = false) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.task = taskNode
+            viewController.viewModel.isOpenAfterTaskCreation = isOpenAfterTaskCreation
+            viewController.viewModel.isEditTask = isOpenAfterTaskCreation
             self.navigationController?.pushViewController(viewController, animated: true)
             viewController.viewModel.didRefreshTaskList = {
                 self.handlePullToRefresh()
@@ -411,7 +413,7 @@ extension TasksListViewController {
         let params = TaskBodyCreate(name: title, priority: "0", dueDate: nil, description: description)
         self.viewModel.createTask(params: params) { taskNode, error in
             self.handlePullToRefresh()
-            self.showTaskDetails(for: taskNode)
+            self.showTaskDetails(for: taskNode, isOpenAfterTaskCreation: true)
         }
     }
 }

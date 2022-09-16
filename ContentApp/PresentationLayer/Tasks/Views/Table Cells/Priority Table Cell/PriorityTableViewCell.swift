@@ -25,17 +25,31 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var priorityView: UIView!
     @IBOutlet weak var priorityLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var editImageView: UIImageView!
     var viewModel: PriorityTableCellViewModel?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         priorityView.layer.cornerRadius = priorityView.frame.size.height / 2.0
+        addTapGesture()
+    }
+    
+    private func addTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.editTaskAction(_:)))
+        tapGesture.numberOfTapsRequired = 1
+        editImageView.isUserInteractionEnabled = true
+        editImageView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func editTaskAction(_ sender: UITapGestureRecognizer? = nil) {
+        viewModel?.didSelectEditPriority?()
     }
     
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? PriorityTableCellViewModel else { return }
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
+        editImageView.isHidden = viewModel.isHideEditImage
         addAccessibility()
     }
     
@@ -55,5 +69,8 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
         priorityLabel.textColor = viewModel?.priorityTextColor
         priorityView.backgroundColor = viewModel?.priorityBackgroundColor
         priorityLabel.text = viewModel?.priority
+        
+        editImageView.image = UIImage(named: "ic-edit-icon")
+        editImageView.tintColor = currentTheme.onSurfaceColor
     }
 }
