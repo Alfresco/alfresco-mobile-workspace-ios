@@ -215,6 +215,7 @@
 		C963196127DA0CFD00BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
 		C963196227DA0EF800BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
 		C96870EE289D37D0000E4DA0 /* TaskPropertiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96870ED289D37D0000E4DA0 /* TaskPropertiesViewModel.swift */; };
+		C9688BAC28D30DCC0020206C /* CreateTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9688BAB28D30DCB0020206C /* CreateTaskViewModel.swift */; };
 		C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */; };
 		C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC602726959C00912015 /* SearchListComponentViewController.swift */; };
 		C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */; };
@@ -934,6 +935,7 @@
 		C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBannerService.swift; sourceTree = "<group>"; };
 		C963196027DA0CFD00BE8746 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		C96870ED289D37D0000E4DA0 /* TaskPropertiesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskPropertiesViewModel.swift; sourceTree = "<group>"; };
+		C9688BAB28D30DCB0020206C /* CreateTaskViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTaskViewModel.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
 		C973EC602726959C00912015 /* SearchListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewController.swift; sourceTree = "<group>"; };
 		C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewModel.swift; sourceTree = "<group>"; };
@@ -2048,6 +2050,14 @@
 			path = "Task Properties";
 			sourceTree = "<group>";
 		};
+		C9688BAA28D30DA40020206C /* Create Task */ = {
+			isa = PBXGroup;
+			children = (
+				C9688BAB28D30DCB0020206C /* CreateTaskViewModel.swift */,
+			);
+			path = "Create Task";
+			sourceTree = "<group>";
+		};
 		C973EC5F2726957C00912015 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -2172,6 +2182,7 @@
 				C9A7598D289BB0CC006603E0 /* Task Detail */,
 				C9205C7C28A12B6A00DEF5AC /* Task Comments */,
 				C92EBB1E28B13B4D003DFA15 /* Task Attachments */,
+				C9688BAA28D30DA40020206C /* Create Task */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4218,6 +4229,7 @@
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				C93A246628A628D8005F46C2 /* TaskAttachmentModel.swift in Sources */,
+				C9688BAC28D30DCC0020206C /* CreateTaskViewModel.swift in Sources */,
 				F14E68922617066A002FDEF9 /* SessionPreview.swift in Sources */,
 				B9834C5D267368A00052E138 /* FavoritesModel.swift in Sources */,
 				C993459627D89CAD0079DABD /* UserDefaultExtension.swift in Sources */,

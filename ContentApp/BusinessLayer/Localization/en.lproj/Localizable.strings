@@ -346,3 +346,8 @@
 "Task Name" = "Task Name";
 "Active" = "Active";
 "Completed" = "Completed";
+
+// MARK: - New Task
+"new-task" = "New Task";
+"edit-task" = "Edit Task";
+"next-title" = "Next";

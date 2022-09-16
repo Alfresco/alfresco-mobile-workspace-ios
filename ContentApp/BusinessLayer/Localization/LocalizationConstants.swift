@@ -316,6 +316,9 @@ struct LocalizationConstants {
         static let send = NSLocalizedString("send-title", comment: "")
         static let noDueDate = NSLocalizedString("no-due-date", comment: "")
         static let completeTitle = NSLocalizedString("complete-title", comment: "")
+        static let newTask = NSLocalizedString("new-task", comment: "")
+        static let editTask = NSLocalizedString("edit-task", comment: "")
+        static let nextTitle = NSLocalizedString("next-title", comment: "")
     }
     
     struct Accessibility {

@@ -29,18 +29,21 @@ class TasksListViewController: SystemSearchViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
-    @IBOutlet weak var filterBaseView: UIView!    
+    @IBOutlet weak var filterBaseView: UIView!
+    @IBOutlet weak var createTaskButton: MDCFloatingButton!
     var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
     let sectionCellHeight: CGFloat = 54.0
     var sortFilterView: TasksSortAndFilterView?
-    
+    private var dialogTransitionController: MDCDialogTransitionController?
+
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         
         filterBaseView.isHidden = true
+        createTaskButton.isHidden = true
         emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -50,7 +53,8 @@ class TasksListViewController: SystemSearchViewController {
         registerCells()
         addSortAndFilterView()
         getTaskList()
-        
+        self.dialogTransitionController = MDCDialogTransitionController()
+
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -112,7 +116,10 @@ class TasksListViewController: SystemSearchViewController {
         emptyListTitle.textAlignment = .center
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
+        
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        createTaskButton.backgroundColor = currentTheme.primaryT1Color
+        createTaskButton.tintColor = currentTheme.onPrimaryColor
         self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationController)
     }
     
@@ -131,6 +138,7 @@ class TasksListViewController: SystemSearchViewController {
                 sSelf.collectionView.reloadData()
                 sSelf.checkEmptyTaskListMessage()
                 sSelf.filterBaseView.isHidden = false
+                sSelf.createTaskButton.isHidden = false
                 sSelf.getAPSUserDetails()
             } else {
                 sSelf.viewModel.isTasksConfigured = false
@@ -157,6 +165,7 @@ class TasksListViewController: SystemSearchViewController {
         emptyListTitle.text = emptyList.title
         emptyListSubtitle.text = emptyList.description
         filterBaseView.isHidden = true
+        createTaskButton.isHidden = true
     }
     
     // MARK: - Set up Bindings
@@ -179,7 +188,7 @@ class TasksListViewController: SystemSearchViewController {
     }
     
     // MARK: - IBActions
-
+    
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
     }
@@ -305,6 +314,10 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let taskNode = viewModel.listNode(for: indexPath)
+        showTaskDetails(for: taskNode)
+    }
+    
+    private func showTaskDetails(for taskNode: TaskNode?) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
             viewController.coordinatorServices = coordinatorServices
@@ -369,3 +382,37 @@ extension TasksListViewController {
         self.handlePullToRefresh()
     }
 }
+
+// MARK: - Create Task
+
+extension TasksListViewController {
+    
+    @IBAction func createTaskButtonAction(_ sender: Any) {
+        
+        let viewController = CreateNodeSheetViewControler.instantiateViewController()
+        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
+                                                      createTaskViewType: .createTask,
+                                                      task: nil)
+        
+        viewController.coordinatorServices = coordinatorServices
+        viewController.createTaskViewModel = createTaskViewModel
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = dialogTransitionController
+        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        self.present(viewController, animated: true)
+        viewController.callBack = { [weak self] (task, title, description) in
+            guard let sSelf = self else { return }
+            sSelf.createTask(with: title, description: description)
+        }
+    }
+
+    private func createTask(with title: String?, description: String?) {
+        AnalyticsManager.shared.didTapCreateTask()
+        let params = TaskBodyCreate(name: title, priority: "0", dueDate: nil, description: description)
+        self.viewModel.createTask(params: params) { taskNode, error in
+            self.handlePullToRefresh()
+            self.showTaskDetails(for: taskNode)
+        }
+    }
+}
+
