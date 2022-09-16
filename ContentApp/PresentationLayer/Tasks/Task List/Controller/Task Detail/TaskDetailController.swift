@@ -22,6 +22,11 @@ class TaskDetailController: NSObject {
     let viewModel: TaskDetailViewModel
     var currentTheme: PresentationTheme?
     var didSelectReadMoreActionForDescription: (() -> Void)?
+    var didSelectEditTitle: (() -> Void)?
+    var didSelectEditDueDate: (() -> Void)?
+    var didSelectResetDueDate: (() -> Void)?
+    var didSelectPriority: (() -> Void)?
+    var didSelectAssignee: (() -> Void)?
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -118,7 +123,7 @@ class TaskDetailController: NSObject {
             self.didSelectReadMoreActionForDescription?()
         }
         rowVM.didSelectEditTitle = {
-            print("---- did Select Edit Title -----")
+            self.didSelectEditTitle?()
         }
         return rowVM
     }
@@ -131,10 +136,10 @@ class TaskDetailController: NSObject {
     private func dueDateCellVM() -> InfoTableCellViewModel {
         let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate(), isEditMode: viewModel.isEditTask)
         rowVM.didSelectValue = {
-            print("---- did Select change date -----")
+            self.didSelectEditDueDate?()
         }
         rowVM.didSelectEditInfo = {
-            print("---- did Select reset date -----")
+            self.didSelectResetDueDate?()
         }
         return rowVM
     }
@@ -151,7 +156,7 @@ class TaskDetailController: NSObject {
                                                    priorityBackgroundColor: backgroundColor,
                                                    isEditMode: viewModel.isEditTask)
             rowVM.didSelectEditPriority = {
-                print("---- did Select edit priority -----")
+                self.didSelectPriority?()
             }
             return rowVM
         }
@@ -161,7 +166,7 @@ class TaskDetailController: NSObject {
     private func assignedCellVM() -> InfoTableCellViewModel {
         let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.userName, isEditMode: viewModel.isEditTask)
         rowVM.didSelectEditInfo = {
-            print("---- did Select change assignee -----")
+            self.didSelectAssignee?()
         }
         return rowVM
     }

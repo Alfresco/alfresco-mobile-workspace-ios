@@ -204,8 +204,33 @@ class TaskDetailViewController: SystemSearchViewController {
         controller.didSelectReadMoreActionForDescription = {
             self.showTaskDescription()
         }
+        
+        /* observing edit title */
+        controller.didSelectEditTitle = {
+            self.editTitleAndDescriptionAction()
+        }
+        
+        /* observing edit due date */
+        controller.didSelectEditDueDate = {
+            self.editDueDateAction()
+        }
+        
+        /* observing reset due date */
+        controller.didSelectResetDueDate = {
+            self.resetDueDateAction()
+        }
+        
+        /* observing priority */
+        controller.didSelectPriority = {
+            self.changePriorityAction()
+        }
+        
+        /* observing assignee */
+        controller.didSelectAssignee = {
+            self.changeAssigneeAction()
+        }
     }
-    
+
     private func getTaskDetails() {
         let taskID = viewModel.taskID
         viewModel.taskDetails(with: taskID) { [weak self] taskNodes, error in
@@ -387,5 +412,25 @@ extension TaskDetailViewController {
         if viewModel.isEditTask {
             editButton.setTitle(viewModel.editButtonTitle, for: .normal)
         }
+    }
+    
+    func editTitleAndDescriptionAction() {
+        AlfrescoLog.debug("editTitleAndDescriptionAction")
+    }
+    
+    func editDueDateAction() {
+        AlfrescoLog.debug("editDueDateAction")
+    }
+    
+    func resetDueDateAction() {
+        AlfrescoLog.debug("resetDueDateAction")
+    }
+    
+    func changePriorityAction() {
+        AlfrescoLog.debug("didSelectPriority")
+    }
+    
+    func changeAssigneeAction() {
+        AlfrescoLog.debug("changeAssigneeAction")
     }
 }
