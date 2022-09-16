@@ -3764,7 +3764,7 @@
 		};
 		B959CCC92476698900811F15 /* Linter */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -3776,9 +3776,9 @@
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+			shellScript = "echo \"happy to run lint for coding\"\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\n";
 		};
 		FBE759E3F9FF8319C895661D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
