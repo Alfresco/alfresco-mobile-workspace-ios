@@ -75,13 +75,6 @@ steps:
   name: prov_profile_share
   inputs:
     secureFile: '$(provisioning_profile_share)'
-- task: Xcode@5
-  inputs:
-    actions: 'build'
-    xcodeVersion: 'specifyPath'
-    xcodeDeveloperDir: '/Applications/Xcode_13.4.1.app/Contents/Developer'
-    packageApp: false
-    signingOption: 'auto'
 - task: CmdLine@2
   displayName: 'Build and Pilot'
   inputs:
