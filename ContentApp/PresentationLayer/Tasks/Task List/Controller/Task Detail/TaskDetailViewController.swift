@@ -296,6 +296,7 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     @IBAction func completeTaskButtonAction(_ sender: Any) {
+        if viewModel.isEditTask { return }
         let title = LocalizationConstants.Dialog.completeTaskTitle
         let message = LocalizationConstants.Dialog.completeTaskMessage
 
