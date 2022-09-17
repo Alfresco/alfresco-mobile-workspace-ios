@@ -44,6 +44,11 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Mobile Workspace requires camera access to capture photos and videos for upload.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -86,10 +91,5 @@
 	</array>
 	<key>WKAppBoundDomains</key>
 	<array/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 </dict>
 </plist>
