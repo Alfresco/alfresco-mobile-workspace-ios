@@ -3410,6 +3410,7 @@
 				4AA8B57E401EE3F2A67444B0 /* [CP] Check Pods Manifest.lock */,
 				3D31955934160F2CE1B3397D /* [OBX] Update Sourcery Generated Files */,
 				E334C03824755D8E00F74880 /* Sources */,
+				C92EA1D728D7A38F00DFDCB0 /* Swift Linter */,
 				E334C03924755D8E00F74880 /* Frameworks */,
 				E334C03A24755D8E00F74880 /* Resources */,
 				B95605062502721200D955BA /* Upload Symbols */,
@@ -3760,6 +3761,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#find $HOME/Library/Developer/Xcode/DerivedData/ContentApp-*/Build/Products/Debug-iphoneos -name \"*.dSYM\" | xargs -I \\{\\} $PODS_ROOT/FirebaseCrashlytics/upload-symbols -gsp ${PROJECT_DIR}/ContentApp/\"Supporting Files\"/GoogleService-Info.plist -p ios \\{\\}\n";
+		};
+		C92EA1D728D7A38F00DFDCB0 /* Swift Linter */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Linter";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
 		FBE759E3F9FF8319C895661D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
