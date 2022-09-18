@@ -21,6 +21,7 @@ import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_OutlinedTextFields
 import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
+import AlfrescoContent
 
 class CreateNodeSheetViewControler: SystemThemableViewController {
 
@@ -30,12 +31,18 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     @IBOutlet weak var uploadButton: MDCButton!
     @IBOutlet weak var cancelButton: MDCButton!
     var createNodeViewModel: CreateNodeViewModel?
+    var createTaskViewModel: CreateTaskViewModel?
+    var isRenameNode = false
+    let maxLengthOfTextField = 255
+    let maxLengthOfTextView = 500
     var enableUploadButton = false {
         didSet {
             uploadButton.isEnabled = enableUploadButton
         }
     }
     weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
+    typealias TaskOperationCallBack = (_ task: TaskNode?, _ title: String?, _ description: String?) -> Void
+    var callBack: TaskOperationCallBack?
 
     // MARK: - View Life Cycle
 
@@ -43,9 +50,11 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         super.viewDidLoad()
 
         descriptionTextArea.maximumNumberOfVisibleRows = 2
+        descriptionTextArea.textView.delegate = self
         uploadButton.isEnabled = false
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         addLocalization()
+        addAccessibility()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +76,14 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
+        if createNodeViewModel != nil {
+            uploadButtonActionForNodes()
+        } else if createTaskViewModel != nil {
+            uploadButtonActionForTasks()
+        }
+    }
+    
+    private func uploadButtonActionForNodes() {
         let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if var nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
            !nodeName.isEmpty {
@@ -90,6 +107,18 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
             }
         }
     }
+    
+    private func uploadButtonActionForTasks() {
+        
+        if let taskName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !taskName.isEmpty {
+            self.dismiss(animated: true) { [weak self] in
+                guard let sSelf = self,
+                      let taskDescription = sSelf.descriptionTextArea.textView.text else { return }
+                sSelf.callBack?(sSelf.createTaskViewModel?.task, taskName, taskDescription)
+            }
+        }
+    }
 
     @IBAction func cancelButtonTapped(_ sender: MDCButton) {
         dismiss(animated: true, completion: nil)
@@ -98,6 +127,31 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - Private Utils
 
     func addLocalization() {
+        if createNodeViewModel != nil {
+            addLocalizationForNodes()
+        } else if createTaskViewModel != nil {
+            addLocalizationForTasks()
+        }
+    }
+    
+    private func addAccessibility() {
+        
+        titleCreate.accessibilityIdentifier = "title"
+        titleCreate.accessibilityLabel = LocalizationConstants.Accessibility.title
+        titleCreate.accessibilityValue = titleCreate.text
+
+        nameTextField.accessibilityIdentifier = "name-textField"
+        nameTextField.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.name
+        nameTextField.accessibilityValue = nameTextField.text
+        nameTextField.accessibilityTraits = .staticText
+        
+        descriptionTextArea.accessibilityIdentifier = "description-textView"
+        descriptionTextArea.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.description
+        descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
+        descriptionTextArea.accessibilityTraits = .staticText
+    }
+    
+    private func addLocalizationForNodes() {
         let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if createNodeViewType == .rename {
             titleCreate.text = createNodeViewModel?.createAction()
@@ -122,6 +176,23 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         let title = self.createNodeViewModel?.parentListNode.title ?? ""
         let titleArray = title.components(separatedBy: ".")
         return titleArray.first ?? ""
+    }
+    
+    private func addLocalizationForTasks() {
+        
+        let title = createTaskViewModel?.title
+        let uploadButtonTitle = createTaskViewModel?.uploadButtonTitle
+        let taskName = createTaskViewModel?.taskName
+        let taskDescription = createTaskViewModel?.taskDescription
+        
+        uploadButton.setTitle(uploadButtonTitle, for: .normal)
+        nameTextField.text = taskName
+        descriptionTextArea.textView.text = taskDescription
+        cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
+        descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
+        nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
+        titleCreate.text = title
+        enableUploadButton(for: nameTextField.text)
     }
 
     private func getTitleAndExtensionForRenameNode() -> (name: String, extensionn: String) {
@@ -176,6 +247,12 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
         enableUploadButton(for: textField.updatedText(for: range, replacementString: string))
+        
+        if createTaskViewModel != nil {
+            let currentString = (textField.text ?? "") as NSString
+            let newString = currentString.replacingCharacters(in: range, with: string)
+            return newString.count <= maxLengthOfTextField
+        }
         return true
     }
 
@@ -238,5 +315,18 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
         nameTextField.leadingAssistiveLabel.text = ""
         nameTextField.trailingView = nil
+    }
+}
+
+// MARK: - UITextView Delegate
+
+extension CreateNodeSheetViewControler: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if createTaskViewModel != nil {
+            let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+            return newText.count < maxLengthOfTextView
+        }
+        return true
     }
 }

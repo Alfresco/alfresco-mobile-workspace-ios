@@ -18,22 +18,7 @@
 
 import UIKit
 
-class TitleTableCellViewModel: RowViewModel {
-    var title: String?
-    var subTitle: String?
-    var isHideReadMore = false
-    var isViewAllButtonVisible = false
-    var didSelectReadMoreAction: (() -> Void)?
+class TaskDescriptionDetailViewModel: TaskPropertiesViewModel {
+    let rowViewModels = Observable<[RowViewModel]>([])
 
-    func cellIdentifier() -> String {
-        return "TitleTableViewCell"
-    }
-    
-    init(title: String?,
-         subTitle: String?,
-         isHideReadMore: Bool = false) {
-        self.title = title
-        self.subTitle = subTitle
-        self.isHideReadMore = isHideReadMore
-    }
 }

@@ -20,13 +20,13 @@ import Foundation
 import UIKit
 
 struct EmptyTasks: EmptyListProtocol {
-    var icon = UIImage(named: "ic-empty-list-recents")
+    var icon = UIImage(named: "ic-empty-list-tasks")
     var title = LocalizationConstants.Tasks.noTasksFound
     var description = LocalizationConstants.Tasks.createTaskMessage
 }
 
 struct TasksNotConfigured: EmptyListProtocol {
-    var icon = UIImage(named: "ic-empty-list-recents")
+    var icon = UIImage(named: "ic-empty-list-tasks")
     var title = LocalizationConstants.Tasks.noTasksFound
     var description = LocalizationConstants.Tasks.notConfiguredMessage
 }
