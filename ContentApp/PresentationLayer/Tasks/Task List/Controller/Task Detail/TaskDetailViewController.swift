@@ -403,16 +403,9 @@ extension TaskDetailViewController {
     }
     
     @objc func editButtonTapped() {
-        AlfrescoLog.debug("edit button tapped")
         viewModel.isEditTask = !viewModel.isEditTask
-        updateUI()
+        editButton.setTitle(viewModel.editButtonTitle, for: .normal)
         controller.buildViewModel()
-    }
-    
-    func updateUI() {
-        if viewModel.isEditTask {
-            editButton.setTitle(viewModel.editButtonTitle, for: .normal)
-        }
     }
     
     func editTitleAndDescriptionAction() {
