@@ -3412,7 +3412,6 @@
 				E334C03824755D8E00F74880 /* Sources */,
 				E334C03924755D8E00F74880 /* Frameworks */,
 				E334C03A24755D8E00F74880 /* Resources */,
-				B959CCC92476698900811F15 /* Linter */,
 				B95605062502721200D955BA /* Upload Symbols */,
 				C9E79E7F27A3E653002BC5A0 /* Embed App Extensions */,
 				FBE759E3F9FF8319C895661D /* [CP] Embed Pods Frameworks */,
@@ -3761,24 +3760,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#find $HOME/Library/Developer/Xcode/DerivedData/ContentApp-*/Build/Products/Debug-iphoneos -name \"*.dSYM\" | xargs -I \\{\\} $PODS_ROOT/FirebaseCrashlytics/upload-symbols -gsp ${PROJECT_DIR}/ContentApp/\"Supporting Files\"/GoogleService-Info.plist -p ios \\{\\}\n";
-		};
-		B959CCC92476698900811F15 /* Linter */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = Linter;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n\n";
 		};
 		FBE759E3F9FF8319C895661D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4545,7 +4526,7 @@
 				CODE_SIGN_ENTITLEMENTS = Share/ShareDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4578,7 +4559,7 @@
 				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Alfresco Software, Inc. (W8N95J537P)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4731,7 +4712,7 @@
 				CODE_SIGN_ENTITLEMENTS = ContentApp/ContentAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
@@ -4758,7 +4739,7 @@
 				CODE_SIGN_ENTITLEMENTS = ContentApp/ContentApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Alfresco Software, Inc. (W8N95J537P)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
