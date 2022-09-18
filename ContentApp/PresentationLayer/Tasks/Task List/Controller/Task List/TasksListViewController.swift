@@ -417,4 +417,3 @@ extension TasksListViewController {
         }
     }
 }
-

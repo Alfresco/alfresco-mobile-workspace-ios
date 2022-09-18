@@ -26,6 +26,7 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
     var didRefreshTaskList: (() -> Void)?
     var isOpenAfterTaskCreation = false
     var isEditTask = false
+    var readOnlyTask: TaskNode?
     
     var editButtonTitle: String {
         if isEditTask {
@@ -33,5 +34,20 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
         } else {
             return LocalizationConstants.General.edit
         }
+    }
+
+    func isTaskUpdated() -> Bool {
+        let name = readOnlyTask?.name ?? ""
+        let description = readOnlyTask?.description ?? ""
+        let readOnlyTaskDueDate = getDueDate(for: readOnlyTask?.dueDate)
+        let taskDueDate = getDueDate(for: dueDate)
+        let taskPriority = readOnlyTask?.priority ?? -1
+        let userId = readOnlyTask?.assignee?.assigneeID ?? -1
+
+        if taskName != name || taskDescription != description || readOnlyTaskDueDate != taskDueDate || priority != taskPriority || assigneeUserId != userId {
+            return true
+        }
+        
+        return false
     }
 }

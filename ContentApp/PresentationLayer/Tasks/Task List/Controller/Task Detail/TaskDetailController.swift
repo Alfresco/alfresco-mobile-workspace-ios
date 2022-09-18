@@ -134,7 +134,7 @@ class TaskDetailController: NSObject {
     }
     
     private func dueDateCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate(), isEditMode: viewModel.isEditTask)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate(for: viewModel.dueDate), isEditMode: viewModel.isEditTask)
         rowVM.didSelectValue = {
             self.didSelectEditDueDate?()
         }

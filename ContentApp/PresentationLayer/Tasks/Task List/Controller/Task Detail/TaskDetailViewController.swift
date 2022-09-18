@@ -30,7 +30,8 @@ class TaskDetailViewController: SystemSearchViewController {
     lazy var controller: TaskDetailController = { return TaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     let buttonWidth = 45.0
     var editButton = UIButton(type: .custom)
-    
+    private var dialogTransitionController: MDCDialogTransitionController?
+
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +50,9 @@ class TaskDetailViewController: SystemSearchViewController {
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
         checkForCompleteTaskButton()
         addEditButton()
-        
+        storeReadOnlyTaskDetails()
+        self.dialogTransitionController = MDCDialogTransitionController()
+
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -406,10 +409,13 @@ extension TaskDetailViewController {
         viewModel.isEditTask = !viewModel.isEditTask
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
         controller.buildViewModel()
+        storeReadOnlyTaskDetails()
     }
     
-    func editTitleAndDescriptionAction() {
-        AlfrescoLog.debug("editTitleAndDescriptionAction")
+    private func storeReadOnlyTaskDetails() {
+        if viewModel.isEditTask {
+            viewModel.readOnlyTask = viewModel.task
+        }
     }
     
     func editDueDateAction() {
@@ -426,5 +432,35 @@ extension TaskDetailViewController {
     
     func changeAssigneeAction() {
         AlfrescoLog.debug("changeAssigneeAction")
+    }
+}
+
+// MARK: - Edit Task Name and description
+
+extension TaskDetailViewController {
+    
+    private func editTitleAndDescriptionAction() {
+        
+        let viewController = CreateNodeSheetViewControler.instantiateViewController()
+        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
+                                                      createTaskViewType: .editTask,
+                                                      task: viewModel.task)
+        
+        viewController.coordinatorServices = coordinatorServices
+        viewController.createTaskViewModel = createTaskViewModel
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = dialogTransitionController
+        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        self.present(viewController, animated: true)
+        viewController.callBack = { [weak self] (task, title, description) in
+            guard let sSelf = self else { return }
+            sSelf.updateTaskTitleAndDescription(with: title, description: description)
+        }
+    }
+
+    private func updateTaskTitleAndDescription(with title: String?, description: String?) {
+        viewModel.task?.name = title
+        viewModel.task?.description = description
+        controller.buildViewModel()
     }
 }

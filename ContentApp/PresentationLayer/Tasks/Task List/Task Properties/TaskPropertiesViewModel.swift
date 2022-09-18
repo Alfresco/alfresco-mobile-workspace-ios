@@ -39,6 +39,10 @@ class TaskPropertiesViewModel: NSObject {
         return task?.assignee?.userName
     }
     
+    var assigneeUserId: Int {
+        return task?.assignee?.assigneeID ?? -1
+    }
+    
     var priority: Int {
         return task?.priority ?? 0
     }
@@ -79,7 +83,7 @@ class TaskPropertiesViewModel: NSObject {
         return task?.dueDate
     }
     
-    func getDueDate() -> String? {
+    func getDueDate(for dueDate: Date?) -> String? {
         if let dueDate = dueDate?.dateString(format: "dd MMM yyyy") {
             return dueDate
         } else {
