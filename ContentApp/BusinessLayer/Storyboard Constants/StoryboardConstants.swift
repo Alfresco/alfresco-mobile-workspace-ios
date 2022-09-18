@@ -29,7 +29,6 @@ struct StoryboardConstants {
         static let taskDetail = "TaskDetailViewController"
         static let taskComments = "TaskCommentsViewController"
         static let taskAttachments = "TaskAttachmentsViewController"
-        static let taskDescription = "TaskDescriptionDetailViewController"
     }
 }
 

@@ -193,11 +193,6 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             sSelf.didSelectAttachment(attachment: attachment)
         }
-        
-        /* observing read more description */
-        controller.didSelectReadMoreActionForDescription = {
-            self.showTaskDescription()
-        }
     }
     
     private func getTaskDetails() {
@@ -292,17 +287,6 @@ class TaskDetailViewController: SystemSearchViewController {
                 sSelf.viewModel.didRefreshTaskList?()
                 sSelf.navigationController?.popViewController(animated: true)
             }
-        }
-    }
-    
-    private func showTaskDescription() {
-        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDescription) as? TaskDescriptionDetailViewController {
-            viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.task = viewModel.task
-            
-            let navigationController = UINavigationController(rootViewController: viewController)
-            self.present(navigationController, animated: true)
         }
     }
 }

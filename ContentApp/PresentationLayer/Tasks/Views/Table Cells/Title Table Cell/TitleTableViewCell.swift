@@ -21,98 +21,29 @@ import UIKit
 class TitleTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subTitleLabel: UILabel!
     var viewModel: TitleTableCellViewModel?
-    var activeTheme: PresentationTheme?
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        baseView.isAccessibilityElement = false
-        titleLabel.isAccessibilityElement = true
-        subTitleLabel.isAccessibilityElement = true
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        tapGestureRecognizer.numberOfTapsRequired = 1
-        subTitleLabel.isUserInteractionEnabled = true
-        subTitleLabel.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        let isViewAllButtonVisible = viewModel?.isViewAllButtonVisible ?? false
-        let isHideReadMore = viewModel?.isHideReadMore ?? false
-        if isViewAllButtonVisible && isHideReadMore == false {
-            viewModel?.didSelectReadMoreAction?()
-        }
     }
     
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? TitleTableCellViewModel else { return }
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
-        subTitleLabel.numberOfLines = viewModel.isHideReadMore ? 0:3
-        subTitleLabel.text = viewModel.subTitle
-        if viewModel.isHideReadMore == false {
-            DispatchQueue.main.async {
-                self.subTitleLabel.attributedText = self.textWithReadMore()
-            }
-        }
         addAccessibility()
     }
     
     private func addAccessibility() {        
-        titleLabel.accessibilityIdentifier = "title"
-        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        titleLabel.accessibilityValue = titleLabel.text
-        
-        subTitleLabel.accessibilityIdentifier = "sub-title"
-        subTitleLabel.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
-        subTitleLabel.accessibilityValue = subTitleLabel.text
+        baseView.accessibilityIdentifier = "title"
+        baseView.accessibilityLabel = LocalizationConstants.Accessibility.title
+        baseView.accessibilityValue = titleLabel.text
     }
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
-        self.activeTheme = currentTheme
         self.backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        subTitleLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
-    }
-    
-    private func textWithReadMore() -> NSAttributedString? {
-        if subTitleLabel.maxNumberOfLines >= subTitleLabel.numberOfVisibleLines {
-            viewModel?.isViewAllButtonVisible = true
-            let stringArray = self.subTitleLabel.lines
-            var commentText = ""
-            for text in stringArray {
-                commentText = String(format: "%@%@", commentText, text)
-            }
-            
-            commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
-            let text = getAttributedText(description: commentText, readMoreText: LocalizationConstants.Tasks.viewAllTitle)
-            return text
-        }
-        viewModel?.isViewAllButtonVisible = false
-        return getAttributedText(description: viewModel?.subTitle, readMoreText: nil)
-    }
-    
-    private func getAttributedText(description: String?, readMoreText: String?) -> NSAttributedString? {
-        
-        guard let activeTheme = activeTheme else { return nil }
-
-        let descAttribute = [NSAttributedString.Key.font: activeTheme.subtitle2TextStyle.font, NSAttributedString.Key.foregroundColor: activeTheme.onSurface30Color]
-        let readMoreAttribute = [NSAttributedString.Key.font: activeTheme.subtitle2TextStyle.font, NSAttributedString.Key.foregroundColor: activeTheme.primaryT1Color]
-
-        var attributedString1 = NSMutableAttributedString()
-        if let description = description {
-            attributedString1 = NSMutableAttributedString(string: description, attributes: descAttribute)
-        }
-        
-        if let readMoreText = readMoreText {
-            let attributedString2 = NSMutableAttributedString(string: readMoreText, attributes: readMoreAttribute)
-            attributedString1.append(NSMutableAttributedString(string: " ", attributes: readMoreAttribute))
-            attributedString1.append(attributedString2)
-        }
-        
-        return attributedString1
     }
 }

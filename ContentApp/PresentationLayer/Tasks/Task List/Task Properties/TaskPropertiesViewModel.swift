@@ -17,7 +17,6 @@
 //
 
 import UIKit
-import AlfrescoContent
 
 class TaskPropertiesViewModel: NSObject {
     var task: TaskNode?
@@ -29,10 +28,6 @@ class TaskPropertiesViewModel: NSObject {
 
     var taskName: String? {
         return task?.name
-    }
-    
-    var taskDescription: String? {
-        return task?.description
     }
     
     var userName: String? {
@@ -122,21 +117,6 @@ class TaskPropertiesViewModel: NSObject {
         }
         return false
     }
-    
-    var completedDate: Date? {
-        return task?.endDate
-    }
-    
-    func geCompletedDate() -> String? {
-        if isTaskCompleted {
-            if let endDate = completedDate?.dateString(format: "dd MMM yyyy") {
-                return endDate
-            } else {
-                return nil
-            }
-        }
-        return nil
-    }
 }
 
 // MARK: - Show Preview
@@ -168,33 +148,5 @@ extension TaskPropertiesViewModel {
                         markedOfflineStatus: .upload,
                         allowableOperations: [AllowableOperationsType.delete.rawValue],
                         uploadLocalPath: path)
-    }
-}
-
-// MARK: - Task Operations
-extension TaskPropertiesViewModel {
-    
-    // MARK: - Assign Task
-
-    func assignTask(taskId: String, assigneeId: String, completionHandler: @escaping ((_ data: TaskNode?, _ error: Error?) -> Void)) {
-        
-        self.isLoading.value = true
-        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let params = AssignUserBody(assignee: assigneeId)
-            
-            TasksAPI.assignTask(taskId: taskId, params: params) {[weak self] data, error in
-                guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
-                if data != nil {
-                    let taskNodes = TaskNodeOperations.processNodes(for: [data!])
-                    if !taskNodes.isEmpty {
-                        completionHandler(taskNodes.first, nil)
-                    }
-                } else {
-                    completionHandler(nil, error)
-                }
-            }
-        })
     }
 }

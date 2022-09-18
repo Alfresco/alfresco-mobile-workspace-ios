@@ -21,7 +21,6 @@ import UIKit
 class TaskDetailController: NSObject {
     let viewModel: TaskDetailViewModel
     var currentTheme: PresentationTheme?
-    var didSelectReadMoreActionForDescription: (() -> Void)?
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -55,11 +54,6 @@ class TaskDetailController: NSObject {
     func buildViewModel() {
         var rowViewModels = [RowViewModel]()
         rowViewModels.append(titleCellVM())
-        
-        if viewModel.isTaskCompleted {
-            rowViewModels.append(completedDateCellVM())
-        }
-        
         rowViewModels.append(dueDateCellVM())
         
         if priorityCellVM() != nil {
@@ -67,11 +61,7 @@ class TaskDetailController: NSObject {
         }
         
         rowViewModels.append(assignedCellVM())
-        
-        if !viewModel.isTaskCompleted {
-            rowViewModels.append(statusCellVM())
-        }
-        
+        rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
         
         /* comments */
@@ -108,23 +98,10 @@ class TaskDetailController: NSObject {
     
     // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
-        var taskDescription = viewModel.taskDescription ?? ""
-        if taskDescription.isEmpty {
-            taskDescription = LocalizationConstants.Tasks.noDescription
-        }
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName)
+        return rowVM
+    }
 
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription)
-        rowVM.didSelectReadMoreAction = {
-            self.didSelectReadMoreActionForDescription?()
-        }
-        return rowVM
-    }
-    
-    private func completedDateCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-completed-task", title: LocalizationConstants.Tasks.completed, value: viewModel.geCompletedDate())
-        return rowVM
-    }
-    
     private func dueDateCellVM() -> InfoTableCellViewModel {
         let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate())
         return rowVM
@@ -208,7 +185,7 @@ class TaskDetailController: NSObject {
     
     // MARK: - Attachments
     private func spaceCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: "", subTitle: nil)
+        let rowVM = TitleTableCellViewModel(title: "")
         return rowVM
     }
     

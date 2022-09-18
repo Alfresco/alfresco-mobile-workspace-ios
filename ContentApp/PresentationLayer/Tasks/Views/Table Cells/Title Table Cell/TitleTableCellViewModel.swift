@@ -20,20 +20,12 @@ import UIKit
 
 class TitleTableCellViewModel: RowViewModel {
     var title: String?
-    var subTitle: String?
-    var isHideReadMore = false
-    var isViewAllButtonVisible = false
-    var didSelectReadMoreAction: (() -> Void)?
-
+    
     func cellIdentifier() -> String {
         return "TitleTableViewCell"
     }
     
-    init(title: String?,
-         subTitle: String?,
-         isHideReadMore: Bool = false) {
+    init(title: String?) {
         self.title = title
-        self.subTitle = subTitle
-        self.isHideReadMore = isHideReadMore
     }
 }

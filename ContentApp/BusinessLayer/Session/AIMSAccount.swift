@@ -140,7 +140,6 @@ extension AIMSAccount: AIMSAccountDelegate {
     func didReSignIn(check oldAccountIdentifier: String) {
         createTicket()
         ProfileService.featchPersonalFilesID()
-        ProfileService.fetchAPSProfileDetails()
 
         if oldAccountIdentifier != identifier && !oldAccountIdentifier.isEmpty {
             UserDefaultsModel.set(value: identifier, for: KeyConstants.Save.activeAccountIdentifier)
