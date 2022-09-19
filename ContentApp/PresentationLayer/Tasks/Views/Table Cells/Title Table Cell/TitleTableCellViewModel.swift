@@ -30,6 +30,13 @@ class TitleTableCellViewModel: RowViewModel {
         return !isEditMode
     }
 
+    var widthEditImageView: CGFloat {
+        if isEditMode {
+            return 40.0
+        }
+        return 0.0
+    }
+    
     func cellIdentifier() -> String {
         return "TitleTableViewCell"
     }
