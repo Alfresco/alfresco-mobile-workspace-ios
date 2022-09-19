@@ -408,6 +408,7 @@ extension TaskDetailViewController {
     @objc func editButtonTapped() {
         viewModel.isEditTask = !viewModel.isEditTask
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+        completeTaskButton.isEnabled = !viewModel.isEditTask
         controller.buildViewModel()
         storeReadOnlyTaskDetails()
     }
