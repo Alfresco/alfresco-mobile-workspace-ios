@@ -419,10 +419,6 @@ extension TaskDetailViewController {
         }
     }
     
-    func editDueDateAction() {
-        AlfrescoLog.debug("editDueDateAction")
-    }
-    
     func resetDueDateAction() {
         AlfrescoLog.debug("resetDueDateAction")
     }
@@ -437,7 +433,6 @@ extension TaskDetailViewController {
 }
 
 // MARK: - Edit Task Name and description
-
 extension TaskDetailViewController {
     
     private func editTitleAndDescriptionAction() {
@@ -463,5 +458,18 @@ extension TaskDetailViewController {
         viewModel.task?.name = title
         viewModel.task?.description = description
         controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Due Date
+extension TaskDetailViewController {
+    
+    func editDueDateAction() {
+        
+        let viewController = DatePickerViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        viewController.coordinatorServices = coordinatorServices
+        self.navigationController?.present(bottomSheet, animated: true, completion: nil)
     }
 }
