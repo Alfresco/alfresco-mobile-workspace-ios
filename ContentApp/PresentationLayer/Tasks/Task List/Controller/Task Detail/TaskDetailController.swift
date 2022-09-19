@@ -197,9 +197,7 @@ class TaskDetailController: NSObject {
                                                  buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
                                                  isHideDetailButton: isHideDetailButton)
         rowVM.viewAllAction = {
-            if !self.viewModel.isEditTask {
-                self.viewModel.viewAllCommentsAction?(false)
-            }
+            self.viewModel.viewAllCommentsAction?(false)
         }
         return rowVM
     }
@@ -207,9 +205,7 @@ class TaskDetailController: NSObject {
     private func addCommentCellVM() -> AddCommentTableCellViewModel {
         let rowVM = AddCommentTableCellViewModel()
         rowVM.addCommentAction = {
-            if !self.viewModel.isEditTask {
-                self.viewModel.viewAllCommentsAction?(true)
-            }
+            self.viewModel.viewAllCommentsAction?(true)
         }
         return rowVM
     }
@@ -223,9 +219,7 @@ class TaskDetailController: NSObject {
                                                       dateString: comment.messageDate,
                                                       isShowReadMore: true)
             rowVM.didSelectCommentAction = {
-                if !self.viewModel.isEditTask {
-                    self.viewModel.viewAllCommentsAction?(false)
-                }
+                self.viewModel.viewAllCommentsAction?(false)
             }
             return rowVM
         }
@@ -256,9 +250,7 @@ class TaskDetailController: NSObject {
                                                  buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
                                                  isHideDetailButton: isHideDetailButton)
         rowVM.viewAllAction = {
-            if !self.viewModel.isEditTask {
-                self.viewModel.viewAllAttachmentsAction?()
-            }
+            self.viewModel.viewAllAttachmentsAction?()
         }
         return rowVM
     }
@@ -284,9 +276,7 @@ class TaskDetailController: NSObject {
                                                              mimeType: attachment.mimeType)
                 rowVM.didSelectTaskAttachment = { [weak self] in
                     guard let sSelf = self else { return }
-                    if !sSelf.viewModel.isEditTask {
-                        sSelf.viewModel.didSelectTaskAttachment?(attachment)
-                    }
+                    sSelf.viewModel.didSelectTaskAttachment?(attachment)
                 }
                 rowVMs.append(rowVM)
             }

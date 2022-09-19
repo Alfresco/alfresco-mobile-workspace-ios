@@ -69,6 +69,7 @@
                 <outlet property="editImageView" destination="KbG-oq-TAm" id="Q4d-4w-rUG"/>
                 <outlet property="subTitleLabel" destination="k19-fC-9ZM" id="JhS-eA-66d"/>
                 <outlet property="titleLabel" destination="C0P-Qd-tg9" id="YZc-OH-Lra"/>
+                <outlet property="widthEditImage" destination="b3W-lf-DHP" id="jj2-gu-WBk"/>
             </connections>
             <point key="canvasLocation" x="180.43478260869566" y="104.79910714285714"/>
         </tableViewCell>

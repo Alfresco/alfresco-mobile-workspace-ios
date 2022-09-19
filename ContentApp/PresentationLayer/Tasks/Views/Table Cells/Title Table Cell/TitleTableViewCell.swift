@@ -24,9 +24,10 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var editImageView: UIImageView!
+    @IBOutlet weak var widthEditImage: NSLayoutConstraint!
     var viewModel: TitleTableCellViewModel?
     var activeTheme: PresentationTheme?
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         baseView.isAccessibilityElement = false
@@ -71,6 +72,7 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
             }
         }
         editImageView.isHidden = viewModel.isHideEditImage
+        widthEditImage.constant = viewModel.widthEditImageView
         addAccessibility()
     }
     
