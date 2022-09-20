@@ -52,6 +52,7 @@ class TaskDetailViewController: SystemSearchViewController {
         addEditButton()
         storeReadOnlyTaskDetails()
         self.dialogTransitionController = MDCDialogTransitionController()
+        updateCompleteTaskUI()
 
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -388,6 +389,10 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Edit flow
 extension TaskDetailViewController {
     
+    private func updateCompleteTaskUI() {
+        completeTaskButton.isEnabled = !viewModel.isEditTask
+    }
+    
     private func addEditButton() {
         editButton.accessibilityIdentifier = "edit-done-button"
         editButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: buttonWidth)
@@ -408,7 +413,7 @@ extension TaskDetailViewController {
     @objc func editButtonTapped() {
         viewModel.isEditTask = !viewModel.isEditTask
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
-        completeTaskButton.isEnabled = !viewModel.isEditTask
+        updateCompleteTaskUI()
         controller.buildViewModel()
         storeReadOnlyTaskDetails()
     }
