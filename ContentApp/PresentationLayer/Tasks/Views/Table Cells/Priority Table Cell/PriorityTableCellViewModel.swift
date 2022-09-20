@@ -24,6 +24,11 @@ class PriorityTableCellViewModel: RowViewModel {
     var priority: String?
     var priorityTextColor: UIColor
     var priorityBackgroundColor: UIColor
+    var isEditMode = false
+    var isHideEditImage: Bool {
+        return !isEditMode
+    }
+    var didSelectEditPriority: (() -> Void)?
     
     func cellIdentifier() -> String {
         return "PriorityTableViewCell"
@@ -32,10 +37,12 @@ class PriorityTableCellViewModel: RowViewModel {
     init(title: String?,
          priority: String?,
          priorityTextColor: UIColor,
-         priorityBackgroundColor: UIColor) {
+         priorityBackgroundColor: UIColor,
+         isEditMode: Bool) {
         self.title = title
         self.priority = priority
         self.priorityTextColor = priorityTextColor
         self.priorityBackgroundColor = priorityBackgroundColor
+        self.isEditMode = isEditMode
     }
 }

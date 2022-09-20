@@ -22,6 +22,11 @@ class TaskDetailController: NSObject {
     let viewModel: TaskDetailViewModel
     var currentTheme: PresentationTheme?
     var didSelectReadMoreActionForDescription: (() -> Void)?
+    var didSelectEditTitle: (() -> Void)?
+    var didSelectEditDueDate: (() -> Void)?
+    var didSelectResetDueDate: (() -> Void)?
+    var didSelectPriority: (() -> Void)?
+    var didSelectAssignee: (() -> Void)?
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -113,20 +118,31 @@ class TaskDetailController: NSObject {
             taskDescription = LocalizationConstants.Tasks.noDescription
         }
 
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription)
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription, isEditMode: viewModel.isEditTask)
         rowVM.didSelectReadMoreAction = {
             self.didSelectReadMoreActionForDescription?()
+        }
+        rowVM.didSelectEditTitle = {
+            self.didSelectEditTitle?()
         }
         return rowVM
     }
     
     private func completedDateCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-completed-task", title: LocalizationConstants.Tasks.completed, value: viewModel.geCompletedDate())
+        let rowVM = InfoTableCellViewModel(imageName: "ic-completed-task", title: LocalizationConstants.Tasks.completed, value: viewModel.geCompletedDate(), isEditMode: false, editImage: nil)
         return rowVM
     }
     
     private func dueDateCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate())
+        
+        let editImage = viewModel.dueDate == nil ? "ic-edit-icon": "ic-cross-grey"
+        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate(), isEditMode: viewModel.isEditTask, editImage: editImage)
+        rowVM.didSelectValue = {
+            self.didSelectEditDueDate?()
+        }
+        rowVM.didSelectEditInfo = {
+            self.didSelectResetDueDate?()
+        }
         return rowVM
     }
     
@@ -139,24 +155,31 @@ class TaskDetailController: NSObject {
             let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
                                                    priority: priorityText,
                                                    priorityTextColor: textColor,
-                                                   priorityBackgroundColor: backgroundColor)
+                                                   priorityBackgroundColor: backgroundColor,
+                                                   isEditMode: viewModel.isEditTask)
+            rowVM.didSelectEditPriority = {
+                self.didSelectPriority?()
+            }
             return rowVM
         }
         return nil
     }
     
     private func assignedCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.userName)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.userName, isEditMode: viewModel.isEditTask, editImage: "ic-edit-icon")
+        rowVM.didSelectEditInfo = {
+            self.didSelectAssignee?()
+        }
         return rowVM
     }
     
     private func statusCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-status-icon", title: LocalizationConstants.Tasks.status, value: viewModel.status)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-status-icon", title: LocalizationConstants.Tasks.status, value: viewModel.status, isEditMode: false, editImage: nil)
         return rowVM
     }
     
     private func identifierCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: false)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: false, isEditMode: false, editImage: nil)
         return rowVM
     }
     
@@ -208,7 +231,7 @@ class TaskDetailController: NSObject {
     
     // MARK: - Attachments
     private func spaceCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: "", subTitle: nil)
+        let rowVM = TitleTableCellViewModel(title: "", subTitle: nil, isEditMode: false)
         return rowVM
     }
     

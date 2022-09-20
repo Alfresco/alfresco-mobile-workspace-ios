@@ -24,16 +24,30 @@ class TitleTableCellViewModel: RowViewModel {
     var isHideReadMore = false
     var isViewAllButtonVisible = false
     var didSelectReadMoreAction: (() -> Void)?
+    var didSelectEditTitle: (() -> Void)?
+    var isEditMode = false
+    var isHideEditImage: Bool {
+        return !isEditMode
+    }
 
+    var widthEditImageView: CGFloat {
+        if isEditMode {
+            return 40.0
+        }
+        return 0.0
+    }
+    
     func cellIdentifier() -> String {
         return "TitleTableViewCell"
     }
     
     init(title: String?,
          subTitle: String?,
-         isHideReadMore: Bool = false) {
+         isHideReadMore: Bool = false,
+         isEditMode: Bool) {
         self.title = title
         self.subTitle = subTitle
         self.isHideReadMore = isHideReadMore
+        self.isEditMode = isEditMode
     }
 }
