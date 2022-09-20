@@ -311,6 +311,13 @@ extension CreateNodeSheetViewControler: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if createTaskViewModel != nil {
+            let char = text.cString(using: String.Encoding.utf8)!
+            let isBackSpace = strcmp(char, "\\b")
+            if isBackSpace == -92 {
+                // If backspace is pressed this will call
+                return true
+            }
+            
             let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
             return newText.count < maxLengthOfTextView
         }
