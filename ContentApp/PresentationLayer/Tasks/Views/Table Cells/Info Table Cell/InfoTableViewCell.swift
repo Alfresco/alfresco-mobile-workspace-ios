@@ -62,6 +62,7 @@ class InfoTableViewCell: UITableViewCell, CellConfigurable {
         titleLabel.text = viewModel.title
         valueLabel.text = viewModel.value
         divider.isHidden = viewModel.isHideDivider
+        editImageView.image = viewModel.icon
         editImageView.isHidden = viewModel.isHideEditImage
         addAccessibility()
     }
@@ -81,7 +82,7 @@ class InfoTableViewCell: UITableViewCell, CellConfigurable {
         valueLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         divider.backgroundColor = currentTheme.onSurface12Color
         
-        editImageView.image = UIImage(named: "ic-edit-icon")
+        editImageView.image = viewModel?.icon
         editImageView.tintColor = currentTheme.onSurfaceColor
     }
 }
