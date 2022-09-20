@@ -1441,7 +1441,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4P-Ae-woA" userLabel="baseView">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="251"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k7H-eK-NTH" userLabel="headerView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
@@ -1509,10 +1509,18 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CfJ-NM-Ygw" userLabel="calendarView">
-                                        <rect key="frame" x="0.0" y="51" width="414" height="200"/>
+                                        <rect key="frame" x="0.0" y="51" width="414" height="845"/>
+                                        <subviews>
+                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="jPD-fQ-gvL">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="845"/>
+                                            </datePicker>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="200" id="hwA-xs-nhb"/>
+                                            <constraint firstAttribute="bottom" secondItem="jPD-fQ-gvL" secondAttribute="bottom" id="3GT-u0-lww"/>
+                                            <constraint firstAttribute="trailing" secondItem="jPD-fQ-gvL" secondAttribute="trailing" id="Tpb-FC-Kfq"/>
+                                            <constraint firstItem="jPD-fQ-gvL" firstAttribute="top" secondItem="CfJ-NM-Ygw" secondAttribute="top" id="hln-Xw-rEQ"/>
+                                            <constraint firstItem="jPD-fQ-gvL" firstAttribute="leading" secondItem="CfJ-NM-Ygw" secondAttribute="leading" id="rvz-Dq-Sp2"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -1540,6 +1548,7 @@
                     <connections>
                         <outlet property="baseView" destination="X4P-Ae-woA" id="acg-rD-IYA"/>
                         <outlet property="cancelButton" destination="A2E-Be-rKp" id="iqA-p0-7bb"/>
+                        <outlet property="datePicker" destination="jPD-fQ-gvL" id="D2Q-bm-P7e"/>
                         <outlet property="divider" destination="WFG-4I-Wui" id="0o6-HC-atr"/>
                         <outlet property="doneButton" destination="skW-L9-CCo" id="xr2-sO-sYG"/>
                         <outlet property="headerView" destination="k7H-eK-NTH" id="3uS-Sl-Dmd"/>
