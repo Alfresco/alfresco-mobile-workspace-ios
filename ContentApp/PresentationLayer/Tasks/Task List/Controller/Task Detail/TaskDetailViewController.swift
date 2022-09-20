@@ -424,10 +424,6 @@ extension TaskDetailViewController {
         }
     }
     
-    func resetDueDateAction() {
-        AlfrescoLog.debug("resetDueDateAction")
-    }
-    
     func changePriorityAction() {
         AlfrescoLog.debug("didSelectPriority")
     }
@@ -481,6 +477,10 @@ extension TaskDetailViewController {
             guard let sSelf = self else { return }
             sSelf.updateTaskDueDate(with: dueDate)
         }
+    }
+    
+    func resetDueDateAction() {
+        self.updateTaskDueDate(with: nil)
     }
     
     private func updateTaskDueDate(with dueDate: Date?) {
