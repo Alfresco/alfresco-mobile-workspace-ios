@@ -109,6 +109,7 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
             }
             
             commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
+            commentText = String(format: "%@...", commentText)
             let text = getAttributedText(description: commentText, readMoreText: LocalizationConstants.Tasks.viewAllTitle)
             return text
         }
