@@ -24,4 +24,14 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
     var viewAllAttachmentsAction: (() -> Void)?
     var isAttachmentsLoaded = false
     var didRefreshTaskList: (() -> Void)?
+    var isOpenAfterTaskCreation = false
+    var isEditTask = false
+    
+    var editButtonTitle: String {
+        if isEditTask {
+            return LocalizationConstants.General.done
+        } else {
+            return LocalizationConstants.General.edit
+        }
+    }
 }

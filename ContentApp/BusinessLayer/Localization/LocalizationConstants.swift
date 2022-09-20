@@ -35,6 +35,7 @@ struct LocalizationConstants {
         static let done = NSLocalizedString("done", comment: "")
         static let rename = NSLocalizedString("rename", comment: "")
         static let update = NSLocalizedString("update", comment: "")
+        static let edit = NSLocalizedString("edit", comment: "")
     }
 
     struct Buttons {
@@ -347,5 +348,9 @@ struct LocalizationConstants {
         static let commentTitle = NSLocalizedString("comment-title", comment: "")
         static let sendButton = NSLocalizedString("send-button", comment: "")
         static let descriptionTitle = NSLocalizedString("description-title", comment: "")
+    }
+    
+    struct EditTask {
+        static let taskTitle = NSLocalizedString("task-title", comment: "")        
     }
 }

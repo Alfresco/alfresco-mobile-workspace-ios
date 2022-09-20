@@ -20,6 +20,10 @@ import UIKit
 
 class TaskDescriptionDetailViewController: SystemSearchViewController {
 
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var headerTitleLabel: UILabel!
+    @IBOutlet weak var dismissButton: UIButton!
+    @IBOutlet weak var divider: UIView!
     @IBOutlet weak var tableView: UITableView!
     var viewModel: TaskDescriptionDetailViewModel { return controller.viewModel }
     lazy var controller: TaskDescriptionDetailController = { return TaskDescriptionDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -29,10 +33,12 @@ class TaskDescriptionDetailViewController: SystemSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationController?.setNavigationBarHidden(true, animated: true)
         viewModel.services = coordinatorServices ?? CoordinatorServices()
-        addBackButton()
         registerCells()
         controller.buildViewModel()
+        applyLocalization()
+        addAccessibility()
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -40,31 +46,32 @@ class TaskDescriptionDetailViewController: SystemSearchViewController {
         super.viewWillTransition(to: size, with: coordinator)
     }
     
-    private func addBackButton() {
-        let backButton = UIButton(type: .custom)
-        backButton.accessibilityIdentifier = "backButton"
-        backButton.frame = CGRect(x: 0.0, y: 0.0,
-                                  width: buttonWidth,
-                                    height: buttonWidth)
-        backButton.imageView?.contentMode = .scaleAspectFill
-        backButton.layer.masksToBounds = true
-        backButton.addTarget(self,
-                               action: #selector(backButtonTapped),
-                               for: UIControl.Event.touchUpInside)
-        backButton.setImage(UIImage(named: "ic-close"),
-                              for: .normal)
-
-        let searchBarButtonItem = UIBarButtonItem(customView: backButton)
-        searchBarButtonItem.accessibilityIdentifier = "backBarButton"
-        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: buttonWidth)
-        currWidth?.isActive = true
-        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: buttonWidth)
-        currHeight?.isActive = true
-        self.navigationItem.leftBarButtonItem = searchBarButtonItem
-    }
-    
     func registerCells() {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.titleCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.titleCell)
+    }
+    
+    // MARK: - Apply Themes and Localization
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        
+        view.backgroundColor = currentTheme.surfaceColor
+        headerTitleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        dismissButton.tintColor = currentTheme.onSurfaceColor
+        divider.backgroundColor = currentTheme.onSurface12Color
+    }
+    
+    private func applyLocalization() {
+        headerTitleLabel.text = LocalizationConstants.EditTask.taskTitle
+    }
+    
+    func addAccessibility() {
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
+    }
+    
+    @IBAction func dismissButtonAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
