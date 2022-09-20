@@ -411,10 +411,11 @@ extension TasksListViewController {
     private func createTask(with title: String?, description: String?) {
         AnalyticsManager.shared.didTapCreateTask()
         let params = TaskBodyCreate(name: title, priority: "0", dueDate: nil, description: description)
-        self.viewModel.createTask(params: params) { taskNode, error in
-            self.handlePullToRefresh()
-            self.showTaskDetails(for: taskNode, isOpenAfterTaskCreation: true)
+        self.viewModel.createTask(params: params) {[weak self] taskNode, error in
+            guard let sSelf = self else { return }
+            sSelf.resetComponents()
+            sSelf.sortFilterView?.resetFilterButtonAction(Any.self)
+            sSelf.showTaskDetails(for: taskNode, isOpenAfterTaskCreation: true)
         }
     }
 }
-
