@@ -19,5 +19,5 @@
 import UIKit
 
 class DatePickerViewModel: NSObject {
-
+    var selectedDate: Date?
 }

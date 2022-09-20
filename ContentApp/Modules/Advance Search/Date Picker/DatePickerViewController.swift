@@ -28,6 +28,8 @@ class DatePickerViewController: SystemThemableViewController {
     @IBOutlet weak var divider: UIView!
     @IBOutlet weak var datePicker: UIDatePicker!
     lazy var viewModel = DatePickerViewModel()
+    typealias DatePickerCallBack = (_ selectedDate: Date?) -> Void
+    var callBack: DatePickerCallBack?
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -78,7 +80,7 @@ class DatePickerViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-              let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton) else { return }
+              let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .toolBarButton) else { return }
         
         view.backgroundColor = currentTheme.surfaceColor
         divider.backgroundColor = currentTheme.onSurface12Color
@@ -100,38 +102,19 @@ class DatePickerViewController: SystemThemableViewController {
     }
     
     @IBAction func doneButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("done button action \(datePicker.date)")
+        self.callBack?(datePicker.date)
+        self.dismiss(animated: true, completion: nil)
     }
 }
-
 
 // MARK: - Date Picker
 extension DatePickerViewController {
     func showDatePicker() {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         datePicker.backgroundColor = currentTheme.surfaceColor
-        setDateForDatePicker()
+        datePicker.date = viewModel.selectedDate ?? Date()
     }
-    
-    private func setDateForDatePicker() {
-       // datePicker.date = date
-    }
-    
-//    @objc func handleDatePicker() {
-//        if let datePicker = calendarViewModel.selectedTextField.inputView as? UIDatePicker {
-//            if calendarViewModel.selectedTextField == fromTextField {
-//                calendarViewModel.selectedFromDate = datePicker.date
-//            } else if calendarViewModel.selectedTextField == toTextField {
-//                calendarViewModel.selectedToDate = datePicker.date
-//            }
-//            let date = calendarViewModel.selectedDateString(for: datePicker.date)
-//            calendarViewModel.selectedTextField.text = date
-//        }
-//        applyTextFieldTheme()
-//        self.view.endEditing(true)
-//    }
 }
-
 
 // MARK: - Storyboard Instantiable
 extension DatePickerViewController: SearchComponentsStoryboardInstantiable { }

@@ -475,6 +475,16 @@ extension TaskDetailViewController {
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
         bottomSheet.dismissOnDraggingDownSheet = false
         viewController.coordinatorServices = coordinatorServices
+        viewController.viewModel.selectedDate = viewModel.dueDate
         self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+        viewController.callBack = { [weak self] (dueDate) in
+            guard let sSelf = self else { return }
+            sSelf.updateTaskDueDate(with: dueDate)
+        }
+    }
+    
+    private func updateTaskDueDate(with dueDate: Date?) {
+        viewModel.task?.dueDate = dueDate
+        controller.buildViewModel()
     }
 }
