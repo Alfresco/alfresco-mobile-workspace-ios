@@ -319,7 +319,13 @@ extension CreateNodeSheetViewControler: UITextViewDelegate {
             }
             
             let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
-            return newText.count < maxLengthOfTextView
+            if newText.count < maxLengthOfTextView {
+                return true
+            } else {
+                let preFixText = newText.prefix(maxLengthOfTextView)
+                descriptionTextArea.textView.text = String(preFixText)
+                return false
+            }
         }
         return true
     }

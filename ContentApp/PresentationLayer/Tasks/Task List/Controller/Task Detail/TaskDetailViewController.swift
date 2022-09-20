@@ -394,6 +394,7 @@ extension TaskDetailViewController {
     }
     
     private func addEditButton() {
+        if viewModel.isTaskCompleted { return }
         editButton.accessibilityIdentifier = "edit-done-button"
         editButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: buttonWidth)
         editButton.addTarget(self,
