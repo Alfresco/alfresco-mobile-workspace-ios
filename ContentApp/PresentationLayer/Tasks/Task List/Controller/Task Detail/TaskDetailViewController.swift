@@ -49,7 +49,8 @@ class TaskDetailViewController: SystemSearchViewController {
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
         checkForCompleteTaskButton()
         addEditButton()
-        
+        updateCompleteTaskUI()
+
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -385,6 +386,10 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Edit flow
 extension TaskDetailViewController {
     
+    private func updateCompleteTaskUI() {
+        completeTaskButton.isEnabled = !viewModel.isEditTask
+    }
+    
     private func addEditButton() {
         editButton.accessibilityIdentifier = "edit-done-button"
         editButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: buttonWidth)
@@ -405,7 +410,7 @@ extension TaskDetailViewController {
     @objc func editButtonTapped() {
         viewModel.isEditTask = !viewModel.isEditTask
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
-        completeTaskButton.isEnabled = !viewModel.isEditTask
+        updateCompleteTaskUI()
         controller.buildViewModel()
     }
     
