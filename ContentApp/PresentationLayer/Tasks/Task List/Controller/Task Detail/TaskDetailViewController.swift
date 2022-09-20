@@ -28,6 +28,8 @@ class TaskDetailViewController: SystemSearchViewController {
     @IBOutlet weak var completeTaskButton: MDCButton!
     var viewModel: TaskDetailViewModel { return controller.viewModel }
     lazy var controller: TaskDetailController = { return TaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
+    let buttonWidth = 45.0
+    var editButton = UIButton(type: .custom)
     
     // MARK: - View did load
     override func viewDidLoad() {
@@ -46,7 +48,9 @@ class TaskDetailViewController: SystemSearchViewController {
         getTaskAttachments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
         checkForCompleteTaskButton()
-        
+        addEditButton()
+        updateCompleteTaskUI()
+
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -113,6 +117,9 @@ class TaskDetailViewController: SystemSearchViewController {
         completeTaskButton.setTitle(LocalizationConstants.Tasks.completeTitle, for: .normal)
         completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeTaskButton.setShadowColor(.clear, for: .normal)
+        
+        editButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
+        editButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
     
     func startLoading() {
@@ -198,8 +205,33 @@ class TaskDetailViewController: SystemSearchViewController {
         controller.didSelectReadMoreActionForDescription = {
             self.showTaskDescription()
         }
+        
+        /* observing edit title */
+        controller.didSelectEditTitle = {
+            self.editTitleAndDescriptionAction()
+        }
+        
+        /* observing edit due date */
+        controller.didSelectEditDueDate = {
+            self.editDueDateAction()
+        }
+        
+        /* observing reset due date */
+        controller.didSelectResetDueDate = {
+            self.resetDueDateAction()
+        }
+        
+        /* observing priority */
+        controller.didSelectPriority = {
+            self.changePriorityAction()
+        }
+        
+        /* observing assignee */
+        controller.didSelectAssignee = {
+            self.changeAssigneeAction()
+        }
     }
-    
+
     private func getTaskDetails() {
         let taskID = viewModel.taskID
         viewModel.taskDetails(with: taskID) { [weak self] taskNodes, error in
@@ -265,6 +297,7 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     @IBAction func completeTaskButtonAction(_ sender: Any) {
+        if viewModel.isEditTask { return }
         let title = LocalizationConstants.Dialog.completeTaskTitle
         let message = LocalizationConstants.Dialog.completeTaskMessage
 
@@ -347,5 +380,57 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+// MARK: - Edit flow
+extension TaskDetailViewController {
+    
+    private func updateCompleteTaskUI() {
+        completeTaskButton.isEnabled = !viewModel.isEditTask
+    }
+    
+    private func addEditButton() {
+        editButton.accessibilityIdentifier = "edit-done-button"
+        editButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: buttonWidth)
+        editButton.addTarget(self,
+                               action: #selector(editButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+
+        let searchBarButtonItem = UIBarButtonItem(customView: editButton)
+        searchBarButtonItem.accessibilityIdentifier = "barButton"
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: buttonWidth)
+        currWidth?.isActive = true
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: buttonWidth)
+        currHeight?.isActive = true
+        self.navigationItem.rightBarButtonItem = searchBarButtonItem
+    }
+    
+    @objc func editButtonTapped() {
+        viewModel.isEditTask = !viewModel.isEditTask
+        editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+        updateCompleteTaskUI()
+        controller.buildViewModel()
+    }
+    
+    func editTitleAndDescriptionAction() {
+        AlfrescoLog.debug("editTitleAndDescriptionAction")
+    }
+    
+    func editDueDateAction() {
+        AlfrescoLog.debug("editDueDateAction")
+    }
+    
+    func resetDueDateAction() {
+        AlfrescoLog.debug("resetDueDateAction")
+    }
+    
+    func changePriorityAction() {
+        AlfrescoLog.debug("didSelectPriority")
+    }
+    
+    func changeAssigneeAction() {
+        AlfrescoLog.debug("changeAssigneeAction")
     }
 }
