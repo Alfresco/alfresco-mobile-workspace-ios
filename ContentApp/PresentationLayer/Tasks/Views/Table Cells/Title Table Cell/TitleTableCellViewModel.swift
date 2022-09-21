@@ -22,7 +22,6 @@ class TitleTableCellViewModel: RowViewModel {
     var title: String?
     var subTitle: String?
     var isHideReadMore = false
-    var isViewAllButtonVisible = false
     var didSelectReadMoreAction: (() -> Void)?
     var didSelectEditTitle: (() -> Void)?
     var isEditMode = false

@@ -49,9 +49,8 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     }
 
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        let isViewAllButtonVisible = viewModel?.isViewAllButtonVisible ?? false
         let isHideReadMore = viewModel?.isHideReadMore ?? false
-        if isViewAllButtonVisible && isHideReadMore == false {
+        if isAllowToViewFullContent() && isHideReadMore == false {
             viewModel?.didSelectReadMoreAction?()
         }
     }
@@ -63,6 +62,9 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? TitleTableCellViewModel else { return }
         self.viewModel = viewModel
+        editImageView.isHidden = viewModel.isHideEditImage
+        widthEditImage.constant = viewModel.widthEditImageView
+        
         titleLabel.numberOfLines = viewModel.isHideReadMore ? 0:2
         titleLabel.text = viewModel.title
         
@@ -71,11 +73,11 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
        
         if viewModel.isHideReadMore == false {
             DispatchQueue.main.async {
-                self.subTitleLabel.attributedText = self.textWithReadMore(for: self.subTitleLabel)
+                self.subTitleLabel.attributedText = self.textWithReadMore()
+                self.titleLabel.text = self.titleTextWithDots(for: self.titleLabel)
             }
         }
-        editImageView.isHidden = viewModel.isHideEditImage
-        widthEditImage.constant = viewModel.widthEditImageView
+        
         addAccessibility()
     }
     
@@ -102,10 +104,9 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         editImageView.tintColor = currentTheme.onSurfaceColor
     }
     
-    private func textWithReadMore(for label: UILabel) -> NSAttributedString? {
-        if label.maxNumberOfLines >= label.numberOfVisibleLines {
-            viewModel?.isViewAllButtonVisible = true
-            let stringArray = label.lines
+    private func textWithReadMore() -> NSAttributedString? {
+        if subTitleLabel.maxNumberOfLines >= subTitleLabel.numberOfVisibleLines {
+            let stringArray = subTitleLabel.lines
             var commentText = ""
             for text in stringArray {
                 commentText = String(format: "%@%@", commentText, text)
@@ -116,7 +117,6 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
             let text = getAttributedText(description: commentText, readMoreText: LocalizationConstants.Tasks.viewAllTitle)
             return text
         }
-        viewModel?.isViewAllButtonVisible = false
         return getAttributedText(description: viewModel?.subTitle, readMoreText: nil)
     }
     
@@ -139,5 +139,27 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         }
         
         return attributedString1
+    }
+    
+    private func titleTextWithDots(for label: UILabel) -> String? {
+        if label.maxNumberOfLines >= label.numberOfVisibleLines {
+            let stringArray = label.lines
+            var commentText = ""
+            for text in stringArray {
+                commentText = String(format: "%@%@", commentText, text)
+            }
+            
+            commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
+            commentText = String(format: "%@...", commentText)
+            return commentText
+        }
+        return label.text
+    }
+    
+    private func isAllowToViewFullContent() -> Bool {
+        if subTitleLabel.maxNumberOfLines >= subTitleLabel.numberOfVisibleLines {
+            return true
+        }
+        return false
     }
 }
