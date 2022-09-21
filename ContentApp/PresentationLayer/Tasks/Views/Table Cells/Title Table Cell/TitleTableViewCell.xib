@@ -27,13 +27,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="k19-fC-9ZM" userLabel="subTitleLabel">
-                                <rect key="frame" x="15" y="45.5" width="387" height="50.5"/>
+                                <rect key="frame" x="15" y="45.5" width="437" height="50.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-edit-icon" translatesAutoresizingMaskIntoConstraints="NO" id="KbG-oq-TAm" userLabel="editImageView">
-                                <rect key="frame" x="412" y="15" width="40" height="40"/>
+                                <rect key="frame" x="412" y="10" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="b3W-lf-DHP"/>
                                     <constraint firstAttribute="width" secondItem="KbG-oq-TAm" secondAttribute="height" id="hiS-AT-nTS"/>
@@ -43,10 +43,10 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="k19-fC-9ZM" firstAttribute="leading" secondItem="C0P-Qd-tg9" secondAttribute="leading" id="3cS-go-aFx"/>
-                            <constraint firstItem="k19-fC-9ZM" firstAttribute="trailing" secondItem="C0P-Qd-tg9" secondAttribute="trailing" id="Acw-Qo-xfd"/>
                             <constraint firstItem="k19-fC-9ZM" firstAttribute="top" secondItem="C0P-Qd-tg9" secondAttribute="bottom" constant="10" id="IKf-vB-ftc"/>
                             <constraint firstItem="C0P-Qd-tg9" firstAttribute="top" secondItem="DTE-7I-5xk" secondAttribute="top" constant="15" id="Kmf-pB-cIW"/>
-                            <constraint firstItem="KbG-oq-TAm" firstAttribute="top" secondItem="C0P-Qd-tg9" secondAttribute="top" id="KuO-lL-noL"/>
+                            <constraint firstItem="KbG-oq-TAm" firstAttribute="top" secondItem="C0P-Qd-tg9" secondAttribute="top" constant="-5" id="KuO-lL-noL"/>
+                            <constraint firstAttribute="trailing" secondItem="k19-fC-9ZM" secondAttribute="trailing" constant="15" id="PhX-Hl-UhZ"/>
                             <constraint firstAttribute="trailing" secondItem="KbG-oq-TAm" secondAttribute="trailing" constant="15" id="V39-Om-7Zi"/>
                             <constraint firstItem="C0P-Qd-tg9" firstAttribute="leading" secondItem="DTE-7I-5xk" secondAttribute="leading" constant="15" id="a1D-ba-n5N"/>
                             <constraint firstItem="KbG-oq-TAm" firstAttribute="leading" secondItem="C0P-Qd-tg9" secondAttribute="trailing" constant="10" id="cCT-6A-8za"/>
