@@ -120,7 +120,8 @@ class TaskDetailViewController: SystemSearchViewController {
         completeTaskButton.setTitle(LocalizationConstants.Tasks.completeTitle, for: .normal)
         completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeTaskButton.setShadowColor(.clear, for: .normal)
-        
+        completeTaskButton.setTitleColor(.white, for: .normal)
+
         editButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
         editButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
@@ -390,7 +391,17 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
 extension TaskDetailViewController {
     
     private func updateCompleteTaskUI() {
-        completeTaskButton.isEnabled = !viewModel.isEditTask
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+
+        if viewModel.isEditTask {
+            completeTaskButton.isUserInteractionEnabled = false
+            completeTaskButton.setBackgroundColor(currentTheme.dividerColor)
+            completeTaskButton.setTitleColor(currentTheme.onSurface12TextColor, for: .normal)
+        } else {
+            completeTaskButton.isUserInteractionEnabled = true
+            completeTaskButton.setBackgroundColor(currentTheme.primaryT1Color)
+            completeTaskButton.setTitleColor(.white, for: .normal)
+        }
     }
     
     private func addEditButton() {
