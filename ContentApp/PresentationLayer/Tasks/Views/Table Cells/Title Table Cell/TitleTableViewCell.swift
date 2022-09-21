@@ -63,12 +63,15 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? TitleTableCellViewModel else { return }
         self.viewModel = viewModel
+        titleLabel.numberOfLines = viewModel.isHideReadMore ? 0:2
         titleLabel.text = viewModel.title
+        
         subTitleLabel.numberOfLines = viewModel.isHideReadMore ? 0:3
         subTitleLabel.text = viewModel.subTitle
+       
         if viewModel.isHideReadMore == false {
             DispatchQueue.main.async {
-                self.subTitleLabel.attributedText = self.textWithReadMore()
+                self.subTitleLabel.attributedText = self.textWithReadMore(for: self.subTitleLabel)
             }
         }
         editImageView.isHidden = viewModel.isHideEditImage
@@ -99,10 +102,10 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         editImageView.tintColor = currentTheme.onSurfaceColor
     }
     
-    private func textWithReadMore() -> NSAttributedString? {
-        if subTitleLabel.maxNumberOfLines >= subTitleLabel.numberOfVisibleLines {
+    private func textWithReadMore(for label: UILabel) -> NSAttributedString? {
+        if label.maxNumberOfLines >= label.numberOfVisibleLines {
             viewModel?.isViewAllButtonVisible = true
-            let stringArray = self.subTitleLabel.lines
+            let stringArray = label.lines
             var commentText = ""
             for text in stringArray {
                 commentText = String(format: "%@%@", commentText, text)
