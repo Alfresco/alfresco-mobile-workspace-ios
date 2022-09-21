@@ -30,7 +30,8 @@ class TaskDetailViewController: SystemSearchViewController {
     lazy var controller: TaskDetailController = { return TaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     let buttonWidth = 45.0
     var editButton = UIButton(type: .custom)
-    
+    private var dialogTransitionController: MDCDialogTransitionController?
+
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +50,8 @@ class TaskDetailViewController: SystemSearchViewController {
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
         checkForCompleteTaskButton()
         addEditButton()
+        storeReadOnlyTaskDetails()
+        self.dialogTransitionController = MDCDialogTransitionController()
         updateCompleteTaskUI()
 
         // ReSignIn Notification
@@ -117,7 +120,8 @@ class TaskDetailViewController: SystemSearchViewController {
         completeTaskButton.setTitle(LocalizationConstants.Tasks.completeTitle, for: .normal)
         completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeTaskButton.setShadowColor(.clear, for: .normal)
-        
+        completeTaskButton.setTitleColor(.white, for: .normal)
+
         editButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
         editButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
@@ -387,7 +391,17 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
 extension TaskDetailViewController {
     
     private func updateCompleteTaskUI() {
-        completeTaskButton.isEnabled = !viewModel.isEditTask
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+
+        if viewModel.isEditTask {
+            completeTaskButton.isUserInteractionEnabled = false
+            completeTaskButton.setBackgroundColor(currentTheme.dividerColor)
+            completeTaskButton.setTitleColor(currentTheme.onSurface12TextColor, for: .normal)
+        } else {
+            completeTaskButton.isUserInteractionEnabled = true
+            completeTaskButton.setBackgroundColor(currentTheme.primaryT1Color)
+            completeTaskButton.setTitleColor(.white, for: .normal)
+        }
     }
     
     private func addEditButton() {
@@ -413,10 +427,13 @@ extension TaskDetailViewController {
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
         updateCompleteTaskUI()
         controller.buildViewModel()
+        storeReadOnlyTaskDetails()
     }
     
-    func editTitleAndDescriptionAction() {
-        AlfrescoLog.debug("editTitleAndDescriptionAction")
+    private func storeReadOnlyTaskDetails() {
+        if viewModel.isEditTask {
+            viewModel.readOnlyTask = viewModel.task
+        }
     }
     
     func editDueDateAction() {
@@ -433,5 +450,35 @@ extension TaskDetailViewController {
     
     func changeAssigneeAction() {
         AlfrescoLog.debug("changeAssigneeAction")
+    }
+}
+
+// MARK: - Edit Task Name and description
+
+extension TaskDetailViewController {
+    
+    private func editTitleAndDescriptionAction() {
+        
+        let viewController = CreateNodeSheetViewControler.instantiateViewController()
+        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
+                                                      createTaskViewType: .editTask,
+                                                      task: viewModel.task)
+        
+        viewController.coordinatorServices = coordinatorServices
+        viewController.createTaskViewModel = createTaskViewModel
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = dialogTransitionController
+        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        self.present(viewController, animated: true)
+        viewController.callBack = { [weak self] (task, title, description) in
+            guard let sSelf = self else { return }
+            sSelf.updateTaskTitleAndDescription(with: title, description: description)
+        }
+    }
+
+    private func updateTaskTitleAndDescription(with title: String?, description: String?) {
+        viewModel.task?.name = title
+        viewModel.task?.description = description
+        controller.buildViewModel()
     }
 }
