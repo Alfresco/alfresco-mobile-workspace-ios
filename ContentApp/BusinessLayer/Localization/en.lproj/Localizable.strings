@@ -318,7 +318,7 @@
 "no-attached-files-placeholder" = "No Attached Files";
 "send-title" = "Send";
 "no-due-date" = "No due date";
-"complete-title" = "Complete";
+"complete-title" = "Mark as complete";
 "complete-task-dialog-title" = "Complete Task";
 "complete-task-dialog-message" = "Are you sure you want to complete the task? You will no longer be able to make any changes.";
 "confirm-title" = "Confirm";
@@ -358,3 +358,4 @@
 "edit" = "Edit";
 "task-title" = "Task";
 "name-and-description" = "Name & Description";
+"create-task" = "Create Task";
