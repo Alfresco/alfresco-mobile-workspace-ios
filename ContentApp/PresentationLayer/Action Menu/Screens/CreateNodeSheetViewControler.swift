@@ -271,7 +271,7 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
             disableErrorOnTextField()
             return
         }
-        if text.hasSpecialCharacters() == true {
+        if text.hasSpecialCharacters() == true && createNodeViewModel != nil {
             let message = String(format: LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
                                  String.specialCharacters())
             applyErrorOnTextField(with: message)

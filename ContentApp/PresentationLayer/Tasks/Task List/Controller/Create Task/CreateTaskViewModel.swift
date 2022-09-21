@@ -31,7 +31,7 @@ class CreateTaskViewModel: TaskPropertiesViewModel {
     var createTaskViewType: CreateTaskViewType = .createTask
     var title: String? {
         if task != nil {
-            return LocalizationConstants.Tasks.editTask
+            return LocalizationConstants.EditTask.nameAndDescription
         }
         return LocalizationConstants.Tasks.newTask
     }
