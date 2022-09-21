@@ -54,6 +54,7 @@ class TasksListViewController: SystemSearchViewController {
         addSortAndFilterView()
         getTaskList()
         self.dialogTransitionController = MDCDialogTransitionController()
+        addAccessibility()
 
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -121,6 +122,11 @@ class TasksListViewController: SystemSearchViewController {
         createTaskButton.backgroundColor = currentTheme.primaryT1Color
         createTaskButton.tintColor = currentTheme.onPrimaryColor
         self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationController)
+    }
+    
+    private func addAccessibility() {
+        createTaskButton.accessibilityLabel = LocalizationConstants.Accessibility.createTask
+        createTaskButton.accessibilityIdentifier = "create-task-button"
     }
     
     // MARK: - Get Tasks List
