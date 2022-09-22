@@ -33,6 +33,7 @@ protocol PresentationTheme {
     var captionTextStyle: TextStyle { get }
     var overlineTextStyle: TextStyle { get }
     var headLineBoldTextStyle: TextStyle { get }
+    var toolBarTextStyle: TextStyle { get }
     
     // COLORS
 
