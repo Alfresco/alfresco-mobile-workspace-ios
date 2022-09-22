@@ -25,6 +25,9 @@ class TitleTableCellViewModel: RowViewModel {
     var didSelectReadMoreAction: (() -> Void)?
     var didSelectEditTitle: (() -> Void)?
     var isEditMode = false
+    var isEnableTapOnTitle = false
+    var isEnableTapOnSubTitle = false
+    
     var isHideEditImage: Bool {
         return !isEditMode
     }

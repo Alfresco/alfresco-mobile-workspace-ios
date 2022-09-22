@@ -148,6 +148,15 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         descriptionTextArea.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.description
         descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
         descriptionTextArea.accessibilityTraits = .staticText
+        
+        cancelButton.accessibilityLabel = LocalizationConstants.General.cancel
+        cancelButton.accessibilityIdentifier = "cancel"
+        uploadButton.accessibilityLabel = uploadButton.titleLabel?.text
+        uploadButton.accessibilityIdentifier = uploadButton.titleLabel?.text
+
+        if let title = titleCreate, let name = nameTextField, let description = descriptionTextArea, let cancel = cancelButton, let save = uploadButton {
+            self.view.accessibilityElements = [title, name, description, cancel, save]
+        }
     }
     
     private func addLocalizationForNodes() {
