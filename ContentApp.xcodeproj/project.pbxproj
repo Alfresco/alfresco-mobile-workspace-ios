@@ -452,6 +452,8 @@
 		C9AFDFA627B9003E007233A5 /* DeleteNodeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA724CC2B3D00D8A7EC /* DeleteNodeMapper.swift */; };
 		C9AFDFA727B90074007233A5 /* SharedLinkMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */; };
 		C9AFDFAC27B903E7007233A5 /* ResultsNodeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */; };
+		C9B28F1A28DC1AAA00C01A91 /* TaskPriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B28F1928DC1AAA00C01A91 /* TaskPriorityViewController.swift */; };
+		C9B28F1C28DC1AD000C01A91 /* TaskPriorityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B28F1B28DC1AD000C01A91 /* TaskPriorityViewModel.swift */; };
 		C9B6D27027C936D100CF0C73 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E7C2664F25F00B89766 /* SearchViewModel.swift */; };
 		C9B6D27127C936F600CF0C73 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE044270D9D9E00880235 /* ConfigurationManager.swift */; };
 		C9B6D27227C9373000CF0C73 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE045270D9D9E00880235 /* ConfigurationHelper.swift */; };
@@ -1028,6 +1030,8 @@
 		C9AFDF9D27B8F790007233A5 /* SystemSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemSearchViewController.swift; sourceTree = "<group>"; };
 		C9AFDF9F27B8F7AF007233A5 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		C9AFDFA427B8FE38007233A5 /* ListComponent+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ListComponent+Delegates.swift"; sourceTree = "<group>"; };
+		C9B28F1928DC1AAA00C01A91 /* TaskPriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPriorityViewController.swift; sourceTree = "<group>"; };
+		C9B28F1B28DC1AD000C01A91 /* TaskPriorityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPriorityViewModel.swift; sourceTree = "<group>"; };
 		C9BC8D8728D46EFF00EB2B97 /* TaskDescriptionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDescriptionDetailViewController.swift; sourceTree = "<group>"; };
 		C9BC8D8928D46F3E00EB2B97 /* TaskDescriptionDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDescriptionDetailController.swift; sourceTree = "<group>"; };
 		C9BC8D8B28D46F4E00EB2B97 /* TaskDescriptionDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDescriptionDetailViewModel.swift; sourceTree = "<group>"; };
@@ -2190,6 +2194,7 @@
 			children = (
 				C9A75989289BB0CC006603E0 /* Task List */,
 				C9A7598D289BB0CC006603E0 /* Task Detail */,
+				C9B28F1828DC1A8E00C01A91 /* Priority */,
 				C9BC8D8628D46EE500EB2B97 /* Task Description */,
 				C9205C7C28A12B6A00DEF5AC /* Task Comments */,
 				C92EBB1E28B13B4D003DFA15 /* Task Attachments */,
@@ -2464,6 +2469,15 @@
 				C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */,
 			);
 			path = "Sub-Coordinators";
+			sourceTree = "<group>";
+		};
+		C9B28F1828DC1A8E00C01A91 /* Priority */ = {
+			isa = PBXGroup;
+			children = (
+				C9B28F1928DC1AAA00C01A91 /* TaskPriorityViewController.swift */,
+				C9B28F1B28DC1AD000C01A91 /* TaskPriorityViewModel.swift */,
+			);
+			path = Priority;
 			sourceTree = "<group>";
 		};
 		C9BC8D8628D46EE500EB2B97 /* Task Description */ = {
@@ -4076,6 +4090,7 @@
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
 				C92EBB2028B13B6B003DFA15 /* TaskAttachmentsViewController.swift in Sources */,
 				C947C5B727D0C2FB0000D902 /* UploadFilesScreenCoordinator.swift in Sources */,
+				C9B28F1C28DC1AD000C01A91 /* TaskPriorityViewModel.swift in Sources */,
 				C99C6F8C28B7D623003A1EE1 /* UILabel+NumberOfLines.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
 				B9EE37E8266A44A70020A3FC /* SearchModel.swift in Sources */,
@@ -4283,6 +4298,7 @@
 				B9A9F126263AEB7900F4428D /* CameraKit.swift in Sources */,
 				C915CDD828905B6800819F86 /* TaskNodeOperations.swift in Sources */,
 				C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */,
+				C9B28F1A28DC1AAA00C01A91 /* TaskPriorityViewController.swift in Sources */,
 				C97BEB8126EB3AC700E05375 /* PhotoGalleryCollectionViewCell.swift in Sources */,
 				E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */,
 				E3E8B0112548683D00CD399D /* UImage+Color.swift in Sources */,

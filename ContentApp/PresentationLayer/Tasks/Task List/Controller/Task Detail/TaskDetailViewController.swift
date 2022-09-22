@@ -436,10 +436,6 @@ extension TaskDetailViewController {
         }
     }
     
-    func changePriorityAction() {
-        AlfrescoLog.debug("didSelectPriority")
-    }
-    
     func changeAssigneeAction() {
         AlfrescoLog.debug("changeAssigneeAction")
     }
@@ -497,6 +493,30 @@ extension TaskDetailViewController {
     
     private func updateTaskDueDate(with dueDate: Date?) {
         viewModel.task?.dueDate = dueDate
+        controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Priority
+extension TaskDetailViewController {
+    
+    func changePriorityAction() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskPriority) as? TaskPriorityViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.priority = viewModel.priority
+            self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+            viewController.callBack = { [weak self] (priority) in
+                guard let sSelf = self else { return }
+                sSelf.updateTaskPriority(with: priority)
+            }
+        }
+    }
+    
+    private func updateTaskPriority(with priority: Int) {
+        viewModel.task?.priority = priority
         controller.buildViewModel()
     }
 }
