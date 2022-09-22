@@ -33,6 +33,8 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
             return loginResetButtonContainerScheme(for: theme)
         case .loginSavePadButton:
             return loginSavePadButtonContainerScheme(for: theme)
+        case .toolBarButton:
+            return toolBarButtonContainerScheme(for: theme)
         default: return nil
         }
     }
@@ -79,6 +81,15 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
         containerScheme.colorScheme.backgroundColor = theme.onSurface15Color
         containerScheme.colorScheme.errorColor = theme.errorColor
         containerScheme.typographyScheme.subtitle1 = theme.body1TextStyle.font
+
+        return containerScheme
+    }
+    
+    private func toolBarButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
+        let containerScheme = MDCContainerScheme()
+        containerScheme.colorScheme.primaryColor = theme.primaryT1Color
+        containerScheme.colorScheme.onPrimaryColor = theme.onPrimaryColor
+        containerScheme.typographyScheme.button = theme.toolBarTextStyle.font
 
         return containerScheme
     }

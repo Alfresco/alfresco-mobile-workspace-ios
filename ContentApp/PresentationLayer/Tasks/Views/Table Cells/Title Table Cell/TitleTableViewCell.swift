@@ -42,6 +42,11 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         subTitleLabel.isUserInteractionEnabled = true
         subTitleLabel.addGestureRecognizer(tapGestureRecognizer)
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        tap.numberOfTapsRequired = 1
+        titleLabel.isUserInteractionEnabled = true
+        titleLabel.addGestureRecognizer(tap)
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.editTaskAction(_:)))
         tapGesture.numberOfTapsRequired = 1
         editImageView.isUserInteractionEnabled = true
@@ -49,9 +54,11 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     }
 
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        let isViewAllButtonVisible = viewModel?.isViewAllButtonVisible ?? false
         let isHideReadMore = viewModel?.isHideReadMore ?? false
-        if isViewAllButtonVisible && isHideReadMore == false {
+        let isEnableTapOnTitle = viewModel?.isEnableTapOnTitle ?? false
+        let isEnableTapOnSubTitle = viewModel?.isEnableTapOnSubTitle ?? false
+
+        if (isEnableTapOnTitle || isEnableTapOnSubTitle) && !isHideReadMore {
             viewModel?.didSelectReadMoreAction?()
         }
     }
@@ -63,16 +70,22 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? TitleTableCellViewModel else { return }
         self.viewModel = viewModel
+        editImageView.isHidden = viewModel.isHideEditImage
+        widthEditImage.constant = viewModel.widthEditImageView
+        
+        titleLabel.numberOfLines = viewModel.isHideReadMore ? 0:2
         titleLabel.text = viewModel.title
+        
         subTitleLabel.numberOfLines = viewModel.isHideReadMore ? 0:3
         subTitleLabel.text = viewModel.subTitle
+       
         if viewModel.isHideReadMore == false {
             DispatchQueue.main.async {
                 self.subTitleLabel.attributedText = self.textWithReadMore()
+                self.titleLabel.text = self.titleTextWithDots(for: self.titleLabel)
             }
         }
-        editImageView.isHidden = viewModel.isHideEditImage
-        widthEditImage.constant = viewModel.widthEditImageView
+        
         addAccessibility()
     }
     
@@ -101,8 +114,7 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
     
     private func textWithReadMore() -> NSAttributedString? {
         if subTitleLabel.maxNumberOfLines >= subTitleLabel.numberOfVisibleLines {
-            viewModel?.isViewAllButtonVisible = true
-            let stringArray = self.subTitleLabel.lines
+            let stringArray = subTitleLabel.lines
             var commentText = ""
             for text in stringArray {
                 commentText = String(format: "%@%@", commentText, text)
@@ -111,9 +123,10 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
             commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
             commentText = String(format: "%@...", commentText)
             let text = getAttributedText(description: commentText, readMoreText: LocalizationConstants.Tasks.viewAllTitle)
+            viewModel?.isEnableTapOnTitle = true
             return text
         }
-        viewModel?.isViewAllButtonVisible = false
+        viewModel?.isEnableTapOnTitle = false
         return getAttributedText(description: viewModel?.subTitle, readMoreText: nil)
     }
     
@@ -136,5 +149,22 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         }
         
         return attributedString1
+    }
+    
+    private func titleTextWithDots(for label: UILabel) -> String? {
+        if label.maxNumberOfLines >= label.numberOfVisibleLines {
+            let stringArray = label.lines
+            var commentText = ""
+            for text in stringArray {
+                commentText = String(format: "%@%@", commentText, text)
+            }
+            
+            commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
+            commentText = String(format: "%@...", commentText)
+            viewModel?.isEnableTapOnSubTitle = true
+            return commentText
+        }
+        viewModel?.isEnableTapOnSubTitle = false
+        return label.text
     }
 }
