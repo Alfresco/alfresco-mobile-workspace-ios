@@ -436,14 +436,6 @@ extension TaskDetailViewController {
         }
     }
     
-    func editDueDateAction() {
-        AlfrescoLog.debug("editDueDateAction")
-    }
-    
-    func resetDueDateAction() {
-        AlfrescoLog.debug("resetDueDateAction")
-    }
-    
     func changePriorityAction() {
         AlfrescoLog.debug("didSelectPriority")
     }
@@ -454,7 +446,6 @@ extension TaskDetailViewController {
 }
 
 // MARK: - Edit Task Name and description
-
 extension TaskDetailViewController {
     
     private func editTitleAndDescriptionAction() {
@@ -479,6 +470,33 @@ extension TaskDetailViewController {
     private func updateTaskTitleAndDescription(with title: String?, description: String?) {
         viewModel.task?.name = title
         viewModel.task?.description = description
+        controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Due Date
+extension TaskDetailViewController {
+    
+    func editDueDateAction() {
+        
+        let viewController = DatePickerViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        viewController.coordinatorServices = coordinatorServices
+        viewController.viewModel.selectedDate = viewModel.dueDate
+        self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+        viewController.callBack = { [weak self] (dueDate) in
+            guard let sSelf = self else { return }
+            sSelf.updateTaskDueDate(with: dueDate)
+        }
+    }
+    
+    func resetDueDateAction() {
+        self.updateTaskDueDate(with: nil)
+    }
+    
+    private func updateTaskDueDate(with dueDate: Date?) {
+        viewModel.task?.dueDate = dueDate
         controller.buildViewModel()
     }
 }
