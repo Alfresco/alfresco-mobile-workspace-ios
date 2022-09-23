@@ -42,6 +42,11 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         subTitleLabel.isUserInteractionEnabled = true
         subTitleLabel.addGestureRecognizer(tapGestureRecognizer)
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        tap.numberOfTapsRequired = 1
+        titleLabel.isUserInteractionEnabled = true
+        titleLabel.addGestureRecognizer(tap)
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.editTaskAction(_:)))
         tapGesture.numberOfTapsRequired = 1
         editImageView.isUserInteractionEnabled = true
@@ -50,7 +55,10 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
 
     @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         let isHideReadMore = viewModel?.isHideReadMore ?? false
-        if isAllowToViewFullContent() && isHideReadMore == false {
+        let isEnableTapOnTitle = viewModel?.isEnableTapOnTitle ?? false
+        let isEnableTapOnSubTitle = viewModel?.isEnableTapOnSubTitle ?? false
+
+        if (isEnableTapOnTitle || isEnableTapOnSubTitle) && !isHideReadMore {
             viewModel?.didSelectReadMoreAction?()
         }
     }
@@ -115,8 +123,10 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
             commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
             commentText = String(format: "%@...", commentText)
             let text = getAttributedText(description: commentText, readMoreText: LocalizationConstants.Tasks.viewAllTitle)
+            viewModel?.isEnableTapOnTitle = true
             return text
         }
+        viewModel?.isEnableTapOnTitle = false
         return getAttributedText(description: viewModel?.subTitle, readMoreText: nil)
     }
     
@@ -151,15 +161,11 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
             
             commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
             commentText = String(format: "%@...", commentText)
+            viewModel?.isEnableTapOnSubTitle = true
             return commentText
         }
+        viewModel?.isEnableTapOnSubTitle = false
         return label.text
-    }
-    
-    private func isAllowToViewFullContent() -> Bool {
-        if subTitleLabel.maxNumberOfLines >= subTitleLabel.numberOfVisibleLines {
-            return true
-        }
-        return false
+        
     }
 }
