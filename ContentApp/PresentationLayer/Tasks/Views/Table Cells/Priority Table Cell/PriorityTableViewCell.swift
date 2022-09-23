@@ -32,6 +32,10 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
         super.awakeFromNib()
         priorityView.layer.cornerRadius = priorityView.frame.size.height / 2.0
         addTapGesture()
+        baseView.isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = true
+        priorityLabel.isAccessibilityElement = true
+        editImageView.isAccessibilityElement = true
     }
     
     private func addTapGesture() {
@@ -54,9 +58,20 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-        baseView.accessibilityIdentifier = titleLabel.text
-        baseView.accessibilityLabel = titleLabel.text
-        baseView.accessibilityValue = priorityLabel.text
+        titleLabel.accessibilityIdentifier = titleLabel.text
+        titleLabel.accessibilityLabel = titleLabel.text
+        
+        priorityLabel.accessibilityTraits = .staticText
+        priorityLabel.accessibilityIdentifier = priorityLabel.text
+        priorityLabel.accessibilityLabel = priorityLabel.text
+
+        editImageView.accessibilityTraits = .button
+        editImageView.accessibilityLabel = LocalizationConstants.General.edit
+        editImageView.accessibilityIdentifier = "edit"
+        
+        if let title = titleLabel, let priority = priorityLabel, let edit = editImageView {
+            self.accessibilityElements = [title, priority, edit]
+        }
     }
     
     // MARK: - Apply Themes and Localization
