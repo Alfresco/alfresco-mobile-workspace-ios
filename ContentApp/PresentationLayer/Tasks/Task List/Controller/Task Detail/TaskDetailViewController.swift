@@ -39,6 +39,7 @@ class TaskDetailViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         progressView.progress = 0
         progressView.mode = .indeterminate
+        applyTheme()
         applyLocalization()
         registerCells()
         addAccessibility()
@@ -107,9 +108,7 @@ class TaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Public Helpers
 
-    override func applyComponentsThemes() {
-        super.applyComponentsThemes()
-        
+    func applyTheme() {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
               let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton)
         else { return }
@@ -121,7 +120,7 @@ class TaskDetailViewController: SystemSearchViewController {
         completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeTaskButton.setShadowColor(.clear, for: .normal)
         completeTaskButton.setTitleColor(.white, for: .normal)
-
+        
         editButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
         editButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
