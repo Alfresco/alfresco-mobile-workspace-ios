@@ -39,6 +39,7 @@ class TaskDetailViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         progressView.progress = 0
         progressView.mode = .indeterminate
+        applyTheme()
         applyLocalization()
         registerCells()
         addAccessibility()
@@ -107,9 +108,7 @@ class TaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Public Helpers
 
-    override func applyComponentsThemes() {
-        super.applyComponentsThemes()
-        
+    func applyTheme() {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
               let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton)
         else { return }
@@ -435,10 +434,6 @@ extension TaskDetailViewController {
             viewModel.readOnlyTask = viewModel.task
         }
     }
-    
-    func changeAssigneeAction() {
-        AlfrescoLog.debug("changeAssigneeAction")
-    }
 }
 
 // MARK: - Edit Task Name and description
@@ -518,5 +513,19 @@ extension TaskDetailViewController {
     private func updateTaskPriority(with priority: Int) {
         viewModel.task?.priority = priority
         controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Assignee
+extension TaskDetailViewController {
+    
+    func changeAssigneeAction() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
+            viewController.coordinatorServices = coordinatorServices
+            
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true)
+        }
     }
 }

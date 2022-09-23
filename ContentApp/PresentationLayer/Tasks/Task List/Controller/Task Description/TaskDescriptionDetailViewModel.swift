@@ -20,5 +20,4 @@ import UIKit
 
 class TaskDescriptionDetailViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
-
 }

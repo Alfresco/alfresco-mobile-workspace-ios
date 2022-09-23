@@ -18,20 +18,6 @@
 
 import UIKit
 
-struct StoryboardConstants {
-    
-    struct storyboard {
-        static let tasks = "Tasks"
-    }
-    
-    struct controller {
-        static let taskList = "TasksListViewController"
-        static let taskDetail = "TaskDetailViewController"
-        static let taskComments = "TaskCommentsViewController"
-        static let taskAttachments = "TaskAttachmentsViewController"
-        static let taskDescription = "TaskDescriptionDetailViewController"
-        static let taskPriority = "TaskPriorityViewController"
-        static let taskAssignee = "TaskAssigneeViewController"
-    }
-}
+class TaskAssigneeViewModel: NSObject {
 
+}

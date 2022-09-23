@@ -489,6 +489,72 @@
             </objects>
             <point key="canvasLocation" x="722" y="767"/>
         </scene>
+        <!--Task Assignee View Controller-->
+        <scene sceneID="VTZ-PB-34y">
+            <objects>
+                <viewController storyboardIdentifier="TaskAssigneeViewController" id="KCy-t7-PUB" customClass="TaskAssigneeViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bVY-m2-4ir">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pve-7g-rrg" userLabel="headerView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="76"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6FG-sZ-B3M" userLabel="dismissButton">
+                                        <rect key="frame" x="0.0" y="10" width="50" height="50"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="closeButton">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="RUh-xE-2Jd"/>
+                                            <constraint firstAttribute="width" secondItem="6FG-sZ-B3M" secondAttribute="height" id="gXI-0E-4rQ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="tintColor" red="0.12941176469999999" green="0.13725490200000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal" image="ic_arrow_back">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dismissButtonAction:" destination="KCy-t7-PUB" eventType="touchUpInside" id="Exz-Oh-X1m"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eIv-K3-mTN" userLabel="divider">
+                                        <rect key="frame" x="0.0" y="75" width="414" height="1"/>
+                                        <color key="backgroundColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="uVQ-OM-KJM"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="eIv-K3-mTN" secondAttribute="trailing" id="CR9-U2-e5q"/>
+                                    <constraint firstItem="eIv-K3-mTN" firstAttribute="top" secondItem="6FG-sZ-B3M" secondAttribute="bottom" constant="15" id="VjN-GV-1yz"/>
+                                    <constraint firstItem="6FG-sZ-B3M" firstAttribute="top" secondItem="Pve-7g-rrg" secondAttribute="top" constant="10" id="Wwl-5U-tSY"/>
+                                    <constraint firstItem="6FG-sZ-B3M" firstAttribute="leading" secondItem="Pve-7g-rrg" secondAttribute="leading" id="kmT-LQ-HuU"/>
+                                    <constraint firstItem="eIv-K3-mTN" firstAttribute="leading" secondItem="Pve-7g-rrg" secondAttribute="leading" id="nNM-Lk-08q"/>
+                                    <constraint firstAttribute="bottom" secondItem="eIv-K3-mTN" secondAttribute="bottom" id="xoV-qy-eQb"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="TTb-Lf-Trh"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Pve-7g-rrg" firstAttribute="leading" secondItem="TTb-Lf-Trh" secondAttribute="leading" id="FTb-GA-XOI"/>
+                            <constraint firstItem="Pve-7g-rrg" firstAttribute="top" secondItem="bVY-m2-4ir" secondAttribute="top" id="OcI-1l-qHd"/>
+                            <constraint firstItem="TTb-Lf-Trh" firstAttribute="trailing" secondItem="Pve-7g-rrg" secondAttribute="trailing" id="jPx-6k-txp"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dismissButton" destination="6FG-sZ-B3M" id="SaD-qV-LLU"/>
+                        <outlet property="divider" destination="eIv-K3-mTN" id="wUB-j4-F5Z"/>
+                        <outlet property="headerView" destination="Pve-7g-rrg" id="3tr-Ie-jsp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z4M-Q6-sim" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1512" y="767"/>
+        </scene>
         <!--Task Detail View Controller-->
         <scene sceneID="OU4-4x-WUG">
             <objects>
@@ -814,6 +880,7 @@
         <image name="ic-close" width="24" height="24"/>
         <image name="ic-send-message" width="28" height="28"/>
         <image name="ic-send-message-unselected" width="28" height="28"/>
+        <image name="ic_arrow_back" width="24" height="24"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
