@@ -154,7 +154,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         uploadButton.accessibilityLabel = uploadButton.titleLabel?.text
         uploadButton.accessibilityIdentifier = uploadButton.titleLabel?.text
 
-        if let title = titleCreate, let name = nameTextField, let description = descriptionTextArea, let cancel = cancelButton, let save = uploadButton {
+        if let name = nameTextField, let description = descriptionTextArea, let cancel = cancelButton, let save = uploadButton {
             self.view.accessibilityElements = [name, description, cancel, save]
         }
     }
