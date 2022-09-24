@@ -30,6 +30,10 @@ class InfoTableViewCell: UITableViewCell, CellConfigurable {
     override func awakeFromNib() {
         super.awakeFromNib()
         addTapGesture()
+        baseView.isAccessibilityElement = false
+        titleLabel.isAccessibilityElement = true
+        valueLabel.isAccessibilityElement = true
+        editImageView.isAccessibilityElement = true
     }
     
     private func addTapGesture() {
@@ -68,9 +72,16 @@ class InfoTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-        baseView.accessibilityIdentifier = titleLabel.text
-        baseView.accessibilityLabel = titleLabel.text
-        baseView.accessibilityValue = valueLabel.text
+        titleLabel.accessibilityIdentifier = titleLabel.text
+        titleLabel.accessibilityLabel = titleLabel.text
+        
+        valueLabel.accessibilityTraits = .staticText
+        valueLabel.accessibilityIdentifier = valueLabel.text
+        valueLabel.accessibilityLabel = valueLabel.text
+
+        editImageView.accessibilityTraits = .button
+        editImageView.accessibilityLabel = LocalizationConstants.General.edit
+        editImageView.accessibilityIdentifier = "edit"
     }
     
     // MARK: - Apply Themes and Localization

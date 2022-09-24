@@ -120,7 +120,7 @@ class TaskDetailViewController: SystemSearchViewController {
         completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeTaskButton.setShadowColor(.clear, for: .normal)
         completeTaskButton.setTitleColor(.white, for: .normal)
-
+        
         editButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
         editButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
