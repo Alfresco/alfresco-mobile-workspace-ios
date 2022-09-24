@@ -17,11 +17,17 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class TaskAssigneeViewModel: NSObject {
+    var services: CoordinatorServices?
     var isSearchByName = true
     let rowViewModels = Observable<[RowViewModel]>([])
     let isLoading = Observable<Bool>(false)
+    var minimumCharactersToSearch = 1
+    var searchTimer: Timer?
+    var searchText: String?
+    var users = Observable<[TaskNodeAssignee]>([])
 
     var searchByNameImage: UIImage? {
         if isSearchByName {
@@ -37,5 +43,27 @@ class TaskAssigneeViewModel: NSObject {
         } else {
             return UIImage(named: "ic-radio-checked")
         }
+    }
+    
+    // MARK: - GET Search user
+    func searchUser(with filter: String?, email: String?, completionHandler: @escaping (_ assignee: [TaskNodeAssignee], _ error: Error?) -> Void) {
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+
+            TasksAPI.searchUser(filter: filter, email: email) { data, error in
+                
+                if data != nil {
+                    if let taskAssignee = data?.data {
+                        let assignee = TaskNodeOperations.processTaskAssignee(for: taskAssignee)
+                        completionHandler(assignee, nil)
+                    } else {
+                        completionHandler([], nil)
+                    }
+                } else {
+                    completionHandler([], error)
+                }
+                self.isLoading.value = false
+            }
+        })
     }
 }

@@ -32,6 +32,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var nameButton: MDCButton!
     @IBOutlet weak var emailButton: MDCButton!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchTextField: UITextField!
     var viewModel: TaskAssigneeViewModel { return controller.viewModel }
     lazy var controller: TaskAssigneeController = { return TaskAssigneeController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
 
@@ -40,6 +41,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: true)
         
+        viewModel.services = coordinatorServices ?? CoordinatorServices()
         progressView.progress = 0
         progressView.mode = .indeterminate
         registerCells()
@@ -48,6 +50,8 @@ class TaskAssigneeViewController: SystemThemableViewController {
         updateUIComponents()
         controller.buildViewModel()
         setupBindings()
+        searchTextField.becomeFirstResponder()
+        searchTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,11 +105,14 @@ class TaskAssigneeViewController: SystemThemableViewController {
         nameTitleLabel.applyStyleBody2OnSurface(theme: currentTheme)
         emailLabel.applyStyleBody2OnSurface(theme: currentTheme)
         radioButtonsViewDivider.backgroundColor = currentTheme.onSurface15Color
+        searchTextField.font = currentTheme.subtitle1TextStyle.font
+        searchTextField.textColor = currentTheme.onSurfaceColor
     }
     
     private func applyLocalization() {
         nameTitleLabel.text = LocalizationConstants.EditTask.byName
         emailLabel.text = LocalizationConstants.EditTask.byEmail
+        searchTextField.placeholder = LocalizationConstants.EditTask.searchPlaceholder
     }
     
     func addAccessibility() {
@@ -117,9 +124,10 @@ class TaskAssigneeViewController: SystemThemableViewController {
        
         emailButton.accessibilityLabel = emailLabel.text
         emailButton.accessibilityIdentifier = "searchByEmail"
+        searchTextField.accessibilityLabel = LocalizationConstants.EditTask.searchPlaceholder
 
-        if let dismissButton = dismissButton, let nameButton = nameButton, let emailButton = emailButton {
-            self.accessibilityElements = [dismissButton, nameButton, emailButton]
+        if let dismissButton = dismissButton, let nameButton = nameButton, let emailButton = emailButton, let searchField = searchTextField {
+            self.accessibilityElements = [dismissButton, searchField, nameButton, emailButton]
         }
     }
     
@@ -151,8 +159,9 @@ class TaskAssigneeViewController: SystemThemableViewController {
     private func updateUIComponents() {
         nameRadioImageView.image = viewModel.searchByNameImage
         emailRadioImageView.image = viewModel.searchByEmailImage
+        resetUserList()
+        editingChanged()
     }
-    
     
     // MARK: - Set up Bindings
     private func setupBindings() {
@@ -165,6 +174,12 @@ class TaskAssigneeViewController: SystemThemableViewController {
             } else {
                 sSelf.stopLoading()
             }
+        }
+        
+        /* observing users */
+        viewModel.users.addObserver() { [weak self] (users) in
+            guard let sSelf = self else { return }
+            sSelf.controller.buildViewModel()
         }
         
         /* observing rows */
@@ -203,5 +218,71 @@ extension TaskAssigneeViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+// MARK: - UITextField Delegate
+
+extension TaskAssigneeViewController: UITextFieldDelegate {
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return true
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        editingChanged()
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        resetUserList()
+        return true
+    }
+    
+    @objc func editingChanged() {
+        if viewModel.searchTimer != nil {
+            viewModel.searchTimer?.invalidate()
+            viewModel.searchTimer = nil
+        }
+        
+        let text = (searchTextField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        viewModel.searchText = text
+        viewModel.searchTimer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(searchForKeyword(_:)), userInfo: nil, repeats: false)
+    }
+    
+    @objc func searchForKeyword(_ timer: Timer) {
+        searchRequest()
+    }
+    
+    func searchRequest() {
+        let text = (searchTextField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if text.isEmpty {
+            resetUserList()
+            return
+        } else if viewModel.isSearchByName && viewModel.minimumCharactersToSearch > text.count {
+            return
+        } else if !viewModel.isSearchByName && !text.isValidEmail() {
+            return
+        }
+        
+        var searchText = viewModel.searchText
+        var email: String?
+        if !viewModel.isSearchByName {
+            searchText = nil
+            email = viewModel.searchText
+        }
+        
+        viewModel.searchUser(with: searchText, email: email) {[weak self] assignee, error in
+            guard let sSelf = self else { return }
+            sSelf.viewModel.users.value = assignee
+        }
+    }
+    
+    private func resetUserList() {
+        viewModel.users.value.removeAll()
     }
 }

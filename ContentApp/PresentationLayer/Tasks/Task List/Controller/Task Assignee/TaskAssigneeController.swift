@@ -45,12 +45,7 @@ class TaskAssigneeController: NSObject {
             rowViewModels.append(meCell)
         }
         
-        rowViewModels.append(otherCellVM())
-        
-        if let meCell = meCellVM() {
-            rowViewModels.append(meCell)
-        }
-        
+        rowViewModels.append(contentsOf: searchedUsersCellVM())
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
@@ -67,12 +62,16 @@ class TaskAssigneeController: NSObject {
         return nil
     }
     
-    private func otherCellVM() -> TaskAssigneeTableCellViewModel {
-        let name = "Ankit Goyal"
-        let rowVM = TaskAssigneeTableCellViewModel(userID: 10, firstName: name, lastName: nil)
-        rowVM.didSelectUserAction = {
-            AlfrescoLog.debug("did select user with id")
+    private func searchedUsersCellVM() -> [RowViewModel] {
+        var rowVMs = [RowViewModel]()
+        let searchedUsers = viewModel.users.value
+        for user in searchedUsers {
+            let rowVM = TaskAssigneeTableCellViewModel(userID: user.assigneeID, firstName: user.firstName, lastName: user.lastName)
+            rowVM.didSelectUserAction = {
+                AlfrescoLog.debug("did select user with id --- \(user.assigneeID)")
+            }
+            rowVMs.append(rowVM)
         }
-        return rowVM
+        return rowVMs
     }
 }
