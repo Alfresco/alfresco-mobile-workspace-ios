@@ -265,7 +265,7 @@ extension TaskAssigneeViewController: UITextFieldDelegate {
             return
         } else if viewModel.isSearchByName && viewModel.minimumCharactersToSearch > text.count {
             return
-        } else if !viewModel.isSearchByName && !text.isValidEmail() {
+        } else if !viewModel.isSearchByName && !text.isValidEmail {
             return
         }
         

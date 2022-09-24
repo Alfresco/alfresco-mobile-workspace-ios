@@ -64,8 +64,9 @@ class TaskAssigneeController: NSObject {
     
     private func searchedUsersCellVM() -> [RowViewModel] {
         var rowVMs = [RowViewModel]()
+        let apsUserID = UserProfile.apsUserID ?? -1
         let searchedUsers = viewModel.users.value
-        for user in searchedUsers {
+        for user in searchedUsers where user.assigneeID != apsUserID {
             let rowVM = TaskAssigneeTableCellViewModel(userID: user.assigneeID, firstName: user.firstName, lastName: user.lastName)
             rowVM.didSelectUserAction = {
                 AlfrescoLog.debug("did select user with id --- \(user.assigneeID)")
