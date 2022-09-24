@@ -18,24 +18,27 @@
 
 import UIKit
 
-class TaskAssigneeViewModel: NSObject {
-    var isSearchByName = true
-    let rowViewModels = Observable<[RowViewModel]>([])
-    let isLoading = Observable<Bool>(false)
+class TaskAssigneeTableCellViewModel: RowViewModel {
+    
+    var userID: Int?
+    var firstName: String?
+    var lastName: String?
+    var userName: String?
+    var didSelectUserAction: (() -> Void)?
 
-    var searchByNameImage: UIImage? {
-        if isSearchByName {
-            return UIImage(named: "ic-radio-checked")
-        } else {
-            return UIImage(named: "ic-radio-unchecked")
-        }
+    func cellIdentifier() -> String {
+        return "TaskAssigneeTableViewCell"
     }
     
-    var searchByEmailImage: UIImage? {
-        if isSearchByName {
-            return UIImage(named: "ic-radio-unchecked")
-        } else {
-            return UIImage(named: "ic-radio-checked")
-        }
+    init(userID: Int?,
+         firstName: String?,
+         lastName: String?) {
+        
+        let fName = firstName ?? ""
+        let lName = lastName ?? ""
+        self.userID = userID
+        self.firstName = fName
+        self.lastName = lName
+        self.userName = String(format: "%@ %@", fName, lName).trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

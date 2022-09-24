@@ -536,8 +536,15 @@
                                     <constraint firstAttribute="bottom" secondItem="eIv-K3-mTN" secondAttribute="bottom" id="xoV-qy-eQb"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="idJ-0N-a57" customClass="MDCProgressView">
+                                <rect key="frame" x="0.0" y="76" width="414" height="2"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="Ix9-Ue-P0i"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qrn-GK-TwG" userLabel="radioButtonView">
-                                <rect key="frame" x="0.0" y="76" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="83" width="414" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lO6-g6-ozB" userLabel="nameView">
                                         <rect key="frame" x="0.0" y="0.0" width="207" height="60"/>
@@ -665,16 +672,31 @@
                                     <constraint firstAttribute="height" constant="60" id="xoL-SP-1RH"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="tZU-gf-sFn">
+                                <rect key="frame" x="0.0" y="148" width="414" height="714"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="KCy-t7-PUB" id="bNN-WJ-whQ"/>
+                                    <outlet property="delegate" destination="KCy-t7-PUB" id="a0f-AN-f5X"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="TTb-Lf-Trh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="qrn-GK-TwG" firstAttribute="leading" secondItem="Pve-7g-rrg" secondAttribute="leading" id="0pN-be-SvU"/>
+                            <constraint firstItem="qrn-GK-TwG" firstAttribute="top" secondItem="idJ-0N-a57" secondAttribute="bottom" constant="5" id="2G8-aO-3fg"/>
+                            <constraint firstItem="idJ-0N-a57" firstAttribute="leading" secondItem="bVY-m2-4ir" secondAttribute="leading" id="BKh-E4-PUY"/>
                             <constraint firstItem="Pve-7g-rrg" firstAttribute="leading" secondItem="TTb-Lf-Trh" secondAttribute="leading" id="FTb-GA-XOI"/>
+                            <constraint firstItem="TTb-Lf-Trh" firstAttribute="bottom" secondItem="tZU-gf-sFn" secondAttribute="bottom" id="NCU-J1-f5g"/>
                             <constraint firstItem="Pve-7g-rrg" firstAttribute="top" secondItem="bVY-m2-4ir" secondAttribute="top" id="OcI-1l-qHd"/>
-                            <constraint firstItem="qrn-GK-TwG" firstAttribute="top" secondItem="Pve-7g-rrg" secondAttribute="bottom" id="Ood-0x-Exx"/>
+                            <constraint firstItem="tZU-gf-sFn" firstAttribute="leading" secondItem="TTb-Lf-Trh" secondAttribute="leading" id="Ud7-t1-oSe"/>
+                            <constraint firstItem="idJ-0N-a57" firstAttribute="top" secondItem="Pve-7g-rrg" secondAttribute="bottom" id="Wry-wU-LZ6"/>
                             <constraint firstItem="qrn-GK-TwG" firstAttribute="trailing" secondItem="Pve-7g-rrg" secondAttribute="trailing" id="Wvf-hx-X96"/>
                             <constraint firstItem="TTb-Lf-Trh" firstAttribute="trailing" secondItem="Pve-7g-rrg" secondAttribute="trailing" id="jPx-6k-txp"/>
+                            <constraint firstItem="tZU-gf-sFn" firstAttribute="top" secondItem="qrn-GK-TwG" secondAttribute="bottom" constant="5" id="lGI-CW-vOP"/>
+                            <constraint firstItem="tZU-gf-sFn" firstAttribute="trailing" secondItem="TTb-Lf-Trh" secondAttribute="trailing" id="quS-2S-79C"/>
+                            <constraint firstAttribute="trailing" secondItem="idJ-0N-a57" secondAttribute="trailing" id="vWx-zc-gcV"/>
                         </constraints>
                     </view>
                     <connections>
@@ -687,7 +709,9 @@
                         <outlet property="nameButton" destination="QmU-sY-aAe" id="Hca-sf-lBp"/>
                         <outlet property="nameRadioImageView" destination="tww-TF-407" id="5W1-Mp-5VM"/>
                         <outlet property="nameTitleLabel" destination="aP6-VK-8I5" id="MPd-yV-poh"/>
+                        <outlet property="progressView" destination="idJ-0N-a57" id="i8M-rf-t0f"/>
                         <outlet property="radioButtonsViewDivider" destination="23I-Tf-AWq" id="WmA-6X-cnq"/>
+                        <outlet property="tableView" destination="tZU-gf-sFn" id="Nw6-nS-nVH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z4M-Q6-sim" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

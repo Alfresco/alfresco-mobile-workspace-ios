@@ -23,6 +23,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var divider: UIView!
+    @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var nameRadioImageView: UIImageView!
     @IBOutlet weak var nameTitleLabel: UILabel!
     @IBOutlet weak var emailRadioImageView: UIImageView!
@@ -30,6 +31,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var radioButtonsViewDivider: UIView!
     @IBOutlet weak var nameButton: MDCButton!
     @IBOutlet weak var emailButton: MDCButton!
+    @IBOutlet weak var tableView: UITableView!
     var viewModel: TaskAssigneeViewModel { return controller.viewModel }
     lazy var controller: TaskAssigneeController = { return TaskAssigneeController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
 
@@ -37,15 +39,28 @@ class TaskAssigneeViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: true)
+        
+        progressView.progress = 0
+        progressView.mode = .indeterminate
+        registerCells()
         applyLocalization()
         addAccessibility()
         updateUIComponents()
+        controller.buildViewModel()
+        setupBindings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
+        updateTheme()
         view.isHidden = false
+    }
+    
+    func updateTheme() {
+        let activeTheme = coordinatorServices?.themingService?.activeTheme
+        progressView.progressTintColor = activeTheme?.primaryT1Color
+        progressView.trackTintColor = activeTheme?.primary30T1Color
     }
     
     override func viewDidLayoutSubviews() {
@@ -70,6 +85,10 @@ class TaskAssigneeViewController: SystemThemableViewController {
         super.willTransition(to: newCollection, with: coordinator)
     }
     
+    func registerCells() {
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.taskAssignee, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskAssignee)
+    }
+    
     // MARK: - Apply Themes, Accessibility and Localization
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
@@ -90,6 +109,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     }
     
     func addAccessibility() {
+        progressView.isAccessibilityElement = false
         dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
         dismissButton.accessibilityIdentifier = "cancel"
         nameButton.accessibilityLabel = nameTitleLabel.text
@@ -101,6 +121,16 @@ class TaskAssigneeViewController: SystemThemableViewController {
         if let dismissButton = dismissButton, let nameButton = nameButton, let emailButton = emailButton {
             self.accessibilityElements = [dismissButton, nameButton, emailButton]
         }
+    }
+    
+    func startLoading() {
+        progressView?.startAnimating()
+        progressView?.setHidden(false, animated: true)
+    }
+
+    func stopLoading() {
+        progressView?.stopAnimating()
+        progressView?.setHidden(true, animated: false)
     }
     
     // MARK: - Button Actions
@@ -121,5 +151,57 @@ class TaskAssigneeViewController: SystemThemableViewController {
     private func updateUIComponents() {
         nameRadioImageView.image = viewModel.searchByNameImage
         emailRadioImageView.image = viewModel.searchByEmailImage
+    }
+    
+    
+    // MARK: - Set up Bindings
+    private func setupBindings() {
+        
+        /* observer loader */
+        viewModel.isLoading.addObserver { [weak self] (isLoading) in
+            guard let sSelf = self else { return }
+            if isLoading {
+                sSelf.startLoading()
+            } else {
+                sSelf.stopLoading()
+            }
+        }
+        
+        /* observing rows */
+        viewModel.rowViewModels.addObserver() { [weak self] (rows) in
+            guard let sSelf = self else { return }
+            DispatchQueue.main.async {
+                sSelf.tableView.reloadData()
+            }
+        }
+    }
+}
+
+// MARK: - Table View Data Source and Delegates
+extension TaskAssigneeViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.rowViewModels.value.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: controller.cellIdentifier(for: rowViewModel), for: indexPath)
+        if let cell = cell as? CellConfigurable {
+            cell.setup(viewModel: rowViewModel)
+        }
+        
+        if let theme = coordinatorServices?.themingService {
+            if cell is TaskAssigneeTableViewCell {
+                (cell as? TaskAssigneeTableViewCell)?.applyTheme(with: theme)
+            }
+        }
+        
+        cell.layoutIfNeeded()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }

@@ -21,10 +21,58 @@ import UIKit
 class TaskAssigneeController: NSObject {
     let viewModel: TaskAssigneeViewModel
     var currentTheme: PresentationTheme?
+    var didSelectUserAction: (() -> Void)?
 
     init(viewModel: TaskAssigneeViewModel = TaskAssigneeViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
         self.currentTheme = currentTheme
     }
+    
+    func cellIdentifier(for viewModel: RowViewModel) -> String {
+        switch viewModel {
+        case is TaskAssigneeTableCellViewModel:
+            return TaskAssigneeTableViewCell.cellIdentifier()
+        default:
+            fatalError("Unexpected view model type: \(viewModel)")
+        }
+    }
 
+    // MARK: - Build View Models
+    func buildViewModel() {
+        var rowViewModels = [RowViewModel]()
+        
+        if let meCell = meCellVM() {
+            rowViewModels.append(meCell)
+        }
+        
+        rowViewModels.append(otherCellVM())
+        
+        if let meCell = meCellVM() {
+            rowViewModels.append(meCell)
+        }
+        
+        self.viewModel.rowViewModels.value = rowViewModels
+    }
+    
+    // MARK: - Me Table Cell
+    private func meCellVM() -> TaskAssigneeTableCellViewModel? {
+        if let apsUserID = UserProfile.apsUserID {
+            let name = LocalizationConstants.EditTask.meTitle
+            let rowVM = TaskAssigneeTableCellViewModel(userID: apsUserID, firstName: name, lastName: nil)
+            rowVM.didSelectUserAction = {
+                AlfrescoLog.debug("did select user with id \(apsUserID)")
+            }
+            return rowVM
+        }
+        return nil
+    }
+    
+    private func otherCellVM() -> TaskAssigneeTableCellViewModel {
+        let name = "Ankit Goyal"
+        let rowVM = TaskAssigneeTableCellViewModel(userID: 10, firstName: name, lastName: nil)
+        rowVM.didSelectUserAction = {
+            AlfrescoLog.debug("did select user with id")
+        }
+        return rowVM
+    }
 }

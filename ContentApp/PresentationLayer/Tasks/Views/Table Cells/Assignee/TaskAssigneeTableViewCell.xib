@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="70" id="KGk-i7-Jjw" customClass="TaskAssigneeTableViewCell" customModule="ContentApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="388" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="388" height="70"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aq4-TJ-mk9" userLabel="baseView">
+                        <rect key="frame" x="0.0" y="0.0" width="388" height="70"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nB-fU-VGx" userLabel="userImageView">
+                                <rect key="frame" x="20" y="10" width="40" height="40"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ep1-rv-IDW" userLabel="userImage">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="4YQ-4c-qnK"/>
+                                    <constraint firstAttribute="height" constant="40" id="9Mx-J9-CmF"/>
+                                    <constraint firstAttribute="trailing" secondItem="ep1-rv-IDW" secondAttribute="trailing" id="KZ5-g4-CuY"/>
+                                    <constraint firstItem="ep1-rv-IDW" firstAttribute="top" secondItem="2nB-fU-VGx" secondAttribute="top" id="QLo-Xr-gu8"/>
+                                    <constraint firstAttribute="bottom" secondItem="ep1-rv-IDW" secondAttribute="bottom" id="dgp-Sl-RCl"/>
+                                    <constraint firstItem="ep1-rv-IDW" firstAttribute="leading" secondItem="2nB-fU-VGx" secondAttribute="leading" id="dpu-3M-Wps"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Loading..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWl-uf-usc" userLabel="userNameLabel">
+                                <rect key="frame" x="75" y="20" width="298" height="20.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <bool key="isElement" value="YES"/>
+                        </accessibility>
+                        <constraints>
+                            <constraint firstItem="lWl-uf-usc" firstAttribute="leading" secondItem="2nB-fU-VGx" secondAttribute="trailing" constant="15" id="1DN-am-0MS"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="2nB-fU-VGx" secondAttribute="bottom" constant="10" id="BH1-z8-hN1"/>
+                            <constraint firstItem="lWl-uf-usc" firstAttribute="centerY" secondItem="2nB-fU-VGx" secondAttribute="centerY" id="Lgq-2N-dS1"/>
+                            <constraint firstAttribute="trailing" secondItem="lWl-uf-usc" secondAttribute="trailing" constant="15" id="Ohb-F9-r8j"/>
+                            <constraint firstItem="2nB-fU-VGx" firstAttribute="leading" secondItem="aq4-TJ-mk9" secondAttribute="leading" constant="20" id="SPU-iS-0c8"/>
+                            <constraint firstItem="2nB-fU-VGx" firstAttribute="top" secondItem="aq4-TJ-mk9" secondAttribute="top" constant="10" id="xy7-zA-ZAA"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="aq4-TJ-mk9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="32N-7x-1kr"/>
+                    <constraint firstAttribute="bottom" secondItem="aq4-TJ-mk9" secondAttribute="bottom" id="c6W-N3-aU2"/>
+                    <constraint firstAttribute="trailing" secondItem="aq4-TJ-mk9" secondAttribute="trailing" id="pBm-t4-f9w"/>
+                    <constraint firstItem="aq4-TJ-mk9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="sx1-je-Efz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="baseView" destination="aq4-TJ-mk9" id="gIB-Gz-Wxp"/>
+                <outlet property="userImageBaseView" destination="2nB-fU-VGx" id="Iqc-Vg-vAm"/>
+                <outlet property="userImageView" destination="ep1-rv-IDW" id="3LY-jk-puM"/>
+                <outlet property="userNameLabel" destination="lWl-uf-usc" id="Rbr-co-Fzz"/>
+            </connections>
+            <point key="canvasLocation" x="144.92753623188406" y="27.455357142857142"/>
+        </tableViewCell>
+    </objects>
+</document>
