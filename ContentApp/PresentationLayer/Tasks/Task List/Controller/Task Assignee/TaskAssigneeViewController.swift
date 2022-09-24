@@ -23,6 +23,13 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var divider: UIView!
+    @IBOutlet weak var nameRadioImageView: UIImageView!
+    @IBOutlet weak var nameTitleLabel: UILabel!
+    @IBOutlet weak var emailRadioImageView: UIImageView!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var radioButtonsViewDivider: UIView!
+    @IBOutlet weak var nameButton: MDCButton!
+    @IBOutlet weak var emailButton: MDCButton!
     var viewModel: TaskAssigneeViewModel { return controller.viewModel }
     lazy var controller: TaskAssigneeController = { return TaskAssigneeController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
 
@@ -32,6 +39,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         applyLocalization()
         addAccessibility()
+        updateUIComponents()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,21 +76,50 @@ class TaskAssigneeViewController: SystemThemableViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         
         view.backgroundColor = currentTheme.surfaceColor
-        divider.backgroundColor = currentTheme.onSurface12Color
-        dismissButton.tintColor = .red //currentTheme.onSurfaceColor
+        dismissButton.setImage(UIImage(named: "ic-back"), for: .normal)
+        dismissButton.tintColor = currentTheme.onSurface60Color
+        divider.backgroundColor = currentTheme.onSurface15Color
+        nameTitleLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        emailLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        radioButtonsViewDivider.backgroundColor = currentTheme.onSurface15Color
+    }
+    
+    private func applyLocalization() {
+        nameTitleLabel.text = LocalizationConstants.EditTask.byName
+        emailLabel.text = LocalizationConstants.EditTask.byEmail
     }
     
     func addAccessibility() {
         dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
         dismissButton.accessibilityIdentifier = "cancel"
-    }
-    
-    private func applyLocalization() {
-    
+        nameButton.accessibilityLabel = nameTitleLabel.text
+        nameButton.accessibilityIdentifier = "searchByName"
+       
+        emailButton.accessibilityLabel = emailLabel.text
+        emailButton.accessibilityIdentifier = "searchByEmail"
+
+        if let dismissButton = dismissButton, let nameButton = nameButton, let emailButton = emailButton {
+            self.accessibilityElements = [dismissButton, nameButton, emailButton]
+        }
     }
     
     // MARK: - Button Actions
     @IBAction func dismissButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func searchByNameButtonAction(_ sender: Any) {
+        viewModel.isSearchByName = true
+        updateUIComponents()
+    }
+    
+    @IBAction func searchByEmailButtonAction(_ sender: Any) {
+        viewModel.isSearchByName = false
+        updateUIComponents()
+    }
+    
+    private func updateUIComponents() {
+        nameRadioImageView.image = viewModel.searchByNameImage
+        emailRadioImageView.image = viewModel.searchByEmailImage
     }
 }

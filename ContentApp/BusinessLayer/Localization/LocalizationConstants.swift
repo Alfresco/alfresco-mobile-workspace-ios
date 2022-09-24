@@ -347,5 +347,7 @@ struct LocalizationConstants {
     struct EditTask {
         static let taskTitle = NSLocalizedString("task-title", comment: "")
         static let nameAndDescription = NSLocalizedString("name-and-description", comment: "")
+        static let byName = NSLocalizedString("by-name", comment: "")
+        static let byEmail = NSLocalizedString("by-email", comment: "")
     }
 }
