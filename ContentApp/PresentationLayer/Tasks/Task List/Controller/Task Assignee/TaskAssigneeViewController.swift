@@ -35,6 +35,9 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var searchTextField: UITextField!
     var viewModel: TaskAssigneeViewModel { return controller.viewModel }
     lazy var controller: TaskAssigneeController = { return TaskAssigneeController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
+    typealias TaskAssigneeCallBack = (_ assignee: TaskNodeAssignee) -> Void
+    var callBack: TaskAssigneeCallBack?
+
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -189,6 +192,17 @@ class TaskAssigneeViewController: SystemThemableViewController {
                 sSelf.tableView.reloadData()
             }
         }
+        
+        /* observe did select user action */
+        controller.didSelectUserAction = {[weak self] (assignee) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectAssignee(with: assignee)
+        }
+    }
+    
+    private func didSelectAssignee(with assignee: TaskNodeAssignee) {
+        callBack?(assignee)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

@@ -21,7 +21,7 @@ import UIKit
 class TaskAssigneeController: NSObject {
     let viewModel: TaskAssigneeViewModel
     var currentTheme: PresentationTheme?
-    var didSelectUserAction: (() -> Void)?
+    var didSelectUserAction: ((_ user: TaskNodeAssignee) -> Void)?
 
     init(viewModel: TaskAssigneeViewModel = TaskAssigneeViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -54,12 +54,19 @@ class TaskAssigneeController: NSObject {
         if let apsUserID = UserProfile.apsUserID {
             let name = LocalizationConstants.EditTask.meTitle
             let rowVM = TaskAssigneeTableCellViewModel(userID: apsUserID, firstName: name, lastName: nil)
-            rowVM.didSelectUserAction = {
-                AlfrescoLog.debug("did select user with id \(apsUserID)")
+            rowVM.didSelectUserAction = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUserAction?(sSelf.loggedInUser())
             }
             return rowVM
         }
         return nil
+    }
+    
+    private func loggedInUser() -> TaskNodeAssignee {
+        let apsUserID = UserProfile.apsUserID ?? -1
+        let user = TaskNodeAssignee(assigneeID: apsUserID, firstName: UserProfile.firstName, lastName: UserProfile.lastName, email: UserProfile.email)
+        return user
     }
     
     private func searchedUsersCellVM() -> [RowViewModel] {
@@ -68,8 +75,9 @@ class TaskAssigneeController: NSObject {
         let searchedUsers = viewModel.users.value
         for user in searchedUsers where user.assigneeID != apsUserID {
             let rowVM = TaskAssigneeTableCellViewModel(userID: user.assigneeID, firstName: user.firstName, lastName: user.lastName)
-            rowVM.didSelectUserAction = {
-                AlfrescoLog.debug("did select user with id --- \(user.assigneeID)")
+            rowVM.didSelectUserAction = { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUserAction?(user)
             }
             rowVMs.append(rowVM)
         }

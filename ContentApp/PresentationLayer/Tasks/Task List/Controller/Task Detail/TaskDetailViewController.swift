@@ -523,9 +523,17 @@ extension TaskDetailViewController {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
             viewController.coordinatorServices = coordinatorServices
-            
             let navigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController, animated: true)
+            viewController.callBack = { [weak self] (assignee) in
+                guard let sSelf = self else { return }
+                sSelf.updateAssignee(with: assignee)
+            }
         }
+    }
+    
+    private func updateAssignee(with assignee: TaskNodeAssignee) {
+        viewModel.task?.assignee = assignee
+        controller.buildViewModel()
     }
 }
