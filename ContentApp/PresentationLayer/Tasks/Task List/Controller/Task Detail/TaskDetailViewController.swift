@@ -39,6 +39,7 @@ class TaskDetailViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         progressView.progress = 0
         progressView.mode = .indeterminate
+        applyTheme()
         applyLocalization()
         registerCells()
         addAccessibility()
@@ -107,9 +108,7 @@ class TaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Public Helpers
 
-    override func applyComponentsThemes() {
-        super.applyComponentsThemes()
-        
+    func applyTheme() {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
               let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton)
         else { return }
@@ -121,7 +120,7 @@ class TaskDetailViewController: SystemSearchViewController {
         completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeTaskButton.setShadowColor(.clear, for: .normal)
         completeTaskButton.setTitleColor(.white, for: .normal)
-
+        
         editButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
         editButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
@@ -436,10 +435,6 @@ extension TaskDetailViewController {
         }
     }
     
-    func changePriorityAction() {
-        AlfrescoLog.debug("didSelectPriority")
-    }
-    
     func changeAssigneeAction() {
         AlfrescoLog.debug("changeAssigneeAction")
     }
@@ -497,6 +492,30 @@ extension TaskDetailViewController {
     
     private func updateTaskDueDate(with dueDate: Date?) {
         viewModel.task?.dueDate = dueDate
+        controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Priority
+extension TaskDetailViewController {
+    
+    func changePriorityAction() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskPriority) as? TaskPriorityViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.priority = viewModel.priority
+            self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+            viewController.callBack = { [weak self] (priority) in
+                guard let sSelf = self else { return }
+                sSelf.updateTaskPriority(with: priority)
+            }
+        }
+    }
+    
+    private func updateTaskPriority(with priority: Int) {
+        viewModel.task?.priority = priority
         controller.buildViewModel()
     }
 }
