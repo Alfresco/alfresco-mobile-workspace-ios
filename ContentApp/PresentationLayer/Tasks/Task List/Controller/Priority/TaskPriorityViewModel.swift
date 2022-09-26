@@ -18,19 +18,16 @@
 
 import UIKit
 
-struct StoryboardConstants {
+class TaskPriorityViewModel: NSObject {
+    var priority: Int = 0
     
-    struct storyboard {
-        static let tasks = "Tasks"
-    }
-    
-    struct controller {
-        static let taskList = "TasksListViewController"
-        static let taskDetail = "TaskDetailViewController"
-        static let taskComments = "TaskCommentsViewController"
-        static let taskAttachments = "TaskAttachmentsViewController"
-        static let taskDescription = "TaskDescriptionDetailViewController"
-        static let taskPriority = "TaskPriorityViewController"
+    var taskPriority: TaskPriority {
+        if priority >= 0 && priority <= 3 {
+            return .low
+        } else if priority >= 4 && priority <= 7 {
+            return .medium
+        } else {
+            return .high
+        }
     }
 }
-
