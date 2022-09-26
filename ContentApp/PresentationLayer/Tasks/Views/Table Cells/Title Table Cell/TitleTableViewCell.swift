@@ -33,6 +33,7 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         baseView.isAccessibilityElement = false
         titleLabel.isAccessibilityElement = true
         subTitleLabel.isAccessibilityElement = true
+        editImageView.isAccessibilityElement = true
         addTapGesture()
     }
     
@@ -89,14 +90,20 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         addAccessibility()
     }
     
-    private func addAccessibility() {        
+    private func addAccessibility() {
+        titleLabel.accessibilityTraits = .staticText
         titleLabel.accessibilityIdentifier = "title"
         titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
         titleLabel.accessibilityValue = titleLabel.text
         
+        subTitleLabel.accessibilityTraits = .staticText
         subTitleLabel.accessibilityIdentifier = "sub-title"
         subTitleLabel.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
         subTitleLabel.accessibilityValue = subTitleLabel.text
+        
+        editImageView.accessibilityTraits = .button
+        editImageView.accessibilityLabel = LocalizationConstants.General.edit
+        editImageView.accessibilityIdentifier = "edit"
     }
     
     // MARK: - Apply Themes and Localization
@@ -166,5 +173,6 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         }
         viewModel?.isEnableTapOnSubTitle = false
         return label.text
+        
     }
 }
