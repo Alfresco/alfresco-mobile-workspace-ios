@@ -37,6 +37,8 @@ class TaskDetailViewController: SystemSearchViewController {
         super.viewDidLoad()
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        self.navigationItem.setHidesBackButton(true, animated: true)
+        addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyTheme()
@@ -101,8 +103,6 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func addAccessibility() {
-        self.navigationItem.backBarButtonItem?.accessibilityLabel = LocalizationConstants.Accessibility.back
-        self.navigationItem.backBarButtonItem?.accessibilityIdentifier = "back-button"
         progressView.isAccessibilityElement = false
     }
     
@@ -146,6 +146,39 @@ class TaskDetailViewController: SystemSearchViewController {
         } else {
             completeTaskView.isHidden = true
             tableView.contentInset.bottom = 50
+        }
+    }
+    
+    private func addBackButton() {
+        let backButton = UIButton(type: .custom)
+        backButton.accessibilityIdentifier = "backButton"
+        backButton.accessibilityLabel = LocalizationConstants.Accessibility.back
+        backButton.frame = CGRect(x: 0.0, y: 0.0,
+                                  width: 30.0,
+                                    height: 30.0)
+        backButton.imageView?.contentMode = .scaleAspectFill
+        backButton.layer.masksToBounds = true
+        backButton.addTarget(self,
+                               action: #selector(backButtonAction),
+                               for: UIControl.Event.touchUpInside)
+        backButton.setImage(UIImage(named: "ic-back"),
+                              for: .normal)
+
+        let searchBarButtonItem = UIBarButtonItem(customView: backButton)
+        searchBarButtonItem.accessibilityIdentifier = "backBarButton"
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 30.0)
+        currWidth?.isActive = true
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
+        currHeight?.isActive = true
+        self.navigationItem.leftBarButtonItem = searchBarButtonItem
+    }
+    
+    // MARK: - Back Button Action
+    @objc func backButtonAction() {
+        if viewModel.isEditTask && viewModel.isTaskUpdated() {
+            AlfrescoLog.debug("Task updated")
+        } else {
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
