@@ -81,6 +81,9 @@ class InfoTableViewCell: UITableViewCell, CellConfigurable {
 
         editImageView.accessibilityTraits = .button
         editImageView.accessibilityLabel = LocalizationConstants.General.edit
+        if let accessibilityLabel = viewModel?.accesssibilityLabel {
+            editImageView.accessibilityLabel = accessibilityLabel
+        }
         editImageView.accessibilityIdentifier = "edit"
     }
     

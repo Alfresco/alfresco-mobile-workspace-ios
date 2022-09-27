@@ -47,12 +47,31 @@ class TaskPriorityViewController: SystemThemableViewController {
     }
     
     func addAccessibility() {
-        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
-        dismissButton.accessibilityIdentifier = "cancel"
-        
         titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
         titleLabel.accessibilityValue = LocalizationConstants.Accessibility.priority
         titleLabel.accessibilityIdentifier = "title"
+        
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        dismissButton.accessibilityIdentifier = "cancel"
+
+        lowView.accessibilityLabel = LocalizationConstants.Accessibility.priority
+        lowView.accessibilityValue = LocalizationConstants.Tasks.low
+        lowView.accessibilityIdentifier = "low-priority"
+        lowView.accessibilityTraits = .button
+        
+        mediumView.accessibilityLabel = LocalizationConstants.Accessibility.priority
+        mediumView.accessibilityValue = LocalizationConstants.Tasks.medium
+        mediumView.accessibilityIdentifier = "medium-priority"
+        mediumView.accessibilityTraits = .button
+        
+        highView.accessibilityLabel = LocalizationConstants.Accessibility.priority
+        highView.accessibilityValue = LocalizationConstants.Tasks.high
+        highView.accessibilityIdentifier = "high-priority"
+        highView.accessibilityTraits = .button
+
+        if let titleLabel = titleLabel, let dismissButton = dismissButton, let lowView = lowView, let mediumView = mediumView, let highView = highView {
+            self.view.accessibilityElements = [titleLabel, dismissButton, lowView, mediumView, highView]
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -31,6 +31,6 @@ struct StoryboardConstants {
         static let taskAttachments = "TaskAttachmentsViewController"
         static let taskDescription = "TaskDescriptionDetailViewController"
         static let taskPriority = "TaskPriorityViewController"
+        static let taskAssignee = "TaskAssigneeViewController"
     }
 }
-
