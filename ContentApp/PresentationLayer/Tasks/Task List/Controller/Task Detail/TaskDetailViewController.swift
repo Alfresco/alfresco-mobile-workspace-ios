@@ -434,10 +434,6 @@ extension TaskDetailViewController {
             viewModel.readOnlyTask = viewModel.task
         }
     }
-    
-    func changeAssigneeAction() {
-        AlfrescoLog.debug("changeAssigneeAction")
-    }
 }
 
 // MARK: - Edit Task Name and description
@@ -517,5 +513,19 @@ extension TaskDetailViewController {
     private func updateTaskPriority(with priority: Int) {
         viewModel.task?.priority = priority
         controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Assignee
+extension TaskDetailViewController {
+    
+    func changeAssigneeAction() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
+            viewController.coordinatorServices = coordinatorServices
+            
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true)
+        }
     }
 }

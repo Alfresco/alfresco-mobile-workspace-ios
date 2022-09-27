@@ -18,6 +18,22 @@
 
 import UIKit
 
-class TaskDescriptionDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
+class TaskAssigneeViewModel: NSObject {
+    var isSearchByName = true
+    
+    var searchByNameImage: UIImage? {
+        if isSearchByName {
+            return UIImage(named: "ic-radio-checked")
+        } else {
+            return UIImage(named: "ic-radio-unchecked")
+        }
+    }
+    
+    var searchByEmailImage: UIImage? {
+        if isSearchByName {
+            return UIImage(named: "ic-radio-unchecked")
+        } else {
+            return UIImage(named: "ic-radio-checked")
+        }
+    }
 }

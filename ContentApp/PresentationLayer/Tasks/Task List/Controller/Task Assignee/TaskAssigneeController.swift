@@ -18,6 +18,13 @@
 
 import UIKit
 
-class TaskDescriptionDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
+class TaskAssigneeController: NSObject {
+    let viewModel: TaskAssigneeViewModel
+    var currentTheme: PresentationTheme?
+
+    init(viewModel: TaskAssigneeViewModel = TaskAssigneeViewModel(), currentTheme: PresentationTheme?) {
+        self.viewModel = viewModel
+        self.currentTheme = currentTheme
+    }
+
 }
