@@ -35,6 +35,7 @@ class InfoTableCellViewModel: RowViewModel {
         }
         return nil
     }
+    var accesssibilityLabel: String?
     var didSelectEditInfo: (() -> Void)?
     var didSelectValue: (() -> Void)?
 
@@ -47,13 +48,15 @@ class InfoTableCellViewModel: RowViewModel {
          value: String?,
          isHideDivider: Bool = true,
          isEditMode: Bool,
-         editImage: String?) {
+         editImage: String?,
+         accesssibilityLabel: String? = nil) {
         self.imageName = imageName
         self.title = title
         self.value = value
         self.isHideDivider = isHideDivider
         self.isEditMode = isEditMode
         self.editImage = editImage
+        self.accesssibilityLabel = accesssibilityLabel
     }
     
     var image: UIImage? {
