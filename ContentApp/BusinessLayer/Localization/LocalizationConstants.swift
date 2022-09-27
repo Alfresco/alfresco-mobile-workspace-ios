@@ -351,5 +351,7 @@ struct LocalizationConstants {
         static let byEmail = NSLocalizedString("by-email", comment: "")
         static let meTitle = NSLocalizedString("me-title", comment: "")
         static let searchPlaceholder = NSLocalizedString("search-placeholder", comment: "")
+        static let taskProgressAlertTitle = NSLocalizedString("task-progress", comment: "")
+        static let taskProgressAlertMessage = NSLocalizedString("task-progress-message", comment: "")
     }
 }

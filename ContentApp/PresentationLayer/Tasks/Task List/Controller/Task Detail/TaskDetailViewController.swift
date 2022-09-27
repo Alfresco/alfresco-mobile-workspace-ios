@@ -176,10 +176,36 @@ class TaskDetailViewController: SystemSearchViewController {
     // MARK: - Back Button Action
     @objc func backButtonAction() {
         if viewModel.isEditTask && viewModel.isTaskUpdated() {
-            AlfrescoLog.debug("Task updated")
+            showAlertToSaveProgress()
         } else {
             self.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    private func showAlertToSaveProgress() {
+        let title = LocalizationConstants.EditTask.taskProgressAlertTitle
+        let message = LocalizationConstants.EditTask.taskProgressAlertMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.saveEdittedTask()
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.navigationController?.popViewController(animated: true)
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    private func saveEdittedTask() {
+        AlfrescoLog.debug("save progress api")
     }
     
     // MARK: - Set up Bindings
