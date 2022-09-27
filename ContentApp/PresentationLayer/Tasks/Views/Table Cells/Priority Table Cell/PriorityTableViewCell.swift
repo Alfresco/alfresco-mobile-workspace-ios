@@ -62,8 +62,8 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
         titleLabel.accessibilityLabel = titleLabel.text
         
         priorityLabel.accessibilityTraits = .staticText
-        priorityLabel.accessibilityIdentifier = priorityLabel.text
-        priorityLabel.accessibilityLabel = priorityLabel.text
+        priorityLabel.accessibilityIdentifier = viewModel?.priority
+        priorityLabel.accessibilityLabel = viewModel?.priority
 
         editImageView.accessibilityTraits = .button
         editImageView.accessibilityLabel = LocalizationConstants.General.edit
