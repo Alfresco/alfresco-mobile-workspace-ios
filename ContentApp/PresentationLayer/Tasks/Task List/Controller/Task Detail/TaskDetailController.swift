@@ -134,8 +134,18 @@ class TaskDetailController: NSObject {
     }
     
     private func dueDateCellVM() -> InfoTableCellViewModel {
-        let editImage = viewModel.dueDate == nil ? "ic-edit-icon": "ic-cross-grey"
-        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon", title: LocalizationConstants.Accessibility.dueDate, value: viewModel.getDueDate(for: viewModel.dueDate), isEditMode: viewModel.isEditTask, editImage: editImage)
+        var accesssibilityLabel: String?
+        var editImage = "ic-edit-icon"
+        if viewModel.dueDate != nil {
+            editImage = "ic-cross-grey"
+            accesssibilityLabel = LocalizationConstants.AdvanceSearch.reset
+        }
+        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon",
+                                           title: LocalizationConstants.Accessibility.dueDate,
+                                           value: viewModel.getDueDate(for: viewModel.dueDate),
+                                           isEditMode: viewModel.isEditTask,
+                                           editImage: editImage,
+                                           accesssibilityLabel: accesssibilityLabel)
 
         rowVM.didSelectValue = { [weak self] in
             guard let sSelf = self else { return }
