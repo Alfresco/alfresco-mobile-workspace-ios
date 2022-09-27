@@ -360,3 +360,5 @@
 "name-and-description" = "Name & Description";
 "create-task" = "Create Task";
 "edit-name-description" = "Edit name and description";
+"by-name" = "By Name";
+"by-email" = "By E-mail";
