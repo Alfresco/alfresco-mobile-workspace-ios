@@ -38,7 +38,6 @@ class TaskAssigneeViewController: SystemThemableViewController {
     typealias TaskAssigneeCallBack = (_ assignee: TaskNodeAssignee) -> Void
     var callBack: TaskAssigneeCallBack?
 
-
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +68,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
         progressView.progressTintColor = activeTheme?.primaryT1Color
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredSize(view.bounds.size)
