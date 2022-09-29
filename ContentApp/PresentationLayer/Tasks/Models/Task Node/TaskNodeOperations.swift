@@ -65,4 +65,17 @@ class TaskNodeOperations: NSObject {
         }
         return nodes
     }
+    
+    static func processTaskAssignee(for assignee: [TaskAssignee]) -> [TaskNodeAssignee] {
+        var taskAssignee: [TaskNodeAssignee] = []
+        for user in assignee {
+            let nodeAssignee = TaskNodeAssignee(assigneeID: user.id ?? -1,
+                                            firstName: user.firstName,
+                                            lastName: user.lastName,
+                                            email: user.email)
+            taskAssignee.append(nodeAssignee)
+        }
+        
+        return taskAssignee
+    }
 }
