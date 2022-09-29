@@ -199,4 +199,26 @@ extension TaskPropertiesViewModel {
             }
         })
     }
+    
+    // MARK: - Edit Task
+    func editTaskDetails(with taskId: String, params: TaskBodyCreate, completionHandler: @escaping ((_ data: TaskNode?, _ error: Error?) -> Void)) {
+        
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            
+            TasksAPI.updateTask(taskId: taskId, params: params) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                if data != nil {
+                    let taskNodes = TaskNodeOperations.processNodes(for: [data!])
+                    if !taskNodes.isEmpty {
+                        completionHandler(taskNodes.first, nil)
+                    }
+                } else {
+                    completionHandler(nil, error)
+                }
+            }
+        })
+    }
 }

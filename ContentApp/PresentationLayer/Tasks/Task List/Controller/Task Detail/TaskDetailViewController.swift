@@ -205,7 +205,23 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func saveEdittedTask() {
-        AlfrescoLog.debug("save progress api")
+        if let readOnlyTask = viewModel.readOnlyTask {
+            var priority: String?
+            var dateString: String?
+            if let taskPriority = readOnlyTask.priority {
+                priority = String(format: "%d", taskPriority)
+            }
+            
+            if let taskDueDate = readOnlyTask.dueDate {
+                dateString = taskDueDate.dateString(format: "yyyy-MM-dd")
+            }
+            
+            let params = TaskBodyCreate(name: readOnlyTask.name,
+                                        priority: priority,
+                                        dueDate: dateString,
+                                        description: readOnlyTask.description)
+            AlfrescoLog.debug("------ save progress api ------- \(params)")
+        }
     }
     
     // MARK: - Set up Bindings
