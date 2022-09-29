@@ -375,3 +375,5 @@
 "edit-name-description" = "Edit name and description";
 "by-name" = "By Name";
 "by-email" = "By E-mail";
+"me-title" = "Me";
+"search-placeholder" = "Search...";
