@@ -175,10 +175,10 @@ class TaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Back Button Action
     @objc func backButtonAction() {
-        if viewModel.isEditTask && viewModel.isTaskUpdated() {
+        if viewModel.isEditTask && (viewModel.isTaskUpdated() || viewModel.isAssigneeChanged()) {
             showAlertToSaveProgress()
         } else {
-            self.navigationController?.popViewController(animated: true)
+            self.backAndRefreshAction(isRefreshList: false)
         }
     }
     
@@ -194,7 +194,7 @@ class TaskDetailViewController: SystemSearchViewController {
         
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { [weak self] _ in
             guard let sSelf = self else { return }
-            sSelf.navigationController?.popViewController(animated: true)
+            sSelf.backAndRefreshAction(isRefreshList: false)
         }
         cancelAction.accessibilityIdentifier = "cancelActionButton"
 
@@ -205,22 +205,41 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func saveEdittedTask() {
-        if let readOnlyTask = viewModel.readOnlyTask {
-            var priority: String?
-            var dateString: String?
-            if let taskPriority = readOnlyTask.priority {
-                priority = String(format: "%d", taskPriority)
+        if viewModel.isAssigneeChanged() {
+            // call api to change assignee
+            assignTask()
+        } else if viewModel.isTaskUpdated() {
+            // call api to edit task
+            editTask()
+        }
+    }
+    
+    // MARK: - API Calls
+    func assignTask() {
+        let userId = String(format: "%d", viewModel.assigneeUserId)
+        let params = AssignUserBody(assignee: userId)
+        viewModel.assignTask(with: viewModel.taskID, params: params) {[weak self] data, error in
+            guard let sSelf = self else { return }
+            if sSelf.viewModel.isTaskUpdated() {
+                sSelf.editTask()
+            } else {
+                sSelf.backAndRefreshAction(isRefreshList: true)
             }
-            
-            if let taskDueDate = readOnlyTask.dueDate {
-                dateString = taskDueDate.dateString(format: "yyyy-MM-dd")
-            }
-            
-            let params = TaskBodyCreate(name: readOnlyTask.name,
-                                        priority: priority,
-                                        dueDate: dateString,
-                                        description: readOnlyTask.description)
-            AlfrescoLog.debug("------ save progress api ------- \(params)")
+        }
+    }
+    
+    func editTask() {
+        let priority = String(format: "%d", viewModel.priority)
+        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd")
+                
+        let params = TaskBodyCreate(name: viewModel.taskName,
+                                    priority: priority,
+                                    dueDate: dateString,
+                                    description: viewModel.taskDescription)
+        
+        viewModel.editTaskDetails(with: viewModel.taskID, params: params) {[weak self] data, error in
+            guard let sSelf = self else { return }
+            sSelf.backAndRefreshAction(isRefreshList: true)
         }
     }
     
@@ -400,10 +419,16 @@ class TaskDetailViewController: SystemSearchViewController {
         viewModel.completeTask(with: taskID) {[weak self] isSuccess in
             guard let sSelf = self else { return }
             if isSuccess {
-                sSelf.viewModel.didRefreshTaskList?()
-                sSelf.navigationController?.popViewController(animated: true)
+                sSelf.backAndRefreshAction(isRefreshList: true)
             }
         }
+    }
+    
+    private func backAndRefreshAction(isRefreshList: Bool) {
+        if isRefreshList {
+            self.viewModel.didRefreshTaskList?()
+        }
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func showTaskDescription() {
@@ -502,6 +527,10 @@ extension TaskDetailViewController {
         updateCompleteTaskUI()
         controller.buildViewModel()
         storeReadOnlyTaskDetails()
+        
+        if !viewModel.isEditTask {
+            saveEdittedTask()
+        }
     }
     
     private func storeReadOnlyTaskDetails() {

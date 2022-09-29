@@ -69,7 +69,7 @@ class TaskNodeOperations: NSObject {
     static func processTaskAssignee(for assignee: [TaskAssignee]) -> [TaskNodeAssignee] {
         var taskAssignee: [TaskNodeAssignee] = []
         for user in assignee {
-            let nodeAssignee = TaskNodeAssignee(assigneeID: user.id ?? -1,
+            let nodeAssignee = TaskNodeAssignee(assigneeID: user.id ,
                                             firstName: user.firstName,
                                             lastName: user.lastName,
                                             email: user.email)
