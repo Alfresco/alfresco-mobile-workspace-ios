@@ -36,7 +36,12 @@ class TaskPropertiesViewModel: NSObject {
     }
     
     var userName: String? {
-        return task?.assignee?.userName
+        let apsUserID = UserProfile.apsUserID
+        if apsUserID == assigneeUserId {
+            return LocalizationConstants.EditTask.meTitle
+        } else {
+            return task?.assignee?.userName
+        }
     }
     
     var assigneeUserId: Int {

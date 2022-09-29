@@ -349,5 +349,7 @@ struct LocalizationConstants {
         static let nameAndDescription = NSLocalizedString("name-and-description", comment: "")
         static let byName = NSLocalizedString("by-name", comment: "")
         static let byEmail = NSLocalizedString("by-email", comment: "")
+        static let meTitle = NSLocalizedString("me-title", comment: "")
+        static let searchPlaceholder = NSLocalizedString("search-placeholder", comment: "")
     }
 }
