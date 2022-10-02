@@ -52,7 +52,7 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
     
     func isAssigneeChanged() -> Bool {
         let userId = readOnlyTask?.assignee?.assigneeID ?? -1
-        if assigneeUserId != userId {
+        if userId != -1 && assigneeUserId != userId {
             return true
         }
         return false

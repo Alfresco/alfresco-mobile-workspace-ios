@@ -364,5 +364,4 @@
 "by-email" = "By E-mail";
 "me-title" = "Me";
 "search-placeholder" = "Search...";
-"task-progress" = "Task Progress";
-"task-progress-message" = "Do you want to save progress?";
+"dialog-discard-edit-task-message" = "Edit Task will be discarded if you exit.";

@@ -119,7 +119,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     
     func addAccessibility() {
         progressView.isAccessibilityElement = false
-        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.back
         dismissButton.accessibilityIdentifier = "cancel"
         nameButton.accessibilityLabel = nameTitleLabel.text
         nameButton.accessibilityIdentifier = "searchByName"

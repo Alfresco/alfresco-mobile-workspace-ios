@@ -182,67 +182,6 @@ class TaskDetailViewController: SystemSearchViewController {
         }
     }
     
-    private func showAlertToSaveProgress() {
-        let title = LocalizationConstants.EditTask.taskProgressAlertTitle
-        let message = LocalizationConstants.EditTask.taskProgressAlertMessage
-
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.saveEdittedTask()
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-        
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.backAndRefreshAction(isRefreshList: false)
-        }
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        _ = self.showDialog(title: title,
-                                       message: message,
-                                       actions: [confirmAction, cancelAction],
-                                       completionHandler: {})
-    }
-    
-    private func saveEdittedTask() {
-        if viewModel.isAssigneeChanged() {
-            // call api to change assignee
-            assignTask()
-        } else if viewModel.isTaskUpdated() {
-            // call api to edit task
-            editTask()
-        }
-    }
-    
-    // MARK: - API Calls
-    func assignTask() {
-        let userId = String(format: "%d", viewModel.assigneeUserId)
-        let params = AssignUserBody(assignee: userId)
-        viewModel.assignTask(with: viewModel.taskID, params: params) {[weak self] data, error in
-            guard let sSelf = self else { return }
-            if sSelf.viewModel.isTaskUpdated() {
-                sSelf.editTask()
-            } else {
-                sSelf.backAndRefreshAction(isRefreshList: true)
-            }
-        }
-    }
-    
-    func editTask() {
-        let priority = String(format: "%d", viewModel.priority)
-        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd")
-                
-        let params = TaskBodyCreate(name: viewModel.taskName,
-                                    priority: priority,
-                                    dueDate: dateString,
-                                    description: viewModel.taskDescription)
-        
-        viewModel.editTaskDetails(with: viewModel.taskID, params: params) {[weak self] data, error in
-            guard let sSelf = self else { return }
-            sSelf.backAndRefreshAction(isRefreshList: true)
-        }
-    }
-    
     // MARK: - Set up Bindings
     private func setupBindings() {
         
@@ -640,5 +579,67 @@ extension TaskDetailViewController {
     private func updateAssignee(with assignee: TaskNodeAssignee) {
         viewModel.task?.assignee = assignee
         controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Task API Calls
+extension TaskDetailViewController {
+    
+    private func showAlertToSaveProgress() {
+        let title = LocalizationConstants.General.discard
+        let message = LocalizationConstants.EditTask.discardEditTaskAlertMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.backAndRefreshAction(isRefreshList: false)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    private func saveEdittedTask() {
+        if viewModel.isAssigneeChanged() {
+            // call api to change assignee
+            assignTask()
+        } else if viewModel.isTaskUpdated() {
+            // call api to edit task
+            editTask()
+        }
+    }
+    
+    func assignTask() {
+        let userId = String(format: "%d", viewModel.assigneeUserId)
+        let params = AssignUserBody(assignee: userId)
+        viewModel.assignTask(with: viewModel.taskID, params: params) {[weak self] data, error in
+            guard let sSelf = self else { return }
+            if sSelf.viewModel.isTaskUpdated() {
+                sSelf.editTask()
+            } else {
+                sSelf.viewModel.didRefreshTaskList?()
+            }
+        }
+    }
+    
+    func editTask() {
+        let priority = String(format: "%d", viewModel.priority)
+        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd")
+                
+        let params = TaskBodyCreate(name: viewModel.taskName,
+                                    priority: priority,
+                                    dueDate: dateString,
+                                    description: viewModel.taskDescription)
+        
+        viewModel.editTaskDetails(with: viewModel.taskID, params: params) {[weak self] data, error in
+            guard let sSelf = self else { return }
+            sSelf.viewModel.didRefreshTaskList?()
+        }
     }
 }
