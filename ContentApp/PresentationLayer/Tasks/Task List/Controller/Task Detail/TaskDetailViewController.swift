@@ -31,6 +31,7 @@ class TaskDetailViewController: SystemSearchViewController {
     let buttonWidth = 45.0
     var editButton = UIButton(type: .custom)
     private var dialogTransitionController: MDCDialogTransitionController?
+    let refreshGroup = DispatchGroup()
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -606,12 +607,18 @@ extension TaskDetailViewController {
     }
     
     private func saveEdittedTask() {
-        if viewModel.isAssigneeChanged() {
-            // call api to change assignee
+        
+        if viewModel.isAssigneeChanged() { // call api to change assignee
+            refreshGroup.enter()
             assignTask()
-        } else if viewModel.isTaskUpdated() {
-            // call api to edit task
+        }
+        if viewModel.isTaskUpdated() { // call api to edit task
+            refreshGroup.enter()
             editTask()
+        }
+
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {
+            self.viewModel.didRefreshTaskList?()
         }
     }
     
@@ -620,11 +627,7 @@ extension TaskDetailViewController {
         let params = AssignUserBody(assignee: userId)
         viewModel.assignTask(with: viewModel.taskID, params: params) {[weak self] data, error in
             guard let sSelf = self else { return }
-            if sSelf.viewModel.isTaskUpdated() {
-                sSelf.editTask()
-            } else {
-                sSelf.viewModel.didRefreshTaskList?()
-            }
+            sSelf.refreshGroup.leave()
         }
     }
     
@@ -639,7 +642,7 @@ extension TaskDetailViewController {
         
         viewModel.editTaskDetails(with: viewModel.taskID, params: params) {[weak self] data, error in
             guard let sSelf = self else { return }
-            sSelf.viewModel.didRefreshTaskList?()
+            sSelf.refreshGroup.leave()
         }
     }
 }
