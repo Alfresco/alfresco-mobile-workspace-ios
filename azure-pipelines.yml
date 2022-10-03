@@ -1,10 +1,4 @@
 trigger:
-- task: Xcode@5
-  inputs:
-    actions: 'build'
-    xcodeVersion: '13'
-    packageApp: false
-    signingOption: 'default'
 - main
 
 pool:
@@ -31,6 +25,14 @@ steps:
     restoreKeys: cocoapods
     path: $(cocoapods_path)
   displayName: Cache CocoaPods Specs
+
+- task: Xcode@5
+  inputs:
+    actions: 'build'
+    xcodeVersion: '13'
+    packageApp: false
+    signingOption: 'default'
+  displayName: Xcode Details
 
 - task: Cache@2
   inputs:
