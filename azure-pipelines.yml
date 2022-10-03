@@ -1,4 +1,10 @@
 trigger:
+- task: Xcode@5
+  inputs:
+    actions: 'build'
+    xcodeVersion: '13'
+    packageApp: false
+    signingOption: 'default'
 - main
 
 pool:
