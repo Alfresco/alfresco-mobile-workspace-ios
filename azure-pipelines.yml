@@ -1,6 +1,5 @@
 trigger:
 - main
-
 pool:
   vmImage: 'macos-latest'
 
@@ -29,7 +28,8 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'build'
-    xcodeVersion: '13'
+    xcWorkspacePath: '**/*.xcworkspace'
+    xcodeVersion: '12'
     packageApp: false
     signingOption: 'default'
   displayName: Xcode Details
