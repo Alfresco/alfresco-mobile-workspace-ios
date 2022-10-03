@@ -26,6 +26,7 @@ class TaskPropertiesViewModel: NSObject {
     var comments = Observable<[TaskCommentModel]>([])
     var attachments = Observable<[TaskAttachmentModel]>([])
     var didSelectTaskAttachment: ((TaskAttachmentModel) -> Void)?
+    var didSelectDeleteAttachment: ((TaskAttachmentModel) -> Void)?
 
     var taskName: String? {
         return task?.name

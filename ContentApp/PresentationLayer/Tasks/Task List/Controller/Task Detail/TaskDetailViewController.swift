@@ -238,6 +238,12 @@ class TaskDetailViewController: SystemSearchViewController {
             sSelf.didSelectAttachment(attachment: attachment)
         }
         
+        /* observer did select delete attachment */
+        viewModel.didSelectDeleteAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectDeleteAttachment(attachment: attachment)
+        }
+        
         /* observing read more description */
         controller.didSelectReadMoreActionForDescription = {
             self.showTaskDescription()
@@ -331,6 +337,10 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self, let path = path else { return }
             sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
         }
+    }
+    
+    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+        AlfrescoLog.debug("delete attachment id \(attachment.attachmentID)")
     }
     
     @IBAction func completeTaskButtonAction(_ sender: Any) {
