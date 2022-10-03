@@ -31,12 +31,15 @@ class TaskDetailViewController: SystemSearchViewController {
     let buttonWidth = 45.0
     var editButton = UIButton(type: .custom)
     private var dialogTransitionController: MDCDialogTransitionController?
+    let refreshGroup = DispatchGroup()
 
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        self.navigationItem.setHidesBackButton(true, animated: true)
+        addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyTheme()
@@ -101,8 +104,6 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func addAccessibility() {
-        self.navigationItem.backBarButtonItem?.accessibilityLabel = LocalizationConstants.Accessibility.back
-        self.navigationItem.backBarButtonItem?.accessibilityIdentifier = "back-button"
         progressView.isAccessibilityElement = false
     }
     
@@ -146,6 +147,39 @@ class TaskDetailViewController: SystemSearchViewController {
         } else {
             completeTaskView.isHidden = true
             tableView.contentInset.bottom = 50
+        }
+    }
+    
+    private func addBackButton() {
+        let backButton = UIButton(type: .custom)
+        backButton.accessibilityIdentifier = "backButton"
+        backButton.accessibilityLabel = LocalizationConstants.Accessibility.back
+        backButton.frame = CGRect(x: 0.0, y: 0.0,
+                                  width: 30.0,
+                                    height: 30.0)
+        backButton.imageView?.contentMode = .scaleAspectFill
+        backButton.layer.masksToBounds = true
+        backButton.addTarget(self,
+                               action: #selector(backButtonAction),
+                               for: UIControl.Event.touchUpInside)
+        backButton.setImage(UIImage(named: "ic-back"),
+                              for: .normal)
+
+        let searchBarButtonItem = UIBarButtonItem(customView: backButton)
+        searchBarButtonItem.accessibilityIdentifier = "backBarButton"
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 30.0)
+        currWidth?.isActive = true
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
+        currHeight?.isActive = true
+        self.navigationItem.leftBarButtonItem = searchBarButtonItem
+    }
+    
+    // MARK: - Back Button Action
+    @objc func backButtonAction() {
+        if viewModel.isEditTask && (viewModel.isTaskUpdated() || viewModel.isAssigneeChanged()) {
+            showAlertToSaveProgress()
+        } else {
+            self.backAndRefreshAction(isRefreshList: false)
         }
     }
     
@@ -325,10 +359,16 @@ class TaskDetailViewController: SystemSearchViewController {
         viewModel.completeTask(with: taskID) {[weak self] isSuccess in
             guard let sSelf = self else { return }
             if isSuccess {
-                sSelf.viewModel.didRefreshTaskList?()
-                sSelf.navigationController?.popViewController(animated: true)
+                sSelf.backAndRefreshAction(isRefreshList: true)
             }
         }
+    }
+    
+    private func backAndRefreshAction(isRefreshList: Bool) {
+        if isRefreshList {
+            self.viewModel.didRefreshTaskList?()
+        }
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func showTaskDescription() {
@@ -427,6 +467,10 @@ extension TaskDetailViewController {
         updateCompleteTaskUI()
         controller.buildViewModel()
         storeReadOnlyTaskDetails()
+        
+        if !viewModel.isEditTask {
+            saveEdittedTask()
+        }
     }
     
     private func storeReadOnlyTaskDetails() {
@@ -536,5 +580,69 @@ extension TaskDetailViewController {
     private func updateAssignee(with assignee: TaskNodeAssignee) {
         viewModel.task?.assignee = assignee
         controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Task API Calls
+extension TaskDetailViewController {
+    
+    private func showAlertToSaveProgress() {
+        let title = LocalizationConstants.General.discard
+        let message = LocalizationConstants.EditTask.discardEditTaskAlertMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.backAndRefreshAction(isRefreshList: false)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    private func saveEdittedTask() {
+        
+        if viewModel.isAssigneeChanged() { // call api to change assignee
+            refreshGroup.enter()
+            assignTask()
+        }
+        if viewModel.isTaskUpdated() { // call api to edit task
+            refreshGroup.enter()
+            editTask()
+        }
+
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {
+            self.viewModel.didRefreshTaskList?()
+        }
+    }
+    
+    func assignTask() {
+        let userId = String(format: "%d", viewModel.assigneeUserId)
+        let params = AssignUserBody(assignee: userId)
+        viewModel.assignTask(with: viewModel.taskID, params: params) {[weak self] data, error in
+            guard let sSelf = self else { return }
+            sSelf.refreshGroup.leave()
+        }
+    }
+    
+    func editTask() {
+        let priority = String(format: "%d", viewModel.priority)
+        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd")
+                
+        let params = TaskBodyCreate(name: viewModel.taskName,
+                                    priority: priority,
+                                    dueDate: dateString,
+                                    description: viewModel.taskDescription)
+        
+        viewModel.editTaskDetails(with: viewModel.taskID, params: params) {[weak self] data, error in
+            guard let sSelf = self else { return }
+            sSelf.refreshGroup.leave()
+        }
     }
 }
