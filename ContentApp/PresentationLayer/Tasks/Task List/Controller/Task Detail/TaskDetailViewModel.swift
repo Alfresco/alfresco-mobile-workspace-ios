@@ -42,12 +42,19 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
         let readOnlyTaskDueDate = getDueDate(for: readOnlyTask?.dueDate)
         let taskDueDate = getDueDate(for: dueDate)
         let taskPriority = readOnlyTask?.priority ?? -1
-        let userId = readOnlyTask?.assignee?.assigneeID ?? -1
 
-        if taskName != name || taskDescription != description || readOnlyTaskDueDate != taskDueDate || priority != taskPriority || assigneeUserId != userId {
+        if taskName != name || taskDescription != description || readOnlyTaskDueDate != taskDueDate || priority != taskPriority {
             return true
         }
         
+        return false
+    }
+    
+    func isAssigneeChanged() -> Bool {
+        let userId = readOnlyTask?.assignee?.assigneeID ?? -1
+        if userId != -1 && assigneeUserId != userId {
+            return true
+        }
         return false
     }
 }

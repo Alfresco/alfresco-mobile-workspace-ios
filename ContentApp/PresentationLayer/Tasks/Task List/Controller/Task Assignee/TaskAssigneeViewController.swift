@@ -52,7 +52,9 @@ class TaskAssigneeViewController: SystemThemableViewController {
         updateUIComponents()
         controller.buildViewModel()
         setupBindings()
-        searchTextField.becomeFirstResponder()
+        if !UIAccessibility.isVoiceOverRunning {
+            searchTextField.becomeFirstResponder()
+        }
         searchTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
     }
     
@@ -119,7 +121,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     
     func addAccessibility() {
         progressView.isAccessibilityElement = false
-        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.back
         dismissButton.accessibilityIdentifier = "cancel"
         nameButton.accessibilityLabel = nameTitleLabel.text
         nameButton.accessibilityIdentifier = "searchByName"

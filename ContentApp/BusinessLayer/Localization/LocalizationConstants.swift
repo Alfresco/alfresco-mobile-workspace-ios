@@ -36,6 +36,7 @@ struct LocalizationConstants {
         static let rename = NSLocalizedString("rename", comment: "")
         static let update = NSLocalizedString("update", comment: "")
         static let edit = NSLocalizedString("edit", comment: "")
+        static let discard = NSLocalizedString("discard", comment: "")
     }
 
     struct Buttons {
@@ -359,5 +360,6 @@ struct LocalizationConstants {
         static let byEmail = NSLocalizedString("by-email", comment: "")
         static let meTitle = NSLocalizedString("me-title", comment: "")
         static let searchPlaceholder = NSLocalizedString("search-placeholder", comment: "")
+        static let discardEditTaskAlertMessage = NSLocalizedString("dialog-discard-edit-task-message", comment: "")
     }
 }
