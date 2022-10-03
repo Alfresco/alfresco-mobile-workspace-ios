@@ -25,16 +25,6 @@ steps:
     path: $(cocoapods_path)
   displayName: Cache CocoaPods Specs
 
-- task: Xcode@5
-  inputs:
-    actions: 'build'
-    xcWorkspacePath: '**/ContentApp.xcworkspace'
-    scheme: 'ContentApp'
-    xcodeVersion: '12'
-    packageApp: false
-    signingOption: 'default'
-  displayName: Xcode Details
-
 - task: Cache@2
   inputs:
     key: 'pods | Podfile.lock'
