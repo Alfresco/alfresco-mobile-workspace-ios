@@ -40,7 +40,7 @@ class CreateTaskViewModel: TaskPropertiesViewModel {
         if task != nil {
             return LocalizationConstants.General.save
         }
-        return LocalizationConstants.Tasks.nextTitle
+        return LocalizationConstants.General.create
     }
 
     // MARK: - Init

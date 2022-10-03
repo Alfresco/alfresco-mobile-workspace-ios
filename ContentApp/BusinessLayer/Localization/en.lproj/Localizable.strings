@@ -364,3 +364,4 @@
 "by-email" = "By E-mail";
 "me-title" = "Me";
 "search-placeholder" = "Search...";
+"dialog-discard-edit-task-message" = "Do you want to discard the changes?";

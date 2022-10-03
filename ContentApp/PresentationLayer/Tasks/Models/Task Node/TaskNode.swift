@@ -18,7 +18,7 @@
 
 import AlfrescoContent
 
-class TaskNode {
+struct TaskNode {
     var guid = ""
     var taskID: String?
     var title = ""
@@ -136,7 +136,7 @@ class TaskNode {
 }
 
 // MARK: Task Assignee
-class TaskNodeAssignee: Codable {
+struct TaskNodeAssignee: Codable {
     var assigneeID: Int
     var firstName: String?
     var lastName: String?
