@@ -28,7 +28,8 @@ steps:
 - task: Xcode@5
   inputs:
     actions: 'build'
-    xcWorkspacePath: '**/*.xcworkspace'
+    xcWorkspacePath: '**/*. xcodeproj/project.xcworkspace - list'
+    scheme: 'ContentApp'
     xcodeVersion: '12'
     packageApp: false
     signingOption: 'default'
