@@ -339,10 +339,6 @@ class TaskDetailViewController: SystemSearchViewController {
         }
     }
     
-    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
-        AlfrescoLog.debug("delete attachment id \(attachment.attachmentID)")
-    }
-    
     @IBAction func completeTaskButtonAction(_ sender: Any) {
         if viewModel.isEditTask { return }
         let title = LocalizationConstants.Dialog.completeTaskTitle
@@ -653,6 +649,37 @@ extension TaskDetailViewController {
         viewModel.editTaskDetails(with: viewModel.taskID, params: params) {[weak self] data, error in
             guard let sSelf = self else { return }
             sSelf.refreshGroup.leave()
+        }
+    }
+}
+
+// MARK: - Delete Attachment
+extension TaskDetailViewController {
+    
+    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+        let title = LocalizationConstants.EditTask.deleteAttachmentAlertTitle
+        let message = LocalizationConstants.EditTask.deleteAttachmentAlertMessage
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.deleteAttachment(with: attachment.attachmentID)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    private func deleteAttachment(with attachmentID: Int?) {
+        viewModel.deleteAttachment(with: attachmentID) {[weak self] success in
+            guard let sSelf = self else { return }
+            if success {
+                AlfrescoLog.debug("delete attachment from the list")
+            }
         }
     }
 }

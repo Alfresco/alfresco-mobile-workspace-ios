@@ -365,3 +365,6 @@
 "me-title" = "Me";
 "search-placeholder" = "Search...";
 "dialog-discard-edit-task-message" = "Do you want to discard the changes?";
+"delete-attachment-alert-title" = "Delete Attachment";
+"delete-attachment-alert-message" = "Do you want to delete the attachment?";
+

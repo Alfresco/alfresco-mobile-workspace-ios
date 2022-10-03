@@ -244,3 +244,27 @@ extension TaskPropertiesViewModel {
         })
     }
 }
+
+// MARK: - Delete Attachment
+extension TaskPropertiesViewModel {
+    
+    func deleteAttachment(with attachmentID: Int?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
+        if let attachmentID, attachmentID != -1 {
+            let contentId = String(format: "%d", attachmentID)
+            self.isLoading.value = true
+            services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+                
+                TasksAPI.deleteRawContent(contentId: contentId) {[weak self] data, error in
+                    guard let sSelf = self else { return }
+                    sSelf.isLoading.value = false
+                    if data != nil {
+                        completionHandler(true)
+                    } else {
+                        completionHandler(false)
+                    }
+                }
+            })
+        }
+    }
+}
