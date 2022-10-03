@@ -52,7 +52,9 @@ class TaskAssigneeViewController: SystemThemableViewController {
         updateUIComponents()
         controller.buildViewModel()
         setupBindings()
-        searchTextField.becomeFirstResponder()
+        if !UIAccessibility.isVoiceOverRunning {
+            searchTextField.becomeFirstResponder()
+        }
         searchTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
     }
     
