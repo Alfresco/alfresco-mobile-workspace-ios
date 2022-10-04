@@ -248,7 +248,27 @@ extension TaskPropertiesViewModel {
 // MARK: - Delete Attachment
 extension TaskPropertiesViewModel {
     
-    func deleteAttachment(with attachmentID: Int?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
+    func showDeleteAttachmentAlert(for attachment: TaskAttachmentModel?, on controller: UIViewController?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
+        
+        let title = LocalizationConstants.EditTask.deleteAttachmentAlertTitle
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.deleteAttachment(with: attachment?.attachmentID) { success in
+                completionHandler(success)
+            }
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = controller?.showDialog(title: title,
+                                   message: attachment?.name,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    private func deleteAttachment(with attachmentID: Int?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
         if let attachmentID, attachmentID != -1 {
             let contentId = String(format: "%d", attachmentID)
             self.isLoading.value = true

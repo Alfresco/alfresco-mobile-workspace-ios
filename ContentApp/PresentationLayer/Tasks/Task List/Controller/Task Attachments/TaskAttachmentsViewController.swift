@@ -216,28 +216,22 @@ extension TaskAttachmentsViewController: UITableViewDelegate, UITableViewDataSou
 extension TaskAttachmentsViewController {
     
     private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
-        let title = LocalizationConstants.EditTask.deleteAttachmentAlertTitle
-        let message = LocalizationConstants.EditTask.deleteAttachmentAlertMessage
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.deleteAttachment(with: attachment.attachmentID)
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-        
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        _ = self.showDialog(title: title,
-                                       message: message,
-                                       actions: [confirmAction, cancelAction],
-                                       completionHandler: {})
-    }
-    
-    private func deleteAttachment(with attachmentID: Int?) {
-        viewModel.deleteAttachment(with: attachmentID) {[weak self] success in
+        viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
             guard let sSelf = self else { return }
             if success {
-                AlfrescoLog.debug("delete attachment from the list")
+                sSelf.deleteAttachmentFromList(attachment: attachment)
+            }
+        }
+    }
+    
+    private func deleteAttachmentFromList(attachment: TaskAttachmentModel) {
+        var attachments = viewModel.attachments.value
+        if let index = attachments.firstIndex(where: {$0.attachmentID == attachment.attachmentID}) {
+            attachments.remove(at: index)
+            viewModel.attachments.value = attachments
+            controller.buildViewModel()
+            if attachments.isEmpty {
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }
