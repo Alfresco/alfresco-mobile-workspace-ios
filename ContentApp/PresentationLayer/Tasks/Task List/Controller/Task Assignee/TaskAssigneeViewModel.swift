@@ -47,6 +47,7 @@ class TaskAssigneeViewModel: NSObject {
     
     // MARK: - GET Search user
     func searchUser(with filter: String?, email: String?, completionHandler: @escaping (_ assignee: [TaskNodeAssignee], _ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
 

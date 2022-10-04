@@ -468,6 +468,7 @@ extension TaskDetailViewController {
     }
     
     @objc func editButtonTapped() {
+        guard viewModel.services?.connectivityService?.hasInternetConnection() == true else { return }
         viewModel.isEditTask = !viewModel.isEditTask
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
         updateCompleteTaskUI()
