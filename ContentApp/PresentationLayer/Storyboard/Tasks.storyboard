@@ -747,10 +747,12 @@
                         <outlet property="emailButton" destination="LZg-k5-dqG" id="zhQ-GV-qZb"/>
                         <outlet property="emailLabel" destination="cOX-iv-eAz" id="Szv-m8-VfP"/>
                         <outlet property="emailRadioImageView" destination="oFW-iL-k0t" id="Zci-so-dNH"/>
+                        <outlet property="emailView" destination="ZoK-PZ-2hM" id="BcB-uJ-XQd"/>
                         <outlet property="headerView" destination="Pve-7g-rrg" id="3tr-Ie-jsp"/>
                         <outlet property="nameButton" destination="QmU-sY-aAe" id="Hca-sf-lBp"/>
                         <outlet property="nameRadioImageView" destination="tww-TF-407" id="5W1-Mp-5VM"/>
                         <outlet property="nameTitleLabel" destination="aP6-VK-8I5" id="MPd-yV-poh"/>
+                        <outlet property="nameView" destination="lO6-g6-ozB" id="Wig-yE-lKM"/>
                         <outlet property="progressView" destination="idJ-0N-a57" id="i8M-rf-t0f"/>
                         <outlet property="radioButtonsViewDivider" destination="23I-Tf-AWq" id="WmA-6X-cnq"/>
                         <outlet property="searchTextField" destination="G3m-aQ-HPd" id="p1z-lV-p3T"/>
