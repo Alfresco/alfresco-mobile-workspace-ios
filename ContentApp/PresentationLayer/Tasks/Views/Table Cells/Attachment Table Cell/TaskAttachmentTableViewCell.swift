@@ -17,12 +17,14 @@
 //
 
 import UIKit
+import MaterialComponents
 
 class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var attachmentView: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var deleteButton: MDCButton!
     var viewModel: TaskAttachmentTableCellViewModel?
 
     override func awakeFromNib() {
@@ -48,6 +50,10 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         viewModel?.didSelectTaskAttachment?()
     }
     
+    @IBAction func deleteButtonAction(_ sender: Any) {
+        viewModel?.didSelectDeleteAttachment?()
+    }
+    
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
@@ -58,5 +64,10 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         
         attachmentView.layer.borderWidth = 1.0
         attachmentView.layer.borderColor = currentTheme.neutral95Color.cgColor
+        
+        deleteButton.setImage(UIImage(named: "ic-attachment-delete-grey"), for: .normal)
+        deleteButton.tintColor = currentTheme.onSurface60Color
+        deleteButton.backgroundColor = .clear
+        deleteButton.imageView?.contentMode = .center
     }
 }

@@ -353,5 +353,6 @@ struct LocalizationConstants {
         static let meTitle = NSLocalizedString("me-title", comment: "")
         static let searchPlaceholder = NSLocalizedString("search-placeholder", comment: "")
         static let discardEditTaskAlertMessage = NSLocalizedString("dialog-discard-edit-task-message", comment: "")
+        static let deleteAttachmentAlertTitle = NSLocalizedString("delete-attachment-alert-title", comment: "")
     }
 }
