@@ -297,6 +297,12 @@ class TaskDetailController: NSObject {
                     guard let sSelf = self else { return }
                     sSelf.viewModel.didSelectTaskAttachment?(attachment)
                 }
+                
+                rowVM.didSelectDeleteAttachment = { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.viewModel.didSelectDeleteAttachment?(attachment)
+                }
+                
                 rowVMs.append(rowVM)
             }
         }

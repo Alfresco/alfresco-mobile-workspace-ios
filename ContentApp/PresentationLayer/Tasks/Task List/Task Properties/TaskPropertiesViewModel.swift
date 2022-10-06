@@ -26,6 +26,7 @@ class TaskPropertiesViewModel: NSObject {
     var comments = Observable<[TaskCommentModel]>([])
     var attachments = Observable<[TaskAttachmentModel]>([])
     var didSelectTaskAttachment: ((TaskAttachmentModel) -> Void)?
+    var didSelectDeleteAttachment: ((TaskAttachmentModel) -> Void)?
 
     var taskName: String? {
         return task?.name
@@ -186,7 +187,7 @@ extension TaskPropertiesViewModel {
     // MARK: - Assign Task
 
     func assignTask(taskId: String, assigneeId: String, completionHandler: @escaping ((_ data: TaskNode?, _ error: Error?) -> Void)) {
-        
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()

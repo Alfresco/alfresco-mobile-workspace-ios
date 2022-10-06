@@ -154,6 +154,12 @@ class TaskAttachmentsViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             sSelf.didSelectAttachment(attachment: attachment)
         }
+        
+        /* observer did select delete attachment */
+        viewModel.didSelectDeleteAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectDeleteAttachment(attachment: attachment)
+        }
     }
     
     private func getTaskAttachments() {
@@ -205,3 +211,29 @@ extension TaskAttachmentsViewController: UITableViewDelegate, UITableViewDataSou
         return UITableView.automaticDimension
     }
 }
+
+// MARK: - Delete Attachment
+extension TaskAttachmentsViewController {
+    
+    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+        viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
+            guard let sSelf = self else { return }
+            if success {
+                sSelf.deleteAttachmentFromList(attachment: attachment)
+            }
+        }
+    }
+    
+    private func deleteAttachmentFromList(attachment: TaskAttachmentModel) {
+        var attachments = viewModel.attachments.value
+        if let index = attachments.firstIndex(where: {$0.attachmentID == attachment.attachmentID}) {
+            attachments.remove(at: index)
+            viewModel.attachments.value = attachments
+            controller.buildViewModel()
+            if attachments.isEmpty {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+}
+

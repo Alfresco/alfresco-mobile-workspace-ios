@@ -221,6 +221,7 @@ class TaskCommentsViewController: SystemSearchViewController {
     }
     
     private func addComment(message: String?) {
+        guard viewModel.services?.connectivityService?.hasInternetConnection() == true else { return }
         if viewModel.isAddCommentAllowed(for: message).isAllowed {
             viewModel.isAddComment = true
             self.textView.text = nil

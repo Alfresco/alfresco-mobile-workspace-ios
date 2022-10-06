@@ -25,6 +25,7 @@ class TaskAttachmentTableCellViewModel: RowViewModel {
         return FileIcon.icon(for: mimeType)
     }
     var didSelectTaskAttachment: (() -> Void)?
+    var didSelectDeleteAttachment: (() -> Void)?
 
     func cellIdentifier() -> String {
         return "TaskAttachmentTableViewCell"
