@@ -26,7 +26,7 @@ extension TaskPropertiesViewModel {
     // MARK: - Task details
 
     func taskDetails(with taskId: String, completionHandler: @escaping (_ taskNodes: TaskNode?, _ error: Error?) -> Void) {
-        
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -51,6 +51,7 @@ extension TaskPropertiesViewModel {
     // MARK: - Task comment history
 
     func taskComments(with taskId: String, completionHandler: @escaping (_ taskComments: [TaskCommentModel], _ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -75,6 +76,7 @@ extension TaskPropertiesViewModel {
     // MARK: - Task add a comment
     
     func addTaskComment(with taskId: String, message: String, completionHandler: @escaping (_ taskComment: [TaskCommentModel], _ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -99,6 +101,7 @@ extension TaskPropertiesViewModel {
     // MARK: - Task attachments
 
     func taskAttachments(with taskId: String, completionHandler: @escaping (_ taskAttachments: [TaskAttachmentModel], _ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -184,6 +187,7 @@ extension TaskPropertiesViewModel {
     // MARK: - Task attachments
 
     func completeTask(with taskId: String, completionHandler: @escaping (_ isSuccess: Bool) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -202,7 +206,7 @@ extension TaskPropertiesViewModel {
     
     // MARK: - Edit Task
     func editTaskDetails(with taskId: String, params: TaskBodyCreate, completionHandler: @escaping ((_ data: TaskNode?, _ error: Error?) -> Void)) {
-        
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -224,7 +228,7 @@ extension TaskPropertiesViewModel {
     
     // MARK: - Assign Task
     func assignTask(with taskId: String, params: AssignUserBody, completionHandler: @escaping ((_ data: TaskNode?, _ error: Error?) -> Void)) {
-        
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -242,5 +246,50 @@ extension TaskPropertiesViewModel {
                 }
             }
         })
+    }
+}
+
+// MARK: - Delete Attachment
+extension TaskPropertiesViewModel {
+    
+    func showDeleteAttachmentAlert(for attachment: TaskAttachmentModel?, on controller: UIViewController?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
+        
+        let title = LocalizationConstants.EditTask.deleteAttachmentAlertTitle
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.deleteAttachment(with: attachment?.attachmentID) { success in
+                completionHandler(success)
+            }
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = controller?.showDialog(title: title,
+                                   message: attachment?.name,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    private func deleteAttachment(with attachmentID: Int?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
+        if let attachmentID, attachmentID != -1 {
+            let contentId = String(format: "%d", attachmentID)
+            self.isLoading.value = true
+            services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+                
+                TasksAPI.deleteRawContent(contentId: contentId) {[weak self] data, error in
+                    guard let sSelf = self else { return }
+                    sSelf.isLoading.value = false
+                    if data != nil {
+                        completionHandler(true)
+                    } else {
+                        completionHandler(false)
+                    }
+                }
+            })
+        }
     }
 }

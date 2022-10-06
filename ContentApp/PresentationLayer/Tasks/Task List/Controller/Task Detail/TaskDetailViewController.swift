@@ -238,6 +238,12 @@ class TaskDetailViewController: SystemSearchViewController {
             sSelf.didSelectAttachment(attachment: attachment)
         }
         
+        /* observer did select delete attachment */
+        viewModel.didSelectDeleteAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectDeleteAttachment(attachment: attachment)
+        }
+        
         /* observing read more description */
         controller.didSelectReadMoreActionForDescription = {
             self.showTaskDescription()
@@ -462,6 +468,7 @@ extension TaskDetailViewController {
     }
     
     @objc func editButtonTapped() {
+        guard viewModel.services?.connectivityService?.hasInternetConnection() == true else { return }
         viewModel.isEditTask = !viewModel.isEditTask
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
         updateCompleteTaskUI()
@@ -643,6 +650,28 @@ extension TaskDetailViewController {
         viewModel.editTaskDetails(with: viewModel.taskID, params: params) {[weak self] data, error in
             guard let sSelf = self else { return }
             sSelf.refreshGroup.leave()
+        }
+    }
+}
+
+// MARK: - Delete Attachment
+extension TaskDetailViewController {
+    
+    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+        viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
+            guard let sSelf = self else { return }
+            if success {
+                sSelf.deleteAttachmentFromList(attachment: attachment)
+            }
+        }
+    }
+    
+    private func deleteAttachmentFromList(attachment: TaskAttachmentModel) {
+        var attachments = viewModel.attachments.value
+        if let index = attachments.firstIndex(where: {$0.attachmentID == attachment.attachmentID}) {
+            attachments.remove(at: index)
+            viewModel.attachments.value = attachments
+            controller.buildViewModel()
         }
     }
 }
