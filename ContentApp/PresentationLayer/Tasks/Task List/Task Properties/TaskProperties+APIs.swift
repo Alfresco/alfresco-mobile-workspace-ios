@@ -274,7 +274,7 @@ extension TaskPropertiesViewModel {
     
     private func deleteAttachment(with attachmentID: Int?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }
-        if let attachmentID, attachmentID != -1 {
+        if let attachmentID = attachmentID, attachmentID != -1 {
             let contentId = String(format: "%d", attachmentID)
             self.isLoading.value = true
             services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in

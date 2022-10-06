@@ -33,6 +33,9 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var emailButton: MDCButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var nameView: UIView!
+    @IBOutlet weak var emailView: UIView!
+    
     var viewModel: TaskAssigneeViewModel { return controller.viewModel }
     lazy var controller: TaskAssigneeController = { return TaskAssigneeController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     typealias TaskAssigneeCallBack = (_ assignee: TaskNodeAssignee) -> Void
@@ -43,7 +46,15 @@ class TaskAssigneeViewController: SystemThemableViewController {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: true)
         
+        nameView.isAccessibilityElement = false
+        nameRadioImageView.isAccessibilityElement = false
+        nameTitleLabel.isAccessibilityElement = false
+        emailView.isAccessibilityElement = false
+        emailRadioImageView.isAccessibilityElement = false
+        emailLabel.isAccessibilityElement = false
+
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        setAccessibilitySequence()
         progressView.progress = 0
         progressView.mode = .indeterminate
         registerCells()
@@ -129,9 +140,16 @@ class TaskAssigneeViewController: SystemThemableViewController {
         emailButton.accessibilityLabel = emailLabel.text
         emailButton.accessibilityIdentifier = "searchByEmail"
         searchTextField.accessibilityLabel = LocalizationConstants.EditTask.searchPlaceholder
+    }
+    
+    private func setAccessibilitySequence() {
+        dismissButton.isAccessibilityElement = true
+        searchTextField.isAccessibilityElement = true
+        nameButton.isAccessibilityElement = true
+        emailButton.isAccessibilityElement = true
 
-        if let dismissButton = dismissButton, let nameButton = nameButton, let emailButton = emailButton, let searchField = searchTextField {
-            self.accessibilityElements = [dismissButton, searchField, nameButton, emailButton]
+        if let dismissButton = dismissButton, let searchField = searchTextField, let nameButton = nameButton, let emailButton = emailButton, let tView = tableView {
+            self.accessibilityElements = [dismissButton, searchField, nameButton, emailButton, tView]
         }
     }
     
