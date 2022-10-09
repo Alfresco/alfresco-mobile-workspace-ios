@@ -63,6 +63,9 @@
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstItem="nnW-be-8n6" firstAttribute="top" secondItem="uFr-Dz-pnm" secondAttribute="top" constant="25" id="8LE-Z4-t9U"/>
                                             <constraint firstItem="Aqw-1Y-4Nj" firstAttribute="leading" secondItem="uFr-Dz-pnm" secondAttribute="leading" constant="15" id="D16-Xb-wWK"/>
@@ -103,9 +106,6 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <bool key="isElement" value="YES"/>
-                        </accessibility>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="RDg-WX-Agz" secondAttribute="trailing" constant="15" id="0go-PQ-ppH"/>
                             <constraint firstItem="RDg-WX-Agz" firstAttribute="leading" secondItem="t8q-JM-V2H" secondAttribute="leading" constant="15" id="Xj1-tS-rOI"/>
@@ -129,6 +129,7 @@
                 <outlet property="deleteButton" destination="sba-m0-6t5" id="ket-fp-8vT"/>
                 <outlet property="iconImageView" destination="Aqw-1Y-4Nj" id="T7x-G9-5Zo"/>
                 <outlet property="title" destination="nnW-be-8n6" id="c1K-fr-B7h"/>
+                <outlet property="titleView" destination="uFr-Dz-pnm" id="ZNJ-06-edD"/>
             </connections>
             <point key="canvasLocation" x="273.91304347826087" y="47.544642857142854"/>
         </tableViewCell>
