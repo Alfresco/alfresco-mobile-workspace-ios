@@ -24,6 +24,7 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var attachmentView: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var deleteButton: MDCButton!
     var viewModel: TaskAttachmentTableCellViewModel?
 
@@ -41,9 +42,13 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-        baseView.accessibilityLabel = title.text
-        baseView.accessibilityIdentifier = "task-attachment"
-        baseView.accessibilityTraits = .button
+        titleView.accessibilityLabel = title.text
+        titleView.accessibilityIdentifier = "task-attachment"
+        titleView.accessibilityTraits = .button
+        
+        deleteButton.accessibilityLabel = LocalizationConstants.EditTask.deleteAttachmentAlertTitle
+        deleteButton.accessibilityIdentifier = "delete-attachment"
+        deleteButton.accessibilityTraits = .button
     }
     
     @IBAction func didSelectButtonAction(_ sender: Any) {
