@@ -68,9 +68,12 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
         editImageView.accessibilityTraits = .button
         editImageView.accessibilityLabel = LocalizationConstants.General.edit
         editImageView.accessibilityIdentifier = "edit"
-        
+                
         if let title = titleLabel, let priority = priorityLabel, let edit = editImageView {
-            self.accessibilityElements = [title, priority, edit]
+            self.accessibilityElements = [title, priority ]
+            if !editImageView.isHidden {
+                self.accessibilityElements?.append(edit)
+            }
         }
     }
     
