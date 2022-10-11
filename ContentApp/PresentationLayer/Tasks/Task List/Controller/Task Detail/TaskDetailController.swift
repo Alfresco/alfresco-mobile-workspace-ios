@@ -27,6 +27,7 @@ class TaskDetailController: NSObject {
     var didSelectResetDueDate: (() -> Void)?
     var didSelectPriority: (() -> Void)?
     var didSelectAssignee: (() -> Void)?
+    var didSelectAddAttachment: (() -> Void)?
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -51,6 +52,8 @@ class TaskDetailController: NSObject {
             return EmptyPlaceholderTableViewCell.cellIdentifier()
         case is TaskAttachmentTableCellViewModel:
             return TaskAttachmentTableViewCell.cellIdentifier()
+        case is AddAttachmentTableCellViewModel:
+            return AddAttachmentTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -98,6 +101,10 @@ class TaskDetailController: NSObject {
             
             if attachmentsHeaderCellVM() != nil {
                 rowViewModels.append(attachmentsHeaderCellVM()!)
+            }
+            
+            if addAttachmentCellVM() != nil {
+                rowViewModels.append(addAttachmentCellVM()!)
             }
             
             if attachmentsPlaceholderCellVM() != nil {
@@ -270,6 +277,20 @@ class TaskDetailController: NSObject {
                                                  isHideDetailButton: isHideDetailButton)
         rowVM.viewAllAction = {
             self.viewModel.viewAllAttachmentsAction?()
+        }
+        return rowVM
+    }
+    
+    private func addAttachmentCellVM() -> AddAttachmentTableCellViewModel? {
+        let attachmentsCount = viewModel.attachments.value.count
+        if viewModel.isTaskCompleted && attachmentsCount == 0 {
+            return nil
+        }
+        
+        let title = LocalizationConstants.EditTask.addAttachments
+        let rowVM = AddAttachmentTableCellViewModel(title: title)
+        rowVM.didSelectAddAttachment = {
+            self.didSelectAddAttachment?()
         }
         return rowVM
     }

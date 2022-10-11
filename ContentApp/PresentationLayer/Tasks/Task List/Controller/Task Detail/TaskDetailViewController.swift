@@ -101,6 +101,7 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.taskHeaderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskHeaderCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.emptyPlaceholderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.emptyPlaceholderCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.taskAttachment, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskAttachment)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.addTaskAttachment, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addTaskAttachment)
     }
     
     private func addAccessibility() {
@@ -273,6 +274,11 @@ class TaskDetailViewController: SystemSearchViewController {
         controller.didSelectAssignee = {
             self.changeAssigneeAction()
         }
+        
+        /* observer did select add attachment */
+        controller.didSelectAddAttachment = {
+            self.addAttachmentButtonAction()
+        }
     }
 
     private func getTaskDetails() {
@@ -420,6 +426,8 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? EmptyPlaceholderTableViewCell)?.applyTheme(with: theme)
             } else if cell is TaskAttachmentTableViewCell {
                 (cell as? TaskAttachmentTableViewCell)?.applyTheme(with: theme)
+            } else if cell is AddAttachmentTableViewCell {
+                (cell as? AddAttachmentTableViewCell)?.applyTheme(with: theme)
             }
         }
         
@@ -678,6 +686,39 @@ extension TaskDetailViewController {
             attachments.remove(at: index)
             viewModel.attachments.value = attachments
             controller.buildViewModel()
+        }
+    }
+}
+
+// MARK: - Add Attachment
+extension TaskDetailViewController {
+    
+    private func addAttachmentButtonAction() {
+        AnalyticsManager.shared.didTapUploadTaskAttachment()
+        
+        let actions = ActionsMenuFolderAttachments.actions()
+        let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
+                                                      coordinatorServices: coordinatorServices)
+        let viewController = ActionMenuViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        viewController.coordinatorServices = coordinatorServices
+        viewController.actionMenuModel = actionMenuViewModel
+        self.present(bottomSheet, animated: true, completion: nil)
+        viewController.didSelectAction = {[weak self] (action) in
+            guard let sSelf = self else { return }
+            sSelf.handleAction(action: action)
+        }
+    }
+    
+    private func handleAction(action: ActionMenu) {
+        if action.type.isCreateActions {
+            if action.type == .uploadMedia {
+                AlfrescoLog.debug("upload media")
+            } else if action.type == .createMedia {
+                AlfrescoLog.debug("create media")
+            } else if action.type == .uploadFiles {
+                AlfrescoLog.debug("upload files")
+            }
         }
     }
 }

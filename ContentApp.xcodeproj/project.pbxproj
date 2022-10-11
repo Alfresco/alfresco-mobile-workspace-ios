@@ -217,6 +217,9 @@
 		C96870EE289D37D0000E4DA0 /* TaskPropertiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96870ED289D37D0000E4DA0 /* TaskPropertiesViewModel.swift */; };
 		C9688BAC28D30DCC0020206C /* CreateTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9688BAB28D30DCB0020206C /* CreateTaskViewModel.swift */; };
 		C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */; };
+		C97338AD28F532340060B37A /* AddAttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97338AB28F532340060B37A /* AddAttachmentTableViewCell.swift */; };
+		C97338AE28F532340060B37A /* AddAttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C97338AC28F532340060B37A /* AddAttachmentTableViewCell.xib */; };
+		C97338B028F532450060B37A /* AddAttachmentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97338AF28F532450060B37A /* AddAttachmentTableCellViewModel.swift */; };
 		C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC602726959C00912015 /* SearchListComponentViewController.swift */; };
 		C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */; };
 		C973EC692726BD7D00912015 /* ListItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC672726BD7D00912015 /* ListItemTableViewCell.swift */; };
@@ -950,6 +953,9 @@
 		C96870ED289D37D0000E4DA0 /* TaskPropertiesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskPropertiesViewModel.swift; sourceTree = "<group>"; };
 		C9688BAB28D30DCB0020206C /* CreateTaskViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTaskViewModel.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
+		C97338AB28F532340060B37A /* AddAttachmentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentTableViewCell.swift; sourceTree = "<group>"; };
+		C97338AC28F532340060B37A /* AddAttachmentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttachmentTableViewCell.xib; sourceTree = "<group>"; };
+		C97338AF28F532450060B37A /* AddAttachmentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentTableCellViewModel.swift; sourceTree = "<group>"; };
 		C973EC602726959C00912015 /* SearchListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewController.swift; sourceTree = "<group>"; };
 		C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewModel.swift; sourceTree = "<group>"; };
 		C973EC672726BD7D00912015 /* ListItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -2084,6 +2090,16 @@
 			path = "Create Task";
 			sourceTree = "<group>";
 		};
+		C97338AA28F532170060B37A /* Add Attachment */ = {
+			isa = PBXGroup;
+			children = (
+				C97338AB28F532340060B37A /* AddAttachmentTableViewCell.swift */,
+				C97338AF28F532450060B37A /* AddAttachmentTableCellViewModel.swift */,
+				C97338AC28F532340060B37A /* AddAttachmentTableViewCell.xib */,
+			);
+			path = "Add Attachment";
+			sourceTree = "<group>";
+		};
 		C973EC5F2726957C00912015 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -2362,6 +2378,7 @@
 				C9205C8328A173A700DEF5AC /* Task Header */,
 				C93A246728A636D4005F46C2 /* Empty Placeholder */,
 				C93A246828A636D4005F46C2 /* Attachment Table Cell */,
+				C97338AA28F532170060B37A /* Add Attachment */,
 				C9AF1B0928DEDB590020D36A /* Assignee */,
 			);
 			path = "Table Cells";
@@ -3588,6 +3605,7 @@
 				C9AEE04A270D9D9E00880235 /* advance-search-config.json in Resources */,
 				C9A759B6289BD6FA006603E0 /* PriorityTableViewCell.xib in Resources */,
 				B9F17145256C115A00AD1E3A /* powerpoint.pptx in Resources */,
+				C97338AE28F532340060B37A /* AddAttachmentTableViewCell.xib in Resources */,
 				E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */,
 				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
 				E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */,
@@ -4124,6 +4142,7 @@
 				C9D4FAB5278329F50008C4AA /* FileAsset.swift in Sources */,
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
 				C92EBB2028B13B6B003DFA15 /* TaskAttachmentsViewController.swift in Sources */,
+				C97338B028F532450060B37A /* AddAttachmentTableCellViewModel.swift in Sources */,
 				C947C5B727D0C2FB0000D902 /* UploadFilesScreenCoordinator.swift in Sources */,
 				C9B28F1C28DC1AD000C01A91 /* TaskPriorityViewModel.swift in Sources */,
 				C99C6F8C28B7D623003A1EE1 /* UILabel+NumberOfLines.swift in Sources */,
@@ -4375,6 +4394,7 @@
 				F185B1A326175C8800407451 /* CameraStoryboardInstantiable.swift in Sources */,
 				E30ADEF524A1EB7400C8C4E2 /* DiskService.swift in Sources */,
 				C97BEB8026EB3AC700E05375 /* CollectionFlowLayout.swift in Sources */,
+				C97338AD28F532340060B37A /* AddAttachmentTableViewCell.swift in Sources */,
 				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
 				E3E0F82325CB09E500DBC6F6 /* APIConstants.swift in Sources */,
 				E30E341C24B87B7500836629 /* SearchChipItem.swift in Sources */,
