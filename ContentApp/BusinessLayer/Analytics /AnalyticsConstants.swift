@@ -48,12 +48,18 @@ enum Event {
         case taskFilterReset = "event_reset"
         case taskComplete = "event_task_complete"
         case createTask = "event_create_task"
+        case updateTask = "event_update_task_details"
+        case deleteTaskAttachment = "event_delete_task_attachment"
+        case editTask = "event_edit_task"
+        case doneTask = "event_done_task"
+        case uploadTaskAttachment = "event_upload_task_attachment"
     }
     
     enum API: String {
         case apiNewFolder = "event_api_new_folder"
         case apiUploadMedia = "event_api_upload_files"
         case apiLogin = "event_api_login"
+        case apiDeleteTaskAttachment = "event_api_delete_task_attachment"
     }
     
     enum Page: String {

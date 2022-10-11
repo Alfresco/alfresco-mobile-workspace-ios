@@ -477,6 +477,9 @@ extension TaskDetailViewController {
         
         if !viewModel.isEditTask {
             saveEdittedTask()
+            AnalyticsManager.shared.didTapDoneTask()
+        } else {
+            AnalyticsManager.shared.didTapEditTask()
         }
     }
     
@@ -625,6 +628,7 @@ extension TaskDetailViewController {
         }
 
         refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {
+            AnalyticsManager.shared.didUpdateTaskDetails()
             self.viewModel.didRefreshTaskList?()
         }
     }
@@ -658,8 +662,10 @@ extension TaskDetailViewController {
 extension TaskDetailViewController {
     
     private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+        AnalyticsManager.shared.didTapDeleteTaskAttachment()
         viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
             guard let sSelf = self else { return }
+            AnalyticsManager.shared.apiTracker(name: Event.API.apiDeleteTaskAttachment.rawValue, fileSize: 0, success: success)
             if success {
                 sSelf.deleteAttachmentFromList(attachment: attachment)
             }
