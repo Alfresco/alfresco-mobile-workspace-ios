@@ -119,7 +119,7 @@
     },
     {
       "id": "2:381938179637751040",
-      "lastPropertyId": "10:5866070128195577600",
+      "lastPropertyId": "11:5623670516983788288",
       "name": "UploadTransfer",
       "properties": [
         {
@@ -162,6 +162,11 @@
           "id": "10:5866070128195577600",
           "name": "localFilenamePath",
           "type": 9
+        },
+        {
+          "id": "11:5623670516983788288",
+          "name": "isTaskAttachment",
+          "type": 1
         }
       ],
       "relations": []

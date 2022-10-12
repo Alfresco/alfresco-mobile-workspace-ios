@@ -45,10 +45,10 @@ struct ActionsMenuFolderAttachments {
     static func actions() -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
         let actions1 = [
+                        ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
+                                       type: .createMedia),
                         ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
                                                    type: .uploadMedia),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
-                                                   type: .createMedia),
                         ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
                                                    type: .uploadFiles)]
         actions.append(actions1)

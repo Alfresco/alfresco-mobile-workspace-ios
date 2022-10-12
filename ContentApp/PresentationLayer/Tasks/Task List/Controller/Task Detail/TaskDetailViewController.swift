@@ -32,6 +32,9 @@ class TaskDetailViewController: SystemSearchViewController {
     var editButton = UIButton(type: .custom)
     private var dialogTransitionController: MDCDialogTransitionController?
     let refreshGroup = DispatchGroup()
+    private var cameraCoordinator: CameraScreenCoordinator?
+    private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -39,6 +42,7 @@ class TaskDetailViewController: SystemSearchViewController {
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         self.navigationItem.setHidesBackButton(true, animated: true)
+        controller.registerEvents()
         addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -713,12 +717,53 @@ extension TaskDetailViewController {
     private func handleAction(action: ActionMenu) {
         if action.type.isCreateActions {
             if action.type == .uploadMedia {
-                AlfrescoLog.debug("upload media")
+                showPhotoLibrary()
             } else if action.type == .createMedia {
-                AlfrescoLog.debug("create media")
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showCamera()
+                })
             } else if action.type == .uploadFiles {
-                AlfrescoLog.debug("upload files")
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showFiles()
+                })
             }
         }
+    }
+    
+    func showPhotoLibrary() {
+        if let presenter = self.navigationController {
+            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                            isTaskAttachment: true)
+            coordinator.start()
+            photoLibraryCoordinator = coordinator
+        }
+    }
+        
+    func showCamera() {
+        if let presenter = self.navigationController {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: taskNode(),
+                                                      isTaskAttachment: true)
+            coordinator.start()
+            cameraCoordinator = coordinator
+        }
+    }
+    
+    func showFiles() {
+        if let presenter = self.navigationController {
+            let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                           isTaskAttachment: true)
+            coordinator.start()
+            fileManagerCoordinator = coordinator
+        }
+    }
+    
+    func taskNode () -> ListNode {
+        return ListNode(guid: viewModel.taskID,
+                        title: viewModel.taskName ?? "",
+                        path: "",
+                        nodeType: .folder)
     }
 }

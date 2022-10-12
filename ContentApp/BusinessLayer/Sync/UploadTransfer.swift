@@ -29,6 +29,7 @@ class UploadTransfer: Entity, Codable {
     var localFilenamePath = ""
     // objectbox: convert = { "default": ".undefined" }
     var syncStatus: SyncStatus = .pending
+    var isTaskAttachment = false
 
     // Default initializer required by ObjectBox
 
@@ -39,13 +40,15 @@ class UploadTransfer: Entity, Codable {
          extensionType: String,
          mimetype: String,
          nodeDescription: String?,
-         localFilenamePath: String) {
+         localFilenamePath: String,
+         isTaskAttachment: Bool = false) {
         self.parentNodeId = parentNodeId
         self.nodeName = nodeName
         self.extensionType = extensionType
         self.mimetype = mimetype
         self.nodeDescription = nodeDescription ?? ""
         self.localFilenamePath = localFilenamePath
+        self.isTaskAttachment = isTaskAttachment
     }
 
     // MARK: - Public Helpers
@@ -74,5 +77,15 @@ class UploadTransfer: Entity, Codable {
         newVersion.markedFor = .upload
         newVersion.uploadLocalPath = localFilenamePath
         return newVersion
+    }
+    
+    func updateListNodeForAttachment(with attachment: TaskAttachmentModel) -> ListNode {
+        
+        let node = ListNode(guid: "0", title: nodeName + "." + extensionType, path: "", nodeType: .file)
+        node.id = UInt64(attachment.attachmentID ?? 0)
+        node.syncStatus = syncStatus
+        node.markedFor = .upload
+        node.uploadLocalPath = localFilenamePath
+        return node
     }
 }

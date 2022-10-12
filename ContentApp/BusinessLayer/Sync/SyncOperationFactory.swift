@@ -121,8 +121,13 @@ class SyncOperationFactory {
         var uploadOperations: [AsyncClosureOperation] = []
 
         for transfer in transfers {
-            let fileUploadOperation = uploadNodeContentOperation(transfer: transfer)
-            uploadOperations.append(fileUploadOperation)
+            if transfer.isTaskAttachment {
+                let fileUploadOperation = uploadTaskAttachmentOperation(transfer: transfer)
+                uploadOperations.append(fileUploadOperation)
+            } else {
+                let fileUploadOperation = uploadNodeContentOperation(transfer: transfer)
+                uploadOperations.append(fileUploadOperation)
+            }
         }
 
         return uploadOperations
@@ -411,5 +416,63 @@ class SyncOperationFactory {
     private func publishSyncStatusEvent(for listNode: ListNode) {
         let syncStatusEvent = SyncStatusEvent(node: listNode)
         eventBusService?.publish(event: syncStatusEvent, on: .mainQueue)
+    }
+    
+    // MARK: - Upload Task Attachmemnt
+    
+    private func uploadTaskAttachmentOperation(transfer: UploadTransfer) -> AsyncClosureOperation {
+        let operation = AsyncClosureOperation { [weak self] completion, operation in
+            guard let sSelf = self else { return }
+            transfer.syncStatus = .inProgress
+            sSelf.publishSyncStatusEvent(for: transfer.listNode())
+
+            let transferDataAccessor = UploadTransferDataAccessor()
+            let handleErrorCaseForTransfer = {
+                transfer.syncStatus = .error
+                sSelf.publishSyncStatusEvent(for: transfer.listNode())
+                transferDataAccessor.store(uploadTransfer: transfer)
+                completion()
+            }
+
+            sSelf.nodeOperations.sessionForCurrentAccount { _ in
+                guard let fileURL = transferDataAccessor.uploadLocalPath(for: transfer) else { return }
+                do {
+                    let fileData = try Data(contentsOf: fileURL)
+                    let fileSize = fileURL.fileSize
+                    let fileName = String(format: "%@.%@", transfer.nodeName, transfer.extensionType)
+
+                    TasksAPI.uploadRawContent(taskId: transfer.parentNodeId,
+                                              fileData: fileData,
+                                              fileName: fileName,
+                                              mimeType: transfer.mimetype) { data, error in
+                        if operation.isCancelled {
+                            completion()
+                        }
+                        
+                        if error == nil, let node = data {
+                            AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadTaskAttachment.rawValue, fileSize: fileSize, success: true)
+                            SyncSharedNodes.store(uploadedNode: transfer)
+                            transfer.syncStatus = .synced
+                            
+                            if let attachement = TaskAttachmentOperations.processAttachments(for: [node]).first {
+                                let listNode = transfer.updateListNodeForAttachment(with: attachement)
+                                sSelf.publishSyncStatusEvent(for: listNode)
+                                transferDataAccessor.updateNode(node: transfer)
+                            }
+                        } else {
+                            AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadTaskAttachment.rawValue, fileSize: fileSize, success: false)
+                            transfer.syncStatus = .error
+                            let listNode = transfer.listNode()
+                            sSelf.publishSyncStatusEvent(for: listNode)
+                            transferDataAccessor.store(uploadTransfer: transfer)
+                        }
+                        completion()
+                    }
+                } catch {
+                    handleErrorCaseForTransfer()
+                }
+            }
+        }
+        return operation
     }
 }

@@ -24,11 +24,14 @@ class CameraScreenCoordinator: NSObject, Coordinator {
     private var navigationViewController: UINavigationController?
     private let parentListNode: ListNode
     private var mediaFilesFolderPath: String?
+    var isTaskAttachment = false
     
     init(with presenter: UINavigationController,
-         parentListNode: ListNode) {
+         parentListNode: ListNode,
+         isTaskAttachment: Bool = false) {
         self.presenter = presenter
         self.parentListNode = parentListNode
+        self.isTaskAttachment = isTaskAttachment
     }
     
     func start() {
@@ -127,7 +130,8 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
                                                 extensionType: capturedAsset.type.ext,
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
-                                                localFilenamePath: assetURL.lastPathComponent)
+                                                localFilenamePath: assetURL.lastPathComponent,
+                                                isTaskAttachment: self.isTaskAttachment)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
         }

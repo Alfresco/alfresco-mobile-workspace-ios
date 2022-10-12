@@ -23,11 +23,14 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private let parentListNode: ListNode
     private var galleryDataSource: PhotoGalleryDataSource?
+    var isTaskAttachment = false
 
     init(with presenter: UINavigationController,
-         parentListNode: ListNode) {
+         parentListNode: ListNode,
+         isTaskAttachment: Bool = false) {
         self.parentListNode = parentListNode
         self.presenter = presenter
+        self.isTaskAttachment = isTaskAttachment
     }
     
     func start() {
@@ -103,7 +106,8 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
                                                 extensionType: capturedAsset.type.ext,
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
-                                                localFilenamePath: assetURL.lastPathComponent)
+                                                localFilenamePath: assetURL.lastPathComponent,
+                                                isTaskAttachment: self.isTaskAttachment)
             uploadTransfers.append(uploadTransfer)
         }
 

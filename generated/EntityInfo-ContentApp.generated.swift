@@ -471,8 +471,9 @@ extension UploadTransfer: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "nodeDescription", type: PropertyType.string, id: 4, uid: 8762750373210733056)
         try entityBuilder.addProperty(name: "localFilenamePath", type: PropertyType.string, id: 10, uid: 5866070128195577600)
         try entityBuilder.addProperty(name: "syncStatus", type: PropertyType.string, id: 6, uid: 370033443724301568)
+        try entityBuilder.addProperty(name: "isTaskAttachment", type: PropertyType.bool, id: 11, uid: 5623670516983788288)
 
-        try entityBuilder.lastProperty(id: 10, uid: 5866070128195577600)
+        try entityBuilder.lastProperty(id: 11, uid: 5623670516983788288)
     }
 }
 
@@ -525,6 +526,12 @@ extension UploadTransfer {
     ///
     ///     box.query { UploadTransfer.syncStatus.startsWith("X") }
     internal static var syncStatus: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 6, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.isTaskAttachment == true }
+    internal static var isTaskAttachment: Property<UploadTransfer, Bool, Void> { return Property<UploadTransfer, Bool, Void>(propertyId: 11, isPrimaryKey: false) }
 
     fileprivate func __setId(identifier: ObjectBox.Id) {
         self.id = Id(identifier)
@@ -596,6 +603,14 @@ extension ObjectBox.Property where E == UploadTransfer {
 
     internal static var syncStatus: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 6, isPrimaryKey: false) }
 
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .isTaskAttachment == true }
+
+    internal static var isTaskAttachment: Property<UploadTransfer, Bool, Void> { return Property<UploadTransfer, Bool, Void>(propertyId: 11, isPrimaryKey: false) }
+
 }
 
 
@@ -627,6 +642,7 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
 
         propertyCollector.collect(id, at: 2 + 2 * 1)
+        propertyCollector.collect(entity.isTaskAttachment, at: 2 + 2 * 11)
         propertyCollector.collect(dataOffset: propertyOffset_parentNodeId, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_nodeName, at: 2 + 2 * 3)
         propertyCollector.collect(dataOffset: propertyOffset_extensionType, at: 2 + 2 * 8)
@@ -647,6 +663,7 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         entity.nodeDescription = entityReader.read(at: 2 + 2 * 4)
         entity.localFilenamePath = entityReader.read(at: 2 + 2 * 10)
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 6)) ?? .undefined
+        entity.isTaskAttachment = entityReader.read(at: 2 + 2 * 11)
 
         return entity
     }

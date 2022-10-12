@@ -60,6 +60,7 @@ enum Event {
         case apiUploadMedia = "event_api_upload_files"
         case apiLogin = "event_api_login"
         case apiDeleteTaskAttachment = "event_api_delete_task_attachment"
+        case apiUploadTaskAttachment = "event_api_upload_task_attachment"
     }
     
     enum Page: String {

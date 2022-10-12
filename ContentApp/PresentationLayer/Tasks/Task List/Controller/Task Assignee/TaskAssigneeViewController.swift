@@ -52,6 +52,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
         emailView.isAccessibilityElement = false
         emailRadioImageView.isAccessibilityElement = false
         emailLabel.isAccessibilityElement = false
+        tableView.keyboardDismissMode = .onDrag
 
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         setAccessibilitySequence()

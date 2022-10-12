@@ -85,19 +85,19 @@ class UploadTransferDataAccessor: DataAccessor {
         return false
     }
 
-    func queryAll() -> [UploadTransfer] {
+    func queryAll(isTaskAttachments: Bool = false) -> [UploadTransfer] {
         guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
         
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
-                UploadTransfer.syncStatus != SyncStatus.synced.rawValue && UploadTransfer.syncStatus != SyncStatus.inProgress.rawValue
+                UploadTransfer.syncStatus != SyncStatus.synced.rawValue && UploadTransfer.syncStatus != SyncStatus.inProgress.rawValue &&
+                UploadTransfer.isTaskAttachment == isTaskAttachments
             }.build()
             return try query.find()
         } catch {
             AlfrescoLog.error("Unable to retrieve transfer information.")
         }
         return []
-       // databaseService?.queryAll(entity: UploadTransfer.self) ?? []
     }
     
     func queryAll(for parentNodeId: String,

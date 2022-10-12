@@ -166,6 +166,8 @@
 		C9205C8628A173C000DEF5AC /* TaskHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8428A173C000DEF5AC /* TaskHeaderTableViewCell.swift */; };
 		C9205C8728A173C000DEF5AC /* TaskHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9205C8528A173C000DEF5AC /* TaskHeaderTableViewCell.xib */; };
 		C9205C8928A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8828A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift */; };
+		C92466CC28F6D90800BAEE03 /* TaskAttachmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */; };
+		C92466CD28F6D92700BAEE03 /* TaskNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDD428905B6800819F86 /* TaskNode.swift */; };
 		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C928AE32282A5F4900378327 /* TestNodeViewModel.swift */; };
 		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
@@ -3955,6 +3957,7 @@
 				C9A9116527A7B997002EBC7F /* String+Paths.swift in Sources */,
 				C9A9114D27A7B90D002EBC7F /* MultipleChoiceViewModelProtocol.swift in Sources */,
 				C9A910FC27A7B789002EBC7F /* CALayer+Animations.swift in Sources */,
+				C92466CC28F6D90800BAEE03 /* TaskAttachmentModel.swift in Sources */,
 				C9A9112327A7B81B002EBC7F /* NeedHelpAIMSModel.swift in Sources */,
 				C9E17FE927A92CAD0006747E /* NodeChildMapper.swift in Sources */,
 				C9E1800E27A96DA30006747E /* AimsViewModel.swift in Sources */,
@@ -3993,6 +3996,7 @@
 				C918811727AA414C00F850DF /* AIMSSession.swift in Sources */,
 				C9A9116727A7B99E002EBC7F /* StringExtenion.swift in Sources */,
 				C9AFDF7B27B8EE32007233A5 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
+				C92466CD28F6D92700BAEE03 /* TaskNode.swift in Sources */,
 				C9A9116927A7B9A7002EBC7F /* UIConstants.swift in Sources */,
 				C9AFDF7127B8CA44007233A5 /* BrowseSectionCollectionReusableView.swift in Sources */,
 				C9AFDF8E27B8F3AD007233A5 /* ContextualSearchModel.swift in Sources */,

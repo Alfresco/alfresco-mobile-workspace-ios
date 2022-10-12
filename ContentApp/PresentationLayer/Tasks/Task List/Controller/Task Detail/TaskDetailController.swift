@@ -28,6 +28,8 @@ class TaskDetailController: NSObject {
     var didSelectPriority: (() -> Void)?
     var didSelectAssignee: (() -> Void)?
     var didSelectAddAttachment: (() -> Void)?
+    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -332,5 +334,51 @@ class TaskDetailController: NSObject {
     
     func updateLatestComment() {
         buildViewModel()
+    }
+}
+
+// MARK: - Task Attachments
+extension TaskDetailController: EventObservable {
+    
+    func registerEvents() {
+        viewModel.services?.eventBusService?.register(observer: self,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
+    }
+    
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
+        }
+    }
+    
+    func handleSyncStatus(event: SyncStatusEvent) {
+        
+        var attachments = [TaskAttachmentModel]()
+        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID) { [weak self] uploadTransfers in
+            guard let sSelf = self else { return }
+            for transfer in uploadTransfers {
+                let attachment = sSelf.attachment(from: transfer)
+                attachments.append(attachment)
+            }
+            
+            attachments = attachments + sSelf.viewModel.attachments.value
+            sSelf.viewModel.attachments.value = attachments
+            sSelf.buildViewModel()
+        }
+    }
+    
+    func attachment(from node: UploadTransfer) -> TaskAttachmentModel {
+        return TaskAttachmentModel(attachmentID: Int(node.id),
+                                             name: node.nodeName,
+                                             created: nil,
+                                             createdBy: nil,
+                                             relatedContent: nil,
+                                             contentAvailable: nil,
+                                             link: nil,
+                                             mimeType: node.mimetype,
+                                             simpleType: nil,
+                                             previewStatus: nil,
+                                             thumbnailStatus: nil)
     }
 }

@@ -112,7 +112,7 @@ extension TaskPropertiesViewModel {
                 if data != nil {
                     if let taskAttachments = data?.data {
                         let attachements = TaskAttachmentOperations.processAttachments(for: taskAttachments)
-                        completionHandler(attachements, nil)
+                        completionHandler(attachements.reversed(), nil)
                     } else {
                         completionHandler([], nil)
                     }
