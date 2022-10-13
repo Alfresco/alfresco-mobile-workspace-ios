@@ -105,8 +105,9 @@ extension TaskAttachmentsController: EventObservable {
     }
     
     func attachment(from node: UploadTransfer) -> TaskAttachmentModel {
+        let name = String(format: "%@.%@", node.nodeName, node.extensionType)
         return TaskAttachmentModel(attachmentID: Int(node.id),
-                                             name: node.nodeName,
+                                             name: name,
                                              created: nil,
                                              createdBy: nil,
                                              relatedContent: nil,
