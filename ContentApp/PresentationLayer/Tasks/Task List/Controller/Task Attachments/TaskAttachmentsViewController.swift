@@ -28,13 +28,17 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     var refreshControl: UIRefreshControl?
     var viewModel: TaskAttachmentsControllerViewModel { return controller.viewModel }
     lazy var controller: TaskAttachmentsController = { return TaskAttachmentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
-    
+    private var cameraCoordinator: CameraScreenCoordinator?
+    private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
+
     // MARK: - View did load
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        controller.registerEvents()
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyLocalization()
@@ -102,10 +106,6 @@ class TaskAttachmentsViewController: SystemSearchViewController {
             sSelf.getTaskAttachments()
         }
     }
-    
-    @IBAction func addAttachmentButtonAction(_ sender: Any) {
-    }
-    
     
     // MARK: - Public Helpers
 
@@ -248,3 +248,76 @@ extension TaskAttachmentsViewController {
     }
 }
 
+// MARK: - Add Attachment
+extension TaskAttachmentsViewController {
+    
+    @IBAction func addAttachmentButtonAction(_ sender: Any) {
+        AnalyticsManager.shared.didTapUploadTaskAttachment()
+        
+        let actions = ActionsMenuFolderAttachments.actions()
+        let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
+                                                      coordinatorServices: coordinatorServices)
+        let viewController = ActionMenuViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        viewController.coordinatorServices = coordinatorServices
+        viewController.actionMenuModel = actionMenuViewModel
+        self.present(bottomSheet, animated: true, completion: nil)
+        viewController.didSelectAction = {[weak self] (action) in
+            guard let sSelf = self else { return }
+            sSelf.handleAction(action: action)
+        }
+    }
+    
+    private func handleAction(action: ActionMenu) {
+        if action.type.isCreateActions {
+            if action.type == .uploadMedia {
+                showPhotoLibrary()
+            } else if action.type == .createMedia {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showCamera()
+                })
+            } else if action.type == .uploadFiles {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showFiles()
+                })
+            }
+        }
+    }
+    
+    func showPhotoLibrary() {
+        if let presenter = self.navigationController {
+            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                            isTaskAttachment: true)
+            coordinator.start()
+            photoLibraryCoordinator = coordinator
+        }
+    }
+        
+    func showCamera() {
+        if let presenter = self.navigationController {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: taskNode(),
+                                                      isTaskAttachment: true)
+            coordinator.start()
+            cameraCoordinator = coordinator
+        }
+    }
+    
+    func showFiles() {
+        if let presenter = self.navigationController {
+            let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                           isTaskAttachment: true)
+            coordinator.start()
+            fileManagerCoordinator = coordinator
+        }
+    }
+    
+    func taskNode () -> ListNode {
+        return ListNode(guid: viewModel.taskID,
+                        title: viewModel.taskName ?? "",
+                        path: "",
+                        nodeType: .folder)
+    }
+}

@@ -21,6 +21,8 @@ import UIKit
 class TaskAttachmentsController: NSObject {
     let viewModel: TaskAttachmentsControllerViewModel
     var currentTheme: PresentationTheme?
+    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: TaskAttachmentsControllerViewModel = TaskAttachmentsControllerViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -65,5 +67,54 @@ class TaskAttachmentsController: NSObject {
             }
         }
         return rowVMs
+    }
+}
+
+
+// MARK: - Task Attachments
+extension TaskAttachmentsController: EventObservable {
+    
+    func registerEvents() {
+        viewModel.services?.eventBusService?.register(observer: self,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
+    }
+    
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
+        }
+    }
+    
+    func handleSyncStatus(event: SyncStatusEvent) {
+        
+        var taskAttachments = viewModel.attachments.value
+        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachments: true) { [weak self] uploadTransfers in
+            guard let sSelf = self else { return }
+            for transfer in uploadTransfers {
+                let attachment = sSelf.attachment(from: transfer)
+                let attachmentsArray = taskAttachments.filter {$0.attachmentID ?? -1 == transfer.id}
+                if attachmentsArray.isEmpty {
+                    taskAttachments.insert(attachment, at: 0)
+                }
+            }
+            
+            sSelf.viewModel.attachments.value = taskAttachments
+            sSelf.buildViewModel()
+        }
+    }
+    
+    func attachment(from node: UploadTransfer) -> TaskAttachmentModel {
+        return TaskAttachmentModel(attachmentID: Int(node.id),
+                                             name: node.nodeName,
+                                             created: nil,
+                                             createdBy: nil,
+                                             relatedContent: nil,
+                                             contentAvailable: nil,
+                                             link: nil,
+                                             mimeType: node.mimetype,
+                                             simpleType: nil,
+                                             previewStatus: nil,
+                                             thumbnailStatus: nil)
     }
 }
