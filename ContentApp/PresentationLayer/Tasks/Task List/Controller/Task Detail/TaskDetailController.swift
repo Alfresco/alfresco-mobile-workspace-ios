@@ -354,16 +354,18 @@ extension TaskDetailController: EventObservable {
     
     func handleSyncStatus(event: SyncStatusEvent) {
         
-        var attachments = [TaskAttachmentModel]()
+        var taskAttachments = viewModel.attachments.value
         _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachments: true) { [weak self] uploadTransfers in
             guard let sSelf = self else { return }
             for transfer in uploadTransfers {
                 let attachment = sSelf.attachment(from: transfer)
-                attachments.append(attachment)
+                let attachmentsArray = taskAttachments.filter {$0.attachmentID ?? -1 == transfer.id}
+                if attachmentsArray.isEmpty {
+                    taskAttachments.insert(attachment, at: 0)
+                }
             }
             
-            attachments = attachments + sSelf.viewModel.attachments.value
-            sSelf.viewModel.attachments.value = attachments
+            sSelf.viewModel.attachments.value = taskAttachments
             sSelf.buildViewModel()
         }
     }
