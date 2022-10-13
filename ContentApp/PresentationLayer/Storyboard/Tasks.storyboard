@@ -804,6 +804,20 @@
                                     <outlet property="delegate" destination="xRV-ln-mE9" id="OKb-GB-Erk"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24p-SL-HP4" userLabel="addAttachmentButton" customClass="MDCFloatingButton">
+                                <rect key="frame" x="342" y="783" width="56" height="56"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createButton">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="KGz-rg-SH1"/>
+                                    <constraint firstAttribute="width" constant="56" id="hAz-Sa-koL"/>
+                                </constraints>
+                                <state key="normal" image="ic-button-create"/>
+                                <connections>
+                                    <action selector="addAttachmentButtonAction:" destination="xRV-ln-mE9" eventType="touchUpInside" id="KhZ-Vm-7Vh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Ysd-sx-pNT"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -814,13 +828,16 @@
                             <constraint firstItem="wW7-P7-lyf" firstAttribute="leading" secondItem="Ysd-sx-pNT" secondAttribute="leading" id="Cnf-uA-9fl"/>
                             <constraint firstItem="LOx-p6-ZdA" firstAttribute="trailing" secondItem="Ysd-sx-pNT" secondAttribute="trailing" id="Eff-OI-SB9"/>
                             <constraint firstItem="wW7-P7-lyf" firstAttribute="trailing" secondItem="Ysd-sx-pNT" secondAttribute="trailing" id="aPe-Ch-Fae"/>
+                            <constraint firstItem="Ysd-sx-pNT" firstAttribute="bottom" secondItem="24p-SL-HP4" secondAttribute="bottom" constant="23" id="fiU-cW-ULY"/>
                             <constraint firstItem="Wg1-6W-0Yx" firstAttribute="leading" secondItem="qtm-Mg-43U" secondAttribute="leading" id="hXm-q5-wu3"/>
+                            <constraint firstItem="Ysd-sx-pNT" firstAttribute="trailing" secondItem="24p-SL-HP4" secondAttribute="trailing" constant="16" id="jSc-8c-5J3"/>
                             <constraint firstItem="LOx-p6-ZdA" firstAttribute="top" secondItem="Wg1-6W-0Yx" secondAttribute="bottom" constant="5" id="mtS-zs-IFX"/>
                             <constraint firstItem="Ysd-sx-pNT" firstAttribute="bottom" secondItem="wW7-P7-lyf" secondAttribute="bottom" id="nVL-HT-jgO"/>
                             <constraint firstAttribute="trailing" secondItem="Wg1-6W-0Yx" secondAttribute="trailing" id="qtr-18-kNf"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addAttachmentButton" destination="24p-SL-HP4" id="ACY-KN-Faj"/>
                         <outlet property="attachmentsCountLabel" destination="uYB-Mf-POj" id="FYw-J0-zQt"/>
                         <outlet property="progressView" destination="Wg1-6W-0Yx" id="K64-Ng-9AX"/>
                         <outlet property="tableView" destination="wW7-P7-lyf" id="hIp-hy-jtY"/>
@@ -909,9 +926,9 @@
                                         </constraints>
                                         <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="ic_radio_button_unchecked" title="By Name" imagePadding="10">
-                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage"/>
-                                        </buttonConfiguration>
+                                        <state key="normal" title="By Name" image="ic_radio_button_unchecked">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration"/>
+                                        </state>
                                         <connections>
                                             <action selector="searchByNameButtonAction:" destination="y6w-PC-iMF" eventType="touchUpInside" id="AuI-SR-jct"/>
                                         </connections>
@@ -924,8 +941,7 @@
                                         <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="ic_radio_button_unchecked" title="By E-Mail" imagePadding="10"/>
+                                        <state key="normal" title="By E-Mail" image="ic_radio_button_unchecked"/>
                                         <connections>
                                             <action selector="searchByEmailButtonAction:" destination="y6w-PC-iMF" eventType="touchUpInside" id="WS4-Sq-qDe"/>
                                         </connections>

@@ -24,6 +24,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var attachmentsCountLabel: UILabel!
+    @IBOutlet weak var addAttachmentButton: MDCFloatingButton!
     var refreshControl: UIRefreshControl?
     var viewModel: TaskAttachmentsControllerViewModel { return controller.viewModel }
     lazy var controller: TaskAttachmentsController = { return TaskAttachmentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -90,6 +91,9 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         progressView.isAccessibilityElement = false
         attachmentsCountLabel.accessibilityTraits = .updatesFrequently
         attachmentsCountLabel.accessibilityLabel = attachmentsCountLabel.text
+        
+        addAttachmentButton.accessibilityLabel = LocalizationConstants.EditTask.addAttachments
+        addAttachmentButton.accessibilityIdentifier = "add-attachment"
     }
     
     @objc private func handlePullToRefresh() {
@@ -99,6 +103,10 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         }
     }
     
+    @IBAction func addAttachmentButtonAction(_ sender: Any) {
+    }
+    
+    
     // MARK: - Public Helpers
 
     override func applyComponentsThemes() {
@@ -106,6 +114,9 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         attachmentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        addAttachmentButton.backgroundColor = currentTheme.primaryT1Color
+        addAttachmentButton.tintColor = currentTheme.onPrimaryColor
+
     }
     
     func startLoading() {
