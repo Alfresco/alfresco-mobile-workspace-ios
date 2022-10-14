@@ -316,6 +316,13 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.viewModel.attachments.value = taskAttachments
+
+                // Insert nodes to be uploaded
+                var attachments = sSelf.viewModel.attachments.value
+                _ = sSelf.controller.uploadTransferDataAccessor.queryAll(for: sSelf.viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+                    sSelf.controller.insert(uploadTransfers: uploadTransfers, to: &attachments)
+                }
+                
                 sSelf.viewModel.isAttachmentsLoaded = true
                 sSelf.controller.buildViewModel()
             }

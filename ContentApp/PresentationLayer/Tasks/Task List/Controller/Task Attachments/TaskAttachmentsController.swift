@@ -21,7 +21,7 @@ import UIKit
 class TaskAttachmentsController: NSObject {
     let viewModel: TaskAttachmentsControllerViewModel
     var currentTheme: PresentationTheme?
-    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    let uploadTransferDataAccessor = UploadTransferDataAccessor()
     internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: TaskAttachmentsControllerViewModel = TaskAttachmentsControllerViewModel(), currentTheme: PresentationTheme?) {
@@ -103,7 +103,7 @@ extension TaskAttachmentsController: EventObservable {
         }
     }
     
-    private func insert(uploadTransfers: [UploadTransfer],
+    func insert(uploadTransfers: [UploadTransfer],
                         to list: inout [ListNode]) {
         uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()
