@@ -26,6 +26,7 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var deleteButton: MDCButton!
+    @IBOutlet weak var syncStatusImageView: UIImageView!
     var viewModel: TaskAttachmentTableCellViewModel?
 
     override func awakeFromNib() {
@@ -36,7 +37,11 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? TaskAttachmentTableCellViewModel else { return }
         self.viewModel = viewModel
-        title.text = viewModel.name
+        syncStatusImageView.isHidden = !viewModel.showSyncStatus
+        deleteButton.isHidden = viewModel.showSyncStatus
+        syncStatusImageView.image = viewModel.syncStatusImage
+
+        title.text = viewModel.syncStatus?.rawValue //viewModel.name
         iconImageView.image = viewModel.icon
         addAccessibility()
     }

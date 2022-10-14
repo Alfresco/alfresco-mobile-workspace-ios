@@ -208,3 +208,31 @@ extension TaskPropertiesViewModel {
         })
     }
 }
+
+// MARK: - Sync status
+extension TaskPropertiesViewModel {
+    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
+        if node.isAFileType() && node.markedFor == .upload {
+            let nodeSyncStatus = node.syncStatus
+            var entryListStatus: ListEntrySyncStatus
+
+            switch nodeSyncStatus {
+            case .pending:
+                entryListStatus = .pending
+            case .error:
+                entryListStatus = .error
+            case .inProgress:
+                entryListStatus = .inProgress
+            case .synced:
+                entryListStatus = .uploaded
+            default:
+                entryListStatus = .undefined
+            }
+
+            return entryListStatus
+        }
+
+        return node.isMarkedOffline() ? .markedForOffline : .undefined
+    }
+
+}

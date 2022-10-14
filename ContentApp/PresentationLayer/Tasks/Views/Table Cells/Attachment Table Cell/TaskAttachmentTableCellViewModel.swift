@@ -26,13 +26,43 @@ class TaskAttachmentTableCellViewModel: RowViewModel {
     }
     var didSelectTaskAttachment: (() -> Void)?
     var didSelectDeleteAttachment: (() -> Void)?
+    var syncStatus: ListEntrySyncStatus?
 
     func cellIdentifier() -> String {
         return "TaskAttachmentTableViewCell"
     }
     
-    init(name: String?, mimeType: String?) {
+    init(name: String?,
+         mimeType: String?,
+         syncStatus: ListEntrySyncStatus?) {
         self.name = name
         self.mimeType = mimeType
+        self.syncStatus = syncStatus
     }
+    
+    var showSyncStatus: Bool {
+        return (syncStatus != .undefined && syncStatus != .uploaded)
+    }
+    
+    var syncStatusImage: UIImage? {
+        return showSyncStatus ? UIImage(named: syncStatus?.rawValue ?? "") : nil
+
+    }
+    
+    
+//    var syncStatus: ListEntrySyncStatus = .undefined {
+//        didSet {
+//            let showSyncStatus = (syncStatus != .undefined && syncStatus != .uploaded)
+//            syncStatusImageView.isHidden = !showSyncStatus
+//            syncStatusImageView.image = showSyncStatus ? UIImage(named: syncStatus.rawValue) : nil
+//            
+//            if node?.markedFor == .upload {
+//                applyLayoutForUploading()
+//            } else {
+//                applyLayoutForDownloading()
+//            }
+//        }
+//    }
+    
+    
 }

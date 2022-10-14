@@ -483,17 +483,26 @@ extension TaskDetailViewController {
     
     @objc func editButtonTapped() {
         guard viewModel.services?.connectivityService?.hasInternetConnection() == true else { return }
-        viewModel.isEditTask = !viewModel.isEditTask
-        editButton.setTitle(viewModel.editButtonTitle, for: .normal)
-        updateCompleteTaskUI()
-        controller.buildViewModel()
-        storeReadOnlyTaskDetails()
-        
         if !viewModel.isEditTask {
-            saveEdittedTask()
-            AnalyticsManager.shared.didTapDoneTask()
-        } else {
+            viewModel.isEditTask = true
             AnalyticsManager.shared.didTapEditTask()
+            editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+            updateCompleteTaskUI()
+            controller.buildViewModel()
+            storeReadOnlyTaskDetails()
+
+        } else {
+            AnalyticsManager.shared.didTapDoneTask()
+            saveEdittedTask()
+        }
+    }
+    
+    private func updateUIAfterTaskEdit() {
+        DispatchQueue.main.async {
+            self.viewModel.isEditTask = false
+            self.editButton.setTitle(self.viewModel.editButtonTitle, for: .normal)
+            self.updateCompleteTaskUI()
+            self.controller.buildViewModel()
         }
     }
     
@@ -632,19 +641,27 @@ extension TaskDetailViewController {
     
     private func saveEdittedTask() {
         
+        var isTaskEdit = false
         if viewModel.isAssigneeChanged() { // call api to change assignee
+            isTaskEdit = true
             refreshGroup.enter()
             assignTask()
         }
         if viewModel.isTaskUpdated() { // call api to edit task
+            isTaskEdit = true
             refreshGroup.enter()
             editTask()
+        }
+        
+        if isTaskEdit == false {
+            self.updateUIAfterTaskEdit()
         }
 
         refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {
             AnalyticsManager.shared.didUpdateTaskDetails()
             self.checkForCompleteTaskButton()
             self.viewModel.didRefreshTaskList?()
+            self.updateUIAfterTaskEdit()
         }
     }
     

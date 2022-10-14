@@ -51,8 +51,10 @@ class TaskAttachmentsController: NSObject {
         let attachments = viewModel.attachments.value
         if !attachments.isEmpty {
             for attachment in attachments {
+                let syncStatus = viewModel.syncStatus(for: attachment)
                 let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
-                                                             mimeType: attachment.mimeType)
+                                                             mimeType: attachment.mimeType,
+                                                             syncStatus: syncStatus)
                 rowVM.didSelectTaskAttachment = { [weak self] in
                     guard let sSelf = self else { return }
                     sSelf.viewModel.didSelectTaskAttachment?(attachment)
