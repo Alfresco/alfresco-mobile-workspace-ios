@@ -285,6 +285,7 @@ extension TaskAttachmentsViewController {
     }
     
     func showPhotoLibrary() {
+        AnalyticsManager.shared.uploadPhotoforTasks()
         if let presenter = self.navigationController {
             let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
                                                             parentListNode: taskNode(),
@@ -295,6 +296,7 @@ extension TaskAttachmentsViewController {
     }
         
     func showCamera() {
+        AnalyticsManager.shared.takePhotoforTasks()
         if let presenter = self.navigationController {
             let coordinator = CameraScreenCoordinator(with: presenter,
                                                       parentListNode: taskNode(),
@@ -305,6 +307,7 @@ extension TaskAttachmentsViewController {
     }
     
     func showFiles() {
+        AnalyticsManager.shared.uploadFilesforTasks()
         if let presenter = self.navigationController {
             let coordinator = FileManagerScreenCoordinator(with: presenter,
                                                             parentListNode: taskNode(),

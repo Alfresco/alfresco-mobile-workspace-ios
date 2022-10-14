@@ -60,7 +60,9 @@ class TaskAssigneeViewModel: NSObject {
                     } else {
                         completionHandler([], nil)
                     }
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: true)
                 } else {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: false)
                     completionHandler([], error)
                 }
                 self.isLoading.value = false

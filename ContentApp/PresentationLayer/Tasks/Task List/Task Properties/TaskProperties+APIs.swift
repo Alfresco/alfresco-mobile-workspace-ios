@@ -235,15 +235,17 @@ extension TaskPropertiesViewModel {
             
             TasksAPI.assignTask(taskId: taskId, params: params) {[weak self] data, error in
                 guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
                 if data != nil {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiAssignUser.rawValue, fileSize: 0, success: true)
                     let taskNodes = TaskNodeOperations.processNodes(for: [data!])
                     if !taskNodes.isEmpty {
                         completionHandler(taskNodes.first, nil)
                     }
                 } else {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiAssignUser.rawValue, fileSize: 0, success: false)
                     completionHandler(nil, error)
                 }
+                sSelf.isLoading.value = false
             }
         })
     }
