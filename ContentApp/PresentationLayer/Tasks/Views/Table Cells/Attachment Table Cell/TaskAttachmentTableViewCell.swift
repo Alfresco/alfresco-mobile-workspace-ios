@@ -40,8 +40,9 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         syncStatusImageView.isHidden = !viewModel.showSyncStatus
         deleteButton.isHidden = viewModel.showSyncStatus
         syncStatusImageView.image = viewModel.syncStatusImage
-
-        title.text = viewModel.syncStatus?.rawValue //viewModel.name
+        applyLayoutForUploading()
+        
+        title.text = viewModel.name
         iconImageView.image = viewModel.icon
         addAccessibility()
     }
@@ -79,5 +80,31 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         deleteButton.tintColor = currentTheme.onSurface60Color
         deleteButton.backgroundColor = .clear
         deleteButton.imageView?.contentMode = .center
+        
+        syncStatusImageView.tintColor = currentTheme.onSurface60Color
+    }
+    
+    private func applyLayoutForUploading() {
+        switch viewModel?.syncStatus {
+        case .pending:
+            syncStatusImageView.image = UIImage(named: ListEntrySyncStatus.uploaded.rawValue)
+        case .inProgress:
+            startRotateSyncIcon()
+        default:
+            stopRotateSyncIcon()
+        }
+    }
+    
+    private func startRotateSyncIcon() {
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = NSNumber(value: .pi * 2.0)
+        rotationAnimation.duration = 3.0
+        rotationAnimation.isCumulative = true
+        rotationAnimation.repeatCount = .infinity
+        syncStatusImageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
+    }
+    
+    private func stopRotateSyncIcon() {
+        syncStatusImageView.layer.removeAnimation(forKey: "rotationAnimation")
     }
 }

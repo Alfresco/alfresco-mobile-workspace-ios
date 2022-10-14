@@ -94,7 +94,7 @@
                                         </connections>
                                     </button>
                                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ksx-g1-g3F">
-                                        <rect key="frame" x="381" y="27" width="12" height="12"/>
+                                        <rect key="frame" x="380" y="27" width="12" height="12"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nodeSyncStatusImageView">
                                             <bool key="isElement" value="YES"/>
                                         </accessibility>
@@ -107,13 +107,13 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="sba-m0-6t5" secondAttribute="trailing" id="BYN-xZ-pyn"/>
+                                    <constraint firstAttribute="trailing" secondItem="ksx-g1-g3F" secondAttribute="trailing" constant="20" id="HSi-TB-8Oo"/>
                                     <constraint firstItem="uFr-Dz-pnm" firstAttribute="top" secondItem="RDg-WX-Agz" secondAttribute="top" id="Owt-I8-w5F"/>
+                                    <constraint firstItem="ksx-g1-g3F" firstAttribute="centerY" secondItem="RDg-WX-Agz" secondAttribute="centerY" id="RHj-cS-HkL"/>
                                     <constraint firstAttribute="bottom" secondItem="uFr-Dz-pnm" secondAttribute="bottom" id="Rud-Vg-nkO"/>
                                     <constraint firstItem="sba-m0-6t5" firstAttribute="centerY" secondItem="RDg-WX-Agz" secondAttribute="centerY" id="e13-v9-jsH"/>
                                     <constraint firstItem="uFr-Dz-pnm" firstAttribute="leading" secondItem="RDg-WX-Agz" secondAttribute="leading" id="f5O-MV-UWK"/>
                                     <constraint firstAttribute="trailing" secondItem="uFr-Dz-pnm" secondAttribute="trailing" constant="50" id="k82-FX-AZl"/>
-                                    <constraint firstItem="ksx-g1-g3F" firstAttribute="centerY" secondItem="sba-m0-6t5" secondAttribute="centerY" id="sVG-uK-TeP"/>
-                                    <constraint firstItem="ksx-g1-g3F" firstAttribute="centerX" secondItem="sba-m0-6t5" secondAttribute="centerX" id="t5x-Kt-APg"/>
                                 </constraints>
                             </view>
                         </subviews>
