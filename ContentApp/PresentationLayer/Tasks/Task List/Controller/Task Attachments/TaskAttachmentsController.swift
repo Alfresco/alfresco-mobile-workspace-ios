@@ -21,6 +21,8 @@ import UIKit
 class TaskAttachmentsController: NSObject {
     let viewModel: TaskAttachmentsControllerViewModel
     var currentTheme: PresentationTheme?
+    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: TaskAttachmentsControllerViewModel = TaskAttachmentsControllerViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -49,8 +51,10 @@ class TaskAttachmentsController: NSObject {
         let attachments = viewModel.attachments.value
         if !attachments.isEmpty {
             for attachment in attachments {
-                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.name,
-                                                             mimeType: attachment.mimeType)
+                let syncStatus = viewModel.syncStatus(for: attachment)
+                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
+                                                             mimeType: attachment.mimeType,
+                                                             syncStatus: syncStatus)
                 rowVM.didSelectTaskAttachment = { [weak self] in
                     guard let sSelf = self else { return }
                     sSelf.viewModel.didSelectTaskAttachment?(attachment)
@@ -65,5 +69,49 @@ class TaskAttachmentsController: NSObject {
             }
         }
         return rowVMs
+    }
+}
+
+// MARK: - Task Attachments
+extension TaskAttachmentsController: EventObservable {
+    
+    func registerEvents() {
+        viewModel.services?.eventBusService?.register(observer: self,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
+    }
+    
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
+        }
+    }
+
+    func handleSyncStatus(event: SyncStatusEvent) {
+        var attachments = viewModel.attachments.value
+        let eventNode = event.node
+        for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
+            attachments[index] = eventNode
+            self.viewModel.attachments.value = attachments
+            self.buildViewModel()
+        }
+        
+        // Insert nodes to be uploaded
+        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+            self.insert(uploadTransfers: uploadTransfers,
+                        to: &attachments)
+        }
+    }
+    
+    private func insert(uploadTransfers: [UploadTransfer],
+                        to list: inout [ListNode]) {
+        uploadTransfers.forEach { transfer in
+            let listNode = transfer.listNode()
+            if !list.contains(listNode) {
+                list.insert(listNode, at: 0)
+                self.viewModel.attachments.value = list
+                self.buildViewModel()
+            }
+        }
     }
 }

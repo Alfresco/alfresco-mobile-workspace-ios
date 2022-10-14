@@ -100,7 +100,7 @@ extension TaskPropertiesViewModel {
     
     // MARK: - Task attachments
 
-    func taskAttachments(with taskId: String, completionHandler: @escaping (_ taskAttachments: [TaskAttachmentModel], _ error: Error?) -> Void) {
+    func taskAttachments(with taskId: String, completionHandler: @escaping (_ taskAttachments: [ListNode], _ error: Error?) -> Void) {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
@@ -111,7 +111,7 @@ extension TaskPropertiesViewModel {
                 sSelf.isLoading.value = false
                 if data != nil {
                     if let taskAttachments = data?.data {
-                        let attachements = TaskAttachmentOperations.processAttachments(for: taskAttachments)
+                        let attachements = TaskAttachmentOperations.processAttachments(for: taskAttachments, taskId: taskId)
                         completionHandler(attachements, nil)
                     } else {
                         completionHandler([], nil)
@@ -235,15 +235,17 @@ extension TaskPropertiesViewModel {
             
             TasksAPI.assignTask(taskId: taskId, params: params) {[weak self] data, error in
                 guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
                 if data != nil {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiAssignUser.rawValue, fileSize: 0, success: true)
                     let taskNodes = TaskNodeOperations.processNodes(for: [data!])
                     if !taskNodes.isEmpty {
                         completionHandler(taskNodes.first, nil)
                     }
                 } else {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiAssignUser.rawValue, fileSize: 0, success: false)
                     completionHandler(nil, error)
                 }
+                sSelf.isLoading.value = false
             }
         })
     }
@@ -252,12 +254,12 @@ extension TaskPropertiesViewModel {
 // MARK: - Delete Attachment
 extension TaskPropertiesViewModel {
     
-    func showDeleteAttachmentAlert(for attachment: TaskAttachmentModel?, on controller: UIViewController?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
+    func showDeleteAttachmentAlert(for attachment: ListNode?, on controller: UIViewController?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
         
         let title = LocalizationConstants.EditTask.deleteAttachmentAlertTitle
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
             guard let sSelf = self else { return }
-            sSelf.deleteAttachment(with: attachment?.attachmentID) { success in
+            sSelf.deleteAttachment(with: attachment?.guid) { success in
                 completionHandler(success)
             }
         }
@@ -267,27 +269,27 @@ extension TaskPropertiesViewModel {
         cancelAction.accessibilityIdentifier = "cancelActionButton"
 
         _ = controller?.showDialog(title: title,
-                                   message: attachment?.name,
+                                   message: attachment?.title,
                                        actions: [confirmAction, cancelAction],
                                        completionHandler: {})
     }
     
-    private func deleteAttachment(with attachmentID: Int?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
+    private func deleteAttachment(with attachmentID: String?, completionHandler: @escaping ((_ success: Bool) -> Void)) {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }
-        if let attachmentID = attachmentID, attachmentID != -1 {
-            let contentId = String(format: "%d", attachmentID)
+        if let attachmentID = attachmentID, attachmentID != "-1", !attachmentID.isEmpty {
             self.isLoading.value = true
+            let contentId = String(format: "%d", attachmentID)
             services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                 
                 TasksAPI.deleteRawContent(contentId: contentId) {[weak self] data, error in
                     guard let sSelf = self else { return }
-                    sSelf.isLoading.value = false
                     if data != nil {
                         completionHandler(true)
                     } else {
                         completionHandler(false)
                     }
+                    sSelf.isLoading.value = false
                 }
             })
         }

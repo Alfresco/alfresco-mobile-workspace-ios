@@ -24,16 +24,21 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var attachmentsCountLabel: UILabel!
+    @IBOutlet weak var addAttachmentButton: MDCFloatingButton!
     var refreshControl: UIRefreshControl?
     var viewModel: TaskAttachmentsControllerViewModel { return controller.viewModel }
     lazy var controller: TaskAttachmentsController = { return TaskAttachmentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
-    
+    private var cameraCoordinator: CameraScreenCoordinator?
+    private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
+
     // MARK: - View did load
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        controller.registerEvents()
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyLocalization()
@@ -90,6 +95,9 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         progressView.isAccessibilityElement = false
         attachmentsCountLabel.accessibilityTraits = .updatesFrequently
         attachmentsCountLabel.accessibilityLabel = attachmentsCountLabel.text
+        
+        addAttachmentButton.accessibilityLabel = LocalizationConstants.EditTask.addAttachments
+        addAttachmentButton.accessibilityIdentifier = "add-attachment"
     }
     
     @objc private func handlePullToRefresh() {
@@ -106,6 +114,9 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         attachmentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        addAttachmentButton.backgroundColor = currentTheme.primaryT1Color
+        addAttachmentButton.tintColor = currentTheme.onPrimaryColor
+
     }
     
     func startLoading() {
@@ -173,12 +184,16 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         }
     }
     
-    private func didSelectAttachment(attachment: TaskAttachmentModel) {
-        let title = attachment.name ?? ""
-        let attachmentId = String(format: "%d", attachment.attachmentID ?? -1)
-        viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
-            guard let sSelf = self, let path = path else { return }
-            sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+    private func didSelectAttachment(attachment: ListNode) {
+        if attachment.syncStatus == .undefined || attachment.syncStatus == .synced {
+            let title = attachment.title
+            let attachmentId = attachment.guid
+            viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
+                guard let sSelf = self, let path = path else { return }
+                sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+            }
+        } else {
+            viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
         }
     }
 }
@@ -215,7 +230,7 @@ extension TaskAttachmentsViewController: UITableViewDelegate, UITableViewDataSou
 // MARK: - Delete Attachment
 extension TaskAttachmentsViewController {
     
-    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+    private func didSelectDeleteAttachment(attachment: ListNode) {
         viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
             guard let sSelf = self else { return }
             if success {
@@ -224,9 +239,9 @@ extension TaskAttachmentsViewController {
         }
     }
     
-    private func deleteAttachmentFromList(attachment: TaskAttachmentModel) {
+    private func deleteAttachmentFromList(attachment: ListNode) {
         var attachments = viewModel.attachments.value
-        if let index = attachments.firstIndex(where: {$0.attachmentID == attachment.attachmentID}) {
+        if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
             attachments.remove(at: index)
             viewModel.attachments.value = attachments
             controller.buildViewModel()
@@ -237,3 +252,79 @@ extension TaskAttachmentsViewController {
     }
 }
 
+// MARK: - Add Attachment
+extension TaskAttachmentsViewController {
+    
+    @IBAction func addAttachmentButtonAction(_ sender: Any) {
+        AnalyticsManager.shared.didTapUploadTaskAttachment()
+        
+        let actions = ActionsMenuFolderAttachments.actions()
+        let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
+                                                      coordinatorServices: coordinatorServices)
+        let viewController = ActionMenuViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        viewController.coordinatorServices = coordinatorServices
+        viewController.actionMenuModel = actionMenuViewModel
+        self.present(bottomSheet, animated: true, completion: nil)
+        viewController.didSelectAction = {[weak self] (action) in
+            guard let sSelf = self else { return }
+            sSelf.handleAction(action: action)
+        }
+    }
+    
+    private func handleAction(action: ActionMenu) {
+        if action.type.isCreateActions {
+            if action.type == .uploadMedia {
+                showPhotoLibrary()
+            } else if action.type == .createMedia {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showCamera()
+                })
+            } else if action.type == .uploadFiles {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showFiles()
+                })
+            }
+        }
+    }
+    
+    func showPhotoLibrary() {
+        AnalyticsManager.shared.uploadPhotoforTasks()
+        if let presenter = self.navigationController {
+            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                            isTaskAttachment: true)
+            coordinator.start()
+            photoLibraryCoordinator = coordinator
+        }
+    }
+        
+    func showCamera() {
+        AnalyticsManager.shared.takePhotoforTasks()
+        if let presenter = self.navigationController {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: taskNode(),
+                                                      isTaskAttachment: true)
+            coordinator.start()
+            cameraCoordinator = coordinator
+        }
+    }
+    
+    func showFiles() {
+        AnalyticsManager.shared.uploadFilesforTasks()
+        if let presenter = self.navigationController {
+            let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                           isTaskAttachment: true)
+            coordinator.start()
+            fileManagerCoordinator = coordinator
+        }
+    }
+    
+    func taskNode () -> ListNode {
+        return ListNode(guid: viewModel.taskID,
+                        title: viewModel.taskName ?? "",
+                        path: "",
+                        nodeType: .folder)
+    }
+}

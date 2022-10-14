@@ -39,7 +39,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: true)
-
+        tableView.keyboardDismissMode = .onDrag
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         setAccessibilitySequence()
         progressView.progress = 0
@@ -108,7 +108,6 @@ class TaskAssigneeViewController: SystemThemableViewController {
         radioButtonsViewDivider.backgroundColor = currentTheme.onSurface15Color
         searchTextField.font = currentTheme.subtitle1TextStyle.font
         searchTextField.textColor = currentTheme.onSurfaceColor
-        
     }
     
     private func applyButtonTheme(theme: PresentationTheme) {

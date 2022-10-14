@@ -32,6 +32,9 @@ class TaskDetailViewController: SystemSearchViewController {
     var editButton = UIButton(type: .custom)
     private var dialogTransitionController: MDCDialogTransitionController?
     let refreshGroup = DispatchGroup()
+    private var cameraCoordinator: CameraScreenCoordinator?
+    private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -39,6 +42,7 @@ class TaskDetailViewController: SystemSearchViewController {
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         self.navigationItem.setHidesBackButton(true, animated: true)
+        controller.registerEvents()
         addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -101,6 +105,7 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.taskHeaderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskHeaderCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.emptyPlaceholderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.emptyPlaceholderCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.taskAttachment, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskAttachment)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.addTaskAttachment, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addTaskAttachment)
     }
     
     private func addAccessibility() {
@@ -141,12 +146,14 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func checkForCompleteTaskButton() {
-        if viewModel.isAllowedToCompleteTask() {
-            completeTaskView.isHidden = false
-            tableView.contentInset.bottom = 90
-        } else {
-            completeTaskView.isHidden = true
-            tableView.contentInset.bottom = 50
+        DispatchQueue.main.async {
+            if self.viewModel.isAllowedToCompleteTask() {
+                self.completeTaskView.isHidden = false
+                self.tableView.contentInset.bottom = 90
+            } else {
+                self.completeTaskView.isHidden = true
+                self.tableView.contentInset.bottom = 50
+            }
         }
     }
     
@@ -273,6 +280,11 @@ class TaskDetailViewController: SystemSearchViewController {
         controller.didSelectAssignee = {
             self.changeAssigneeAction()
         }
+        
+        /* observer did select add attachment */
+        controller.didSelectAddAttachment = {
+            self.addAttachmentButtonAction()
+        }
     }
 
     private func getTaskDetails() {
@@ -330,12 +342,16 @@ class TaskDetailViewController: SystemSearchViewController {
         }
     }
     
-    private func didSelectAttachment(attachment: TaskAttachmentModel) {
-        let title = attachment.name ?? ""
-        let attachmentId = String(format: "%d", attachment.attachmentID ?? -1)
-        viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
-            guard let sSelf = self, let path = path else { return }
-            sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+    private func didSelectAttachment(attachment: ListNode) {
+        if attachment.syncStatus == .undefined || attachment.syncStatus == .synced {
+            let title = attachment.title
+            let attachmentId = attachment.guid
+            viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
+                guard let sSelf = self, let path = path else { return }
+                sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+            }
+        } else {
+            viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
         }
     }
     
@@ -420,6 +436,8 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? EmptyPlaceholderTableViewCell)?.applyTheme(with: theme)
             } else if cell is TaskAttachmentTableViewCell {
                 (cell as? TaskAttachmentTableViewCell)?.applyTheme(with: theme)
+            } else if cell is AddAttachmentTableViewCell {
+                (cell as? AddAttachmentTableViewCell)?.applyTheme(with: theme)
             }
         }
         
@@ -469,17 +487,26 @@ extension TaskDetailViewController {
     
     @objc func editButtonTapped() {
         guard viewModel.services?.connectivityService?.hasInternetConnection() == true else { return }
-        viewModel.isEditTask = !viewModel.isEditTask
-        editButton.setTitle(viewModel.editButtonTitle, for: .normal)
-        updateCompleteTaskUI()
-        controller.buildViewModel()
-        storeReadOnlyTaskDetails()
-        
         if !viewModel.isEditTask {
-            saveEdittedTask()
-            AnalyticsManager.shared.didTapDoneTask()
-        } else {
+            viewModel.isEditTask = true
             AnalyticsManager.shared.didTapEditTask()
+            editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+            updateCompleteTaskUI()
+            controller.buildViewModel()
+            storeReadOnlyTaskDetails()
+
+        } else {
+            AnalyticsManager.shared.didTapDoneTask()
+            saveEdittedTask()
+        }
+    }
+    
+    private func updateUIAfterTaskEdit() {
+        DispatchQueue.main.async {
+            self.viewModel.isEditTask = false
+            self.editButton.setTitle(self.viewModel.editButtonTitle, for: .normal)
+            self.updateCompleteTaskUI()
+            self.controller.buildViewModel()
         }
     }
     
@@ -618,18 +645,27 @@ extension TaskDetailViewController {
     
     private func saveEdittedTask() {
         
+        var isTaskEdit = false
         if viewModel.isAssigneeChanged() { // call api to change assignee
+            isTaskEdit = true
             refreshGroup.enter()
             assignTask()
         }
         if viewModel.isTaskUpdated() { // call api to edit task
+            isTaskEdit = true
             refreshGroup.enter()
             editTask()
+        }
+        
+        if isTaskEdit == false {
+            self.updateUIAfterTaskEdit()
         }
 
         refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {
             AnalyticsManager.shared.didUpdateTaskDetails()
+            self.checkForCompleteTaskButton()
             self.viewModel.didRefreshTaskList?()
+            self.updateUIAfterTaskEdit()
         }
     }
     
@@ -661,7 +697,7 @@ extension TaskDetailViewController {
 // MARK: - Delete Attachment
 extension TaskDetailViewController {
     
-    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+    private func didSelectDeleteAttachment(attachment: ListNode) {
         AnalyticsManager.shared.didTapDeleteTaskAttachment()
         viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
             guard let sSelf = self else { return }
@@ -672,12 +708,89 @@ extension TaskDetailViewController {
         }
     }
     
-    private func deleteAttachmentFromList(attachment: TaskAttachmentModel) {
+    private func deleteAttachmentFromList(attachment: ListNode) {
         var attachments = viewModel.attachments.value
-        if let index = attachments.firstIndex(where: {$0.attachmentID == attachment.attachmentID}) {
+        if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
             attachments.remove(at: index)
             viewModel.attachments.value = attachments
             controller.buildViewModel()
         }
+    }
+}
+
+// MARK: - Add Attachment
+extension TaskDetailViewController {
+    
+    private func addAttachmentButtonAction() {
+        AnalyticsManager.shared.didTapUploadTaskAttachment()
+        
+        let actions = ActionsMenuFolderAttachments.actions()
+        let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
+                                                      coordinatorServices: coordinatorServices)
+        let viewController = ActionMenuViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        viewController.coordinatorServices = coordinatorServices
+        viewController.actionMenuModel = actionMenuViewModel
+        self.present(bottomSheet, animated: true, completion: nil)
+        viewController.didSelectAction = {[weak self] (action) in
+            guard let sSelf = self else { return }
+            sSelf.handleAction(action: action)
+        }
+    }
+    
+    private func handleAction(action: ActionMenu) {
+        if action.type.isCreateActions {
+            if action.type == .uploadMedia {
+                showPhotoLibrary()
+            } else if action.type == .createMedia {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showCamera()
+                })
+            } else if action.type == .uploadFiles {
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showFiles()
+                })
+            }
+        }
+    }
+    
+    func showPhotoLibrary() {
+        AnalyticsManager.shared.uploadPhotoforTasks()
+        if let presenter = self.navigationController {
+            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                            isTaskAttachment: true)
+            coordinator.start()
+            photoLibraryCoordinator = coordinator
+        }
+    }
+        
+    func showCamera() {
+        AnalyticsManager.shared.takePhotoforTasks()
+        if let presenter = self.navigationController {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: taskNode(),
+                                                      isTaskAttachment: true)
+            coordinator.start()
+            cameraCoordinator = coordinator
+        }
+    }
+    
+    func showFiles() {
+        AnalyticsManager.shared.uploadFilesforTasks()
+        if let presenter = self.navigationController {
+            let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                            parentListNode: taskNode(),
+                                                           isTaskAttachment: true)
+            coordinator.start()
+            fileManagerCoordinator = coordinator
+        }
+    }
+    
+    func taskNode () -> ListNode {
+        return ListNode(guid: viewModel.taskID,
+                        title: viewModel.taskName ?? "",
+                        path: "",
+                        nodeType: .folder)
     }
 }

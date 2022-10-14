@@ -123,5 +123,22 @@ extension AnalyticsManager {
         parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.uploadTaskAttachment.rawValue
         self.logEvent(name: Event.Action.uploadTaskAttachment.rawValue, parameters: parameters)
     }
+    
+    func takePhotoforTasks() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskTakePhoto.rawValue
+        self.logEvent(name: Event.Action.taskTakePhoto.rawValue, parameters: parameters)
+    }
+    
+    func uploadPhotoforTasks() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadPhoto.rawValue
+        self.logEvent(name: Event.Action.taskUploadPhoto.rawValue, parameters: parameters)
+    }
+    
+    func uploadFilesforTasks() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadFile.rawValue
+        self.logEvent(name: Event.Action.taskUploadFile.rawValue, parameters: parameters)
+    }
 }
-

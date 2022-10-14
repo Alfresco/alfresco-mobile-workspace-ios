@@ -27,6 +27,9 @@ class TaskDetailController: NSObject {
     var didSelectResetDueDate: (() -> Void)?
     var didSelectPriority: (() -> Void)?
     var didSelectAssignee: (() -> Void)?
+    var didSelectAddAttachment: (() -> Void)?
+    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -51,6 +54,8 @@ class TaskDetailController: NSObject {
             return EmptyPlaceholderTableViewCell.cellIdentifier()
         case is TaskAttachmentTableCellViewModel:
             return TaskAttachmentTableViewCell.cellIdentifier()
+        case is AddAttachmentTableCellViewModel:
+            return AddAttachmentTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -98,6 +103,10 @@ class TaskDetailController: NSObject {
             
             if attachmentsHeaderCellVM() != nil {
                 rowViewModels.append(attachmentsHeaderCellVM()!)
+            }
+            
+            if addAttachmentCellVM() != nil {
+                rowViewModels.append(addAttachmentCellVM()!)
             }
             
             if attachmentsPlaceholderCellVM() != nil {
@@ -274,6 +283,20 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
+    private func addAttachmentCellVM() -> AddAttachmentTableCellViewModel? {
+        let attachmentsCount = viewModel.attachments.value.count
+        if viewModel.isTaskCompleted && attachmentsCount == 0 {
+            return nil
+        }
+        
+        let title = LocalizationConstants.EditTask.addAttachments
+        let rowVM = AddAttachmentTableCellViewModel(title: title)
+        rowVM.didSelectAddAttachment = {
+            self.didSelectAddAttachment?()
+        }
+        return rowVM
+    }
+    
     private func attachmentsPlaceholderCellVM() -> EmptyPlaceholderTableCellViewModel? {
         if viewModel.attachments.value.isEmpty && !viewModel.isTaskCompleted {
             let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
@@ -291,8 +314,10 @@ class TaskDetailController: NSObject {
         
         if !attachments.isEmpty {
             for attachment in attachments {
-                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.name,
-                                                             mimeType: attachment.mimeType)
+                let syncStatus = viewModel.syncStatus(for: attachment)
+                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
+                                                             mimeType: attachment.mimeType,
+                                                             syncStatus: syncStatus)
                 rowVM.didSelectTaskAttachment = { [weak self] in
                     guard let sSelf = self else { return }
                     sSelf.viewModel.didSelectTaskAttachment?(attachment)
@@ -311,5 +336,49 @@ class TaskDetailController: NSObject {
     
     func updateLatestComment() {
         buildViewModel()
+    }
+}
+
+// MARK: - Task Attachments
+extension TaskDetailController: EventObservable {
+    
+    func registerEvents() {
+        viewModel.services?.eventBusService?.register(observer: self,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
+    }
+    
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
+        }
+    }
+
+    func handleSyncStatus(event: SyncStatusEvent) {
+        var attachments = viewModel.attachments.value
+        let eventNode = event.node
+        for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
+            attachments[index] = eventNode
+            self.viewModel.attachments.value = attachments
+            self.buildViewModel()
+        }
+        
+        // Insert nodes to be uploaded
+        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+            self.insert(uploadTransfers: uploadTransfers,
+                        to: &attachments)
+        }
+    }
+    
+    private func insert(uploadTransfers: [UploadTransfer],
+                        to list: inout [ListNode]) {
+        uploadTransfers.forEach { transfer in
+            let listNode = transfer.listNode()
+            if !list.contains(listNode) {
+                list.insert(listNode, at: 0)
+                self.viewModel.attachments.value = list
+                self.buildViewModel()
+            }
+        }
     }
 }

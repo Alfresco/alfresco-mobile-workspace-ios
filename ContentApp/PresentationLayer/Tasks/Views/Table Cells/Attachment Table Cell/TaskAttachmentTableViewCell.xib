@@ -93,11 +93,23 @@
                                             <action selector="deleteButtonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="p06-XL-Wbd"/>
                                         </connections>
                                     </button>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ksx-g1-g3F">
+                                        <rect key="frame" x="380" y="27" width="12" height="12"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="nodeSyncStatusImageView">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="12" id="Sf8-7R-M4l"/>
+                                            <constraint firstAttribute="width" secondItem="ksx-g1-g3F" secondAttribute="height" multiplier="1:1" id="tPT-aq-MRk"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="sba-m0-6t5" secondAttribute="trailing" id="BYN-xZ-pyn"/>
+                                    <constraint firstAttribute="trailing" secondItem="ksx-g1-g3F" secondAttribute="trailing" constant="20" id="HSi-TB-8Oo"/>
                                     <constraint firstItem="uFr-Dz-pnm" firstAttribute="top" secondItem="RDg-WX-Agz" secondAttribute="top" id="Owt-I8-w5F"/>
+                                    <constraint firstItem="ksx-g1-g3F" firstAttribute="centerY" secondItem="RDg-WX-Agz" secondAttribute="centerY" id="RHj-cS-HkL"/>
                                     <constraint firstAttribute="bottom" secondItem="uFr-Dz-pnm" secondAttribute="bottom" id="Rud-Vg-nkO"/>
                                     <constraint firstItem="sba-m0-6t5" firstAttribute="centerY" secondItem="RDg-WX-Agz" secondAttribute="centerY" id="e13-v9-jsH"/>
                                     <constraint firstItem="uFr-Dz-pnm" firstAttribute="leading" secondItem="RDg-WX-Agz" secondAttribute="leading" id="f5O-MV-UWK"/>
@@ -128,6 +140,7 @@
                 <outlet property="baseView" destination="t8q-JM-V2H" id="3L6-0m-gkc"/>
                 <outlet property="deleteButton" destination="sba-m0-6t5" id="ket-fp-8vT"/>
                 <outlet property="iconImageView" destination="Aqw-1Y-4Nj" id="T7x-G9-5Zo"/>
+                <outlet property="syncStatusImageView" destination="ksx-g1-g3F" id="ugf-jp-jL8"/>
                 <outlet property="title" destination="nnW-be-8n6" id="c1K-fr-B7h"/>
                 <outlet property="titleView" destination="uFr-Dz-pnm" id="ZNJ-06-edD"/>
             </connections>
