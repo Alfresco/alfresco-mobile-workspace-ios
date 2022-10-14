@@ -146,12 +146,14 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func checkForCompleteTaskButton() {
-        if viewModel.isAllowedToCompleteTask() {
-            completeTaskView.isHidden = false
-            tableView.contentInset.bottom = 90
-        } else {
-            completeTaskView.isHidden = true
-            tableView.contentInset.bottom = 50
+        DispatchQueue.main.async {
+            if self.viewModel.isAllowedToCompleteTask() {
+                self.completeTaskView.isHidden = false
+                self.tableView.contentInset.bottom = 90
+            } else {
+                self.completeTaskView.isHidden = true
+                self.tableView.contentInset.bottom = 50
+            }
         }
     }
     
@@ -641,6 +643,7 @@ extension TaskDetailViewController {
 
         refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {
             AnalyticsManager.shared.didUpdateTaskDetails()
+            self.checkForCompleteTaskButton()
             self.viewModel.didRefreshTaskList?()
         }
     }
