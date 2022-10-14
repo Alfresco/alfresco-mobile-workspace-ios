@@ -314,7 +314,7 @@ class TaskDetailController: NSObject {
         
         if !attachments.isEmpty {
             for attachment in attachments {
-                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.name,
+                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
                                                              mimeType: attachment.mimeType)
                 rowVM.didSelectTaskAttachment = { [weak self] in
                     guard let sSelf = self else { return }
@@ -351,37 +351,32 @@ extension TaskDetailController: EventObservable {
             handleSyncStatus(event: publishedEvent)
         }
     }
-    
+
     func handleSyncStatus(event: SyncStatusEvent) {
+        var attachments = viewModel.attachments.value
+        let eventNode = event.node
+        for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
+            attachments[index] = eventNode
+            self.viewModel.attachments.value = attachments
+            self.buildViewModel()
+        }
         
-        var taskAttachments = viewModel.attachments.value
-        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachments: true) { [weak self] uploadTransfers in
-            guard let sSelf = self else { return }
-            for transfer in uploadTransfers {
-                let attachment = sSelf.attachment(from: transfer)
-                let attachmentsArray = taskAttachments.filter {$0.attachmentID ?? -1 == transfer.id}
-                if attachmentsArray.isEmpty {
-                    taskAttachments.insert(attachment, at: 0)
-                }
-            }
-            
-            sSelf.viewModel.attachments.value = taskAttachments
-            sSelf.buildViewModel()
+        // Insert nodes to be uploaded
+        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+            self.insert(uploadTransfers: uploadTransfers,
+                        to: &attachments)
         }
     }
     
-    func attachment(from node: UploadTransfer) -> TaskAttachmentModel {
-        let name = String(format: "%@.%@", node.nodeName, node.extensionType)
-        return TaskAttachmentModel(attachmentID: Int(node.id),
-                                             name: name,
-                                             created: nil,
-                                             createdBy: nil,
-                                             relatedContent: nil,
-                                             contentAvailable: nil,
-                                             link: nil,
-                                             mimeType: node.mimetype,
-                                             simpleType: nil,
-                                             previewStatus: nil,
-                                             thumbnailStatus: nil)
+    private func insert(uploadTransfers: [UploadTransfer],
+                        to list: inout [ListNode]) {
+        uploadTransfers.forEach { transfer in
+            let listNode = transfer.listNode()
+            if !list.contains(listNode) {
+                list.insert(listNode, at: 0)
+                self.viewModel.attachments.value = list
+                self.buildViewModel()
+            }
+        }
     }
 }

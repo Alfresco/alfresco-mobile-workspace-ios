@@ -166,7 +166,6 @@
 		C9205C8628A173C000DEF5AC /* TaskHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8428A173C000DEF5AC /* TaskHeaderTableViewCell.swift */; };
 		C9205C8728A173C000DEF5AC /* TaskHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9205C8528A173C000DEF5AC /* TaskHeaderTableViewCell.xib */; };
 		C9205C8928A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8828A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift */; };
-		C92466CC28F6D90800BAEE03 /* TaskAttachmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */; };
 		C92466CD28F6D92700BAEE03 /* TaskNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDD428905B6800819F86 /* TaskNode.swift */; };
 		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C928AE32282A5F4900378327 /* TestNodeViewModel.swift */; };
@@ -184,7 +183,6 @@
 		C92F3DC727BFF05000952C59 /* SyncTriggersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */; };
 		C93A06AF27B91A530027097B /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */; };
 		C93A246428A628C4005F46C2 /* TaskAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */; };
-		C93A246628A628D8005F46C2 /* TaskAttachmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */; };
 		C93A246B28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246928A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift */; };
 		C93A246C28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C93A246A28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib */; };
 		C93A246E28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246D28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift */; };
@@ -926,7 +924,6 @@
 		C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncTriggersService.swift; sourceTree = "<group>"; };
 		C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentOperations.swift; sourceTree = "<group>"; };
-		C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentModel.swift; sourceTree = "<group>"; };
 		C93A246928A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderTableViewCell.swift; sourceTree = "<group>"; };
 		C93A246A28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyPlaceholderTableViewCell.xib; sourceTree = "<group>"; };
 		C93A246D28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderTableCellViewModel.swift; sourceTree = "<group>"; };
@@ -2017,7 +2014,6 @@
 			isa = PBXGroup;
 			children = (
 				C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */,
-				C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */,
 			);
 			path = "Task Attachments";
 			sourceTree = "<group>";
@@ -3957,7 +3953,6 @@
 				C9A9116527A7B997002EBC7F /* String+Paths.swift in Sources */,
 				C9A9114D27A7B90D002EBC7F /* MultipleChoiceViewModelProtocol.swift in Sources */,
 				C9A910FC27A7B789002EBC7F /* CALayer+Animations.swift in Sources */,
-				C92466CC28F6D90800BAEE03 /* TaskAttachmentModel.swift in Sources */,
 				C9A9112327A7B81B002EBC7F /* NeedHelpAIMSModel.swift in Sources */,
 				C9E17FE927A92CAD0006747E /* NodeChildMapper.swift in Sources */,
 				C9E1800E27A96DA30006747E /* AimsViewModel.swift in Sources */,
@@ -4339,7 +4334,6 @@
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
-				C93A246628A628D8005F46C2 /* TaskAttachmentModel.swift in Sources */,
 				C9688BAC28D30DCC0020206C /* CreateTaskViewModel.swift in Sources */,
 				F14E68922617066A002FDEF9 /* SessionPreview.swift in Sources */,
 				B9834C5D267368A00052E138 /* FavoritesModel.swift in Sources */,

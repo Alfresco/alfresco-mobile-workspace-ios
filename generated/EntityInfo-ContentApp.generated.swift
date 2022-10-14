@@ -47,8 +47,13 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "syncStatus", type: PropertyType.string, id: 15, uid: 4676429062915184384)
         try entityBuilder.addProperty(name: "markedFor", type: PropertyType.string, id: 18, uid: 1597269330570867456)
         try entityBuilder.addProperty(name: "allowableOperations", type: PropertyType.string, id: 17, uid: 186580639668120576)
+        try entityBuilder.addProperty(name: "assigneeID", type: PropertyType.long, id: 23, uid: 2950239422119911936)
+        try entityBuilder.addProperty(name: "firstName", type: PropertyType.string, id: 24, uid: 7676482565200030720)
+        try entityBuilder.addProperty(name: "lastName", type: PropertyType.string, id: 25, uid: 2005571551871250688)
+        try entityBuilder.addProperty(name: "email", type: PropertyType.string, id: 26, uid: 2725168317195707648)
+        try entityBuilder.addProperty(name: "userName", type: PropertyType.string, id: 27, uid: 223455836388801280)
 
-        try entityBuilder.lastProperty(id: 22, uid: 2401775353080933632)
+        try entityBuilder.lastProperty(id: 27, uid: 223455836388801280)
     }
 }
 
@@ -179,6 +184,36 @@ extension ListNode {
     ///
     ///     box.query { ListNode.allowableOperations.startsWith("X") }
     internal static var allowableOperations: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 17, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.assigneeID > 1234 }
+    internal static var assigneeID: Property<ListNode, Int?, Void> { return Property<ListNode, Int?, Void>(propertyId: 23, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.firstName.startsWith("X") }
+    internal static var firstName: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 24, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.lastName.startsWith("X") }
+    internal static var lastName: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 25, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.email.startsWith("X") }
+    internal static var email: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 26, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.userName.startsWith("X") }
+    internal static var userName: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 27, isPrimaryKey: false) }
 
     fileprivate func __setId(identifier: ObjectBox.Id) {
         self.id = Id(identifier)
@@ -354,6 +389,46 @@ extension ObjectBox.Property where E == ListNode {
 
     internal static var allowableOperations: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 17, isPrimaryKey: false) }
 
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .assigneeID > 1234 }
+
+    internal static var assigneeID: Property<ListNode, Int?, Void> { return Property<ListNode, Int?, Void>(propertyId: 23, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .firstName.startsWith("X") }
+
+    internal static var firstName: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 24, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .lastName.startsWith("X") }
+
+    internal static var lastName: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 25, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .email.startsWith("X") }
+
+    internal static var email: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 26, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .userName.startsWith("X") }
+
+    internal static var userName: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 27, isPrimaryKey: false) }
+
 }
 
 
@@ -390,6 +465,10 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
         let propertyOffset_markedFor = propertyCollector.prepare(string: entity.markedFor.rawValue)
         let propertyOffset_allowableOperations = propertyCollector.prepare(string: AllowableOperationsConverter.convert(entity.allowableOperations))
+        let propertyOffset_firstName = propertyCollector.prepare(string: entity.firstName)
+        let propertyOffset_lastName = propertyCollector.prepare(string: entity.lastName)
+        let propertyOffset_email = propertyCollector.prepare(string: entity.email)
+        let propertyOffset_userName = propertyCollector.prepare(string: entity.userName)
 
         propertyCollector.collect(id, at: 2 + 2 * 1)
         propertyCollector.collect(entity.modifiedAt, at: 2 + 2 * 9)
@@ -398,6 +477,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(entity.markedAsOffline, at: 2 + 2 * 12)
         propertyCollector.collect(entity.isFile, at: 2 + 2 * 19)
         propertyCollector.collect(entity.isFolder, at: 2 + 2 * 20)
+        propertyCollector.collect(entity.assigneeID, at: 2 + 2 * 23)
         propertyCollector.collect(dataOffset: propertyOffset_parentGuid, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_guid, at: 2 + 2 * 3)
         propertyCollector.collect(dataOffset: propertyOffset_siteID, at: 2 + 2 * 4)
@@ -412,6 +492,10 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 15)
         propertyCollector.collect(dataOffset: propertyOffset_markedFor, at: 2 + 2 * 18)
         propertyCollector.collect(dataOffset: propertyOffset_allowableOperations, at: 2 + 2 * 17)
+        propertyCollector.collect(dataOffset: propertyOffset_firstName, at: 2 + 2 * 24)
+        propertyCollector.collect(dataOffset: propertyOffset_lastName, at: 2 + 2 * 25)
+        propertyCollector.collect(dataOffset: propertyOffset_email, at: 2 + 2 * 26)
+        propertyCollector.collect(dataOffset: propertyOffset_userName, at: 2 + 2 * 27)
     }
 
     internal func createEntity(entityReader: ObjectBox.FlatBufferReader, store: ObjectBox.Store) -> EntityType {
@@ -438,6 +522,11 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 15)) ?? .undefined
         entity.markedFor = optConstruct(MarkedForStatus.self, rawValue: entityReader.read(at: 2 + 2 * 18)) ?? .undefined
         entity.allowableOperations = AllowableOperationsConverter.convert(entityReader.read(at: 2 + 2 * 17))
+        entity.assigneeID = entityReader.read(at: 2 + 2 * 23)
+        entity.firstName = entityReader.read(at: 2 + 2 * 24)
+        entity.lastName = entityReader.read(at: 2 + 2 * 25)
+        entity.email = entityReader.read(at: 2 + 2 * 26)
+        entity.userName = entityReader.read(at: 2 + 2 * 27)
 
         return entity
     }

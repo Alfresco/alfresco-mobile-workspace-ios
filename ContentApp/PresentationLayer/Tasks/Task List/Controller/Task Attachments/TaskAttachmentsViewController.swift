@@ -184,9 +184,9 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         }
     }
     
-    private func didSelectAttachment(attachment: TaskAttachmentModel) {
-        let title = attachment.name ?? ""
-        let attachmentId = String(format: "%d", attachment.attachmentID ?? -1)
+    private func didSelectAttachment(attachment: ListNode) {
+        let title = attachment.title
+        let attachmentId = attachment.guid
         viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
             guard let sSelf = self, let path = path else { return }
             sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
@@ -226,7 +226,7 @@ extension TaskAttachmentsViewController: UITableViewDelegate, UITableViewDataSou
 // MARK: - Delete Attachment
 extension TaskAttachmentsViewController {
     
-    private func didSelectDeleteAttachment(attachment: TaskAttachmentModel) {
+    private func didSelectDeleteAttachment(attachment: ListNode) {
         viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
             guard let sSelf = self else { return }
             if success {
@@ -235,9 +235,9 @@ extension TaskAttachmentsViewController {
         }
     }
     
-    private func deleteAttachmentFromList(attachment: TaskAttachmentModel) {
+    private func deleteAttachmentFromList(attachment: ListNode) {
         var attachments = viewModel.attachments.value
-        if let index = attachments.firstIndex(where: {$0.attachmentID == attachment.attachmentID}) {
+        if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
             attachments.remove(at: index)
             viewModel.attachments.value = attachments
             controller.buildViewModel()

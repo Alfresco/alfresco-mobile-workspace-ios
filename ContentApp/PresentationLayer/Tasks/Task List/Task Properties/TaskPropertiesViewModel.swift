@@ -24,9 +24,9 @@ class TaskPropertiesViewModel: NSObject {
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
     var comments = Observable<[TaskCommentModel]>([])
-    var attachments = Observable<[TaskAttachmentModel]>([])
-    var didSelectTaskAttachment: ((TaskAttachmentModel) -> Void)?
-    var didSelectDeleteAttachment: ((TaskAttachmentModel) -> Void)?
+    var attachments = Observable<[ListNode]>([])
+    var didSelectTaskAttachment: ((ListNode) -> Void)?
+    var didSelectDeleteAttachment: ((ListNode) -> Void)?
 
     var taskName: String? {
         return task?.name
@@ -152,7 +152,7 @@ class TaskPropertiesViewModel: NSObject {
 // MARK: - Show Preview
 extension TaskPropertiesViewModel {
    
-    func showPreviewController(with path: String, attachment: TaskAttachmentModel, navigationController: UINavigationController?) {
+    func showPreviewController(with path: String, attachment: ListNode, navigationController: UINavigationController?) {
         if let navigationViewController = navigationController, let node = listNodeForPreview(with: path, attachment: attachment) {
             
             let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
@@ -167,10 +167,10 @@ extension TaskPropertiesViewModel {
         }
     }
     
-    private func listNodeForPreview(with path: String, attachment: TaskAttachmentModel) -> ListNode? {
+    private func listNodeForPreview(with path: String, attachment: ListNode) -> ListNode? {
         return ListNode(guid: "0",
                         mimeType: attachment.mimeType,
-                        title: attachment.name ?? "",
+                        title: attachment.title,
                         path: path,
                         nodeType: .file,
                         favorite: false,

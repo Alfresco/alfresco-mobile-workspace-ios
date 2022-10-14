@@ -78,14 +78,4 @@ class UploadTransfer: Entity, Codable {
         newVersion.uploadLocalPath = localFilenamePath
         return newVersion
     }
-    
-    func updateListNodeForAttachment(with attachment: TaskAttachmentModel) -> ListNode {
-        
-        let node = ListNode(guid: "0", title: nodeName + "." + extensionType, path: "", nodeType: .file)
-        node.id = UInt64(attachment.attachmentID ?? 0)
-        node.syncStatus = syncStatus
-        node.markedFor = .upload
-        node.uploadLocalPath = localFilenamePath
-        return node
-    }
 }

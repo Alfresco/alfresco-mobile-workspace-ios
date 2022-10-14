@@ -107,6 +107,12 @@ class ListNode: Hashable, Entity, DiffAware {
     // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
     var allowableOperations: [AllowableOperationsType] = [.unknown]
 
+    var assigneeID: Int?
+    var firstName: String?
+    var lastName: String?
+    var email: String?
+    var userName: String?
+    
     // MARK: - Init
 
     init(guid: String,
@@ -127,7 +133,12 @@ class ListNode: Hashable, Entity, DiffAware {
          isFile: Bool = false,
          isFolder: Bool = false,
          uploadLocalPath: String = "",
-         elementIds: String? = nil) {
+         elementIds: String? = nil,
+         assigneeID: Int? = nil,
+         firstName: String? = nil,
+         lastName: String? = nil,
+         email: String? = nil,
+         userName: String? = nil) {
         self.guid = guid
         self.siteID = siteID
         self.parentGuid = parentGuid
@@ -147,6 +158,11 @@ class ListNode: Hashable, Entity, DiffAware {
         self.isFolder = isFolder
         self.uploadLocalPath = uploadLocalPath
         self.elementIds = elementIds
+        self.assigneeID = assigneeID
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.userName = String(format: "%@ %@", firstName ?? "", lastName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     // Default initializer required by ObjectBox

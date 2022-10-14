@@ -101,14 +101,14 @@ class UploadTransferDataAccessor: DataAccessor {
     }
     
     func queryAll(for parentNodeId: String,
-                  isTaskAttachments: Bool = false,
+                  isTaskAttachment: Bool = false,
                   changeHandler: @escaping ([UploadTransfer]) -> Void) -> [UploadTransfer] {
 
         guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
         
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
-                UploadTransfer.parentNodeId == parentNodeId && UploadTransfer.syncStatus != SyncStatus.synced.rawValue && UploadTransfer.isTaskAttachment == isTaskAttachments
+                UploadTransfer.parentNodeId == parentNodeId && UploadTransfer.syncStatus != SyncStatus.synced.rawValue && UploadTransfer.isTaskAttachment == isTaskAttachment
             }.build()
             allTransfersQueryObserver = query.subscribe(resultHandler: { transfers, _ in
                 changeHandler(transfers)

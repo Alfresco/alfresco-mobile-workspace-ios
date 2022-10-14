@@ -454,8 +454,8 @@ class SyncOperationFactory {
                             SyncSharedNodes.store(uploadedNode: transfer)
                             transfer.syncStatus = .synced
                             
-                            if let attachement = TaskAttachmentOperations.processAttachments(for: [node]).first {
-                                let listNode = transfer.updateListNodeForAttachment(with: attachement)
+                            if let attachement = TaskAttachmentOperations.processAttachments(for: [node], taskId: transfer.parentNodeId).first {
+                                let listNode = transfer.updateListNode(with: attachement)
                                 sSelf.publishSyncStatusEvent(for: listNode)
                                 transferDataAccessor.updateNode(node: transfer)
                             }
