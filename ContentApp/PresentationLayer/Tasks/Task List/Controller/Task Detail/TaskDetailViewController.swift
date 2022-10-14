@@ -41,6 +41,7 @@ class TaskDetailViewController: SystemSearchViewController {
         super.viewDidLoad()
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
         controller.registerEvents()
         addBackButton()
@@ -680,7 +681,7 @@ extension TaskDetailViewController {
     
     func editTask() {
         let priority = String(format: "%d", viewModel.priority)
-        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd")
+        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd") ?? ""
                 
         let params = TaskBodyCreate(name: viewModel.taskName,
                                     priority: priority,
