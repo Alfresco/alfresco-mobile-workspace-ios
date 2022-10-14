@@ -185,11 +185,15 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
     
     private func didSelectAttachment(attachment: ListNode) {
-        let title = attachment.title
-        let attachmentId = attachment.guid
-        viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
-            guard let sSelf = self, let path = path else { return }
-            sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+        if attachment.syncStatus == .undefined || attachment.syncStatus == .synced {
+            let title = attachment.title
+            let attachmentId = attachment.guid
+            viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
+                guard let sSelf = self, let path = path else { return }
+                sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+            }
+        } else {
+            viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
         }
     }
 }

@@ -27,6 +27,7 @@ class TaskPropertiesViewModel: NSObject {
     var attachments = Observable<[ListNode]>([])
     var didSelectTaskAttachment: ((ListNode) -> Void)?
     var didSelectDeleteAttachment: ((ListNode) -> Void)?
+    internal var filePreviewCoordinator: FilePreviewScreenCoordinator?
 
     var taskName: String? {
         return task?.name
@@ -235,4 +236,17 @@ extension TaskPropertiesViewModel {
         return node.isMarkedOffline() ? .markedForOffline : .undefined
     }
 
+    func startFileCoordinator(for node: ListNode, presenter: UINavigationController?) {
+        if let presenter = presenter {
+            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: presenter,
+                                                           listNode: node,
+                                                           excludedActions: [.moveTrash,
+                                                                             .addFavorite,
+                                                                             .removeFavorite,
+                                                                             .download],
+                                                           shouldPreviewLatestContent: false)
+            filePreviewCoordinator.start()
+            self.filePreviewCoordinator = filePreviewCoordinator
+        }
+    }
 }
