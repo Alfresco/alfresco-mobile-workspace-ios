@@ -26,6 +26,7 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var deleteButton: MDCButton!
+    @IBOutlet weak var syncStatusImageView: UIImageView!
     var viewModel: TaskAttachmentTableCellViewModel?
 
     override func awakeFromNib() {
@@ -36,6 +37,11 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? TaskAttachmentTableCellViewModel else { return }
         self.viewModel = viewModel
+        syncStatusImageView.isHidden = !viewModel.showSyncStatus
+        deleteButton.isHidden = viewModel.showSyncStatus
+        syncStatusImageView.image = viewModel.syncStatusImage
+        applyLayoutForUploading()
+        
         title.text = viewModel.name
         iconImageView.image = viewModel.icon
         addAccessibility()
@@ -63,7 +69,7 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
         self.backgroundColor = currentTheme.surfaceColor
-        baseView.backgroundColor =  .clear // currentTheme.neutral95Color
+        baseView.backgroundColor =  .clear
         title.applyStyleBody1OnSurface(theme: currentTheme)
         iconImageView.tintColor = currentTheme.onSurface60Color
         
@@ -74,5 +80,31 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         deleteButton.tintColor = currentTheme.onSurface60Color
         deleteButton.backgroundColor = .clear
         deleteButton.imageView?.contentMode = .center
+        
+        syncStatusImageView.tintColor = currentTheme.onSurface60Color
+    }
+    
+    private func applyLayoutForUploading() {
+        switch viewModel?.syncStatus {
+        case .pending:
+            syncStatusImageView.image = UIImage(named: ListEntrySyncStatus.uploaded.rawValue)
+        case .inProgress:
+            startRotateSyncIcon()
+        default:
+            stopRotateSyncIcon()
+        }
+    }
+    
+    private func startRotateSyncIcon() {
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = NSNumber(value: .pi * 2.0)
+        rotationAnimation.duration = 3.0
+        rotationAnimation.isCumulative = true
+        rotationAnimation.repeatCount = .infinity
+        syncStatusImageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
+    }
+    
+    private func stopRotateSyncIcon() {
+        syncStatusImageView.layer.removeAnimation(forKey: "rotationAnimation")
     }
 }

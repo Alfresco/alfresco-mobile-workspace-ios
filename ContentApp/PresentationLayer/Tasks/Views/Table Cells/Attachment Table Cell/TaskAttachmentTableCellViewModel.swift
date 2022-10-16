@@ -26,13 +26,25 @@ class TaskAttachmentTableCellViewModel: RowViewModel {
     }
     var didSelectTaskAttachment: (() -> Void)?
     var didSelectDeleteAttachment: (() -> Void)?
+    var syncStatus: ListEntrySyncStatus?
 
+    var showSyncStatus: Bool {
+        return (syncStatus != .undefined && syncStatus != .uploaded)
+    }
+    
+    var syncStatusImage: UIImage? {
+        return showSyncStatus ? UIImage(named: syncStatus?.rawValue ?? "") : nil
+    }
+    
     func cellIdentifier() -> String {
         return "TaskAttachmentTableViewCell"
     }
     
-    init(name: String?, mimeType: String?) {
+    init(name: String?,
+         mimeType: String?,
+         syncStatus: ListEntrySyncStatus?) {
         self.name = name
         self.mimeType = mimeType
+        self.syncStatus = syncStatus
     }
 }

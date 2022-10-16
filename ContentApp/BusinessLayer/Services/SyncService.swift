@@ -159,10 +159,11 @@ let maxConcurrentSyncOperationCount = 3
     private func processPendingUploads() {
         syncServiceStatus = .uploadPendingNodes
         let dataAccessor = UploadTransferDataAccessor()
-        let pendingUploadTransfers = dataAccessor.queryAll()
-        AlfrescoLog.info("pendingUploadTransfers: \(pendingUploadTransfers)")
-        let uploadOperations = syncOperationFactory.uploadPendingContentOperation(transfers: pendingUploadTransfers)
+        var pendingUploadTransfers = dataAccessor.queryAll()
+        let pendingTasksUploadTransfers = dataAccessor.queryAll(isTaskAttachments: true)
+        pendingUploadTransfers = pendingUploadTransfers + pendingTasksUploadTransfers
 
+        let uploadOperations = syncOperationFactory.uploadPendingContentOperation(transfers: pendingUploadTransfers)
         if uploadOperations.isEmpty {
             processNodeDetails(for: nodeList)
         } else {

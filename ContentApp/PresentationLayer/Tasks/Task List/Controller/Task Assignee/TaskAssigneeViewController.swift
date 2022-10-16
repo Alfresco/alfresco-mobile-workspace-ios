@@ -24,17 +24,11 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var divider: UIView!
     @IBOutlet weak var progressView: MDCProgressView!
-    @IBOutlet weak var nameRadioImageView: UIImageView!
-    @IBOutlet weak var nameTitleLabel: UILabel!
-    @IBOutlet weak var emailRadioImageView: UIImageView!
-    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var radioButtonsViewDivider: UIView!
-    @IBOutlet weak var nameButton: MDCButton!
-    @IBOutlet weak var emailButton: MDCButton!
+    @IBOutlet weak var nameButton: UIButton!
+    @IBOutlet weak var emailButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var nameView: UIView!
-    @IBOutlet weak var emailView: UIView!
     
     var viewModel: TaskAssigneeViewModel { return controller.viewModel }
     lazy var controller: TaskAssigneeController = { return TaskAssigneeController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -45,14 +39,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        nameView.isAccessibilityElement = false
-        nameRadioImageView.isAccessibilityElement = false
-        nameTitleLabel.isAccessibilityElement = false
-        emailView.isAccessibilityElement = false
-        emailRadioImageView.isAccessibilityElement = false
-        emailLabel.isAccessibilityElement = false
-
+        tableView.keyboardDismissMode = .onDrag
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         setAccessibilitySequence()
         progressView.progress = 0
@@ -117,16 +104,25 @@ class TaskAssigneeViewController: SystemThemableViewController {
         dismissButton.setImage(UIImage(named: "ic-back"), for: .normal)
         dismissButton.tintColor = currentTheme.onSurface60Color
         divider.backgroundColor = currentTheme.onSurface15Color
-        nameTitleLabel.applyStyleBody2OnSurface(theme: currentTheme)
-        emailLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        applyButtonTheme(theme: currentTheme)
         radioButtonsViewDivider.backgroundColor = currentTheme.onSurface15Color
         searchTextField.font = currentTheme.subtitle1TextStyle.font
         searchTextField.textColor = currentTheme.onSurfaceColor
     }
     
+    private func applyButtonTheme(theme: PresentationTheme) {
+        
+        emailButton.setTitleColor(theme.onSurfaceColor, for: .normal)
+        emailButton.titleLabel?.font = theme.subtitle1TextStyle.font
+        emailButton.titleLabel?.add(characterSpacing: theme.body2TextStyle.letterSpacing, lineHeight: theme.body2TextStyle.lineHeight)
+        nameButton.setTitleColor(theme.onSurfaceColor, for: .normal)
+        nameButton.titleLabel?.font = theme.subtitle1TextStyle.font
+        nameButton.titleLabel?.add(characterSpacing: theme.body2TextStyle.letterSpacing, lineHeight: theme.body2TextStyle.lineHeight)
+    }
+    
     private func applyLocalization() {
-        nameTitleLabel.text = LocalizationConstants.EditTask.byName
-        emailLabel.text = LocalizationConstants.EditTask.byEmail
+        emailButton.setTitle(LocalizationConstants.EditTask.byEmail, for: UIControl.State.normal)
+        nameButton.setTitle(LocalizationConstants.EditTask.byName, for: UIControl.State.normal)
         searchTextField.placeholder = LocalizationConstants.EditTask.searchPlaceholder
     }
     
@@ -134,10 +130,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
         progressView.isAccessibilityElement = false
         dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.back
         dismissButton.accessibilityIdentifier = "cancel"
-        nameButton.accessibilityLabel = nameTitleLabel.text
         nameButton.accessibilityIdentifier = "searchByName"
-       
-        emailButton.accessibilityLabel = emailLabel.text
         emailButton.accessibilityIdentifier = "searchByEmail"
         searchTextField.accessibilityLabel = LocalizationConstants.EditTask.searchPlaceholder
     }
@@ -147,10 +140,6 @@ class TaskAssigneeViewController: SystemThemableViewController {
         searchTextField.isAccessibilityElement = true
         nameButton.isAccessibilityElement = true
         emailButton.isAccessibilityElement = true
-
-        if let dismissButton = dismissButton, let searchField = searchTextField, let nameButton = nameButton, let emailButton = emailButton, let tView = tableView {
-            self.accessibilityElements = [dismissButton, searchField, nameButton, emailButton, tView]
-        }
     }
     
     func startLoading() {
@@ -169,18 +158,20 @@ class TaskAssigneeViewController: SystemThemableViewController {
     }
     
     @IBAction func searchByNameButtonAction(_ sender: Any) {
+        if viewModel.isSearchByName == true {return}
         viewModel.isSearchByName = true
         updateUIComponents()
     }
     
     @IBAction func searchByEmailButtonAction(_ sender: Any) {
+        if viewModel.isSearchByName == false {return}
         viewModel.isSearchByName = false
         updateUIComponents()
     }
     
     private func updateUIComponents() {
-        nameRadioImageView.image = viewModel.searchByNameImage
-        emailRadioImageView.image = viewModel.searchByEmailImage
+        nameButton.setImage(viewModel.searchByNameImage, for: .normal)
+        emailButton.setImage(viewModel.searchByEmailImage, for: .normal)
         resetUserList()
         editingChanged()
     }
