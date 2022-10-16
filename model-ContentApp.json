@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4924419163766400768",
-      "lastPropertyId": "22:2401775353080933632",
+      "lastPropertyId": "27:223455836388801280",
       "name": "ListNode",
       "properties": [
         {
@@ -113,13 +113,38 @@
           "id": "22:2401775353080933632",
           "name": "elementIds",
           "type": 9
+        },
+        {
+          "id": "23:2950239422119911936",
+          "name": "assigneeID",
+          "type": 6
+        },
+        {
+          "id": "24:7676482565200030720",
+          "name": "firstName",
+          "type": 9
+        },
+        {
+          "id": "25:2005571551871250688",
+          "name": "lastName",
+          "type": 9
+        },
+        {
+          "id": "26:2725168317195707648",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "27:223455836388801280",
+          "name": "userName",
+          "type": 9
         }
       ],
       "relations": []
     },
     {
       "id": "2:381938179637751040",
-      "lastPropertyId": "10:5866070128195577600",
+      "lastPropertyId": "11:5623670516983788288",
       "name": "UploadTransfer",
       "properties": [
         {
@@ -162,6 +187,11 @@
           "id": "10:5866070128195577600",
           "name": "localFilenamePath",
           "type": 9
+        },
+        {
+          "id": "11:5623670516983788288",
+          "name": "isTaskAttachment",
+          "type": 1
         }
       ],
       "relations": []

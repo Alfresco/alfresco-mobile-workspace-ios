@@ -91,6 +91,54 @@ extension AnalyticsManager {
     func didTapCreateTask() {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.createTask.rawValue
-        self.logEvent(name: Event.Action.taskComplete.rawValue, parameters: parameters)
+        self.logEvent(name: Event.Action.createTask.rawValue, parameters: parameters)
+    }
+    
+    func didUpdateTaskDetails() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.updateTask.rawValue
+        self.logEvent(name: Event.Action.updateTask.rawValue, parameters: parameters)
+    }
+    
+    func didTapDeleteTaskAttachment() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.deleteTaskAttachment.rawValue
+        self.logEvent(name: Event.Action.deleteTaskAttachment.rawValue, parameters: parameters)
+    }
+    
+    func didTapEditTask() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.editTask.rawValue
+        self.logEvent(name: Event.Action.editTask.rawValue, parameters: parameters)
+    }
+    
+    func didTapDoneTask() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.doneTask.rawValue
+        self.logEvent(name: Event.Action.doneTask.rawValue, parameters: parameters)
+    }
+    
+    func didTapUploadTaskAttachment() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.uploadTaskAttachment.rawValue
+        self.logEvent(name: Event.Action.uploadTaskAttachment.rawValue, parameters: parameters)
+    }
+    
+    func takePhotoforTasks() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskTakePhoto.rawValue
+        self.logEvent(name: Event.Action.taskTakePhoto.rawValue, parameters: parameters)
+    }
+    
+    func uploadPhotoforTasks() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadPhoto.rawValue
+        self.logEvent(name: Event.Action.taskUploadPhoto.rawValue, parameters: parameters)
+    }
+    
+    func uploadFilesforTasks() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadFile.rawValue
+        self.logEvent(name: Event.Action.taskUploadFile.rawValue, parameters: parameters)
     }
 }

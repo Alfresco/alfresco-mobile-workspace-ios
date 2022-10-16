@@ -23,11 +23,14 @@ class FileManagerScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private let parentListNode: ListNode
     private var fileManagerDataSource: FileManagerDataSource?
+    var isTaskAttachment = false
 
     init(with presenter: UINavigationController,
-         parentListNode: ListNode) {
+         parentListNode: ListNode,
+         isTaskAttachment: Bool = false) {
         self.parentListNode = parentListNode
         self.presenter = presenter
+        self.isTaskAttachment = isTaskAttachment
     }
     
     func start() {
@@ -70,7 +73,8 @@ extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
                                                 extensionType: fileAsset.fileExtension ?? "",
                                                 mimetype: assetURL.mimeType(),
                                                 nodeDescription: fileAsset.description,
-                                                localFilenamePath: assetURL.lastPathComponent)
+                                                localFilenamePath: assetURL.lastPathComponent,
+                                                isTaskAttachment: self.isTaskAttachment)
             uploadTransfers.append(uploadTransfer)
         }
 

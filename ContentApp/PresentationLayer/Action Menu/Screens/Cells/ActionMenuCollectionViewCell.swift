@@ -30,6 +30,7 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
             titleLabel.text = action?.title
             isUserInteractionEnabled = !(action?.type == .node)
             separator.isHidden = !(action?.type == .node)
+            applyAccessibility()
         }
     }
 
@@ -45,5 +46,11 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
         imageView.tintColor = currentTheme.onSurface60Color
         separator.backgroundColor = currentTheme.dividerColor
         sectionSeparator.backgroundColor = currentTheme.onSurface15Color
+    }
+    
+    func applyAccessibility() {
+        titleLabel.accessibilityLabel = titleLabel.text
+        titleLabel.accessibilityIdentifier = titleLabel.text
+        titleLabel.accessibilityTraits = .button
     }
 }

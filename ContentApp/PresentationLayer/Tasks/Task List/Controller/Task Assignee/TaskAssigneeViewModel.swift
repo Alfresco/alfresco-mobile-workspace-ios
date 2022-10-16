@@ -50,7 +50,7 @@ class TaskAssigneeViewModel: NSObject {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             TasksAPI.searchUser(filter: filter, email: email) { data, error in
                 
                 if data != nil {
@@ -60,7 +60,9 @@ class TaskAssigneeViewModel: NSObject {
                     } else {
                         completionHandler([], nil)
                     }
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: true)
                 } else {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: false)
                     completionHandler([], error)
                 }
                 self.isLoading.value = false
