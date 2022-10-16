@@ -278,11 +278,10 @@ extension TaskPropertiesViewModel {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }
         if let attachmentID = attachmentID, attachmentID != "-1", !attachmentID.isEmpty {
             self.isLoading.value = true
-            let contentId = String(format: "%d", attachmentID)
             services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                 
-                TasksAPI.deleteRawContent(contentId: contentId) {[weak self] data, error in
+                TasksAPI.deleteRawContent(contentId: attachmentID) {[weak self] data, error in
                     guard let sSelf = self else { return }
                     if data != nil {
                         completionHandler(true)

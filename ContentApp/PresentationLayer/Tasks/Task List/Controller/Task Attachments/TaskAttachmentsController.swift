@@ -103,8 +103,7 @@ extension TaskAttachmentsController: EventObservable {
         }
     }
     
-    func insert(uploadTransfers: [UploadTransfer],
-                        to list: inout [ListNode]) {
+    func insert(uploadTransfers: [UploadTransfer], to list: inout [ListNode]) {
         uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()
             if !list.contains(listNode) {
