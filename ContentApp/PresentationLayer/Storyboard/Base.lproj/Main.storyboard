@@ -1311,7 +1311,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nhK-t9-qjc">
                                                     <rect key="frame" x="28" y="19.666666666666668" width="24" height="24.000000000000004"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="actionIconImageView">
-                                                        <bool key="isElement" value="YES"/>
+                                                        <bool key="isElement" value="NO"/>
                                                     </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="93J-4C-3ey"/>
@@ -1320,7 +1320,9 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6FJ-aU-8v7">
                                                     <rect key="frame" x="78" y="21.333333333333336" width="308" height="20.333333333333336"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="actionTitleLabel"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="actionTitleLabel">
+                                                        <accessibilityTraits key="traits" button="YES" staticText="YES"/>
+                                                    </accessibility>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>

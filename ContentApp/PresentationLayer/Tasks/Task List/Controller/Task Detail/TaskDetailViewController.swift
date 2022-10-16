@@ -41,6 +41,7 @@ class TaskDetailViewController: SystemSearchViewController {
         super.viewDidLoad()
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
         controller.registerEvents()
         addBackButton()
@@ -315,6 +316,13 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.viewModel.attachments.value = taskAttachments
+
+                // Insert nodes to be uploaded
+                var attachments = sSelf.viewModel.attachments.value
+                _ = sSelf.controller.uploadTransferDataAccessor.queryAll(for: sSelf.viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+                    sSelf.controller.insert(uploadTransfers: uploadTransfers, to: &attachments)
+                }
+                
                 sSelf.viewModel.isAttachmentsLoaded = true
                 sSelf.controller.buildViewModel()
             }
@@ -680,7 +688,7 @@ extension TaskDetailViewController {
     
     func editTask() {
         let priority = String(format: "%d", viewModel.priority)
-        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd")
+        let dateString = viewModel.dueDate?.dateString(format: "yyyy-MM-dd") ?? ""
                 
         let params = TaskBodyCreate(name: viewModel.taskName,
                                     priority: priority,

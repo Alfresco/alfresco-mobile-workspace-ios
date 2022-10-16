@@ -28,7 +28,7 @@ class TaskDetailController: NSObject {
     var didSelectPriority: (() -> Void)?
     var didSelectAssignee: (() -> Void)?
     var didSelectAddAttachment: (() -> Void)?
-    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    let uploadTransferDataAccessor = UploadTransferDataAccessor()
     internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
@@ -370,7 +370,7 @@ extension TaskDetailController: EventObservable {
         }
     }
     
-    private func insert(uploadTransfers: [UploadTransfer],
+    func insert(uploadTransfers: [UploadTransfer],
                         to list: inout [ListNode]) {
         uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()
