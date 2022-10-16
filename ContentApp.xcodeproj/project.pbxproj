@@ -427,11 +427,11 @@
 		C9AEE04A270D9D9E00880235 /* advance-search-config.json in Resources */ = {isa = PBXBuildFile; fileRef = C9AEE047270D9D9E00880235 /* advance-search-config.json */; };
 		C9AEE04C270D9DC900880235 /* Configurations.plist in Resources */ = {isa = PBXBuildFile; fileRef = C9AEE04B270D9DC900880235 /* Configurations.plist */; };
 		C9AEE04E270D9DEC00880235 /* IntegerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE04D270D9DEC00880235 /* IntegerExtension.swift */; };
-		C9AFCB6D27C6093B00660162 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE044270D9D9E00880235 /* ConfigurationManager.swift */; };
-		C9AFCB6E27C609D100660162 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE045270D9D9E00880235 /* ConfigurationHelper.swift */; };
 		C9AF1B0C28DEDB710020D36A /* TaskAssigneeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1B0A28DEDB710020D36A /* TaskAssigneeTableViewCell.swift */; };
 		C9AF1B0D28DEDB710020D36A /* TaskAssigneeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9AF1B0B28DEDB710020D36A /* TaskAssigneeTableViewCell.xib */; };
 		C9AF1B0F28DEDB820020D36A /* TaskAssigneeTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF1B0E28DEDB820020D36A /* TaskAssigneeTableCellViewModel.swift */; };
+		C9AFCB6D27C6093B00660162 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE044270D9D9E00880235 /* ConfigurationManager.swift */; };
+		C9AFCB6E27C609D100660162 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE045270D9D9E00880235 /* ConfigurationHelper.swift */; };
 		C9AFDF5827B8C580007233A5 /* ListComponentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E6E265B96B000B89766 /* ListComponentModel.swift */; };
 		C9AFDF5C27B8C679007233A5 /* ListPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFDF5B27B8C679007233A5 /* ListPageController.swift */; };
 		C9AFDF6127B8C877007233A5 /* ListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFDF6027B8C877007233A5 /* ListComponentViewController.swift */; };
@@ -1089,11 +1089,11 @@
 		C9D4FAB4278329F50008C4AA /* FileAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAsset.swift; sourceTree = "<group>"; };
 		C9D4FAB6278344AA0008C4AA /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
 		C9D5334B2869C91400224873 /* AnalyticsManager+PageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+PageEvents.swift"; sourceTree = "<group>"; };
-		C9DCB7A02726825A0083D80B /* ServerEdition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEdition.swift; sourceTree = "<group>"; };
-		C9DCB7A22726827D0083D80B /* TestPreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPreviewViewModel.swift; sourceTree = "<group>"; };
 		C9D9E20C28DD9EFE0011D6EE /* TaskAssigneeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAssigneeViewController.swift; sourceTree = "<group>"; };
 		C9D9E20E28DD9F0E0011D6EE /* TaskAssigneeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAssigneeViewModel.swift; sourceTree = "<group>"; };
 		C9D9E21028DDA3EC0011D6EE /* TaskAssigneeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAssigneeController.swift; sourceTree = "<group>"; };
+		C9DCB7A02726825A0083D80B /* ServerEdition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEdition.swift; sourceTree = "<group>"; };
+		C9DCB7A22726827D0083D80B /* TestPreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPreviewViewModel.swift; sourceTree = "<group>"; };
 		C9E1BF252729213300900C42 /* SearchNumberRangeComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewController.swift; sourceTree = "<group>"; };
 		C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewModel.swift; sourceTree = "<group>"; };
 		C9E25F5428325159006978C3 /* ScanDocumentsKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentsKit.swift; sourceTree = "<group>"; };
@@ -4648,7 +4648,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4681,7 +4681,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AMW_ShareEntension_AppStore_Profile;
@@ -4830,7 +4830,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4856,7 +4856,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AMW_AppStore_Profile;
