@@ -19,6 +19,7 @@
 import XCTest
 @testable import ContentApp
 @testable import AlfrescoContent
+import Foundation
 
 class TestTaskDetailViewModel: XCTestCase {
     lazy var viewModel = TaskPropertiesViewModel()
@@ -54,7 +55,7 @@ class TestTaskDetailViewModel: XCTestCase {
     func testTaskDetailViewModel_WhenInValidDueDateProvided_ShouldReturnMessage() {
         let task = loadTasksFromAppBundle()
         viewModel.task = task
-        let dueDate = viewModel.getDueDate()
+        let dueDate = viewModel.getDueDate(for: Date())
         if dueDate == LocalizationConstants.Tasks.noDueDate {
             XCTAssertTrue(true)
         }
