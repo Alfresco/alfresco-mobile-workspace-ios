@@ -19,6 +19,7 @@
 import XCTest
 @testable import ContentApp
 @testable import AlfrescoContent
+import Foundation
 
 class TestTaskDetailViewModel: XCTestCase {
     lazy var viewModel = TaskPropertiesViewModel()

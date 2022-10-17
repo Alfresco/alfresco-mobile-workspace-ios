@@ -49,6 +49,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         setupBindings()
         getTaskAttachments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskAttachmentsScreen)
+        tableView.contentInset.bottom = 90
     }
 
     override func viewWillAppear(_ animated: Bool) {
