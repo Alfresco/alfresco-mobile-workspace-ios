@@ -318,7 +318,7 @@
 "no-attached-files-placeholder" = "Nessun file allegato";
 "send-title" = "Invia";
 "no-due-date" = "Nessuna scadenza";
-"complete-title" = "Per completare";
+"complete-title" = "Contrassegna come completato";
 "complete-task-dialog-title" = "Completa compito";
 "complete-task-dialog-message" = "Vuoi completare il compito? Non potrai più apportare modifiche.";
 "confirm-title" = "Conferma";
@@ -339,6 +339,7 @@
 "user-name" = "Nome utente";
 "comment-title" = "Commento";
 "send-button" = "Pulsante Invia";
+"description-title" = "Descrizione";
 
 // MARK: - Task filters
 "Due date" = "Scadenza";
@@ -346,3 +347,22 @@
 "Task Name" = "Nome compito";
 "Active" = "Attivo";
 "Completed" = "Completato";
+
+// MARK: - Task Operations
+"no-description" = "Nessuna descrizione";
+
+// MARK: - New Task
+"new-task" = "Nuovo compito";
+"edit-task" = "Modifica compito";
+"next-title" = "Successivo";
+"edit" = "Modifica";
+"task-title" = "Compito";
+"name-and-description" = "Nome e descrizione";
+"create-task" = "Crea compito";
+"edit-name-description" = "Modifica nome e descrizione";
+"by-name" = "Per nome";
+"by-email" = "Per e-mail";
+"me-title" = "Io";
+"search-placeholder" = "Cerca...";
+"dialog-discard-edit-task-message" = "Vuoi ignorare le modifiche?";
+"delete-attachment-alert-title" = "Vuoi eliminare un file?";

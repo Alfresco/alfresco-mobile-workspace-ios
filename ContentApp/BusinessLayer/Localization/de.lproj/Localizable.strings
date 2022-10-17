@@ -318,7 +318,7 @@
 "no-attached-files-placeholder" = "Keine angehängten Dateien";
 "send-title" = "Senden";
 "no-due-date" = "Kein Fälligkeitsdatum";
-"complete-title" = "Abgeschlossen";
+"complete-title" = "Als abgeschlossen markieren";
 "complete-task-dialog-title" = "Aufgabe abschließen";
 "complete-task-dialog-message" = "Sind Sie sicher, dass Sie die Aufgabe abschließen wollen? Sie werden keine Änderungen mehr vornehmen können.";
 "confirm-title" = "Bestätigen";
@@ -339,6 +339,7 @@
 "user-name" = "Benutzername";
 "comment-title" = "Kommentar";
 "send-button" = "Schaltfläche „Senden“";
+"description-title" = "Beschreibung";
 
 // MARK: - Task filters
 "Due date" = "Fälligkeitsdatum";
@@ -346,3 +347,22 @@
 "Task Name" = "Aufgabenname";
 "Active" = "Aktiv";
 "Completed" = "Abgeschlossen";
+
+// MARK: - Task Operations
+"no-description" = "Keine Beschreibung";
+
+// MARK: - New Task
+"new-task" = "Neue Aufgabe";
+"edit-task" = "Aufgabe bearbeiten";
+"next-title" = "Weiter";
+"edit" = "Bearbeiten";
+"task-title" = "Aufgabe";
+"name-and-description" = "Name & Beschreibung";
+"create-task" = "Aufgabe erstellen";
+"edit-name-description" = "Name und Beschreibung bearbeiten";
+"by-name" = "Nach Name";
+"by-email" = "Nach E-Mail";
+"me-title" = "Ich";
+"search-placeholder" = "Suchen...";
+"dialog-discard-edit-task-message" = "Sollen die Änderungen verworfen werden?";
+"delete-attachment-alert-title" = "Eine Datei löschen?";
