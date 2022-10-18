@@ -366,3 +366,4 @@
 "search-placeholder" = "Rechercher...";
 "dialog-discard-edit-task-message" = "Voulez-vous ignorer les modifications ?";
 "delete-attachment-alert-title" = "Supprimer un fichier ?";
+"add-attachments" = "Ajouter des pièces jointes";
