@@ -66,7 +66,7 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
                 self.showErrorMaximumFileSizeExcceds()
             }
         } else {
-            fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate)
+            fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate, isScannedDocument: false)
             self.dismiss(animated: true, completion: nil)
         }
     }
