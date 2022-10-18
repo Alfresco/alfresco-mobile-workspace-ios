@@ -284,8 +284,7 @@ class TaskDetailController: NSObject {
     }
     
     private func addAttachmentCellVM() -> AddAttachmentTableCellViewModel? {
-        let attachmentsCount = viewModel.attachments.value.count
-        if viewModel.isTaskCompleted && attachmentsCount == 0 {
+        if viewModel.isTaskCompleted {
             return nil
         }
         
