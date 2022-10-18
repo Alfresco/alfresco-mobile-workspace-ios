@@ -28,7 +28,6 @@ class TaskDetailController: NSObject {
     var didSelectPriority: (() -> Void)?
     var didSelectAssignee: (() -> Void)?
     var didSelectAddAttachment: (() -> Void)?
-    let uploadTransferDataAccessor = UploadTransferDataAccessor()
     internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
@@ -364,7 +363,7 @@ extension TaskDetailController: EventObservable {
             }
             
             // Insert nodes to be uploaded
-            _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+            _ = self.viewModel.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
                 self.insert(uploadTransfers: uploadTransfers,
                             to: &attachments)
             }

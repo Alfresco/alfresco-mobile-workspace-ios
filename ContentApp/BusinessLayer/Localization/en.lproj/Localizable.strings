@@ -321,6 +321,7 @@
 "complete-title" = "Mark as complete";
 "complete-task-dialog-title" = "Complete Task";
 "complete-task-dialog-message" = "Are you sure you want to complete the task? You will no longer be able to make any changes.";
+"complete-task-dialog-message-attachments-in-progress" = "Are you sure you want to complete the task?\nOnce completed, some files could not be uploaded and no changes can be made.";
 "confirm-title" = "Confirm";
 
 // MARK: - Accessbility
@@ -367,3 +368,4 @@
 "dialog-discard-edit-task-message" = "Do you want to discard the changes?";
 "delete-attachment-alert-title" = "Delete a file?";
 "add-attachments" = "Add attachments";
+"file-size-exceed-error" = "The selected file size cannot exceed %.1f MB to upload.";
