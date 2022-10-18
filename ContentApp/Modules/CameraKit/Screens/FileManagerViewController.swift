@@ -22,6 +22,7 @@ import UniformTypeIdentifiers
 class FileManagerViewController: UIViewController {
     weak var fileManagerDelegate: FileManagerAssetDelegate?
     var fileManagerDataSource: FileManagerDataSource?
+    var isTaskAttachment = false
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -52,12 +53,34 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate, isScannedDocument: false)
-        self.dismiss(animated: true, completion: nil)
+        var isFileSizeExcceds = false
+        if isTaskAttachment {
+            for url in urls where url.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
+                isFileSizeExcceds = true
+                break
+            }
+        }
+        
+        if isFileSizeExcceds { // show error about maximum file size
+            self.dismiss(animated: true) {
+                self.showErrorMaximumFileSizeExcceds()
+            }
+        } else {
+            fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func showErrorMaximumFileSizeExcceds() {
+        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, KeyConstants.FileSize.taskFileSize )
+        Snackbar.display(with: errorMessage,
+                         type: .error,
+                         presentationHostViewOverride: self.navigationController?.viewControllers.last?.view,
+                         finish: nil)
     }
 }
 

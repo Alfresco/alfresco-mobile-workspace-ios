@@ -74,4 +74,8 @@ struct KeyConstants {
         static let mockTask = "mockTasks"
         static let mockComments = "mockComments"
     }
+    
+    struct FileSize {
+        static let taskFileSize = 100.0
+    }
 }

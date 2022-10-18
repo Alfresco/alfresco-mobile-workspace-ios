@@ -28,6 +28,7 @@ class TaskPropertiesViewModel: NSObject {
     var didSelectTaskAttachment: ((ListNode) -> Void)?
     var didSelectDeleteAttachment: ((ListNode) -> Void)?
     internal var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    let uploadTransferDataAccessor = UploadTransferDataAccessor()
 
     var taskName: String? {
         return task?.name
@@ -179,6 +180,15 @@ extension TaskPropertiesViewModel {
                         markedOfflineStatus: .upload,
                         allowableOperations: [AllowableOperationsType.delete.rawValue],
                         uploadLocalPath: path)
+    }
+    
+    func isAttachmentsPendingForUpload() -> Bool {
+        let attachments = self.uploadTransferDataAccessor.queryAll(for: taskID, isTaskAttachment: true) { transfers in }
+        
+        if attachments.isEmpty {
+            return false
+        }
+        return true
     }
 }
 

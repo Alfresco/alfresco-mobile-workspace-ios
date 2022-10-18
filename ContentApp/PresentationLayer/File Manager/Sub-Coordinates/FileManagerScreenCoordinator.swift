@@ -37,6 +37,7 @@ class FileManagerScreenCoordinator: Coordinator {
         let viewController = FileManagerViewController.instantiateViewController()
         viewController.fileManagerDelegate = self
         viewController.modalPresentationStyle = .fullScreen
+        viewController.isTaskAttachment = self.isTaskAttachment
         
         let accountIdentifier = self.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
         let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
