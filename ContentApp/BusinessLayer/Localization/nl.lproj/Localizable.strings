@@ -318,7 +318,7 @@
 "no-attached-files-placeholder" = "Geen bijgevoegde bestanden";
 "send-title" = "Verzenden";
 "no-due-date" = "Geen vervaldatum";
-"complete-title" = "Voltooien";
+"complete-title" = "Als voltooid markeren";
 "complete-task-dialog-title" = "Taak voltooien";
 "complete-task-dialog-message" = "Weet u zeker dat u de taak wilt voltooien? U kunt geen wijzigingen meer aanbrengen.";
 "confirm-title" = "Bevestigen";
@@ -339,6 +339,7 @@
 "user-name" = "Gebruikersnaam";
 "comment-title" = "Opmerking";
 "send-button" = "Knop Verzenden";
+"description-title" = "Beschrijving";
 
 // MARK: - Task filters
 "Due date" = "Vervaldatum";
@@ -346,3 +347,22 @@
 "Task Name" = "Taaknaam";
 "Active" = "Actief";
 "Completed" = "Voltooid";
+
+// MARK: - Task Operations
+"no-description" = "Geen beschrijving";
+
+// MARK: - New Task
+"new-task" = "Nieuwe taak";
+"edit-task" = "Taak bewerken";
+"next-title" = "Volgende";
+"edit" = "Bewerken";
+"task-title" = "Taak";
+"name-and-description" = "Naam & beschrijving";
+"create-task" = "Taak creëren";
+"edit-name-description" = "Naam en beschrijving bewerken";
+"by-name" = "Op naam";
+"by-email" = "Op e-mail";
+"me-title" = "Mij";
+"search-placeholder" = "Zoeken...";
+"dialog-discard-edit-task-message" = "Wilt u de wijzigingen negeren?";
+"delete-attachment-alert-title" = "Bestand verwijderen?";

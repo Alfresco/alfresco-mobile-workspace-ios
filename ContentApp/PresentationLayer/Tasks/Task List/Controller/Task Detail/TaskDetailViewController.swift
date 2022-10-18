@@ -28,7 +28,8 @@ class TaskDetailViewController: SystemSearchViewController {
     @IBOutlet weak var completeTaskButton: MDCButton!
     var viewModel: TaskDetailViewModel { return controller.viewModel }
     lazy var controller: TaskDetailController = { return TaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
-    let buttonWidth = 45.0
+    let buttonWidth = 65.0
+    let buttonHeight = 45.0
     var editButton = UIButton(type: .custom)
     private var dialogTransitionController: MDCDialogTransitionController?
     let refreshGroup = DispatchGroup()
@@ -478,17 +479,18 @@ extension TaskDetailViewController {
     private func addEditButton() {
         if viewModel.isTaskCompleted { return }
         editButton.accessibilityIdentifier = "edit-done-button"
-        editButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: buttonWidth)
+        editButton.frame = CGRect(x: 0.0, y: 0.0, width: buttonWidth, height: buttonHeight)
         editButton.addTarget(self,
                                action: #selector(editButtonTapped),
                                for: UIControl.Event.touchUpInside)
         editButton.setTitle(viewModel.editButtonTitle, for: .normal)
+        editButton.titleLabel?.numberOfLines = 1
+        editButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        editButton.titleLabel?.lineBreakMode = .byClipping
 
         let searchBarButtonItem = UIBarButtonItem(customView: editButton)
         searchBarButtonItem.accessibilityIdentifier = "barButton"
-        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: buttonWidth)
-        currWidth?.isActive = true
-        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: buttonWidth)
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: buttonHeight)
         currHeight?.isActive = true
         self.navigationItem.rightBarButtonItem = searchBarButtonItem
     }
