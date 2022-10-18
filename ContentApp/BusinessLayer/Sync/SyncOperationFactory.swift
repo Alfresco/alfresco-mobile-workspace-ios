@@ -465,7 +465,8 @@ class SyncOperationFactory {
                             transfer.syncStatus = .error
                             let listNode = transfer.listNode()
                             sSelf.publishSyncStatusEvent(for: listNode)
-                            transferDataAccessor.store(uploadTransfer: transfer)
+                            // delete file from local storage if there is an error.
+                            transferDataAccessor.remove(transfer: transfer)
                         }
                         completion()
                     }

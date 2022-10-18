@@ -321,7 +321,7 @@
 "no-attached-files-placeholder" = "Aucun fichier joint";
 "send-title" = "Envoyer";
 "no-due-date" = "Aucune date d'échéance";
-"complete-title" = "Terminer";
+"complete-title" = "Marquer comme terminé";
 "complete-task-dialog-title" = "Terminer la tâche";
 "complete-task-dialog-message" = "Etes-vous sûr de vouloir terminer la tâche ? Vous ne pourrez plus faire de modifications.";
 "confirm-title" = "Confirmer";
@@ -342,6 +342,7 @@
 "user-name" = "Nom d'utilisateur";
 "comment-title" = "Commentaire";
 "send-button" = "Bouton Envoyer";
+"description-title" = "Description";
 
 // MARK: - Task filters
 "Due date" = "Date d'échéance";
@@ -349,3 +350,26 @@
 "Task Name" = "Nom de la tâche";
 "Active" = "Actif";
 "Completed" = "Terminée";
+
+// MARK: - Task Operations
+"no-description" = "Aucune description";
+
+// MARK: - New Task
+"new-task" = "Nouvelle tâche";
+"edit-task" = "Modifier la tâche";
+"next-title" = "Suivant";
+"edit" = "Modifier";
+"task-title" = "Tâche";
+"name-and-description" = "Nom et description";
+"create-task" = "Créer une tâche";
+"edit-name-description" = "Modifier le nom et la description";
+"by-name" = "Par nom";
+"by-email" = "Par e-mail";
+"me-title" = "Moi";
+"search-placeholder" = "Rechercher...";
+"dialog-discard-edit-task-message" = "Voulez-vous ignorer les modifications ?";
+"delete-attachment-alert-title" = "Supprimer un fichier ?";
+"add-attachments" = "Ajouter des pièces jointes";
+"complete-task-dialog-message-attachments-in-progress" = "Voulez-vous vraiment terminer la tâche ? Une fois terminée, vous ne pourrez plus importer certains fichiers ni apporter de modifications.";
+"file-size-exceed-error" = "La taille du fichier sélectionné ne peut pas dépasser %.1f Mo pour
+l’importer.";
