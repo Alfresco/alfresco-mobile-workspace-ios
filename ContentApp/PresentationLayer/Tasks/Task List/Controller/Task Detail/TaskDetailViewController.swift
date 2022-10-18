@@ -319,9 +319,8 @@ class TaskDetailViewController: SystemSearchViewController {
                 sSelf.viewModel.attachments.value = taskAttachments
 
                 // Insert nodes to be uploaded
-                var attachments = sSelf.viewModel.attachments.value
                 _ = sSelf.viewModel.uploadTransferDataAccessor.queryAll(for: sSelf.viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
-                    sSelf.controller.insert(uploadTransfers: uploadTransfers, to: &attachments)
+                    sSelf.controller.insert(uploadTransfers: uploadTransfers)
                 }
                 
                 sSelf.viewModel.isAttachmentsLoaded = true

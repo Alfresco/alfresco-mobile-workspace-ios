@@ -98,17 +98,17 @@ extension TaskAttachmentsController: EventObservable {
         
         // Insert nodes to be uploaded
         _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
-            self.insert(uploadTransfers: uploadTransfers,
-                        to: &attachments)
+            self.insert(uploadTransfers: uploadTransfers)
         }
     }
     
-    func insert(uploadTransfers: [UploadTransfer], to list: inout [ListNode]) {
+    func insert(uploadTransfers: [UploadTransfer]) {
+        var attachments = viewModel.attachments.value
         uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()
-            if !list.contains(listNode) {
-                list.insert(listNode, at: 0)
-                self.viewModel.attachments.value = list
+            if !attachments.contains(listNode) {
+                attachments.insert(listNode, at: 0)
+                self.viewModel.attachments.value = attachments
                 self.buildViewModel()
             }
         }
