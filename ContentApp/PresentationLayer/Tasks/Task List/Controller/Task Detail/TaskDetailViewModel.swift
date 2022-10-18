@@ -27,7 +27,7 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
     var isOpenAfterTaskCreation = false
     var isEditTask = false
     var readOnlyTask: TaskNode?
-    
+
     var editButtonTitle: String {
         if isEditTask {
             return LocalizationConstants.General.done

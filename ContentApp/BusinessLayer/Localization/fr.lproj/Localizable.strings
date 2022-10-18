@@ -367,3 +367,6 @@
 "dialog-discard-edit-task-message" = "Voulez-vous ignorer les modifications ?";
 "delete-attachment-alert-title" = "Supprimer un fichier ?";
 "add-attachments" = "Ajouter des pièces jointes";
+"complete-task-dialog-message-attachments-in-progress" = "Voulez-vous vraiment terminer la tâche ? Une fois terminée, vous ne pourrez plus importer certains fichiers ni apporter de modifications.";
+"file-size-exceed-error" = "La taille du fichier sélectionné ne peut pas dépasser %.1f Mo pour
+l’importer.";

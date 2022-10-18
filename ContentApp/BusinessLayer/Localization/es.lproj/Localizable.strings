@@ -367,3 +367,6 @@
 "dialog-discard-edit-task-message" = "¿Desea descartar los cambios?";
 "delete-attachment-alert-title" = "¿Eliminar un fichero?";
 "add-attachments" = "Añadir adjuntos";
+"complete-task-dialog-message-attachments-in-progress" = "¿Está seguro de que desea completar la tarea? Una vez completada, no podrá cargar algunos ficheros ni hacer cambios.";
+"file-size-exceed-error" = "El tamaño de fichero seleccionado no puede exceder los %.1f MB para
+ser cargado";

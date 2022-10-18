@@ -81,6 +81,24 @@ class PhotoLibraryScreenCoordinator: Coordinator {
 extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
         
+        var isFileSizeExcceds = false
+        if isTaskAttachment {
+            for capturedAsset in capturedAssets {
+                let assetURL = URL(fileURLWithPath: capturedAsset.path)
+                if assetURL.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
+                    isFileSizeExcceds = true
+                    break
+                }
+            }
+        }
+        
+        if isFileSizeExcceds { // show error about maximum file size
+            DispatchQueue.main.async {
+                self.showErrorMaximumFileSizeExcceds()
+            }
+            return
+        }
+        
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
         else { return }
 
@@ -125,5 +143,14 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
             UserProfile.allowSyncOverCellularData == false {
             syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
         }
+    }
+    
+    private func showErrorMaximumFileSizeExcceds() {
+        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, KeyConstants.FileSize.taskFileSize )
+
+        Snackbar.display(with: errorMessage,
+                         type: .error,
+                         presentationHostViewOverride: self.presenter.viewControllers.last?.view,
+                         finish: nil)
     }
 }

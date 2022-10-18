@@ -320,7 +320,7 @@ class TaskDetailViewController: SystemSearchViewController {
 
                 // Insert nodes to be uploaded
                 var attachments = sSelf.viewModel.attachments.value
-                _ = sSelf.controller.uploadTransferDataAccessor.queryAll(for: sSelf.viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+                _ = sSelf.viewModel.uploadTransferDataAccessor.queryAll(for: sSelf.viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
                     sSelf.controller.insert(uploadTransfers: uploadTransfers, to: &attachments)
                 }
                 
@@ -366,9 +366,13 @@ class TaskDetailViewController: SystemSearchViewController {
     
     @IBAction func completeTaskButtonAction(_ sender: Any) {
         if viewModel.isEditTask { return }
+        
         let title = LocalizationConstants.Dialog.completeTaskTitle
-        let message = LocalizationConstants.Dialog.completeTaskMessage
-
+        var message = LocalizationConstants.Dialog.completeTaskMessage
+        if viewModel.isAttachmentsPendingForUpload() {
+            message = LocalizationConstants.Dialog.completeTaskWhileAttachmentsInProgress
+        }
+        
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
             guard let sSelf = self else { return }
             AnalyticsManager.shared.didTapTaskCompleteAlert()
