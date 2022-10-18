@@ -367,3 +367,5 @@
 "dialog-discard-edit-task-message" = "Sollen die Änderungen verworfen werden?";
 "delete-attachment-alert-title" = "Eine Datei löschen?";
 "add-attachments" = "Anhänge hinzufügen";
+"complete-task-dialog-message-attachments-in-progress" = "Sind Sie sicher, dass sie diese Aufgabe abschließen wollen? Nach dem Abschließen können keine Dateien mehr hochgeladen und keine Änderungen mehr gemacht werden.";
+"file-size-exceed-error" = "Die ausgewählte Dateigröße für den Upload darf %.1f nicht überschreiten.";
