@@ -356,21 +356,22 @@ extension TaskDetailController: EventObservable {
     func handleSyncStatus(event: SyncStatusEvent) {
         var attachments = viewModel.attachments.value
         let eventNode = event.node
-        for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
-            attachments[index] = eventNode
-            self.viewModel.attachments.value = attachments
-            self.buildViewModel()
-        }
-        
-        // Insert nodes to be uploaded
-        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
-            self.insert(uploadTransfers: uploadTransfers,
-                        to: &attachments)
+        if eventNode.syncStatus != .error {
+            for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
+                attachments[index] = eventNode
+                self.viewModel.attachments.value = attachments
+                self.buildViewModel()
+            }
+            
+            // Insert nodes to be uploaded
+            _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+                self.insert(uploadTransfers: uploadTransfers,
+                            to: &attachments)
+            }
         }
     }
     
-    func insert(uploadTransfers: [UploadTransfer],
-                        to list: inout [ListNode]) {
+    func insert(uploadTransfers: [UploadTransfer], to list: inout [ListNode]) {
         uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()
             if !list.contains(listNode) {
