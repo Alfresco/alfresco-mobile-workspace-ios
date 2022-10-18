@@ -49,9 +49,19 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         setupBindings()
         getTaskAttachments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskAttachmentsScreen)
-        tableView.contentInset.bottom = 90
+        checkForAddAttachmentButton()
     }
 
+    private func checkForAddAttachmentButton() {
+        if viewModel.isTaskCompleted {
+            addAttachmentButton.isHidden = true
+            tableView.contentInset.bottom = 0
+        } else {
+            addAttachmentButton.isHidden = false
+            tableView.contentInset.bottom = 90
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateTheme()
