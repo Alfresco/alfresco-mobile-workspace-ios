@@ -370,7 +370,7 @@ class TaskDetailViewController: SystemSearchViewController {
         let title = LocalizationConstants.Dialog.completeTaskTitle
         var message = LocalizationConstants.Dialog.completeTaskMessage
         if viewModel.isAttachmentsPendingForUpload() {
-            message = LocalizationConstants.Dialog.completeTaskMessageWhileAttachmentsInProgress
+            message = LocalizationConstants.Dialog.completeTaskWhileAttachmentsInProgress
         }
         
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
