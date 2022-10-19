@@ -258,7 +258,7 @@ class TaskDetailController: NSObject {
     
     // MARK: - Attachments
     private func spaceCellVM() -> SpaceTableCellViewModel {
-        let rowVM = SpaceTableCellViewModel.init()
+        let rowVM = SpaceTableCellViewModel()
         return rowVM
     }
     
