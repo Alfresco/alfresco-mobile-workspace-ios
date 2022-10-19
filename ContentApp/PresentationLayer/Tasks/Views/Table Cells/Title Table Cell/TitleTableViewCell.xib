@@ -34,6 +34,9 @@
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-edit-icon" translatesAutoresizingMaskIntoConstraints="NO" id="KbG-oq-TAm" userLabel="editImageView">
                                 <rect key="frame" x="412" y="10" width="40" height="40"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="b3W-lf-DHP"/>
                                     <constraint firstAttribute="width" secondItem="KbG-oq-TAm" secondAttribute="height" id="hiS-AT-nTS"/>

@@ -55,6 +55,8 @@ class TaskDetailController: NSObject {
             return TaskAttachmentTableViewCell.cellIdentifier()
         case is AddAttachmentTableCellViewModel:
             return AddAttachmentTableViewCell.cellIdentifier()
+        case is SpaceTableCellViewModel:
+            return SpaceTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -255,8 +257,8 @@ class TaskDetailController: NSObject {
     }
     
     // MARK: - Attachments
-    private func spaceCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: "", subTitle: nil, isEditMode: false)
+    private func spaceCellVM() -> SpaceTableCellViewModel {
+        let rowVM = SpaceTableCellViewModel()
         return rowVM
     }
     
