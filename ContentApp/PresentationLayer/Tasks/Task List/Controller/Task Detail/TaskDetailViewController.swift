@@ -108,6 +108,7 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.emptyPlaceholderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.emptyPlaceholderCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.taskAttachment, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskAttachment)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.addTaskAttachment, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addTaskAttachment)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.spaceCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.spaceCell)
     }
     
     private func addAccessibility() {
@@ -450,6 +451,8 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? TaskAttachmentTableViewCell)?.applyTheme(with: theme)
             } else if cell is AddAttachmentTableViewCell {
                 (cell as? AddAttachmentTableViewCell)?.applyTheme(with: theme)
+            } else if cell is SpaceTableViewCell {
+                (cell as? SpaceTableViewCell)?.applyTheme(with: theme)
             }
         }
         
@@ -458,7 +461,13 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
+        switch rowViewModel {
+        case is SpaceTableCellViewModel:
+            return 40.0
+        default:
+            return UITableView.automaticDimension
+        }
     }
 }
 
