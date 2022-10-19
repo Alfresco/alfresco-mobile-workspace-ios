@@ -69,10 +69,6 @@ steps:
   name: prov_profile
   inputs:
     secureFile: '$(provisioning_profile)'
-
-- script: |
-      sudo xcode-select -s /Applications/Xcode_13.4.1.app
-
 - task: DownloadSecureFile@1
   name: prov_profile_share
   inputs:
