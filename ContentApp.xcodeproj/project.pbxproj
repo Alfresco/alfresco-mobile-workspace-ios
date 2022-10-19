@@ -154,6 +154,9 @@
 		C918813727AA66A500F850DF /* UploadTransferDataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338258D262D817D000FFD4E /* UploadTransferDataAccessor.swift */; };
 		C918814A27AA8A1400F850DF /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC133724A4C7930068E3C7 /* UserProfile.swift */; };
 		C918814C27AA8A4C00F850DF /* DataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13382592262D87ED000FFD4E /* DataAccessor.swift */; };
+		C91F75AB290017B7008F31EF /* SpaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91F75A9290017B7008F31EF /* SpaceTableViewCell.swift */; };
+		C91F75AC290017B7008F31EF /* SpaceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C91F75AA290017B7008F31EF /* SpaceTableViewCell.xib */; };
+		C91F75AE290017C9008F31EF /* SpaceTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91F75AD290017C9008F31EF /* SpaceTableCellViewModel.swift */; };
 		C9205C6A28A0D6AE00DEF5AC /* TaskProperties+APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C6928A0D6AE00DEF5AC /* TaskProperties+APIs.swift */; };
 		C9205C7228A0D94300DEF5AC /* TaskCommentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7128A0D94300DEF5AC /* TaskCommentOperations.swift */; };
 		C9205C7428A0D96700DEF5AC /* TaskCommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7328A0D96700DEF5AC /* TaskCommentModel.swift */; };
@@ -900,6 +903,9 @@
 		C918811E27AA41B900F850DF /* ThemingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
 		C918812227AA421400F850DF /* ListNodeDataAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListNodeDataAccessor.swift; sourceTree = "<group>"; };
 		C918812427AA421400F850DF /* NodeOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeOperations.swift; sourceTree = "<group>"; };
+		C91F75A9290017B7008F31EF /* SpaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceTableViewCell.swift; sourceTree = "<group>"; };
+		C91F75AA290017B7008F31EF /* SpaceTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpaceTableViewCell.xib; sourceTree = "<group>"; };
+		C91F75AD290017C9008F31EF /* SpaceTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceTableCellViewModel.swift; sourceTree = "<group>"; };
 		C9205C6928A0D6AE00DEF5AC /* TaskProperties+APIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskProperties+APIs.swift"; sourceTree = "<group>"; };
 		C9205C7128A0D94300DEF5AC /* TaskCommentOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCommentOperations.swift; sourceTree = "<group>"; };
 		C9205C7328A0D96700DEF5AC /* TaskCommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentModel.swift; sourceTree = "<group>"; };
@@ -1953,6 +1959,16 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
+		C91F75A8290017A1008F31EF /* Space Table Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C91F75A9290017B7008F31EF /* SpaceTableViewCell.swift */,
+				C91F75AD290017C9008F31EF /* SpaceTableCellViewModel.swift */,
+				C91F75AA290017B7008F31EF /* SpaceTableViewCell.xib */,
+			);
+			path = "Space Table Cell";
+			sourceTree = "<group>";
+		};
 		C9205C7028A0D94300DEF5AC /* Task Comments */ = {
 			isa = PBXGroup;
 			children = (
@@ -2368,6 +2384,7 @@
 		C9A759A2289BBAD9006603E0 /* Table Cells */ = {
 			isa = PBXGroup;
 			children = (
+				C91F75A8290017A1008F31EF /* Space Table Cell */,
 				C9A759A4289BBAD9006603E0 /* Title Table Cell */,
 				C9A759AC289BCA23006603E0 /* Info Table Cell */,
 				C9A759A3289BBAD9006603E0 /* Priority Table Cell */,
@@ -3600,6 +3617,7 @@
 				C911EFA028926C6800C55F67 /* task_filters.json in Resources */,
 				C9A759A1289BBAA1006603E0 /* TaskListCollectionViewCell.xib in Resources */,
 				E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */,
+				C91F75AC290017B7008F31EF /* SpaceTableViewCell.xib in Resources */,
 				C9AEE04A270D9D9E00880235 /* advance-search-config.json in Resources */,
 				C9A759B6289BD6FA006603E0 /* PriorityTableViewCell.xib in Resources */,
 				B9F17145256C115A00AD1E3A /* powerpoint.pptx in Resources */,
@@ -4217,6 +4235,7 @@
 				C9A75994289BB0FF006603E0 /* TaskDetailViewModel.swift in Sources */,
 				C97BEB6B26EB363100E05375 /* CellConfigurable.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
+				C91F75AB290017B7008F31EF /* SpaceTableViewCell.swift in Sources */,
 				B9233FC025A708D1006EA4DA /* OfflineViewModelFactory.swift in Sources */,
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
 				E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */,
@@ -4241,6 +4260,7 @@
 				E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */,
 				B9A21CC22555255100F93383 /* ActionsMenuTrashMoreButton.swift in Sources */,
 				13382593262D87ED000FFD4E /* DataAccessor.swift in Sources */,
+				C91F75AE290017C9008F31EF /* SpaceTableCellViewModel.swift in Sources */,
 				B9A90E73265E656400B89766 /* MyLibrariesModel.swift in Sources */,
 				C97BEB7226EB36E400E05375 /* CellConstants.swift in Sources */,
 				C9AF1B0F28DEDB820020D36A /* TaskAssigneeTableCellViewModel.swift in Sources */,
