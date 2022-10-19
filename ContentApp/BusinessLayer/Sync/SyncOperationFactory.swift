@@ -451,7 +451,6 @@ class SyncOperationFactory {
                         
                         if error == nil, let node = data {
                             AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadTaskAttachment.rawValue, fileSize: fileSize, success: true)
-                            SyncSharedNodes.store(uploadedNode: transfer)
                             transfer.syncStatus = .synced
                             
                             if let attachement = TaskAttachmentOperations.processAttachments(for: [node], taskId: transfer.parentNodeId).first {
