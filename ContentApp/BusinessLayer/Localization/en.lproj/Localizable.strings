@@ -369,3 +369,7 @@
 "delete-attachment-alert-title" = "Delete a file?";
 "add-attachments" = "Add attachments";
 "file-size-exceed-error" = "The selected file size cannot exceed %.1f MB to upload.";
+
+// MARK: - Appleford Accessibility
+"connect-to-textfield" = "Connect to Text Field";
+"copyright" = "Copyright";

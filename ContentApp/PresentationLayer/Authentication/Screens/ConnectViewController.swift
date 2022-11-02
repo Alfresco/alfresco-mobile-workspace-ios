@@ -59,6 +59,7 @@ class ConnectViewController: SystemThemableViewController {
         viewModel?.aimsViewModel?.delegate = self
 
         addLocalization()
+        addAccessibility()
         enableConnectButton = !connectTextField.isEmpty()
         activityIndicator = ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
@@ -142,6 +143,30 @@ class ConnectViewController: SystemThemableViewController {
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelpAlfresco, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright,
                                      Calendar.current.component(.year, from: Date()))
+    }
+    
+    private func addAccessibility() {
+        productLabel.accessibilityIdentifier = "title"
+        productLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
+        productLabel.accessibilityValue = LocalizationConstants.productName
+        
+        connectTextField.accessibilityIdentifier = "connect-to-text-field"
+        connectTextField.accessibilityHint = LocalizationConstants.TextFieldPlaceholders.connect
+        connectTextField.accessibilityLabel = LocalizationConstants.Accessibility.connectToTextField
+        connectTextField.accessibilityValue = connectTextField.text
+        
+        connectButton.accessibilityIdentifier = "connect-button"
+        connectButton.accessibilityLabel = LocalizationConstants.Buttons.connect
+
+        advancedSettingsButton.accessibilityIdentifier = "advance-settings-button"
+        advancedSettingsButton.accessibilityLabel = LocalizationConstants.Buttons.advancedSetting
+        
+        needHelpButton.accessibilityIdentifier = "need-help-button"
+        needHelpButton.accessibilityLabel = LocalizationConstants.Buttons.needHelpAlfresco
+
+        copyrightLabel.accessibilityIdentifier = "copyright-label"
+        copyrightLabel.accessibilityLabel = LocalizationConstants.Accessibility.copyright
+        copyrightLabel.accessibilityValue = copyrightLabel.text
     }
 
     override func applyComponentsThemes() {
