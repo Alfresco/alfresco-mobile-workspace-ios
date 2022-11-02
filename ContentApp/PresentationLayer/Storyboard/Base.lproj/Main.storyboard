@@ -21,7 +21,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="alfresco-logo" translatesAutoresizingMaskIntoConstraints="NO" id="BOA-c7-Asg">
                                 <rect key="frame" x="194" y="123.66666666666669" width="40" height="40"/>
                                 <accessibility key="accessibilityConfiguration" identifier="logoImageView">
-                                    <bool key="isElement" value="YES"/>
+                                    <bool key="isElement" value="NO"/>
                                 </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BOA-c7-Asg" secondAttribute="height" id="64F-oI-0qn"/>
