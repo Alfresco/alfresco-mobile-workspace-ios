@@ -21,7 +21,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="alfresco-logo" translatesAutoresizingMaskIntoConstraints="NO" id="BOA-c7-Asg">
                                 <rect key="frame" x="194" y="123.66666666666669" width="40" height="40"/>
                                 <accessibility key="accessibilityConfiguration" identifier="logoImageView">
-                                    <bool key="isElement" value="YES"/>
+                                    <bool key="isElement" value="NO"/>
                                 </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BOA-c7-Asg" secondAttribute="height" id="64F-oI-0qn"/>
@@ -361,6 +361,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Help" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N5j-bp-srx">
                                 <rect key="frame" x="30.000000000000004" y="44" width="35.333333333333343" height="20.333333333333329"/>
                                 <accessibility key="accessibilityConfiguration" identifier="titleScreen">
+                                    <accessibilityTraits key="traits" none="YES"/>
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>

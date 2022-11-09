@@ -71,6 +71,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         addLocalization()
         enableSaveButton = false
         updateFields()
+        addAccessibility()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -144,6 +145,34 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         saveButton.setTitle(LocalizationConstants.General.save, for: .normal)
+    }
+    
+    private func addAccessibility() {
+        
+        backPadButton.accessibilityIdentifier = "back-button"
+        backPadButton.accessibilityLabel = LocalizationConstants.Accessibility.back
+        
+        titlePadLabel.accessibilityIdentifier = "title"
+        titlePadLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
+        titlePadLabel.accessibilityValue = titlePadLabel.text
+                
+        resetToDefaultPadButton.accessibilityIdentifier = "reset-button"
+        resetToDefaultPadButton.accessibilityLabel = LocalizationConstants.Buttons.resetToDefault
+        resetToDefaultButton.accessibilityIdentifier = "reset-button"
+        resetToDefaultButton.accessibilityLabel = LocalizationConstants.Buttons.resetToDefault
+        
+        transportProtocolLabel.accessibilityIdentifier = "transfer-protocol-label"
+        httpsLabel.accessibilityIdentifier = "https-label"
+        httpsSwitch.accessibilityIdentifier = "https-switch"
+        
+        settingsLabel.accessibilityIdentifier = "settings-label"
+        authenticationLabel.accessibilityIdentifier = "authentication-label"
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let backPadButton = backPadButton, let titlePadLabel = titlePadLabel, let resetToDefaultPadButton = resetToDefaultPadButton {
+                self.accessibilityElements = [backPadButton, titlePadLabel, resetToDefaultPadButton]
+            }
+        }
     }
 
     override func applyComponentsThemes() {
