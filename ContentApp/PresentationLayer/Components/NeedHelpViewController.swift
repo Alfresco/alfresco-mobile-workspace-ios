@@ -23,7 +23,6 @@ class NeedHelpViewController: SystemThemableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-
     var model: NeedHelpModelProtocol?
 
     // MARK: - View Life Cycle
@@ -84,6 +83,7 @@ class NeedHelpViewController: SystemThemableViewController {
 
         closeButton.tintColor = currentTheme.onSurface60Color
         view.backgroundColor = currentTheme.surfaceColor
+        addLocalization()
     }
 
     // MARK: - Actions
@@ -92,6 +92,17 @@ class NeedHelpViewController: SystemThemableViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+    private func addLocalization() {
+        titleLabel.accessibilityIdentifier = "title-label"
+        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
+        titleLabel.accessibilityValue = titleLabel.text
+        
+        closeButton.accessibilityIdentifier = "close-button"
+        closeButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+
+        textView.accessibilityIdentifier = "description-text-view"
+        textView.accessibilityValue = textView.text
+    }
 }
 
 extension NeedHelpViewController: StoryboardInstantiable { }
