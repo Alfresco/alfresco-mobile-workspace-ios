@@ -238,6 +238,7 @@
 "action-menu-upload-files" = "Dateien hochladen";
 "action-menu-move-folder" = "Verschieben";
 "action-menu-rename-node" = "Umbenennen";
+"action-menu-scan-documents" = "Dokumente scannen";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Löschen";

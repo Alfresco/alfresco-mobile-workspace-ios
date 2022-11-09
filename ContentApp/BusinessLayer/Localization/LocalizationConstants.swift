@@ -351,6 +351,8 @@ struct LocalizationConstants {
         static let descriptionTitle = NSLocalizedString("description-title", comment: "")
         static let createTask = NSLocalizedString("create-task", comment: "")
         static let editNameAndDescription = NSLocalizedString("edit-name-description", comment: "")
+        static let connectToTextField = NSLocalizedString("connect-to-textfield", comment: "")
+        static let copyright = NSLocalizedString("copyright", comment: "")
     }
     
     struct EditTask {
