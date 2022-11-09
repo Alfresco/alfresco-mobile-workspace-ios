@@ -84,6 +84,7 @@ class NeedHelpViewController: SystemThemableViewController {
 
         closeButton.tintColor = currentTheme.onSurface60Color
         view.backgroundColor = currentTheme.surfaceColor
+        addAccessibility()
     }
 
     // MARK: - Actions
@@ -92,6 +93,11 @@ class NeedHelpViewController: SystemThemableViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+    private func addAccessibility() {
+        closeButton.accessibilityLabel = LocalizationConstants.Accessibility.back
+        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
+        titleLabel.accessibilityValue = titleLabel.text
+    }
 }
 
 extension NeedHelpViewController: StoryboardInstantiable { }
