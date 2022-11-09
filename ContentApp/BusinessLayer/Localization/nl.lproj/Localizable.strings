@@ -238,6 +238,7 @@
 "action-menu-upload-files" = "Bestanden uploaden";
 "action-menu-move-folder" = "Verplaatsen";
 "action-menu-rename-node" = "Naam wijzigen";
+"action-menu-scan-documents" = "Documenten scannen";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";
@@ -254,7 +255,6 @@
 "dialog-session-unavailable-message" = "Tik om Alfresco Mobile Workspace te starten";
 "dialog-internet-unavailable-title" = "Internet niet beschikbaar";
 "dialog-internet-unavailable-message" = "Controleer uw internetverbinding en probeer het opnieuw";
-
 
 // MARK: - Empty List
 "empty-recent-title" = "Geen recente bestanden";
