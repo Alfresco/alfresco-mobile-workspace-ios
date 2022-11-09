@@ -237,6 +237,7 @@
 "action-menu-upload-files" = "Carica file";
 "action-menu-move-folder" = "Sposta";
 "action-menu-rename-node" = "Rinomina";
+"action-menu-scan-documents" = "Acquisisci i documenti";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Elimina";
@@ -251,7 +252,6 @@
 "dialog-session-unavailable-message" = "Tocca per lanciare Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet non disponibile";
 "dialog-internet-unavailable-message" = "Verifica la connessione Internet e riprova.";
-
 
 // MARK: - Empty List
 "empty-recent-title" = "Nessun file recente";
