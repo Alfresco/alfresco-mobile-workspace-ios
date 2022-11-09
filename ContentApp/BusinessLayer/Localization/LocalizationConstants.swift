@@ -346,6 +346,9 @@ struct LocalizationConstants {
         static let editNameAndDescription = NSLocalizedString("edit-name-description", comment: "")
         static let connectToTextField = NSLocalizedString("connect-to-textfield", comment: "")
         static let copyright = NSLocalizedString("copyright", comment: "")
+        static let more = NSLocalizedString("more", comment: "")
+        static let header = NSLocalizedString("header", comment: "")
+        static let sync = NSLocalizedString("sync", comment: "")
     }
     
     struct EditTask {
