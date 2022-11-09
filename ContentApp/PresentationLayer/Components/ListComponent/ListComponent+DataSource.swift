@@ -94,7 +94,9 @@ class ListComponentDataSource: DataSource {
             guard let cell = collectionView
                     .dequeueReusableCell(withReuseIdentifier: identifierSection,
                                          for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
-            cell.titleLabel.text = configuration.viewModel.model.titleForSectionHeader(at: indexPath)
+            let title = configuration.viewModel.model.titleForSectionHeader(at: indexPath)
+            cell.titleLabel.text = title
+            cell.addLocalization(value: title)
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             return cell
         } else {
