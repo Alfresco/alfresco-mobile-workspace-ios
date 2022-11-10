@@ -59,6 +59,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
             } else {
                 applyLayoutForDownloading()
             }
+            addAccessibilityForSyncStatusImageView()
         }
     }
 
@@ -152,7 +153,6 @@ class ListElementCollectionViewCell: ListSelectableCell {
         subtitle.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.path
         subtitle.accessibilityValue = node.path
         moreButton.accessibilityLabel = LocalizationConstants.Accessibility.more
-        addAccessibilityForSyncStatusImageView()
     }
     
     private func addAccessibilityForSyncStatusImageView() {
