@@ -14,7 +14,8 @@ variables:
     value: 'iphoneos'
   - name: cocoapods_path
     value: $(Pipeline.Workspace)/.cocoapods
-  DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS:'$(appleTeamId)'
+  - name: "DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"
+    value: "-asc_provider $(appleTeamId)"
 
 steps:
 - checkout: self
