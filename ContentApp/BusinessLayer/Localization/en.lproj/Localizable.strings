@@ -375,4 +375,11 @@
 "copyright" = "Copyright";
 "more" = "More";
 "header" = "Header";
-"sync" = "Sync";
+"sync-status" = "Sync Status";
+"marked-for-offline" = "Marked for Offline";
+"error" = "Error";
+"pending" = "Pending";
+"in-progress" = "In Progress";
+"downloaded" = "Downloaded";
+"uploaded" = "Uploaded";
+"undefined" = "Undefined";
