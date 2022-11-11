@@ -92,7 +92,8 @@ steps:
       APPSTORE_APP_ID: $(appstore_app_id)
       CONFIGURATION: $(configuration)
       FASTLANE_ITC_TEAM_ID: $(appleTeamId)
-      
+      FASTLANE_ITC_PP_ID: $(provider_public_id)
+
 
 - task: CmdLine@2
   inputs:
