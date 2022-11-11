@@ -44,6 +44,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
             title.text = node.title
             subtitle.text = node.path
             iconImageView.image = FileIcon.icon(for: node)
+            addAccessibility(for: node)
         }
     }
 
@@ -143,5 +144,14 @@ class ListElementCollectionViewCell: ListSelectableCell {
     
     private func stopRotateSyncIcon() {
         syncStatusImageView.layer.removeAnimation(forKey: "rotationAnimation")
+    }
+    
+    func addAccessibility(for node: ListNode) {
+        title.accessibilityLabel = LocalizationConstants.Accessibility.title
+        title.accessibilityValue = node.title
+        subtitle.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.path
+        subtitle.accessibilityValue = node.path
+        moreButton.accessibilityLabel = LocalizationConstants.Accessibility.more
+        syncStatusImageView.accessibilityLabel = LocalizationConstants.Accessibility.sync
     }
 }

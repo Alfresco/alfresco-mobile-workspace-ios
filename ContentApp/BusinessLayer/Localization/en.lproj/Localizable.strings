@@ -373,3 +373,6 @@
 // MARK: - Appleford Accessibility
 "connect-to-textfield" = "Connect to Text Field";
 "copyright" = "Copyright";
+"more" = "More";
+"header" = "Header";
+"sync" = "Sync";
