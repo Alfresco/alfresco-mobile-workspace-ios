@@ -22,7 +22,6 @@ platform :ios do
         configuration: ENV["CONFIGURATION"]
       )
       upload_to_testflight(
-	force: true,
         skip_waiting_for_build_processing: true,
         apple_id: ENV["APPSTORE_APP_ID"],
 	team_id: ENV["FASTLANE_ITC_TEAM_ID"],
