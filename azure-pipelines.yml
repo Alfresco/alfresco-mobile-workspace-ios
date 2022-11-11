@@ -84,8 +84,8 @@ steps:
     script: 'bundle update && bundle exec fastlane build_and_pilot'
   env:
       FASTLANE_DISABLE_COLORS: 'true'
-      FASTLANE_USER: $(ankit_appstore_upload_user)
-      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(ankit_appstore_upload_token)
+      FASTLANE_USER: $(appstore_upload_user)
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(appstore_upload_token)
       PROV_PROFILE: $(prov_profile.secureFilePath)
       PROV_PROFILE_SHARE: $(prov_profile_share.secureFilePath)
       SIGNING_IDENTITY: $(signing_identity)
