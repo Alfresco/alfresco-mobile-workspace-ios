@@ -167,12 +167,6 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         
         settingsLabel.accessibilityIdentifier = "settings-label"
         authenticationLabel.accessibilityIdentifier = "authentication-label"
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            if let backPadButton = backPadButton, let titlePadLabel = titlePadLabel, let resetToDefaultPadButton = resetToDefaultPadButton {
-                self.accessibilityElements = [backPadButton, titlePadLabel, resetToDefaultPadButton]
-            }
-        }
     }
 
     override func applyComponentsThemes() {

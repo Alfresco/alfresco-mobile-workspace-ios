@@ -116,6 +116,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
+        self.view.endEditing(true)
         if UIDevice.current.userInterfaceIdiom == .pad {
             splashScreenDelegate?.showAdvancedSettingsScreen()
         } else {
