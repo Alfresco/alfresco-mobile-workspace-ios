@@ -125,6 +125,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
+        self.view.endEditing(true)
         connectScreenCoordinatorDelegate?.showNeedHelpSheet()
     }
 

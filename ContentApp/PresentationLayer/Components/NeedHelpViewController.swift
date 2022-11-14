@@ -84,7 +84,6 @@ class NeedHelpViewController: SystemThemableViewController {
         closeButton.tintColor = currentTheme.onSurface60Color
         view.backgroundColor = currentTheme.surfaceColor
         addLocalization()
-        addAccessibility()
     }
 
     // MARK: - Actions
@@ -103,11 +102,10 @@ class NeedHelpViewController: SystemThemableViewController {
 
         textView.accessibilityIdentifier = "description-text-view"
         textView.accessibilityValue = textView.text
-    }
-    private func addAccessibility() {
-        closeButton.accessibilityLabel = LocalizationConstants.Accessibility.back
-        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        titleLabel.accessibilityValue = titleLabel.text
+        
+        if let tLabel = titleLabel, let cButton = closeButton, let tView = textView {
+            self.view.accessibilityElements = [tLabel, cButton, tView]
+        }
     }
 }
 
