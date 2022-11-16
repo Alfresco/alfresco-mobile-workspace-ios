@@ -26,6 +26,7 @@ class BrowseStaticNodeCollectionViewCell: ListSelectableCell {
             if let node = node {
                 iconImageView.image = UIImage(named: node.icon)
                 titleLabel.text = node.title
+                titleLabel.accessibilityIdentifier = node.accessibilityId
                 switch node.type {
                 case .myLibraries:
                     self.accessibilityIdentifier = "myLibrariesCell"
