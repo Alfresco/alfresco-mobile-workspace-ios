@@ -268,6 +268,7 @@ extension ConnectViewController: UITextFieldDelegate {
                    replacementString string: String) -> Bool {
         enableConnectButton = (textField.updatedText(for: range,
                                                      replacementString: string) != "")
+        connectTextField.accessibilityValue = textField.text
         return true
     }
 
