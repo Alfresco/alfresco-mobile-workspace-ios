@@ -26,4 +26,9 @@ class ListSectionCollectionViewCell: UICollectionViewCell {
         backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
     }
+    
+    func addLocalization(value: String?) {
+        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.header
+        titleLabel.accessibilityValue = value
+    }
 }

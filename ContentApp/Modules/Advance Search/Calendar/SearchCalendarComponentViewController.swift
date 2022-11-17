@@ -60,6 +60,10 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         toTextField.accessibilityIdentifier = "toTextField-calendarComponent"
         applyButton.accessibilityIdentifier = "applyActionButton-calendarComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-calendarComponent"
+        
+        if let headerTitleLabel = headerTitleLabel, let dismissButton = dismissButton, let fromTextField = fromTextField, let toTextField = toTextField, let applyButton = applyButton, let resetButton = resetButton {
+            self.view.accessibilityElements = [headerTitleLabel, dismissButton, fromTextField, toTextField, applyButton, resetButton]
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

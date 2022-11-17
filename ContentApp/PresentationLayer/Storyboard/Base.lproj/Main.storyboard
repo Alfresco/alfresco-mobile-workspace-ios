@@ -853,7 +853,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wgL-4H-rRu">
                                                     <rect key="frame" x="24" y="12" width="24" height="24"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="browseIconImageView">
-                                                        <bool key="isElement" value="YES"/>
+                                                        <bool key="isElement" value="NO"/>
                                                     </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="24" id="DtA-zC-lf2"/>
@@ -863,6 +863,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajZ-Il-tUC">
                                                     <rect key="frame" x="72" y="13.666666666666664" width="42" height="21"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="browseTitleLabel">
+                                                        <accessibilityTraits key="traits" button="YES"/>
                                                         <bool key="isElement" value="YES"/>
                                                     </accessibility>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

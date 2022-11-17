@@ -29,6 +29,7 @@ struct BrowseNode {
     var title: String
     var icon: String
     var type: BrowseType
+    var accessibilityId: String?
 
     init(type: BrowseType) {
         self.type = type
@@ -36,15 +37,19 @@ struct BrowseNode {
         case .personalFiles:
             self.title = LocalizationConstants.BrowseStaticList.personalFiles
             self.icon = "ic-personal_files"
+            self.accessibilityId = "personal-files"
         case .myLibraries:
             self.title = LocalizationConstants.BrowseStaticList.myLibraries
             self.icon = "ic-my_libraries"
+            self.accessibilityId = "my-libraries"
         case .shared:
             self.title = LocalizationConstants.BrowseStaticList.shared
             self.icon = "ic-shared"
+            self.accessibilityId = "shared"
         case .trash:
             self.title = LocalizationConstants.BrowseStaticList.trash
             self.icon = "ic-trash"
+            self.accessibilityId = "trash"
         }
     }
 }

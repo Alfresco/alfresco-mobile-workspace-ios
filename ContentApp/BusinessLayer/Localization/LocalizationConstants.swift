@@ -353,6 +353,16 @@ struct LocalizationConstants {
         static let editNameAndDescription = NSLocalizedString("edit-name-description", comment: "")
         static let connectToTextField = NSLocalizedString("connect-to-textfield", comment: "")
         static let copyright = NSLocalizedString("copyright", comment: "")
+        static let more = NSLocalizedString("more", comment: "")
+        static let header = NSLocalizedString("header", comment: "")
+        static let syncStatus = NSLocalizedString("sync-status", comment: "")
+        static let markedForOffline = NSLocalizedString("marked-for-offline", comment: "")
+        static let error = NSLocalizedString("error", comment: "")
+        static let pending = NSLocalizedString("pending", comment: "")
+        static let inProgress = NSLocalizedString("in-progress", comment: "")
+        static let downloaded = NSLocalizedString("downloaded", comment: "")
+        static let uploaded = NSLocalizedString("uploaded", comment: "")
+        static let undefined = NSLocalizedString("undefined", comment: "")
     }
     
     struct EditTask {
