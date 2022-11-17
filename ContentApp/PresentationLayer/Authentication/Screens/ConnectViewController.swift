@@ -116,6 +116,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
+        self.view.endEditing(true)
         if UIDevice.current.userInterfaceIdiom == .pad {
             splashScreenDelegate?.showAdvancedSettingsScreen()
         } else {
@@ -125,6 +126,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
+        self.view.endEditing(true)
         connectScreenCoordinatorDelegate?.showNeedHelpSheet()
     }
 
@@ -266,6 +268,7 @@ extension ConnectViewController: UITextFieldDelegate {
                    replacementString string: String) -> Bool {
         enableConnectButton = (textField.updatedText(for: range,
                                                      replacementString: string) != "")
+        connectTextField.accessibilityValue = textField.text
         return true
     }
 

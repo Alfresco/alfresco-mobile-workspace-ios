@@ -31,7 +31,7 @@ struct TaskNode {
     var endDate: Date?
     var duration: Int?
     var priority: Int?
-    var parentTaskId: Int?
+    var parentTaskId: String?
     var parentTaskName: String?
     var processInstanceId: String?
     var processInstanceName: String?
@@ -77,7 +77,7 @@ struct TaskNode {
          endDate: Date? = nil,
          duration: Int? = nil,
          priority: Int? = nil,
-         parentTaskId: Int? = nil,
+         parentTaskId: String? = nil,
          parentTaskName: String? = nil,
          processInstanceId: String? = nil,
          processInstanceName: String? = nil,
