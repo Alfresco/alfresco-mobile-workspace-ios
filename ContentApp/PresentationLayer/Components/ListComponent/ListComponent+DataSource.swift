@@ -115,6 +115,7 @@ class ListComponentDataSource: DataSource {
             }
             if configuration.viewModel.shouldDisplaySubtitle(for: indexPath) == false {
                 cell.subtitle.text = ""
+                cell.setAccessibilitySequence()
             }
 
             if isMoveFiles {
