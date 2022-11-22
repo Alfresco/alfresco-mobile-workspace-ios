@@ -61,6 +61,7 @@ class ListComponentViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        progressView.isAccessibilityElement = false
         // Configure collection view data source and delegate
         guard let viewModel = self.viewModel,
               let services = coordinatorServices else { return }
@@ -125,6 +126,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
         observeConnectivity()
+        setAccessibility()
     }
     
     // MARK: - Move files
@@ -250,6 +252,11 @@ class ListComponentViewController: SystemThemableViewController {
             }
         }
         collectionView.setContentOffset(pointToScroll, animated: true)
+    }
+    
+    func setAccessibility() {
+        createButton.accessibilityIdentifier = "create-button"
+        createButton.accessibilityLabel = LocalizationConstants.General.create
     }
     
     // MARK: - Private Interface
@@ -423,6 +430,11 @@ extension ListComponentViewController: ListPageControllerDelegate {
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
+            
+            emptyListTitle.accessibilityLabel = LocalizationConstants.Accessibility.title
+            emptyListTitle.accessibilityValue = emptyListTitle.text
+            emptyListSubtitle.accessibilityLabel = LocalizationConstants.Accessibility.subTitle
+            emptyListSubtitle.accessibilityValue = emptyListSubtitle.text
         }
         
         // If loading the first page or missing pagination scroll to top
