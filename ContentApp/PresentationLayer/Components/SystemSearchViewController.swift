@@ -137,6 +137,7 @@ class SystemSearchViewController: SystemThemableViewController {
         
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
         searchBarButtonItem.accessibilityIdentifier = "searchBarButton"
+        searchBarButtonItem.accessibilityLabel = LocalizationConstants.Accessibility.searchTitle
         let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currWidth?.isActive = true
         let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
@@ -209,6 +210,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
             let searchBarButtonItem = UIBarButtonItem(customView: backButton)
             searchBarButtonItem.accessibilityIdentifier = "backBarButton"
+            searchBarButtonItem.accessibilityLabel = LocalizationConstants.Accessibility.back
             let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
             currWidth?.isActive = true
             let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)

@@ -125,6 +125,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
         observeConnectivity()
+        setAccessibility()
     }
     
     // MARK: - Move files
@@ -250,6 +251,11 @@ class ListComponentViewController: SystemThemableViewController {
             }
         }
         collectionView.setContentOffset(pointToScroll, animated: true)
+    }
+    
+    func setAccessibility() {
+        createButton.accessibilityIdentifier = "create-button"
+        createButton.accessibilityLabel = LocalizationConstants.General.create
     }
     
     // MARK: - Private Interface
@@ -423,6 +429,9 @@ extension ListComponentViewController: ListPageControllerDelegate {
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
+            
+            emptyListTitle.accessibilityLabel = emptyListTitle.text
+            emptyListSubtitle.accessibilityLabel = emptyListSubtitle.text
         }
         
         // If loading the first page or missing pagination scroll to top
