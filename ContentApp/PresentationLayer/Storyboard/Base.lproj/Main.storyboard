@@ -1068,6 +1068,9 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Advanced search" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ePb-tN-y2X" userLabel="categoryLabel">
                                                 <rect key="frame" x="0.0" y="0.0" width="132" height="45"/>
+                                                <accessibility key="accessibilityConfiguration">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                 <color key="textColor" red="0.12941176470588234" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1077,7 +1080,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="configurationImageView">
-                                                    <bool key="isElement" value="YES"/>
+                                                    <bool key="isElement" value="NO"/>
                                                 </accessibility>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="CPE-Ol-9RV" secondAttribute="height" id="5Pj-dU-PYW"/>
