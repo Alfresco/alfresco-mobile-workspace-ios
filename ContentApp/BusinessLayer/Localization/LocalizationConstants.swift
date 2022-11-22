@@ -357,6 +357,7 @@ struct LocalizationConstants {
         static let uploaded = NSLocalizedString("uploaded", comment: "")
         static let undefined = NSLocalizedString("undefined", comment: "")
         static let searchTitle = NSLocalizedString("search-title", comment: "")
+        static let subTitle = NSLocalizedString("subtitle", comment: "")
     }
     
     struct EditTask {

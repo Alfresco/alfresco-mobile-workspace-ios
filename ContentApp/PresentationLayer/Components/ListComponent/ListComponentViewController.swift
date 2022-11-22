@@ -61,6 +61,7 @@ class ListComponentViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        progressView.isAccessibilityElement = false
         // Configure collection view data source and delegate
         guard let viewModel = self.viewModel,
               let services = coordinatorServices else { return }
@@ -430,8 +431,10 @@ extension ListComponentViewController: ListPageControllerDelegate {
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
             
-            emptyListTitle.accessibilityLabel = emptyListTitle.text
-            emptyListSubtitle.accessibilityLabel = emptyListSubtitle.text
+            emptyListTitle.accessibilityLabel = LocalizationConstants.Accessibility.title
+            emptyListTitle.accessibilityValue = emptyListTitle.text
+            emptyListSubtitle.accessibilityLabel = LocalizationConstants.Accessibility.subTitle
+            emptyListSubtitle.accessibilityValue = emptyListSubtitle.text
         }
         
         // If loading the first page or missing pagination scroll to top
