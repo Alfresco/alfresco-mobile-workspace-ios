@@ -35,6 +35,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        disableView.isAccessibilityElement = false
     }
 
     var node: ListNode? {
@@ -45,6 +46,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
             subtitle.text = node.path
             iconImageView.image = FileIcon.icon(for: node)
             addAccessibility(for: node)
+            setAccessibilitySequence()
         }
     }
 
@@ -175,5 +177,20 @@ class ListElementCollectionViewCell: ListSelectableCell {
         }
         syncStatusImageView.accessibilityLabel = LocalizationConstants.Accessibility.syncStatus
         syncStatusImageView.accessibilityValue = syncStatusValue
+    }
+    
+    func setAccessibilitySequence() {
+        if let tTitle = title, let tMoreButton = moreButton {
+            self.accessibilityElements = [tTitle, tMoreButton]
+        }
+        
+        let subTitleText = subtitle.text ?? ""
+        if subtitle != nil && !subTitleText.isEmpty {
+            self.accessibilityElements?.append(subtitle!)
+        }
+        
+        if syncStatusImageView != nil && !syncStatusImageView.isHidden {
+            self.accessibilityElements?.append(syncStatusImageView!)
+        }
     }
 }
