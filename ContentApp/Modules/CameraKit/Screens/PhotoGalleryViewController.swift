@@ -71,6 +71,26 @@ class PhotoGalleryViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    private func addAccessibility() {
+        closeButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        uploadButton.accessibilityLabel = LocalizationConstants.AppExtension.upload
+        titlelabel.accessibilityLabel = LocalizationConstants.Accessibility.header
+        titlelabel.accessibilityValue = LocalizationConstants.ScreenTitles.galleryUpload
+        emptyTitleLabel.accessibilityLabel = emptyTitleLabel.text
+        emptySubtitleLabel.accessibilityLabel = emptySubtitleLabel.text
+        
+        if let tCloseButton = closeButton, let tUploadButton = uploadButton, let tTitleLabel = titlelabel {
+            self.view.accessibilityElements = [tCloseButton, tTitleLabel, tUploadButton]
+        }
+        
+        if photoGalleryDataSource?.numberOfAssets() == 0 {
+            if let tEmptyTitleLabel = emptyTitleLabel, let tEmptySubtitleLabel = emptySubtitleLabel {
+                self.view.accessibilityElements?.append(tEmptyTitleLabel)
+                self.view.accessibilityElements?.append(tEmptySubtitleLabel)
+            }
+        }
+    }
+    
     // MARK: - Private Methods
     
     private func applyComponentsThemes() {
@@ -96,6 +116,7 @@ class PhotoGalleryViewController: UIViewController {
         emptySubtitleLabel.text = localization.emptyGalleryDescription
         emptySubtitleLabel.textColor = theme.onSurface60Color
         emptySubtitleLabel.font = theme.body2Font
+        addAccessibility()
     }
     
     private func centerCells() {

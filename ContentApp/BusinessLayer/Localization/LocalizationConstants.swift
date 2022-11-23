@@ -358,6 +358,9 @@ struct LocalizationConstants {
         static let undefined = NSLocalizedString("undefined", comment: "")
         static let searchTitle = NSLocalizedString("search-title", comment: "")
         static let subTitle = NSLocalizedString("subtitle", comment: "")
+        static let flashMode = NSLocalizedString("flash-mode", comment: "")
+        static let switchCamera = NSLocalizedString("switch-camera", comment: "")
+        static let shutterButton = NSLocalizedString("shutter", comment: "")
     }
     
     struct EditTask {
