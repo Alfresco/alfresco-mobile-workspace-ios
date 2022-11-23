@@ -100,6 +100,7 @@ class ModeSelectorControl: UIControl {
             let button = UIButton(frame: entryLabel.frame)
             button.tag = index
             button.accessibilityIdentifier = "cameraSlideButton\(index)"
+            button.accessibilityLabel = entry.entryName
             button.addTarget(self, action: #selector(handleTap(_:)),
                              for: .touchUpInside)
 
@@ -108,6 +109,7 @@ class ModeSelectorControl: UIControl {
 
             entryLabel.textAlignment = .center
             entryLabel.text = entry.entryName
+            entryLabel.isAccessibilityElement = false
 
             sliderLabelEntries.append(entryLabel)
             sliderButtonEntries.append(button)
