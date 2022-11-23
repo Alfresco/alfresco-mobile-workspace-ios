@@ -76,6 +76,7 @@ class CameraViewController: UIViewController {
         setUpModeSelector()
         setUpTimerView()
         addCameraNotifications()
+        addAccessibility()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -111,6 +112,13 @@ class CameraViewController: UIViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         configureViewsLayout(for: size)
+    }
+    
+    private func addAccessibility() {
+        closeButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        flashModeButton.accessibilityLabel = LocalizationConstants.Accessibility.flashMode
+        switchCameraButton.accessibilityLabel = LocalizationConstants.Accessibility.switchCamera
+        shutterButton.accessibilityLabel = LocalizationConstants.Accessibility.shutterButton
     }
 
     // MARK: - IBActions

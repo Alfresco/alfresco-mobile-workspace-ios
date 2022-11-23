@@ -40,6 +40,7 @@ protocol PresentationTheme {
     var surfaceColor: UIColor { get }
     var surface60Color: UIColor { get }
     var onSurfaceColor: UIColor { get }
+    var onSurface70Color: UIColor { get }
     var onSurface60Color: UIColor { get }
     var onSurface30Color: UIColor { get }
     var onSurface15Color: UIColor { get }
