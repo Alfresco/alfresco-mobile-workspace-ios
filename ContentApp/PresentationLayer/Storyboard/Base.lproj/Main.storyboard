@@ -1420,6 +1420,7 @@
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-og-1bt" customClass="MDCOutlinedTextField">
                                 <rect key="frame" x="24" y="108.66666666666669" width="380" height="50"/>
                                 <accessibility key="accessibilityConfiguration" identifier="createNodeNameTextField">
+                                    <accessibilityTraits key="traits" none="YES"/>
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <constraints>
