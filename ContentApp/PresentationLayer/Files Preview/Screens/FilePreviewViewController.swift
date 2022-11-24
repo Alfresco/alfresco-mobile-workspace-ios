@@ -46,6 +46,7 @@ class FilePreviewViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
        
+        progressView.isAccessibilityElement = false
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         let isLocalFilePreview = filePreviewViewModel?.isLocalFilePreview ?? false
         if isLocalFilePreview {
@@ -114,6 +115,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
             let searchBarButtonItem = UIBarButtonItem(customView: downloadButton)
             searchBarButtonItem.accessibilityIdentifier = "downloadBarButton"
+            searchBarButtonItem.accessibilityLabel = LocalizationConstants.Accessibility.download
             let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 30.0)
             currWidth?.isActive = true
             let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
@@ -131,8 +133,6 @@ class FilePreviewViewController: SystemThemableViewController {
     private func displayActivityViewController(for url: URL) {
         guard let presentationContext = UIViewController.applicationTopMostPresented else { return }
         
-        AlfrescoLog.debug("____ URL _____ \(url)")
-
         let activityViewController =
             UIActivityViewController(activityItems: [url],
                                      applicationActivities: nil)
@@ -219,6 +219,7 @@ class FilePreviewViewController: SystemThemableViewController {
             button.tag = array.count
             button.image = action.icon
             button.accessibilityIdentifier = action.type.rawValue
+            button.accessibilityLabel = action.analyticEventName
             array.append(button)
         }
         self.toolbarActions = array
@@ -293,6 +294,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
     func display(previewContainer: FilePreviewProtocol) {
         view.bringSubviewToFront(filePreviewStatusView)
         filePreviewStatusLabel.text = LocalizationConstants.FilePreview.loadingPreviewMessage
+        filePreviewStatusLabel.accessibilityLabel = filePreviewStatusLabel.text
 
         containerFilePreview.addSubview(previewContainer)
         filePreviewViewModel?.filePreview?.filePreviewDelegate = self
@@ -322,6 +324,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func willPreparePreview() {
         filePreviewStatusLabel.text = LocalizationConstants.FilePreview.preparingPreviewMessage
+        filePreviewStatusLabel.accessibilityLabel = filePreviewStatusLabel.text
     }
 
     func didFinishLoadingPreview(error: Error?) {
@@ -369,6 +372,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
             }
             filePreviewViewModel.requestFilePreview(with: containerFilePreview.bounds.size)
             filePreviewTitleLabel.text = filePreviewViewModel.listNode?.title
+            filePreviewTitleLabel.accessibilityLabel = filePreviewTitleLabel.text
             mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel.listNode)
         }
     }
