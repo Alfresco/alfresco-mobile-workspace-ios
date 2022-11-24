@@ -49,7 +49,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         descriptionTextArea.maximumNumberOfVisibleRows = 2
         descriptionTextArea.textView.delegate = self
         uploadButton.isEnabled = false
@@ -141,21 +141,22 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
         nameTextField.accessibilityIdentifier = "name-textField"
         nameTextField.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.name
-        nameTextField.accessibilityValue = nameTextField.text
         nameTextField.accessibilityTraits = .staticText
         
         descriptionTextArea.accessibilityIdentifier = "description-textView"
         descriptionTextArea.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.description
-        descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
         descriptionTextArea.accessibilityTraits = .staticText
         
         cancelButton.accessibilityLabel = LocalizationConstants.General.cancel
         cancelButton.accessibilityIdentifier = "cancel"
         uploadButton.accessibilityLabel = uploadButton.titleLabel?.text
         uploadButton.accessibilityIdentifier = uploadButton.titleLabel?.text
-
-        if let name = nameTextField, let description = descriptionTextArea, let cancel = cancelButton, let save = uploadButton {
-            self.view.accessibilityElements = [name, description, cancel, save]
+        setAccessibilityFocus()
+    }
+    
+    private func setAccessibilityFocus() {
+        if let title = titleCreate, let name = nameTextField, let description = descriptionTextArea, let cancel = cancelButton, let save = uploadButton {
+            self.view.accessibilityElements = [title, name, description, cancel, save]
         }
     }
     
@@ -249,6 +250,8 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
             let newString = currentString.replacingCharacters(in: range, with: string)
             return newString.count <= maxLengthOfTextField
         }
+        
+        nameTextField.accessibilityValue = textField.text
         return true
     }
 
@@ -336,6 +339,8 @@ extension CreateNodeSheetViewControler: UITextViewDelegate {
                 return false
             }
         }
+        
+        descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
         return true
     }
 }
