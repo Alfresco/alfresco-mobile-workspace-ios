@@ -45,10 +45,12 @@ class TaskHeaderTableViewCell: UITableViewCell, CellConfigurable {
     
     private func addAccessibility() {
         titleHeaderLabel.accessibilityLabel = titleHeaderLabel.text
-        titleHeaderLabel.accessibilityValue = titleSubHeaderLabel.text
-        titleHeaderLabel.accessibilityTraits = .button
-        
+        titleSubHeaderLabel.accessibilityLabel = titleSubHeaderLabel.text
+        titleHeaderLabel.accessibilityTraits = .staticText
+        titleSubHeaderLabel.accessibilityTraits = .staticText
+
         titleHeaderLabel.accessibilityIdentifier = "header-title"
+        titleSubHeaderLabel.accessibilityIdentifier = "header-sub-title"
         viewAllButton.accessibilityIdentifier = "view-all-button"
     }
     
