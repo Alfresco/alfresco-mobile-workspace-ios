@@ -142,11 +142,13 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         nameTextField.accessibilityIdentifier = "name-textField"
         nameTextField.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.name
         nameTextField.accessibilityTraits = .staticText
+        nameTextField.accessibilityValue = nameTextField.text
         
         descriptionTextArea.accessibilityIdentifier = "description-textView"
         descriptionTextArea.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.description
         descriptionTextArea.accessibilityTraits = .staticText
-        
+        descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
+
         cancelButton.accessibilityLabel = LocalizationConstants.General.cancel
         cancelButton.accessibilityIdentifier = "cancel"
         uploadButton.accessibilityLabel = uploadButton.titleLabel?.text
@@ -336,11 +338,15 @@ extension CreateNodeSheetViewControler: UITextViewDelegate {
             } else {
                 let preFixText = newText.prefix(maxLengthOfTextView)
                 descriptionTextArea.textView.text = String(preFixText)
+                setTextViewAccessibilityValue()
                 return false
             }
         }
-        
-        descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
+        setTextViewAccessibilityValue()
         return true
+    }
+    
+    private func setTextViewAccessibilityValue() {
+        descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
     }
 }
