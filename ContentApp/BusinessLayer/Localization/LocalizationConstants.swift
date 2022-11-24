@@ -368,6 +368,7 @@ struct LocalizationConstants {
         static let flashMode = NSLocalizedString("flash-mode", comment: "")
         static let switchCamera = NSLocalizedString("switch-camera", comment: "")
         static let shutterButton = NSLocalizedString("shutter", comment: "")
+        static let download = NSLocalizedString("download", comment: "")
     }
     
     struct EditTask {
