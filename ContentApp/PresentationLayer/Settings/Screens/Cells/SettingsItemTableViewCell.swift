@@ -31,6 +31,7 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
                 iconImageView.image = item.icon
                 titleLabel.text = item.title
                 subtitleLabel.text = item.subtitle
+                setAccessibility()
             }
         }
     }
@@ -53,5 +54,11 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
 
     func shouldHideSeparator(hidden: Bool) {
         separator.isHidden = hidden
+    }
+    
+    private func setAccessibility() {
+        titleLabel.accessibilityLabel = titleLabel.text
+        subtitleLabel.accessibilityLabel = subtitleLabel.text
+        subtitleLabel.accessibilityTraits = .button
     }
 }
