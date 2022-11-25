@@ -627,7 +627,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6lD-7k-QxA">
                                                     <rect key="frame" x="26" y="18.333333333333332" width="25" height="24.999999999999996"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="iconImageView">
-                                                        <bool key="isElement" value="YES"/>
+                                                        <bool key="isElement" value="NO"/>
                                                     </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="LYr-xz-EMj"/>
@@ -693,7 +693,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oe5-Bi-mx4">
                                                     <rect key="frame" x="26" y="22" width="25" height="25"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="iconImageView">
-                                                        <bool key="isElement" value="YES"/>
+                                                        <bool key="isElement" value="NO"/>
                                                     </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="6MF-0O-9gJ"/>

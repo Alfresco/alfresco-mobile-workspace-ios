@@ -26,6 +26,7 @@ class SettingsLabelTableViewCell: UITableViewCell, SettingsTablewViewCellProtoco
     var item: SettingsItem? {
         didSet {
             titleLabel.text = item?.title
+            setAccessibility()
         }
     }
 
@@ -45,5 +46,9 @@ class SettingsLabelTableViewCell: UITableViewCell, SettingsTablewViewCellProtoco
 
     func shouldHideSeparator(hidden: Bool) {
         separator.isHidden = hidden
+    }
+    
+    private func setAccessibility() {
+        titleLabel.accessibilityLabel = titleLabel.text
     }
 }
