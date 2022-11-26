@@ -314,8 +314,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
         actionsView.backgroundColor = currentTheme.surfaceColor
         actionsView.layer.borderColor = currentTheme.onSurface15Color.cgColor
 
-        backwardButton.tintColor = currentTheme.onSurface60Color
-        forwardButton.tintColor = currentTheme.onSurface60Color
+        backwardButton.tintColor = currentTheme.onSurface70Color
+        forwardButton.tintColor = currentTheme.onSurface70Color
 
         playPauseButton.tintColor = currentTheme.primaryT1Color
         if isAudioFile {
@@ -356,8 +356,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
         actionsView.backgroundColor = theme.surfaceColor
         actionsView.layer.borderColor = theme.onSurface15Color.cgColor
 
-        backwardButton.tintColor = theme.onSurface60Color
-        forwardButton.tintColor = theme.onSurface60Color
+        backwardButton.tintColor = theme.onSurface70Color
+        forwardButton.tintColor = theme.onSurface70Color
 
         playPauseButton.tintColor = theme.primaryColor
     }

@@ -112,7 +112,7 @@ class SystemSearchViewController: SystemThemableViewController {
         navigationController?.navigationBar.setBackgroundImage(image, for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.tintColor = currentTheme.onSurface60Color
+        navigationController?.navigationBar.tintColor = currentTheme.onSurface70Color
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes =

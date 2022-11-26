@@ -130,6 +130,7 @@ class ApplicationBootstrap {
         let theme = CameraKitTheme(primaryColor: currentTheme.primaryT1Color,
                                    onSurfaceColor: currentTheme.onSurfaceColor,
                                    onSurface60Color: currentTheme.onSurface60Color,
+                                   onSurface70Color: currentTheme.onSurface70Color,
                                    onSurface15Color: currentTheme.onSurface15Color,
                                    onSurface5Color: currentTheme.onSurface5Color,
                                    surfaceColor: currentTheme.surfaceColor,

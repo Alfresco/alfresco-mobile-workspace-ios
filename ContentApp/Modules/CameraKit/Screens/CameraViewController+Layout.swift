@@ -32,15 +32,15 @@ extension CameraViewController {
         view.backgroundColor = theme.surfaceColor
 
         closeButton.layer.cornerRadius = closeButton.bounds.height / 2.0
-        closeButton.tintColor = theme.onSurface60Color
+        closeButton.tintColor = theme.onSurface70Color
         closeButton.backgroundColor = theme.surface60Color
         
         flashModeButton.layer.cornerRadius = flashModeButton.bounds.height / 2.0
-        flashModeButton.tintColor = theme.onSurface60Color
+        flashModeButton.tintColor = theme.onSurface70Color
         flashModeButton.backgroundColor = theme.surface60Color
 
         switchCameraButton.layer.cornerRadius = switchCameraButton.bounds.height / 2.0
-        switchCameraButton.tintColor = theme.onSurface60Color
+        switchCameraButton.tintColor = theme.onSurface70Color
         switchCameraButton.backgroundColor = theme.surface60Color
         
         zoomLabel.layer.cornerRadius = zoomLabel.bounds.height / 2.0
@@ -66,7 +66,7 @@ extension CameraViewController {
         navigationController?.navigationBar.setBackgroundImage(image, for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backgroundColor = theme.surfaceColor
-        navigationController?.navigationBar.tintColor = theme.onSurface60Color
+        navigationController?.navigationBar.tintColor = theme.onSurface70Color
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = theme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes =
