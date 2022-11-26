@@ -72,6 +72,7 @@ class PhotoGalleryViewController: UIViewController {
     }
     
     private func addAccessibility() {
+        collectionView.isAccessibilityElement = true
         closeButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
         uploadButton.accessibilityLabel = LocalizationConstants.AppExtension.upload
         titlelabel.accessibilityLabel = LocalizationConstants.Accessibility.header
@@ -79,8 +80,8 @@ class PhotoGalleryViewController: UIViewController {
         emptyTitleLabel.accessibilityLabel = emptyTitleLabel.text
         emptySubtitleLabel.accessibilityLabel = emptySubtitleLabel.text
         
-        if let tCloseButton = closeButton, let tUploadButton = uploadButton, let tTitleLabel = titlelabel {
-            self.view.accessibilityElements = [tCloseButton, tTitleLabel, tUploadButton]
+        if let tCloseButton = closeButton, let tUploadButton = uploadButton, let tTitleLabel = titlelabel, let tCollectionView = collectionView {
+            self.view.accessibilityElements = [tCloseButton, tTitleLabel, tUploadButton, tCollectionView]
         }
         
         if photoGalleryDataSource?.numberOfAssets() == 0 {
@@ -166,6 +167,8 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
                             size: targetSize) { (image) in
                 DispatchQueue.main.async {
                     cell.assetImageView.image = image
+                    let name = asset.originalFilename
+                    cell.assetImageView.accessibilityLabel = name
                 }
             }
         }
@@ -179,6 +182,7 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
             cell.contentView.backgroundColor = CameraKit.theme?.primaryColor.withAlphaComponent(0.12)
             dataSource.markAssetsAs(enabled: true, for: indexPath)
             enableUploadButton = true
+            cell.assetImageView.accessibilityTraits = .selected
         }
     }
     
@@ -189,6 +193,7 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
             cell.asset(selected: false)
             dataSource.markAssetsAs(enabled: false, for: indexPath)
             enableUploadButton = dataSource.anyAssetSelected()
+            cell.assetImageView.accessibilityTraits = .image
         }
     }
     
