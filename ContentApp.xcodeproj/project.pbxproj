@@ -482,6 +482,7 @@
 		C9B6D27A27C9438A00CF0C73 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */; };
 		C9B6D27B27C9438D00CF0C73 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008F24C84BD000F03D60 /* Inter-Bold.ttf */; };
 		C9B6D27C27C9438F00CF0C73 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008E24C84BD000F03D60 /* Inter-Black.ttf */; };
+		C9BB1FB92932616A00387768 /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB1FB82932616A00387768 /* PHAssetExtension.swift */; };
 		C9BC8D8828D46EFF00EB2B97 /* TaskDescriptionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BC8D8728D46EFF00EB2B97 /* TaskDescriptionDetailViewController.swift */; };
 		C9BC8D8A28D46F3E00EB2B97 /* TaskDescriptionDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BC8D8928D46F3E00EB2B97 /* TaskDescriptionDetailController.swift */; };
 		C9BC8D8C28D46F4E00EB2B97 /* TaskDescriptionDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BC8D8B28D46F4E00EB2B97 /* TaskDescriptionDetailViewModel.swift */; };
@@ -1069,6 +1070,7 @@
 		C9AFDFA427B8FE38007233A5 /* ListComponent+Delegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ListComponent+Delegates.swift"; sourceTree = "<group>"; };
 		C9B28F1928DC1AAA00C01A91 /* TaskPriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPriorityViewController.swift; sourceTree = "<group>"; };
 		C9B28F1B28DC1AD000C01A91 /* TaskPriorityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPriorityViewModel.swift; sourceTree = "<group>"; };
+		C9BB1FB82932616A00387768 /* PHAssetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetExtension.swift; sourceTree = "<group>"; };
 		C9BC8D8728D46EFF00EB2B97 /* TaskDescriptionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDescriptionDetailViewController.swift; sourceTree = "<group>"; };
 		C9BC8D8928D46F3E00EB2B97 /* TaskDescriptionDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDescriptionDetailController.swift; sourceTree = "<group>"; };
 		C9BC8D8B28D46F4E00EB2B97 /* TaskDescriptionDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDescriptionDetailViewModel.swift; sourceTree = "<group>"; };
@@ -2587,6 +2589,14 @@
 			path = Priority;
 			sourceTree = "<group>";
 		};
+		C9BB1FB72932615D00387768 /* PHAsset */ = {
+			isa = PBXGroup;
+			children = (
+				C9BB1FB82932616A00387768 /* PHAssetExtension.swift */,
+			);
+			path = PHAsset;
+			sourceTree = "<group>";
+		};
 		C9BC8D8628D46EE500EB2B97 /* Task Description */ = {
 			isa = PBXGroup;
 			children = (
@@ -3141,6 +3151,7 @@
 		E3A2A8F9247E7D230046582C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C9BB1FB72932615D00387768 /* PHAsset */,
 				F137B6CE260495DE00A60054 /* UINavigation */,
 				F13998D525F767890062F652 /* UITextiField */,
 				B97D373725545FD000CD1523 /* UIViewController */,
@@ -4207,6 +4218,7 @@
 				C9E25F5528325159006978C3 /* ScanDocumentsKit.swift in Sources */,
 				C9B28F1C28DC1AD000C01A91 /* TaskPriorityViewModel.swift in Sources */,
 				C99C6F8C28B7D623003A1EE1 /* UILabel+NumberOfLines.swift in Sources */,
+				C9BB1FB92932616A00387768 /* PHAssetExtension.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
 				B9EE37E8266A44A70020A3FC /* SearchModel.swift in Sources */,
 				C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */,
