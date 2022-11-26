@@ -46,7 +46,7 @@ extension UIViewController {
             alertController.titleFont = currentTheme.subtitle1TextStyle.font
             alertController.titleColor = currentTheme.onSurfaceColor
             alertController.messageFont = currentTheme.body2TextStyle.font
-            alertController.messageColor = currentTheme.onSurface60Color
+            alertController.messageColor = currentTheme.onSurface70Color
             alertController.view.backgroundColor = currentTheme.surfaceColor
             alertController.cornerRadius = UIConstants.cornerRadiusDialog
 

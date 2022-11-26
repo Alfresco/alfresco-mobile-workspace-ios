@@ -72,7 +72,7 @@ class NeedHelpViewController: SystemThemableViewController {
             mAtrString.addAttributes([.foregroundColor: currentTheme.onSurfaceColor,
                                       .font: currentTheme.subtitle1TextStyle.font],
                                      range: (model.allText() as NSString).range(of: section.title))
-            mAtrString.addAttributes([.foregroundColor: currentTheme.onSurface60Color,
+            mAtrString.addAttributes([.foregroundColor: currentTheme.onSurface70Color,
                                       .font: currentTheme.body2TextStyle.font],
                                      range: (model.allText() as NSString).range(of: section.paragraphs))
         }
@@ -81,7 +81,7 @@ class NeedHelpViewController: SystemThemableViewController {
         titleLabel.text = model.title
         titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
 
-        closeButton.tintColor = currentTheme.onSurface60Color
+        closeButton.tintColor = currentTheme.onSurface70Color
         view.backgroundColor = currentTheme.surfaceColor
         addLocalization()
     }

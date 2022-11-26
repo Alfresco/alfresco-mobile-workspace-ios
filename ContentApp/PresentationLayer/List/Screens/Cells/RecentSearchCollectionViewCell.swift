@@ -36,7 +36,7 @@ class RecentSearchCollectionViewCell: UICollectionViewCell {
         backgroundColor = currentTheme.surfaceColor
         titleSearch.applyStyleBody1OnSurface(theme: currentTheme)
         titleSearch.lineBreakMode = .byTruncatingTail
-        leftImageView.tintColor = currentTheme.onSurface60Color
-        rightImageView.tintColor = currentTheme.onSurface60Color
+        leftImageView.tintColor = currentTheme.onSurface70Color
+        rightImageView.tintColor = currentTheme.onSurface70Color
     }
 }

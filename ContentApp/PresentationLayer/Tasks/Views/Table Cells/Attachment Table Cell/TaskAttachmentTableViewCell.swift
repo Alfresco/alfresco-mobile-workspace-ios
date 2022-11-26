@@ -71,17 +71,17 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor =  .clear
         title.applyStyleBody1OnSurface(theme: currentTheme)
-        iconImageView.tintColor = currentTheme.onSurface60Color
+        iconImageView.tintColor = currentTheme.onSurface70Color
         
         attachmentView.layer.borderWidth = 1.0
         attachmentView.layer.borderColor = currentTheme.neutral95Color.cgColor
         
         deleteButton.setImage(UIImage(named: "ic-attachment-delete-grey"), for: .normal)
-        deleteButton.tintColor = currentTheme.onSurface60Color
+        deleteButton.tintColor = currentTheme.onSurface70Color
         deleteButton.backgroundColor = .clear
         deleteButton.imageView?.contentMode = .center
         
-        syncStatusImageView.tintColor = currentTheme.onSurface60Color
+        syncStatusImageView.tintColor = currentTheme.onSurface70Color
     }
     
     private func applyLayoutForUploading() {

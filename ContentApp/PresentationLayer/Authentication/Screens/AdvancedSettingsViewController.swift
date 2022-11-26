@@ -201,10 +201,10 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         saveButton.setShadowColor(.clear, for: .normal)
 
         resetToDefaultPadButton.backgroundColor = .clear
-        resetToDefaultPadButton.tintColor = currentTheme.onSurface60Color
-        resetToDefaultButton.tintColor = currentTheme.onSurface60Color
+        resetToDefaultPadButton.tintColor = currentTheme.onSurface70Color
+        resetToDefaultButton.tintColor = currentTheme.onSurface70Color
 
-        backPadButton.tintColor = currentTheme.onSurface60Color
+        backPadButton.tintColor = currentTheme.onSurface70Color
 
         needHelpButton.applyTextTheme(withScheme: smallButtonScheme)
         needHelpButton.isUppercaseTitle = false

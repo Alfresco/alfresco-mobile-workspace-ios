@@ -97,7 +97,7 @@ class PhotoGalleryViewController: UIViewController {
         guard let theme = CameraKit.theme, let localization = CameraKit.localization else { return }
 
         view.backgroundColor = theme.surfaceColor
-        closeButton.tintColor = theme.onSurface60Color
+        closeButton.tintColor = theme.onSurface70Color
 
         titlelabel.textColor = theme.onSurfaceColor
         titlelabel.font = theme.headline6Font
@@ -114,7 +114,7 @@ class PhotoGalleryViewController: UIViewController {
 
         emptySubtitleLabel.textAlignment = .center
         emptySubtitleLabel.text = localization.emptyGalleryDescription
-        emptySubtitleLabel.textColor = theme.onSurface60Color
+        emptySubtitleLabel.textColor = theme.onSurface70Color
         emptySubtitleLabel.font = theme.body2Font
         addAccessibility()
     }
