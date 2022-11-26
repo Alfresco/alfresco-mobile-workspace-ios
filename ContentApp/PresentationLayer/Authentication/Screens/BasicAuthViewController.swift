@@ -174,7 +174,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
         usernameTextField.trailingViewMode = .unlessEditing
         usernameTextField.trailingView = UIImageView(image: UIImage(named: "ic-username"))
-        usernameTextField.trailingView?.tintColor = currentTheme.onSurface60Color
+        usernameTextField.trailingView?.tintColor = currentTheme.onSurface70Color
 
         showPasswordImageView = UIImageView(image: UIImage(named: "ic-password-hide"))
         showPasswordImageView.contentMode = .scaleAspectFit
@@ -184,7 +184,7 @@ class BasicAuthViewController: SystemThemableViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self,
                                                           action: #selector(showPasswordButtonTapped(_:)))
         passwordTextField.trailingView?.addGestureRecognizer(tapGestureRecognizer)
-        passwordTextField.trailingView?.tintColor = currentTheme.onSurface60Color
+        passwordTextField.trailingView?.tintColor = currentTheme.onSurface70Color
         passwordTextField.isSecureTextEntry = true
     }
 }

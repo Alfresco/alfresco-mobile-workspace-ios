@@ -207,7 +207,7 @@ class ListComponentViewController: SystemThemableViewController {
         uploadingBannerView.layer.borderColor =  currentTheme.onSurface15Color.cgColor
         uploadingBannerView.backgroundColor = currentTheme.primaryColorVariant
         uploadingPercentageLabel.font = currentTheme.body2TextStyle.font
-        uploadingPercentageLabel.textColor = currentTheme.onSurface60Color
+        uploadingPercentageLabel.textColor = currentTheme.onSurface70Color
         uploadingFilesLabel.font = currentTheme.subtitle2TextStyle.font
         uploadingFilesLabel.textColor = currentTheme.onSurfaceColor
         uploadingProgressView.progressTintColor = currentTheme.primaryT1Color

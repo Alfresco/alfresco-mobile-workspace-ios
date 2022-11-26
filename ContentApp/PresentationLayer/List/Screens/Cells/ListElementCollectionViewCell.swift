@@ -73,9 +73,9 @@ class ListElementCollectionViewCell: ListSelectableCell {
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead
-        iconImageView.tintColor = currentTheme.onSurface60Color
-        moreButton.tintColor = currentTheme.onSurface60Color
-        syncStatusImageView.tintColor = currentTheme.onSurface60Color
+        iconImageView.tintColor = currentTheme.onSurface70Color
+        moreButton.tintColor = currentTheme.onSurface70Color
+        syncStatusImageView.tintColor = currentTheme.onSurface70Color
         disableFiles(isDisable: isDisable)
     }
     

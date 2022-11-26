@@ -24,6 +24,7 @@ struct CameraKitTheme {
     var primaryColor: UIColor
     var onSurfaceColor: UIColor
     var onSurface60Color: UIColor
+    var onSurface70Color: UIColor
     var onSurface15Color: UIColor
     var onSurface5Color: UIColor
     var surfaceColor: UIColor
