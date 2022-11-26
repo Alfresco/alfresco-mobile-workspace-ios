@@ -203,7 +203,7 @@ class ConnectViewController: SystemThemableViewController {
         navigationController?.navigationBar.setBackgroundImage(image, for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.tintColor = currentTheme.onSurface60Color
+        navigationController?.navigationBar.tintColor = currentTheme.onSurface70Color
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes =
@@ -223,7 +223,7 @@ class ConnectViewController: SystemThemableViewController {
             connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
             connectTextField.leadingAssistiveLabel.text = ""
             connectTextField.trailingView = UIImageView(image: UIImage(named: "ic-connect-to-qr-code"))
-            connectTextField.trailingView?.tintColor = themingService.activeTheme?.onSurface60Color
+            connectTextField.trailingView?.tintColor = themingService.activeTheme?.onSurface70Color
         }
     }
 

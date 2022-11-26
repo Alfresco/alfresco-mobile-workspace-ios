@@ -362,6 +362,7 @@ struct LocalizationConstants {
         static let switchCamera = NSLocalizedString("switch-camera", comment: "")
         static let shutterButton = NSLocalizedString("shutter", comment: "")
         static let download = NSLocalizedString("download", comment: "")
+        static let selected = NSLocalizedString("selected", comment: "")
     }
     
     struct EditTask {

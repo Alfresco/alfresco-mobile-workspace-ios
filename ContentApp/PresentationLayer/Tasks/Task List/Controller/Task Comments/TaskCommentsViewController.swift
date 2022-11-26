@@ -153,8 +153,8 @@ class TaskCommentsViewController: SystemSearchViewController {
 
         textBaseView.backgroundColor = currentTheme.surfaceColor
         textView.backgroundColor = currentTheme.surfaceColor
-        textView.textColor = currentTheme.onSurface60Color
-        textView.placeholderColor = currentTheme.onSurface60Color
+        textView.textColor = currentTheme.onSurface70Color
+        textView.placeholderColor = currentTheme.onSurface70Color
         textView.font = currentTheme.subtitle2TextStyle.font
         divider.backgroundColor = currentTheme.onSurface12Color
         sendButton.backgroundColor = currentTheme.surfaceColor

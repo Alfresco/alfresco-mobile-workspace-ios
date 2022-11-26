@@ -22,10 +22,9 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-
-    var viewModel: MultipleChoiceViewModelProtocol?
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var cancelButton: UIButton!
+    var viewModel: MultipleChoiceViewModelProtocol?
     let multipleChoiceItemCellHeight: CGFloat = 44.0
 
     // MARK: - View Life Cycle
@@ -34,6 +33,7 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
         super.viewDidLoad()
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         addLocalization()
+        setAccessibility()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -63,12 +63,15 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
 
     func addLocalization() {
         titleLabel.text = viewModel?.titleDialog
+        cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
     }
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        cancelButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
+        cancelButton.titleLabel?.font = currentTheme.buttonTextStyle.font
         view.backgroundColor = currentTheme.surfaceColor
     }
 
@@ -76,6 +79,17 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
         let targetSize = CGSize(width: size.width,
                                 height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
+    }
+    
+    private func setAccessibility() {
+        titleLabel.accessibilityLabel = titleLabel.text
+        titleLabel.accessibilityIdentifier = "title-label"
+        cancelButton.accessibilityLabel = LocalizationConstants.General.cancel
+        cancelButton.accessibilityIdentifier = "cancel-button"
+    }
+    
+    @IBAction func cancelButtonAction(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

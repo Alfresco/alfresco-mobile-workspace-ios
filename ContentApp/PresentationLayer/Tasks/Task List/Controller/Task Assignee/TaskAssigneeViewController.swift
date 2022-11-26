@@ -102,7 +102,7 @@ class TaskAssigneeViewController: SystemThemableViewController {
         
         view.backgroundColor = currentTheme.surfaceColor
         dismissButton.setImage(UIImage(named: "ic-back"), for: .normal)
-        dismissButton.tintColor = currentTheme.onSurface60Color
+        dismissButton.tintColor = currentTheme.onSurface70Color
         divider.backgroundColor = currentTheme.onSurface15Color
         applyButtonTheme(theme: currentTheme)
         radioButtonsViewDivider.backgroundColor = currentTheme.onSurface15Color

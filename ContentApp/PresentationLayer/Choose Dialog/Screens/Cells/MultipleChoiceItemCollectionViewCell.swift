@@ -29,6 +29,7 @@ class MultipleChoiceItemCollectionViewCell: UICollectionViewCell {
                 iconImageView.image = (item.selected) ?
                     UIImage(named: "ic-radio-checked") :
                     UIImage(named: "ic-radio-unchecked")
+                setAccessibility(item: item)
             }
         }
     }
@@ -41,5 +42,11 @@ class MultipleChoiceItemCollectionViewCell: UICollectionViewCell {
         guard let currentTheme = currentTheme else { return }
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         iconImageView.tintColor = currentTheme.onSurfaceColor
+    }
+    
+    private func setAccessibility(item: MultipleChoiceItem) {
+        titleLabel.accessibilityLabel = titleLabel.text
+        titleLabel.accessibilityValue = item.selected ? LocalizationConstants.Accessibility.selected:""
+        titleLabel.accessibilityTraits = .button
     }
 }

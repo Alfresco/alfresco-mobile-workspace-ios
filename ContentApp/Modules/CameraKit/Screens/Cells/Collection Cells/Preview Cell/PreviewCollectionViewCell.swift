@@ -71,10 +71,10 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
     private func applyComponentsThemes() {
         guard let theme = CameraKit.theme else { return }
 
-        trashButton.tintColor = theme.onSurface60Color
+        trashButton.tintColor = theme.onSurface70Color
         trashButton.backgroundColor = theme.surface60Color
         
-        videoDurationView.tintColor = theme.onSurface60Color
+        videoDurationView.tintColor = theme.onSurface70Color
         videoDurationView.backgroundColor = theme.surface60Color
     }
     
