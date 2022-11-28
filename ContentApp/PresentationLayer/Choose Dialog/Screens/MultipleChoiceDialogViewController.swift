@@ -26,7 +26,7 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
     @IBOutlet weak var cancelButton: UIButton!
     var viewModel: MultipleChoiceViewModelProtocol?
     let multipleChoiceItemCellHeight: CGFloat = 44.0
-
+    
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
