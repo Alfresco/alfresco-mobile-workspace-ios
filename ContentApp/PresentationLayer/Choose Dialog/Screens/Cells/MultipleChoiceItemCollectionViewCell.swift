@@ -36,6 +36,7 @@ class MultipleChoiceItemCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.isAccessibilityElement = true
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -45,8 +46,8 @@ class MultipleChoiceItemCollectionViewCell: UICollectionViewCell {
     }
     
     private func setAccessibility(item: MultipleChoiceItem) {
-        titleLabel.accessibilityLabel = titleLabel.text
-        titleLabel.accessibilityValue = item.selected ? LocalizationConstants.Accessibility.selected:""
-        titleLabel.accessibilityTraits = .button
+        self.accessibilityLabel = titleLabel.text
+        self.accessibilityValue = item.selected ? LocalizationConstants.Accessibility.selected:""
+        self.accessibilityTraits = .button
     }
 }

@@ -86,6 +86,10 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
         titleLabel.accessibilityIdentifier = "title-label"
         cancelButton.accessibilityLabel = LocalizationConstants.General.cancel
         cancelButton.accessibilityIdentifier = "cancel-button"
+        
+        if let tTitleLabel = titleLabel, let tCollectionView = collectionView, let tCancelButton = cancelButton {
+            self.view.accessibilityElements = [tTitleLabel, tCollectionView, tCancelButton]
+        }
     }
     
     @IBAction func cancelButtonAction(_ sender: Any) {
