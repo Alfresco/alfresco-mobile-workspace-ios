@@ -72,7 +72,6 @@ class PhotoGalleryViewController: UIViewController {
     }
     
     private func addAccessibility() {
-        collectionView.isAccessibilityElement = true
         closeButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
         uploadButton.accessibilityLabel = LocalizationConstants.AppExtension.upload
         titlelabel.accessibilityLabel = LocalizationConstants.Accessibility.header
