@@ -54,9 +54,9 @@ struct DarkTheme: PresentationTheme {
 
     var primaryVariantT1Color = UIColor(hex: "#6EACFF")
     var primaryColorVariant = UIColor(hex: "#2E2E2E")
-    var primaryT1Color = UIColor(hex: "#2A7DE1")
-    var primary30T1Color = UIColor(hex: "#2A7DE1", alpha: 0.3)
-    var primary15T1Color = UIColor(hex: "#2A7DE1", alpha: 0.15)
+    var primaryT1Color = UIColor(hex: "#1F74DB")
+    var primary30T1Color = UIColor(hex: "#1F74DB", alpha: 0.3)
+    var primary15T1Color = UIColor(hex: "#1F74DB", alpha: 0.15)
     var dividerColor = UIColor(hex: "#595959")
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#FFFFFF")
