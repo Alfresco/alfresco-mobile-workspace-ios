@@ -104,6 +104,10 @@ class SearchTextComponentViewController: SystemThemableViewController {
         dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
         headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
         keywordTextField.accessibilityTraits = .searchField
+        
+        if let tHeaderTitleLabel = headerTitleLabel, let tDismissButton = dismissButton, let tKeywordTextField = keywordTextField, let tApplyButton = applyButton, let tResetButton = resetButton {
+            self.view.accessibilityElements = [tHeaderTitleLabel, tDismissButton, tKeywordTextField, tApplyButton, tResetButton]
+        }
     }
     
     private func applyLocalization() {

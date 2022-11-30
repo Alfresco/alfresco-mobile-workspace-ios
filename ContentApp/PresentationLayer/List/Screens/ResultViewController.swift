@@ -45,6 +45,7 @@ class ResultViewController: SystemThemableViewController {
     weak var resultScreenDelegate: ResultViewControllerDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
     weak var browseScreenCoordinatorDelegate: BrowseScreenCoordinatorDelegate?
+    @IBOutlet weak var categoryNameButton: UIButton!
     
     lazy var dropDown = DropDown()
     private var presenter: UINavigationController?
@@ -69,7 +70,10 @@ class ResultViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        resultsListController?.isAccessibilityElement = false
+        self.isAccessibilityElement = false
         let listComponentViewController = ListComponentViewController.instantiateViewController()
+        listComponentViewController.isAccessibilityElement = false
         listComponentViewController.listActionDelegate = self
         listComponentViewController.coordinatorServices = coordinatorServices
         listComponentViewController.pageController = pageController
@@ -118,6 +122,15 @@ class ResultViewController: SystemThemableViewController {
         setupDropDownView()
         removeSearchFacetsChips()
         self.pageController?.resultPageDelegate = self
+        addAccessibility()
+    }
+    
+    private func addAccessibility() {
+        categoryNameButton.accessibilityLabel = categoryNameLabel.text
+        categoryNameButton.accessibilityIdentifier = "category-button"
+        
+        resetFilterButton.accessibilityLabel = LocalizationConstants.Accessibility.resetFilters
+        resetFilterButton.accessibilityIdentifier = "reset-filters-button"
     }
     
     func removeSearchFacetsChips() {
