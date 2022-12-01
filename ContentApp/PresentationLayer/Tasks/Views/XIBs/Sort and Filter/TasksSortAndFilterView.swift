@@ -354,7 +354,8 @@ extension TasksSortAndFilterView {
     private func updateRadioComponent(for chip: TaskChipItem) {
         var callBackTriggered = false
         let options = chip.options
-        for option in options where option.isSelected {
+        let text = chip.selectedValue ?? ""
+        for option in options where option.isSelected && !text.isEmpty {
             callBackTriggered = true
             let value = option.value ?? ""
             self.callBack?(chip.componentType, [value])
