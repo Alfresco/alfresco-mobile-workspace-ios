@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -321,6 +321,7 @@
 "complete-title" = "Als voltooid markeren";
 "complete-task-dialog-title" = "Taak voltooien";
 "complete-task-dialog-message" = "Weet u zeker dat u de taak wilt voltooien? U kunt geen wijzigingen meer aanbrengen.";
+"complete-task-dialog-message-attachments-in-progress" = "Weet u zeker dat u de taak wilt voltooien?\nNadat de taak is voltooid, kunnen sommige bestanden niet worden geüpload en kunnen geen wijzigingen worden aangebracht.";
 "confirm-title" = "Bevestigen";
 
 // MARK: - Accessbility
@@ -367,5 +368,25 @@
 "dialog-discard-edit-task-message" = "Wilt u de wijzigingen negeren?";
 "delete-attachment-alert-title" = "Bestand verwijderen?";
 "add-attachments" = "Bijlagen toevoegen";
-"complete-task-dialog-message-attachments-in-progress" = "Weet u zeker dat u de taak wilt voltooien? Nadat de taak is voltooid, kunt u sommige bestanden niet uploaden en kunt u geen wijzigingen aanbrengen.";
-"file-size-exceed-error" = "De geselecteerde bestandsgrootte voor het uploaden mag niet meer dan dan %.1f MB zijn.";
+"file-size-exceed-error" = "Het geselecteerde bestand mag niet groter zijn dan %.1f MB om te kunnen worden geüpload.";
+
+// MARK: - Appleford Accessibility
+"connect-to-textfield" = "Verbinden met tekstveld";
+"copyright" = "Auteursrecht";
+"more" = "Meer";
+"header" = "Kop";
+"sync-status" = "Synchronisatiestatus";
+"marked-for-offline" = "Gemarkeerd voor offline";
+"error" = "Fout";
+"pending" = "Openstaand";
+"in-progress" = "Wordt uitgevoerd";
+"downloaded" = "Gedownload";
+"uploaded" = "Geüpload";
+"undefined" = "Niet-gedefinieerd";
+"search-title" = "Zoeken";
+"subtitle" = "Subtitel";
+"flash-mode" = "Flitsmodus";
+"switch-camera" = "Van camera wisselen";
+"shutter" = "Sluiter";
+"download" = "Downloaden";
+"selected" = "Geselecteerd";
