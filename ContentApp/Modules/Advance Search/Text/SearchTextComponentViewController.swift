@@ -45,6 +45,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
+        UIAccessibility.post(notification: .layoutChanged, argument: headerTitleLabel)
         keywordTextField.becomeFirstResponder()
         applyButton.accessibilityIdentifier = "applyActionButton-textComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-textComponent"
@@ -101,8 +102,9 @@ class SearchTextComponentViewController: SystemThemableViewController {
     }
     
     func addAccessibility() {
-        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        headerTitleLabel.accessibilityLabel = headerTitleLabel.text
         headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
         keywordTextField.accessibilityTraits = .searchField
         
         if let tHeaderTitleLabel = headerTitleLabel, let tDismissButton = dismissButton, let tKeywordTextField = keywordTextField, let tApplyButton = applyButton, let tResetButton = resetButton {

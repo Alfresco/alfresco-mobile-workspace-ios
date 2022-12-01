@@ -70,10 +70,7 @@ class ResultViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        resultsListController?.isAccessibilityElement = false
-        self.isAccessibilityElement = false
         let listComponentViewController = ListComponentViewController.instantiateViewController()
-        listComponentViewController.isAccessibilityElement = false
         listComponentViewController.listActionDelegate = self
         listComponentViewController.coordinatorServices = coordinatorServices
         listComponentViewController.pageController = pageController
