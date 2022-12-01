@@ -46,9 +46,28 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
+        UIAccessibility.post(notification: .layoutChanged, argument: headerTitleLabel)
         minRangeTextField.becomeFirstResponder()
+        addAccessibility()
+    }
+    
+    private func addAccessibility() {
+        headerTitleLabel.accessibilityLabel = headerTitleLabel.text
+        headerTitleLabel.accessibilityIdentifier = "header-title"
+        headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
+        
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        dismissButton.accessibilityIdentifier = "dismiss-button"
+        
+        applyButton.accessibilityLabel = LocalizationConstants.AdvanceSearch.apply
         applyButton.accessibilityIdentifier = "applyActionButton-numberRangeComponent"
+        
+        resetButton.accessibilityLabel = LocalizationConstants.AdvanceSearch.reset
         resetButton.accessibilityIdentifier = "resetActionButton-numberRangeComponent"
+
+        if let tHeaderTitleLabel = headerTitleLabel, let tDismissButton = dismissButton, let tMinRangeTextField = minRangeTextField, let tMaxRangeTextField = maxRangeTextField, let tApplyButton = applyButton, let tResetButton = resetButton {
+            self.view.accessibilityElements = [tHeaderTitleLabel, tDismissButton, tMinRangeTextField, tMaxRangeTextField, tApplyButton, tResetButton]
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

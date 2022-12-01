@@ -51,13 +51,17 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     }
     
     func addAccessibility() {
-        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        headerTitleLabel.accessibilityLabel = headerTitleLabel.text
         headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
-        fromTextField.accessibilityTraits = .button
-        toTextField.accessibilityTraits = .button
-        
+        headerTitleLabel.accessibilityIdentifier = "header-title"
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+
         fromTextField.accessibilityIdentifier = "fromTextField-calendarComponent"
+        fromTextField.accessibilityTraits = .button
+
         toTextField.accessibilityIdentifier = "toTextField-calendarComponent"
+        toTextField.accessibilityTraits = .button
+
         applyButton.accessibilityIdentifier = "applyActionButton-calendarComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-calendarComponent"
         

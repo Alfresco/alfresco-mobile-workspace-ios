@@ -1266,6 +1266,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="categoryNameButton" destination="ybg-kd-jXn" id="VVE-Rp-Y3Q"/>
                         <outlet property="categoryNameLabel" destination="ePb-tN-y2X" id="27f-xU-mQ9"/>
                         <outlet property="categoryNameView" destination="f4k-Bo-MFb" id="Mm1-sj-PZ7"/>
                         <outlet property="chipsCollectionView" destination="q9L-jX-ymC" id="c9g-e0-qyq"/>
