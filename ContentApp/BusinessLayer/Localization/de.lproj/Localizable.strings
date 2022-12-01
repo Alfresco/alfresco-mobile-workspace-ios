@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -325,6 +325,7 @@
 "complete-title" = "Als abgeschlossen markieren";
 "complete-task-dialog-title" = "Aufgabe abschließen";
 "complete-task-dialog-message" = "Sind Sie sicher, dass Sie die Aufgabe abschließen wollen? Sie werden keine Änderungen mehr vornehmen können.";
+"complete-task-dialog-message-attachments-in-progress" = "Sind Sie sicher, dass Sie die Aufgabe abschließen wollen?\nNach Abschluss der Aufgabe können einige Dateien nicht hochgeladen werden und es können keine Änderungen vorgenommen werden.";
 "confirm-title" = "Bestätigen";
 
 // MARK: - Accessbility
@@ -371,5 +372,25 @@
 "dialog-discard-edit-task-message" = "Sollen die Änderungen verworfen werden?";
 "delete-attachment-alert-title" = "Eine Datei löschen?";
 "add-attachments" = "Anhänge hinzufügen";
-"complete-task-dialog-message-attachments-in-progress" = "Sind Sie sicher, dass sie diese Aufgabe abschließen wollen? Nach dem Abschließen können keine Dateien mehr hochgeladen und keine Änderungen mehr gemacht werden.";
-"file-size-exceed-error" = "Die ausgewählte Dateigröße für den Upload darf %.1f nicht überschreiten.";
+"file-size-exceed-error" = "Die gewählte Dateigröße darf beim Hochladen %.1f MB nicht überschreiten.";
+
+// MARK: - Appleford Accessibility
+"connect-to-textfield" = "Mit Textfeld verbinden";
+"copyright" = "Urheberrecht";
+"more" = "Mehr";
+"header" = "Kopfzeile";
+"sync-status" = "Status der Synchronisation";
+"marked-for-offline" = "Markiert für Offline";
+"error" = "Fehler";
+"pending" = "Ausstehend";
+"in-progress" = "In Bearbeitung";
+"downloaded" = "Heruntergeladen";
+"uploaded" = "Hochgeladen";
+"undefined" = "Undefiniert";
+"search-title" = "Suchen";
+"subtitle" = "Untertitel";
+"flash-mode" = "Blitzlicht-Modus";
+"switch-camera" = "Kamera wechseln";
+"shutter" = "Verschluss";
+"download" = "Herunterladen";
+"selected" = "Ausgewählt";

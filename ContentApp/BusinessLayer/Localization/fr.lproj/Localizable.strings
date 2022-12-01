@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -324,6 +324,7 @@
 "complete-title" = "Marquer comme terminé";
 "complete-task-dialog-title" = "Terminer la tâche";
 "complete-task-dialog-message" = "Etes-vous sûr de vouloir terminer la tâche ? Vous ne pourrez plus faire de modifications.";
+"complete-task-dialog-message-attachments-in-progress" = "Voulez-vous vraiment terminer la tâche ?\nUne fois terminée, certains fichiers ne pourront plus être importés et aucun changement ne pourra être effectué.";
 "confirm-title" = "Confirmer";
 
 // MARK: - Accessbility
@@ -370,6 +371,25 @@
 "dialog-discard-edit-task-message" = "Voulez-vous ignorer les modifications ?";
 "delete-attachment-alert-title" = "Supprimer un fichier ?";
 "add-attachments" = "Ajouter des pièces jointes";
-"complete-task-dialog-message-attachments-in-progress" = "Voulez-vous vraiment terminer la tâche ? Une fois terminée, vous ne pourrez plus importer certains fichiers ni apporter de modifications.";
-"file-size-exceed-error" = "La taille du fichier sélectionné ne peut pas dépasser %.1f Mo pour
-l’importer.";
+"file-size-exceed-error" = "La taille du fichier sélectionné pour importation ne peut pas dépasser %.1f Mo.";
+
+// MARK: - Appleford Accessibility
+"connect-to-textfield" = "Connecter au champ de texte";
+"copyright" = "Copyright";
+"more" = "Plus";
+"header" = "En-tête";
+"sync-status" = "Statut de sync";
+"marked-for-offline" = "Marqué pour hors connexion";
+"error" = "Erreur";
+"pending" = "En attente";
+"in-progress" = "En cours";
+"downloaded" = "Téléchargé";
+"uploaded" = "Importé";
+"undefined" = "Non défini";
+"search-title" = "Rechercher";
+"subtitle" = "Sous-titre";
+"flash-mode" = "Modèle de flash";
+"switch-camera" = "Changer de caméra";
+"shutter" = "Obturateur";
+"download" = "Télécharger";
+"selected" = "Sélectionné";

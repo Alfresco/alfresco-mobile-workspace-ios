@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -325,6 +325,7 @@
 "complete-title" = "Contrassegna come completato";
 "complete-task-dialog-title" = "Completa compito";
 "complete-task-dialog-message" = "Vuoi completare il compito? Non potrai più apportare modifiche.";
+"complete-task-dialog-message-attachments-in-progress" = "Vuoi completare il compito?\nUna volta completato, non sarà più possibile caricare alcuni file né apportare modifiche.";
 "confirm-title" = "Conferma";
 
 // MARK: - Accessbility
@@ -371,6 +372,25 @@
 "dialog-discard-edit-task-message" = "Vuoi ignorare le modifiche?";
 "delete-attachment-alert-title" = "Vuoi eliminare un file?";
 "add-attachments" = "Aggiungi allegati";
-"complete-task-dialog-message-attachments-in-progress" = "Vuoi completare il compito? Una volta completato, non potrai caricare alcuni file né apportare modifiche.";
-"file-size-exceed-error" = "La dimensione del file selezionato non può superare il limite di %.1f
-MB per il caricamento.";
+"file-size-exceed-error" = "Le dimensioni del file selezionato per il caricamento non possono superare %.1f MB.";
+
+// MARK: - Appleford Accessibility
+"connect-to-textfield" = "Connetti a campo di testo";
+"copyright" = "Copyright";
+"more" = "Altro";
+"header" = "Intestazione";
+"sync-status" = "Stato sincronizzazione";
+"marked-for-offline" = "Contrassegnato per modalità offline";
+"error" = "Errore";
+"pending" = "In attesa";
+"in-progress" = "In corso";
+"downloaded" = "Scaricato";
+"uploaded" = "Caricato";
+"undefined" = "Non definito";
+"search-title" = "Cerca";
+"subtitle" = "Sottotitolo";
+"flash-mode" = "Modalità flash";
+"switch-camera" = "Passa dalla fotocamera anteriore a quella posteriore";
+"shutter" = "Otturatore";
+"download" = "Scarica";
+"selected" = "Selezionato";
