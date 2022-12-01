@@ -60,7 +60,17 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         applyButton.accessibilityIdentifier = "applyActionButton-facetComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-facetComponent"
         searchView.accessibilityTraits = .button
-
+        addAccessibility()
+    }
+    
+    func addAccessibility() {
+        headerTitleLabel.accessibilityLabel = headerTitleLabel.text
+        headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        
+        if let tHeaderTitleLabel = headerTitleLabel, let tDismissButton = dismissButton, let tTableView = tableView, let tApplyButton = applyButton, let tResetButton = resetButton {
+            self.view.accessibilityElements = [tHeaderTitleLabel, tDismissButton, tTableView, tApplyButton, tResetButton]
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

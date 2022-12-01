@@ -108,11 +108,16 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     func addAccessibility() {
-        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        headerTitleLabel.accessibilityLabel = headerTitleLabel.text
         headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
-        
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+
         applyButton.accessibilityIdentifier = "applyActionButton-listComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-listComponent"
+        
+        if let tHeaderTitleLabel = headerTitleLabel, let tDismissButton = dismissButton, let tApplyButton = applyButton, let tResetButton = resetButton, let tTableView = tableView {
+            self.view.accessibilityElements = [tHeaderTitleLabel, tDismissButton, tTableView, tApplyButton, tResetButton]
+        }
     }
     
     private func applyLocalization() {
