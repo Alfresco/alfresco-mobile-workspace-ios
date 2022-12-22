@@ -132,6 +132,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if url.scheme == ConfigurationKeys.urlSchema {
+            let pathComponent = url.lastPathComponent
+            print("---- \(pathComponent) ----")
+            
+            let urlStr = url.absoluteString
+            let component = urlStr.components(separatedBy: "=")
+            print("---- \(component) ----")
+
+            return true
+        }
         let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService
         if let aimsAccount = accountService?.activeAccount as? AIMSAccount {
             if let session = aimsAccount.session.session {
