@@ -133,13 +133,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         if url.scheme == ConfigurationKeys.urlSchema {
-            let pathComponent = url.lastPathComponent
-            print("---- \(pathComponent) ----")
-            
-            let urlStr = url.absoluteString
-            let component = urlStr.components(separatedBy: "=")
-            print("---- \(component) ----")
-
+            notificationsCentre().handleNotification(for: url)
             return true
         }
         let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService

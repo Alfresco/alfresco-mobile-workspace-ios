@@ -184,6 +184,7 @@
 		C92F3DC427BFEF4E00952C59 /* NodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECECF9254302420097DB3F /* NodeEvent.swift */; };
 		C92F3DC527BFEF5200952C59 /* Dictionary+HashableNodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECED3925432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift */; };
 		C92F3DC727BFF05000952C59 /* SyncTriggersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */; };
+		C93647C72962A4920015F096 /* ModelNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93647C62962A4920015F096 /* ModelNotifications.swift */; };
 		C93A06AF27B91A530027097B /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */; };
 		C93A246428A628C4005F46C2 /* TaskAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */; };
 		C93A246B28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246928A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift */; };
@@ -929,6 +930,7 @@
 		C92F3DBF27BFECCA00952C59 /* SyncOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOperationFactory.swift; sourceTree = "<group>"; };
 		C92F3DC127BFED0700952C59 /* EventBusService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBusService.swift; sourceTree = "<group>"; };
 		C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncTriggersService.swift; sourceTree = "<group>"; };
+		C93647C62962A4920015F096 /* ModelNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelNotifications.swift; sourceTree = "<group>"; };
 		C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentOperations.swift; sourceTree = "<group>"; };
 		C93A246928A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderTableViewCell.swift; sourceTree = "<group>"; };
@@ -1475,6 +1477,7 @@
 		B959CCCA2476AFE500811F15 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				C93647C52962A4800015F096 /* Notifications */,
 				E334C06F24755DA700F74880 /* Storyboard */,
 				B91A5E4C247BD5910063E938 /* Coordinator */,
 				B96B9AEC2480F7A80035AE97 /* Authentication */,
@@ -2018,6 +2021,14 @@
 				C92EBB2328B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift */,
 			);
 			path = "Task Attachments";
+			sourceTree = "<group>";
+		};
+		C93647C52962A4800015F096 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				C93647C62962A4920015F096 /* ModelNotifications.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		C93A06AD27B91A530027097B /* Extensions */ = {
@@ -4296,6 +4307,7 @@
 				B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */,
 				B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */,
 				B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */,
+				C93647C72962A4920015F096 /* ModelNotifications.swift in Sources */,
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,

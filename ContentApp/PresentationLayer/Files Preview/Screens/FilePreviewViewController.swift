@@ -45,16 +45,18 @@ class FilePreviewViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         progressView.isAccessibilityElement = false
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         let isLocalFilePreview = filePreviewViewModel?.isLocalFilePreview ?? false
         if isLocalFilePreview {
             startPreviewingLocalFiles()
+        } else if let publicURL = notificationsCentre().notificationURL, !publicURL.isEmpty {
+            previewPublicURlFile(url: "https://mobileapps.envalfresco.com/aca/#/preview/s/kV66-gfvSD-DxRvDf8Qepg")
         } else {
             startPreviewingNode()
         }
-        
+
         addDownloadContentButton()
     }
 
@@ -375,6 +377,25 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
             filePreviewTitleLabel.accessibilityLabel = filePreviewTitleLabel.text
             mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel.listNode)
         }
+    }
+    
+    private func previewPublicURlFile(url: String?) {
+        
+        let handleError = { [weak self] in
+            guard let sSelf = self else { return }
+
+            Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
+                             type: .error, automaticallyDismisses: false, finish: nil)
+            sSelf.toolbar.isHidden = true
+        }
+        guard let filePreviewViewModel = filePreviewViewModel else {
+            handleError()
+            return
+        }
+        title = LocalizationConstants.ScreenTitles.previewCaptureAsset
+        toolbar.isHidden = true
+        filePreviewViewModel.requestPublicURLFilePreview(with: containerFilePreview.bounds.size, url: url)
+        filePreviewTitleLabel.text = LocalizationConstants.ScreenTitles.previewCaptureAsset
     }
     
     func reloadPreview() {
