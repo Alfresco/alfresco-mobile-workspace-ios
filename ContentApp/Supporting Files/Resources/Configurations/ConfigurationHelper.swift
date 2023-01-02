@@ -20,4 +20,5 @@ import Foundation
 
 struct ConfigurationKeys {
     static let advanceSearchAPIIntervalInHours = "advanceSearchAPIIntervalInHours"
+    static let urlSchema    = "iosamw"
 }
