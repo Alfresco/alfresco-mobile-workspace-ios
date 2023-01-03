@@ -26,6 +26,7 @@ enum NotificationType: String {
 class ModelNotifications: NSObject {
     static let shared = ModelNotifications()
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     var notificationURL: String?
 
     func handleNotification(for url: URL) {
@@ -35,6 +36,24 @@ class ModelNotifications: NSObject {
             let urlAbsoluteString = url.absoluteString
             notificationURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
             openFilePreviewController()
+        } else if fragment.contains(NotificationType.viewer.rawValue) {
+            let urlAbsoluteString = url.absoluteString
+            let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+            print(notifiedURL)
+            
+//            let str = "abcdecd"
+//            if let firstIndex = fragment.firstIndex(of: "(") {
+//                let index = str.distance(from: str.startIndex, to: firstIndex)
+//                print("index: ", index)   //index: 2
+//            }
+//            else {
+//                print("symbol not found")
+//            }
+            
+            startPrivateFileCoordinator(guid: "b7024af9-4292-412e-9fc5-1193da570579")
+
+        } else {
+            startFolderCoordinator(guid: "a0d60323-56c7-4793-8621-fc072f73c264")
         }
     }
     
@@ -44,7 +63,7 @@ class ModelNotifications: NSObject {
     
     private func openFilePreviewController() {
         let topMostViewController = UIApplication.shared.topMostViewController()
-        guard let node = listNodeForPreview(), let navigationController = topMostViewController?.navigationController else { return }
+        guard let node = listNodeForPreview(guid: "0"), let navigationController = topMostViewController?.navigationController else { return }
         let coordinator = FilePreviewScreenCoordinator(with: navigationController,
                                                        listNode: node,
                                                        excludedActions: [.moveTrash,
@@ -55,16 +74,36 @@ class ModelNotifications: NSObject {
         self.filePreviewCoordinator = coordinator
     }
     
-    private func listNodeForPreview() -> ListNode? {
-        return ListNode(guid: "0",
-                        mimeType: nil,
+    // MARK: - Private node
+    func startPrivateFileCoordinator(guid: String?) {
+        let topMostViewController = UIApplication.shared.topMostViewController()
+        guard let node = listNodeForPreview(guid: guid, syncStatus: .synced), let navigationController = topMostViewController?.navigationController else { return }
+
+        let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationController,
+                                                                  listNode: node)
+        filePreviewCoordinator.start()
+        self.filePreviewCoordinator = filePreviewCoordinator
+    }
+    
+    // MARK: - Private Folder
+    func startFolderCoordinator(guid: String?) {
+        let topMostViewController = UIApplication.shared.topMostViewController()
+        guard let node = listNodeForPreview(guid: guid, nodeType: .folder), let navigationController = topMostViewController?.navigationController else { return }
+
+        let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: navigationController,
+                                                                         listNode: node)
+        folderDrillDownCoordinator.start()
+        self.folderDrillDownCoordinator = folderDrillDownCoordinator
+    }
+    
+    private func listNodeForPreview(guid: String?,
+                                    nodeType: NodeType = .file,
+                                    syncStatus: SyncStatus = .pending) -> ListNode? {
+        return ListNode(guid: guid ?? "",
                         title: LocalizationConstants.ScreenTitles.previewCaptureAsset,
                         path: "",
-                        nodeType: .file,
-                        syncStatus: .pending,
-                        markedOfflineStatus: .upload,
-                        allowableOperations: [],
-                        uploadLocalPath: "")
+                        nodeType: nodeType,
+                        syncStatus: syncStatus)
     }
 }
 

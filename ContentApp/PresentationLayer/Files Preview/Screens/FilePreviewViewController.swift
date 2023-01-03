@@ -52,7 +52,7 @@ class FilePreviewViewController: SystemThemableViewController {
         if isLocalFilePreview {
             startPreviewingLocalFiles()
         } else if let publicURL = notificationsCentre().notificationURL, !publicURL.isEmpty {
-            previewPublicURlFile(url: "https://mobileapps.envalfresco.com/aca/#/preview/s/kV66-gfvSD-DxRvDf8Qepg")
+            previewPublicURlFile(url: publicURL)
             notificationsCentre().resetNotificationURL()
         } else {
             startPreviewingNode()
