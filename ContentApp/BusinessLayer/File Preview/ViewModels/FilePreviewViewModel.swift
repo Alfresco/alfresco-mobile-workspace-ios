@@ -173,6 +173,14 @@ class FilePreviewViewModel {
             }
         }
     }
+    
+    func requestPublicURLFilePreview(with size: CGSize?, url: String?) {
+        guard let size = size, let url = url else { return }
+        let preview = FilePreviewFactory.getPublicURLPreview(with: url, on: size)
+        self.filePreview = preview
+        self.viewModelDelegate?.display(previewContainer: preview)
+        self.viewModelDelegate?.didFinishLoadingPreview(error: nil)
+    }
 
     func cancelOngoingOperations() {
         filePreview?.cancel()
@@ -193,7 +201,7 @@ class FilePreviewViewModel {
         guard let listNode = listNode else { return }
         let fileExtension = listNode.title.split(separator: ".").last
         let mimeType = listNode.mimeType ?? ""
-        AnalyticsManager.shared.previewFile(fileMimetype: mimeType, fileExtension: fileExtension ?? "", success: success)        
+        AnalyticsManager.shared.previewFile(fileMimetype: mimeType, fileExtension: fileExtension ?? "", success: success)
     }
 
     // MARK: - Private Helpers
@@ -241,7 +249,7 @@ class FilePreviewViewModel {
         var isImageRendition = false
 
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
-        var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)        
+        var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
         
         if isContentAlreadyDownloaded {
             previewURL = URL(fileURLWithPath: listNode.path)
@@ -397,4 +405,3 @@ extension FilePreviewViewModel: EventObservable {
         }
     }
 }
-
