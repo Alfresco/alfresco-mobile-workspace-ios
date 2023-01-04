@@ -39,21 +39,21 @@ class ModelNotifications: NSObject {
         } else if fragment.contains(NotificationType.viewer.rawValue) {
             let urlAbsoluteString = url.absoluteString
             let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
-            print(notifiedURL)
-            
-//            let str = "abcdecd"
-//            if let firstIndex = fragment.firstIndex(of: "(") {
-//                let index = str.distance(from: str.startIndex, to: firstIndex)
-//                print("index: ", index)   //index: 2
-//            }
-//            else {
-//                print("symbol not found")
-//            }
-            
-            startPrivateFileCoordinator(guid: "b7024af9-4292-412e-9fc5-1193da570579")
-
+            let urlArray = notifiedURL.components(separatedBy: NotificationType.viewer.rawValue)
+            if urlArray.count > 1 {
+                let firstObject = urlArray[1]
+                let idArray = firstObject.components(separatedBy: ")")
+                if !idArray.isEmpty {
+                    let guid = idArray.first
+                    startPrivateFileCoordinator(guid: guid)
+                }
+            }
         } else {
-            startFolderCoordinator(guid: "a0d60323-56c7-4793-8621-fc072f73c264")
+            let urlAbsoluteString = url.absoluteString
+            let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+            let urlArray = notifiedURL.components(separatedBy: "/")
+            let guid = urlArray.last
+            startFolderCoordinator(guid: guid)
         }
     }
     
