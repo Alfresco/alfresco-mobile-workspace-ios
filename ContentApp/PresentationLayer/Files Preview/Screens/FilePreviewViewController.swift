@@ -42,6 +42,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
     private var filePreviewPasswordDialog: MDCAlertController?
     private var filePreviewPasswordField: MDCOutlinedTextField?
+    var publicPreviewURL: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +52,7 @@ class FilePreviewViewController: SystemThemableViewController {
         let isLocalFilePreview = filePreviewViewModel?.isLocalFilePreview ?? false
         if isLocalFilePreview {
             startPreviewingLocalFiles()
-        } else if let publicURL = notificationsCentre().notificationURL, !publicURL.isEmpty {
+        } else if let publicURL = publicPreviewURL, !publicURL.isEmpty {
             previewPublicURlFile(url: publicURL)
             notificationsCentre().resetNotificationURL()
         } else {

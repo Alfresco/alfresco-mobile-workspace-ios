@@ -35,23 +35,27 @@ class FilePreviewScreenCoordinator: Coordinator {
     private let isLocalFilePreview: Bool
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private let isContentAlreadyDownloaded: Bool
+    private var publicPreviewURL: String?
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
          excludedActions: [ActionMenuType] = [],
          shouldPreviewLatestContent: Bool = true,
          isLocalFilePreview: Bool = false,
-         isContentAlreadyDownloaded: Bool = false) {
+         isContentAlreadyDownloaded: Bool = false,
+         publicPreviewURL: String? = nil) {
         self.presenter = presenter
         self.listNode = listNode
         self.excludedActionsTypes = excludedActions
         self.shouldPreviewLatestContent = shouldPreviewLatestContent
         self.isLocalFilePreview = isLocalFilePreview
         self.isContentAlreadyDownloaded = isContentAlreadyDownloaded
+        self.publicPreviewURL = publicPreviewURL
     }
 
     func start() {
         let viewController = FilePreviewViewController.instantiateViewController()
+        viewController.publicPreviewURL = publicPreviewURL
 
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         delegate: viewController,
