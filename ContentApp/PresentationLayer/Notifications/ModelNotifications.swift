@@ -18,47 +18,69 @@
 
 import UIKit
 
+// MARK: - Notification Type
 enum NotificationType: String {
     case preview = "preview"
     case viewer = "(viewer:view/"
     case folder
+    case none
 }
+
+// MARK: - Model Notification
 class ModelNotifications: NSObject {
     static let shared = ModelNotifications()
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
-    var notificationURL: String?
+    var notificationType: NotificationType?
+    private var notificationURL: String?
+    private var guid: String?
 
     func handleNotification(for url: URL) {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false), let fragment = components.fragment else { return }
 
-        if fragment.contains(NotificationType.preview.rawValue) { // directly open preview screen
-            let urlAbsoluteString = url.absoluteString
-            notificationURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
-            openFilePreviewController()
+        if fragment.contains(NotificationType.preview.rawValue) {
+            notificationType = .preview
+            notificationURL = removedURLSchema(from: url)
         } else if fragment.contains(NotificationType.viewer.rawValue) {
-            let urlAbsoluteString = url.absoluteString
-            let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+            notificationType = .viewer
+            let notifiedURL = removedURLSchema(from: url)
             let urlArray = notifiedURL.components(separatedBy: NotificationType.viewer.rawValue)
             if urlArray.count > 1 {
                 let firstObject = urlArray[1]
                 let idArray = firstObject.components(separatedBy: ")")
                 if !idArray.isEmpty {
-                    let guid = idArray.first
-                    startPrivateFileCoordinator(guid: guid)
+                    guid = idArray.first
                 }
             }
         } else {
-            let urlAbsoluteString = url.absoluteString
-            let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+            notificationType = .folder
+            let notifiedURL = removedURLSchema(from: url)
             let urlArray = notifiedURL.components(separatedBy: "/")
-            let guid = urlArray.last
-            startFolderCoordinator(guid: guid)
+            guid = urlArray.last
         }
+        checkForRedirectionURL()
+    }
+    
+    private func removedURLSchema(from url: URL) -> String {
+        let urlAbsoluteString = url.absoluteString
+        let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+        return notifiedURL
     }
     
     func resetNotificationURL() {
+        notificationType = NotificationType.none
         notificationURL = nil
+        guid = nil
+    }
+    
+    func checkForRedirectionURL() {
+        if notificationType == NotificationType.preview {
+            openFilePreviewController()
+        } else if notificationType == NotificationType.viewer {
+            startPrivateFileCoordinator()
+        } else if notificationType == NotificationType.folder {
+            startFolderCoordinator()
+        }
     }
     
     private func openFilePreviewController() {
@@ -69,13 +91,15 @@ class ModelNotifications: NSObject {
                                                        excludedActions: [.moveTrash,
                                                                          .addFavorite,
                                                                          .removeFavorite],
-                                                       shouldPreviewLatestContent: false)
+                                                       shouldPreviewLatestContent: false,
+                                                       publicPreviewURL: notificationURL)
         coordinator.start()
         self.filePreviewCoordinator = coordinator
+        resetNotificationURL()
     }
     
     // MARK: - Private node
-    func startPrivateFileCoordinator(guid: String?) {
+    func startPrivateFileCoordinator() {
         let topMostViewController = UIApplication.shared.topMostViewController()
         guard let node = listNodeForPreview(guid: guid, syncStatus: .synced), let navigationController = topMostViewController?.navigationController else { return }
 
@@ -83,10 +107,11 @@ class ModelNotifications: NSObject {
                                                                   listNode: node)
         filePreviewCoordinator.start()
         self.filePreviewCoordinator = filePreviewCoordinator
+        resetNotificationURL()
     }
     
     // MARK: - Private Folder
-    func startFolderCoordinator(guid: String?) {
+    func startFolderCoordinator() {
         let topMostViewController = UIApplication.shared.topMostViewController()
         guard let node = listNodeForPreview(guid: guid, nodeType: .folder), let navigationController = topMostViewController?.navigationController else { return }
 
@@ -94,6 +119,7 @@ class ModelNotifications: NSObject {
                                                                          listNode: node)
         folderDrillDownCoordinator.start()
         self.folderDrillDownCoordinator = folderDrillDownCoordinator
+        resetNotificationURL()
     }
     
     private func listNodeForPreview(guid: String?,

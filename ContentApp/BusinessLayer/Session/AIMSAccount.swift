@@ -168,5 +168,8 @@ extension AIMSAccount: AIMSAccountDelegate {
         let repository = ApplicationBootstrap.shared().repository
         let syncTriggerService = repository.service(of: SyncTriggersService.identifier) as? SyncTriggersService
         syncTriggerService?.triggerSync(for: .userReAuthenticated)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            notificationsCentre().checkForRedirectionURL()
+         }
     }
 }
