@@ -77,6 +77,13 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
                                    baseURL: url)
         }
     }
+    
+    func display(from url: String?) {
+        if let fileURL = url, let publicURL = URL(string: fileURL) {
+            let request = URLRequest(url: publicURL)
+            plainTextWebView?.load(request)
+        }
+    }
 
     // MARK: - FilePreviewProtocol
 

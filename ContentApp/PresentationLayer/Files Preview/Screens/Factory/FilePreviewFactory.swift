@@ -26,6 +26,12 @@ class FilePreviewFactory {
         plainTextPreview.display(text: text)
         return plainTextPreview
     }
+    
+    static func getPublicURLPreview(with url: String?, on size: CGSize) -> FilePreviewProtocol {
+        let plainTextPreview = PlainTextPreview()
+        plainTextPreview.display(from: url)
+        return plainTextPreview
+    }
 
     static func getPreview(for previewType: FilePreviewType,
                            node: ListNode?,

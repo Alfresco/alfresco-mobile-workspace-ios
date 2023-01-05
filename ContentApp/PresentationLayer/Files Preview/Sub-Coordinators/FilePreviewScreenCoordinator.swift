@@ -38,6 +38,7 @@ class FilePreviewScreenCoordinator: Coordinator {
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
     private let isContentAlreadyDownloaded: Bool
+    private var publicPreviewURL: String?
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
@@ -45,8 +46,8 @@ class FilePreviewScreenCoordinator: Coordinator {
          shouldPreviewLatestContent: Bool = true,
          isLocalFilePreview: Bool = false,
          isScannedDocument: Bool = false,
-         isContentAlreadyDownloaded: Bool = false) {
-
+         isContentAlreadyDownloaded: Bool = false,
+         publicPreviewURL: String? = nil) {
         self.presenter = presenter
         self.listNode = listNode
         self.excludedActionsTypes = excludedActions
@@ -54,10 +55,12 @@ class FilePreviewScreenCoordinator: Coordinator {
         self.isLocalFilePreview = isLocalFilePreview
         self.isScannedDocument = isScannedDocument
         self.isContentAlreadyDownloaded = isContentAlreadyDownloaded
+        self.publicPreviewURL = publicPreviewURL
     }
 
     func start() {
         let viewController = FilePreviewViewController.instantiateViewController()
+        viewController.publicPreviewURL = publicPreviewURL
 
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         delegate: viewController,
