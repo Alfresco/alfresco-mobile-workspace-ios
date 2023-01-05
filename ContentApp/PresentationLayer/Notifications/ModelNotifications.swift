@@ -40,36 +40,47 @@ class ModelNotifications: NSObject {
 
         if fragment.contains(NotificationType.preview.rawValue) {
             notificationType = .preview
-            let urlAbsoluteString = url.absoluteString
-            notificationURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
-            openFilePreviewController()
+            notificationURL = removedURLSchema(from: url)
         } else if fragment.contains(NotificationType.viewer.rawValue) {
             notificationType = .viewer
-            let urlAbsoluteString = url.absoluteString
-            let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+            let notifiedURL = removedURLSchema(from: url)
             let urlArray = notifiedURL.components(separatedBy: NotificationType.viewer.rawValue)
             if urlArray.count > 1 {
                 let firstObject = urlArray[1]
                 let idArray = firstObject.components(separatedBy: ")")
                 if !idArray.isEmpty {
                     guid = idArray.first
-                    startPrivateFileCoordinator()
                 }
             }
         } else {
             notificationType = .folder
-            let urlAbsoluteString = url.absoluteString
-            let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+            let notifiedURL = removedURLSchema(from: url)
             let urlArray = notifiedURL.components(separatedBy: "/")
             guid = urlArray.last
-            startFolderCoordinator()
         }
+        checkForRedirectionURL()
+    }
+    
+    private func removedURLSchema(from url: URL) -> String {
+        let urlAbsoluteString = url.absoluteString
+        let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+        return notifiedURL
     }
     
     func resetNotificationURL() {
         notificationType = NotificationType.none
         notificationURL = nil
         guid = nil
+    }
+    
+    func checkForRedirectionURL() {
+        if notificationType == NotificationType.preview {
+            openFilePreviewController()
+        } else if notificationType == NotificationType.viewer {
+            startPrivateFileCoordinator()
+        } else if notificationType == NotificationType.folder {
+            startFolderCoordinator()
+        }
     }
     
     private func openFilePreviewController() {
@@ -84,6 +95,7 @@ class ModelNotifications: NSObject {
                                                        publicPreviewURL: notificationURL)
         coordinator.start()
         self.filePreviewCoordinator = coordinator
+        resetNotificationURL()
     }
     
     // MARK: - Private node
@@ -95,6 +107,7 @@ class ModelNotifications: NSObject {
                                                                   listNode: node)
         filePreviewCoordinator.start()
         self.filePreviewCoordinator = filePreviewCoordinator
+        resetNotificationURL()
     }
     
     // MARK: - Private Folder
@@ -106,6 +119,7 @@ class ModelNotifications: NSObject {
                                                                          listNode: node)
         folderDrillDownCoordinator.start()
         self.folderDrillDownCoordinator = folderDrillDownCoordinator
+        resetNotificationURL()
     }
     
     private func listNodeForPreview(guid: String?,
