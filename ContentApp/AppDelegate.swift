@@ -133,6 +133,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if url.scheme == ConfigurationKeys.urlSchema {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                notificationsCentre().handleNotification(for: url)
+             }
+            return true
+        }
         let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService
         if let aimsAccount = accountService?.activeAccount as? AIMSAccount {
             if let session = aimsAccount.session.session {

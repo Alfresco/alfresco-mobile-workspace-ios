@@ -70,7 +70,9 @@ class ApplicationCoordinator: Coordinator {
         }
         confirmAction.accessibilityIdentifier = "confirmActionButton"
         
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+            notificationsCentre().resetNotificationURL()
+        }
         cancelAction.accessibilityIdentifier = "cancelActionButton"
 
         _ = viewController?.showDialog(title: title,
