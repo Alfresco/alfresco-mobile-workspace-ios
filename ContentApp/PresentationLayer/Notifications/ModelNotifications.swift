@@ -72,7 +72,6 @@ class ModelNotifications: NSObject {
     private func checkForValidURL(with notifiedURL: String?) -> String? {
         let urlArray = notifiedURL?.components(separatedBy: "https") ?? []
         if urlArray.count > 1 {
-            let firstIndex = urlArray.first
             let secondIndex = urlArray[1]
             let startIndex = secondIndex.prefix(1)
             if String(startIndex) != ":" {
