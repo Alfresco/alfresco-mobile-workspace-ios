@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import MaterialComponents
 
 // MARK: - Notification Type
 enum NotificationType: String {
@@ -85,6 +86,14 @@ class ModelNotifications: NSObject {
     
     private func openFilePreviewController() {
         let topMostViewController = UIApplication.shared.topMostViewController()
+        if topMostViewController is MDCAlertController {
+            topMostViewController?.dismiss(animated: true, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.openFilePreviewController()
+                 }
+            })
+        }
+        
         guard let node = listNodeForPreview(guid: "0"), let navigationController = topMostViewController?.navigationController else { return }
         let coordinator = FilePreviewScreenCoordinator(with: navigationController,
                                                        listNode: node,
