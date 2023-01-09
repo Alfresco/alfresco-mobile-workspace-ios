@@ -81,7 +81,9 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
     func display(from url: String?) {
         if let fileURL = url, let publicURL = URL(string: fileURL) {
             let request = URLRequest(url: publicURL)
-            plainTextWebView?.load(request)
+            DispatchQueue.main.async {
+                self.plainTextWebView?.load(request)
+            }
         }
     }
 
