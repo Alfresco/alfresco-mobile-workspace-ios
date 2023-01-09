@@ -42,6 +42,7 @@ class ModelNotifications: NSObject {
         if fragment.contains(NotificationType.preview.rawValue) {
             notificationType = .preview
             notificationURL = removedURLSchema(from: url)
+            notificationURL = checkForValidURL(with: notificationURL)
         } else if fragment.contains(NotificationType.viewer.rawValue) {
             notificationType = .viewer
             let notifiedURL = removedURLSchema(from: url)
@@ -65,6 +66,20 @@ class ModelNotifications: NSObject {
     private func removedURLSchema(from url: URL) -> String {
         let urlAbsoluteString = url.absoluteString
         let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+        return notifiedURL
+    }
+    
+    private func checkForValidURL(with notifiedURL: String?) -> String? {
+        let urlArray = notifiedURL?.components(separatedBy: "https") ?? []
+        if urlArray.count > 1 {
+            let firstIndex = urlArray.first
+            let secondIndex = urlArray[1]
+            let startIndex = secondIndex.prefix(1)
+            if String(startIndex) != ":" {
+                return String(format: "https:%@", secondIndex)
+            }
+        }
+        
         return notifiedURL
     }
     
