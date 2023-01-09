@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import MaterialComponents
 
 // MARK: - Notification Type
 enum NotificationType: String {
@@ -41,6 +42,7 @@ class ModelNotifications: NSObject {
         if fragment.contains(NotificationType.preview.rawValue) {
             notificationType = .preview
             notificationURL = removedURLSchema(from: url)
+            notificationURL = checkForValidURL(with: notificationURL)
         } else if fragment.contains(NotificationType.viewer.rawValue) {
             notificationType = .viewer
             let notifiedURL = removedURLSchema(from: url)
@@ -67,6 +69,19 @@ class ModelNotifications: NSObject {
         return notifiedURL
     }
     
+    private func checkForValidURL(with notifiedURL: String?) -> String? {
+        let urlArray = notifiedURL?.components(separatedBy: "https") ?? []
+        if urlArray.count > 1 {
+            let secondIndex = urlArray[1]
+            let startIndex = secondIndex.prefix(1)
+            if String(startIndex) != ":" {
+                return String(format: "https:%@", secondIndex)
+            }
+        }
+        
+        return notifiedURL
+    }
+    
     func resetNotificationURL() {
         notificationType = NotificationType.none
         notificationURL = nil
@@ -85,6 +100,14 @@ class ModelNotifications: NSObject {
     
     private func openFilePreviewController() {
         let topMostViewController = UIApplication.shared.topMostViewController()
+        if topMostViewController is MDCAlertController {
+            topMostViewController?.dismiss(animated: true, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.openFilePreviewController()
+                 }
+            })
+        }
+        
         guard let node = listNodeForPreview(guid: "0"), let navigationController = topMostViewController?.navigationController else { return }
         let coordinator = FilePreviewScreenCoordinator(with: navigationController,
                                                        listNode: node,
