@@ -18,6 +18,8 @@
 
 import UIKit
 import MaterialComponents
+import AlfrescoAuth
+import FastCoding
 
 // MARK: - Notification Type
 enum NotificationType: String {
@@ -92,9 +94,21 @@ class ModelNotifications: NSObject {
         if notificationType == NotificationType.preview {
             openFilePreviewController()
         } else if notificationType == NotificationType.viewer {
-            startPrivateFileCoordinator()
+            self.getSession { isValidSession in
+                if isValidSession {
+                    DispatchQueue.main.async {
+                        self.startPrivateFileCoordinator()
+                    }
+                }
+            }
         } else if notificationType == NotificationType.folder {
-            startFolderCoordinator()
+            self.getSession { isValidSession in
+                if isValidSession {
+                    DispatchQueue.main.async {
+                        self.startFolderCoordinator()
+                    }
+                }
+            }
         }
     }
     
@@ -153,6 +167,37 @@ class ModelNotifications: NSObject {
                         path: "",
                         nodeType: nodeType,
                         syncStatus: syncStatus)
+    }
+}
+
+// MARK: - Check for session
+extension ModelNotifications {
+    var repository: ServiceRepository {
+        return ApplicationBootstrap.shared().repository
+    }
+    
+    var accountService: AccountService? {
+        let identifier = AccountService.identifier
+        return repository.service(of: identifier) as? AccountService
+    }
+
+    var connectivityService: ConnectivityService? {
+        let identifier = ConnectivityService.identifier
+        return repository.service(of: identifier) as? ConnectivityService
+    }
+    
+    var services: CoordinatorServices {
+        let coordinatorServices = CoordinatorServices()
+        coordinatorServices.accountService = accountService
+        coordinatorServices.connectivityService = connectivityService
+        return coordinatorServices
+    }
+    
+    func getSession(completionHandler: @escaping ((_ isValidSession: Bool) -> Void)) {
+        guard services.connectivityService?.hasInternetConnection() == true else { return }
+        services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            completionHandler(authenticationProvider.areCredentialsValid())
+        })
     }
 }
 

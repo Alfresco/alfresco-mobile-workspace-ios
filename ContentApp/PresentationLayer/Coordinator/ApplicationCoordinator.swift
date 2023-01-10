@@ -56,9 +56,17 @@ class ApplicationCoordinator: Coordinator {
     }
 
     @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
+       
+        let topMostViewController = UIApplication.shared.topMostViewController()
+        if topMostViewController is FilePreviewViewController {
+            let publicPreviewURL = (topMostViewController as? FilePreviewViewController)?.publicPreviewURL ?? ""
+            if !publicPreviewURL.isEmpty {
+                return
+            }
+        }
+        
         let viewController =
             window.rootViewController?.presentedViewController ?? window.rootViewController
-
         let title = LocalizationConstants.Dialog.sessionExpiredTitle
         let message = LocalizationConstants.Dialog.sessionExpiredMessage
 
