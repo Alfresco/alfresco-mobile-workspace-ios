@@ -340,6 +340,9 @@ extension ConnectViewController: AimsViewModelDelegate {
         Snackbar.dimissAll()
         connectScreenCoordinatorDelegate?.showApplicationTabBar()
         AnalyticsManager.shared.apiTracker(name: Event.API.apiLogin.rawValue, fileSize: 0, success: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            notificationsCentre().checkForRedirectionURL()
+        }
     }
 }
 
