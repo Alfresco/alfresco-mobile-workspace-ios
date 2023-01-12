@@ -114,7 +114,8 @@ class FolderDrillModel: ListComponentModelProtocol {
                     let paginatedResponse = PaginatedResponse(results: listNodes,
                                                               error: error,
                                                               requestPagination: requestPagination,
-                                                              responsePagination: responsePagination)
+                                                              responsePagination: responsePagination,
+                                                              source: result?.list?.source)
                     completionHandler(paginatedResponse)
                 }
             }
@@ -174,7 +175,8 @@ class FolderDrillModel: ListComponentModelProtocol {
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: requestPagination,
-                                                          responsePagination: responsePagination)
+                                                          responsePagination: responsePagination,
+                                                          source: result?.list?.source)
                 completionHandler(paginatedResponse)
             }
         }
