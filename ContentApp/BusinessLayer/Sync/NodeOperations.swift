@@ -54,7 +54,8 @@ class NodeOperations {
                                                 APIConstants.Include.path,
                                                 APIConstants.Include.allowableOperations,
                                                 APIConstants.Include.properties],
-                                      relativePath: relativePath) { (result, error) in
+                                      relativePath: relativePath,
+                                      includeSource: true) { (result, error) in
                 completion(result, error)
             }
         }

@@ -285,7 +285,8 @@ extension FavoritesViewController: ListComponentActionDelegate {
 
     func didUpdateList(in listComponentViewController: ListComponentViewController,
                        error: Error?,
-                       pagination: Pagination?) {
+                       pagination: Pagination?,
+                       source: Node?) {
         if listComponentViewController == folderAndFilesViewController {
             folderAndFilesViewController?.stopLoading()
         } else if listComponentViewController == librariesViewController {

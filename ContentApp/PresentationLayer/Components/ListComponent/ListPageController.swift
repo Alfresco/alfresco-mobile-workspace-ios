@@ -27,6 +27,7 @@ struct PaginatedResponse {
     var requestPagination: RequestPagination?
     var responsePagination: Pagination?
     var searchFacets = [SearchFacets]()
+    var source: Node?
 }
 
 protocol ListPageControllerProtocol: AnyObject {
@@ -42,7 +43,8 @@ protocol ListPageControllerProtocol: AnyObject {
 
 protocol ListPageControllerDelegate: AnyObject {
     func didUpdateList(error: Error?,
-                       pagination: Pagination?)
+                       pagination: Pagination?,
+                       source: Node?)
     func forceDisplayRefresh(for indexPath: IndexPath)
 }
 
@@ -85,7 +87,8 @@ class ListPageController: ListPageControllerProtocol {
                 guard let sSelf = self else { return }
                 sSelf.update(with: sSelf.dataSource.rawListNodes,
                              pagination: nil,
-                             error: nil)
+                             error: nil,
+                             source: nil)
             }
         }
 
@@ -116,7 +119,7 @@ class ListPageController: ListPageControllerProtocol {
     func clear() {
         dataSource.clear()
         delegate?.didUpdateList(error: nil,
-                                pagination: nil)
+                                pagination: nil, source: nil)
     }
 
     // MARK: - Private interface
@@ -126,7 +129,8 @@ class ListPageController: ListPageControllerProtocol {
         if let error = response.error {
             update(with: [],
                    pagination: nil,
-                   error: error)
+                   error: error,
+                   source: response.source)
         } else if let skipCount = response.responsePagination?.skipCount {
             let results = response.results
             self.hasMoreItems =
@@ -139,7 +143,8 @@ class ListPageController: ListPageControllerProtocol {
             totalItems = response.responsePagination?.maxItems ?? 0
             update(with: results,
                    pagination: response.responsePagination,
-                   error: nil)
+                   error: nil,
+                   source: response.source)
             
             resultPageDelegate?.didUpdateChips(error: nil, searchFacets: response.searchFacets)
         }
@@ -147,7 +152,9 @@ class ListPageController: ListPageControllerProtocol {
 
     private func update(with results: [ListNode],
                         pagination: Pagination?,
-                        error: Error?) {
+                        error: Error?,
+                        source: Node?) {
+        
         var listNodes = results
         let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
         if isMove, let node = sourceNodeToMove {
@@ -174,7 +181,7 @@ class ListPageController: ListPageControllerProtocol {
             }
         }
         delegate?.didUpdateList(error: error,
-                                pagination: pagination)
+                                pagination: pagination, source: source)
     }
 
     private final func incrementPage(for paginationRequest: RequestPagination?) {
@@ -240,7 +247,7 @@ extension ListPageController: ListComponentModelDelegate {
                                     skipCount: Int64(pageSkipCount),
                                     maxItems: Int64(0))
         delegate?.didUpdateList(error: nil,
-                                pagination: pagination)
+                                pagination: pagination, source: nil)
     }
 
     func needsDataSourceReload() {

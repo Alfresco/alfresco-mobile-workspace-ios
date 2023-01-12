@@ -364,7 +364,7 @@ class ListComponentViewController: SystemThemableViewController {
     private func handleConnectivity() {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.hasInternetConnection() == false {
-            didUpdateList(error: NSError(), pagination: nil)
+            didUpdateList(error: NSError(), pagination: nil, source: nil)
             
             if viewModel?.shouldDisplayPullToRefreshOffline() == false {
                 refreshControl?.removeFromSuperview()
@@ -410,7 +410,8 @@ extension ListComponentViewController: PageFetchableDelegate {
 
 extension ListComponentViewController: ListPageControllerDelegate {
     func didUpdateList(error: Error?,
-                       pagination: Pagination?) {
+                       pagination: Pagination?,
+                       source: Node?) {
         guard let model = pageController?.dataSource else { return }
         
         // When no error or pagination information is present just perform a data source reload
@@ -451,7 +452,7 @@ extension ListComponentViewController: ListPageControllerDelegate {
         if error == nil {
             reloadDataSource()
             stopLoadingAndScrollToTop()
-            listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination)
+            listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination, source: source)
         } else {
             stopLoadingAndScrollToTop()
         }

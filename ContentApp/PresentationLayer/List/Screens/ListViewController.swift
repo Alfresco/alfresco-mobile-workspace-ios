@@ -115,7 +115,13 @@ extension ListViewController: ListComponentActionDelegate {
     }
 
     func didUpdateList(in listComponentViewController: ListComponentViewController,
-                       error: Error?, pagination: Pagination?) {
+                       error: Error?, pagination: Pagination?,
+                       source: Node?) {
+        let name = source?.name ?? ""
+        let personalFiles = LocalizationConstants.BrowseStaticList.personalFiles
+        if !name.isEmpty && name != personalFiles {
+            self.title = source?.name
+        }
         listController?.stopLoading()
     }
 
