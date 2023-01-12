@@ -541,7 +541,8 @@ extension ResultViewController: ListComponentActionDelegate {
 
     func didUpdateList(in listComponentViewController: ListComponentViewController,
                        error: Error?,
-                       pagination: Pagination?) {
+                       pagination: Pagination?,
+                       source: Node?) {
         stopLoading()
         recentSearchesView.isHidden = (pagination == nil && error == nil) ? false : true
     }

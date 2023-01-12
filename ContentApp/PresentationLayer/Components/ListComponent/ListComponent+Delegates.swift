@@ -44,7 +44,8 @@ protocol ListComponentActionDelegate: AnyObject {
     func elementTapped(node: ListNode)
     func didUpdateList(in listComponentViewController: ListComponentViewController,
                        error: Error?,
-                       pagination: Pagination?)
+                       pagination: Pagination?,
+                       source: Node?)
 
     func performListAction()
 }
