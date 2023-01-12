@@ -444,6 +444,14 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
             filePreviewTitleLabel.text = filePreviewViewModel.listNode?.title
             filePreviewTitleLabel.accessibilityLabel = filePreviewTitleLabel.text
             mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel.listNode)
+            updateFileName()
+        }
+    }
+    
+    private func updateFileName() {
+        let name = filePreviewViewModel?.listNode?.title ?? ""
+        if !name.isEmpty {
+            self.title = name
         }
     }
     
