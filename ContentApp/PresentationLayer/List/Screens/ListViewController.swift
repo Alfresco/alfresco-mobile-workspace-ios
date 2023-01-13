@@ -119,8 +119,8 @@ extension ListViewController: ListComponentActionDelegate {
                        source: Node?) {
         let name = source?.name ?? ""
         let personalFiles = LocalizationConstants.BrowseStaticList.personalFiles
-        if !name.isEmpty && name != personalFiles {
-            self.title = source?.name
+        if !name.isEmpty && self.title != personalFiles {
+            self.title = name
         }
         listController?.stopLoading()
     }
