@@ -67,7 +67,8 @@ class ModelNotifications: NSObject {
     
     private func removedURLSchema(from url: URL) -> String {
         let urlAbsoluteString = url.absoluteString
-        let notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+        var notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
+        notifiedURL = notifiedURL.replacingOccurrences(of: "%2F", with: "/")
         return notifiedURL
     }
     
