@@ -123,7 +123,9 @@ class ModelNotifications: NSObject {
             })
         }
         
-        guard let node = listNodeForPreview(guid: "0"), let navigationController = topMostViewController?.navigationController else { return }
+        guard let node = listNodeForPreview(guid: "0",
+                                            title: LocalizationConstants.ScreenTitles.previewCaptureAsset),
+                let navigationController = topMostViewController?.navigationController else { return }
         let coordinator = FilePreviewScreenCoordinator(with: navigationController,
                                                        listNode: node,
                                                        excludedActions: [.moveTrash,
@@ -162,9 +164,10 @@ class ModelNotifications: NSObject {
     
     private func listNodeForPreview(guid: String?,
                                     nodeType: NodeType = .file,
-                                    syncStatus: SyncStatus = .pending) -> ListNode? {
+                                    syncStatus: SyncStatus = .pending,
+                                    title: String? = nil) -> ListNode? {
         return ListNode(guid: guid ?? "",
-                        title: LocalizationConstants.ScreenTitles.previewCaptureAsset,
+                        title: title ?? "",
                         path: "",
                         nodeType: nodeType,
                         syncStatus: syncStatus)
