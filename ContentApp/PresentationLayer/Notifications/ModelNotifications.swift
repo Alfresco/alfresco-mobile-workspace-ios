@@ -126,6 +126,16 @@ class ModelNotifications: NSObject {
         guard let node = listNodeForPreview(guid: "0",
                                             title: LocalizationConstants.ScreenTitles.previewCaptureAsset),
                 let navigationController = topMostViewController?.navigationController else { return }
+        
+        let viewControllers = navigationController.viewControllers
+        for index in 0 ..< viewControllers.count {
+            let controller = viewControllers[index]
+            if controller is FilePreviewViewController {
+                navigationController.viewControllers.remove(at: index)
+                break
+            }
+        }
+                
         let coordinator = FilePreviewScreenCoordinator(with: navigationController,
                                                        listNode: node,
                                                        excludedActions: [.moveTrash,
@@ -143,6 +153,15 @@ class ModelNotifications: NSObject {
         let topMostViewController = UIApplication.shared.topMostViewController()
         guard let node = listNodeForPreview(guid: guid, syncStatus: .synced), let navigationController = topMostViewController?.navigationController else { return }
 
+        let viewControllers = navigationController.viewControllers
+        for index in 0 ..< viewControllers.count {
+            let controller = viewControllers[index]
+            if controller is FilePreviewViewController {
+                navigationController.viewControllers.remove(at: index)
+                break
+            }
+        }
+        
         let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationController,
                                                                   listNode: node)
         filePreviewCoordinator.start()
