@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "ios-workspaceone-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vmwareairwatchsdk/iOS-WorkspaceONE-SDK",
-      "state" : {
-        "branch" : "master",
-        "revision" : "61a79c6d63d0edbca4c93d1eb215e97a13a070f1"
-      }
-    },
-    {
       "identity" : "micro",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onmyway133/Micro.git",
