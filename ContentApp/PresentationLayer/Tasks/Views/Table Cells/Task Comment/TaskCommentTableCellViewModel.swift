@@ -46,4 +46,13 @@ class TaskCommentTableCellViewModel: RowViewModel {
         self.dateString = dateString
         self.isShowReadMore = isShowReadMore
     }
+    
+    var commentUserName: String? {
+        let apsUserID = UserProfile.apsUserID
+        if apsUserID == userID {
+            return LocalizationConstants.EditTask.meTitle
+        } else {
+            return userName
+        }
+    }
 }
