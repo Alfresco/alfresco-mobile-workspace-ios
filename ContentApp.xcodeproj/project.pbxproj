@@ -248,6 +248,7 @@
 		C9848014272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9848013272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift */; };
 		C9848016272A5BF800BB556B /* SearchSliderRangeComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9848015272A5BF800BB556B /* SearchSliderRangeComponentViewModel.swift */; };
 		C989FEA2272FD11D0081EB7E /* UITextField+MaxLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = C989FEA1272FD11D0081EB7E /* UITextField+MaxLength.swift */; };
+		C98BBD6C2987CFD40045F755 /* AWSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C98BBD6B2987CFD40045F755 /* AWSDK */; };
 		C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C98C128F271E8687001C84D6 /* SearchComponents.storyboard */; };
 		C98C1292271E87BF001C84D6 /* SearchTextComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */; };
 		C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */; };
@@ -1321,6 +1322,7 @@
 				B980B0A8264E4D0500F139CE /* Micro in Frameworks */,
 				4B2D7FA2F97B887A7B192BDB /* Pods_ContentApp.framework in Frameworks */,
 				B980B0A5264E4CEF00F139CE /* DeepDiff in Frameworks */,
+				C98BBD6C2987CFD40045F755 /* AWSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3500,6 +3502,7 @@
 			packageProductDependencies = (
 				B980B0A4264E4CEF00F139CE /* DeepDiff */,
 				B980B0A7264E4D0500F139CE /* Micro */,
+				C98BBD6B2987CFD40045F755 /* AWSDK */,
 			);
 			productName = ContentApp;
 			productReference = E334C03C24755D8E00F74880 /* ContentApp.app */;
@@ -3587,6 +3590,7 @@
 			packageReferences = (
 				B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff" */,
 				B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro" */,
+				C98BBD6A2987CFD40045F755 /* XCRemoteSwiftPackageReference "iOS-WorkspaceONE-SDK" */,
 			);
 			productRefGroup = E334C03D24755D8E00F74880 /* Products */;
 			projectDirPath = "";
@@ -5014,6 +5018,14 @@
 				minimumVersion = 1.2.0;
 			};
 		};
+		C98BBD6A2987CFD40045F755 /* XCRemoteSwiftPackageReference "iOS-WorkspaceONE-SDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vmwareairwatchsdk/iOS-WorkspaceONE-SDK";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -5026,6 +5038,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro" */;
 			productName = Micro;
+		};
+		C98BBD6B2987CFD40045F755 /* AWSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C98BBD6A2987CFD40045F755 /* XCRemoteSwiftPackageReference "iOS-WorkspaceONE-SDK" */;
+			productName = AWSDK;
 		};
 		C9AFDF7527B8CDA4007233A5 /* Micro */ = {
 			isa = XCSwiftPackageProductDependency;
