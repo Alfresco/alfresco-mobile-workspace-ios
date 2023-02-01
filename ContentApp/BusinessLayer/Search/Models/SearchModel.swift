@@ -34,6 +34,7 @@ class SearchModel: SearchModelProtocol {
     var facetIntervals: FacetIntervals?
     var searchType: SearchType = .simple
     var selectedSearchFilter: AdvanceSearchFilters?
+    let listNodeDataAccessor = ListNodeDataAccessor()
 
     init(with services: CoordinatorServices) {
         self.services = services
@@ -336,6 +337,32 @@ extension SearchModel: ListComponentModelProtocol {
                                       paginationRequest: requestPagination,
                                       completionHandler: completionHandler)
         }
+    }
+}
+
+// MARK: - Offline search
+extension SearchModel {
+        
+    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
+        guard let string = searchString else {
+            rawListNodes = []
+            delegate?.needsDisplayStateRefresh()
+            return
+        }
+
+        let offlineNodes = listNodeDataAccessor.querySearchedOffline(title: string)
+        let count = Int64(offlineNodes.count)
+        let responsePagination = Pagination(count: count,
+                                            hasMoreItems: false,
+                                            totalItems: count,
+                                            skipCount: 0,
+                                            maxItems: count)
+        
+        let paginatedResponse = PaginatedResponse(results: offlineNodes,
+                                                  error: nil,
+                                                  requestPagination: nil,
+                                                  responsePagination: responsePagination)
+        completionHandler(paginatedResponse)
     }
 }
 

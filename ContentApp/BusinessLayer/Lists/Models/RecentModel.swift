@@ -192,3 +192,8 @@ extension RecentModel: EventObservable {
     }
 }
 
+// MARK: - Offline search
+extension RecentModel {
+    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
+    }
+}

@@ -120,3 +120,8 @@ extension MyLibrariesModel: EventObservable {
     }
 }
 
+// MARK: - Offline search
+extension MyLibrariesModel {
+    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
+    }
+}

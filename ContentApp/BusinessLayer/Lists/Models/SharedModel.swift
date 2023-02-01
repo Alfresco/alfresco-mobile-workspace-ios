@@ -139,3 +139,8 @@ extension SharedModel: EventObservable {
     }
 }
 
+// MARK: - Offline search
+extension SharedModel {
+    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
+    }
+}

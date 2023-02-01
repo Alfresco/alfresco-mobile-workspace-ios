@@ -167,5 +167,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 func appDelegate() -> AppDelegate? {
     return  UIApplication.shared.delegate as? AppDelegate
 }
-
-// dummy commit

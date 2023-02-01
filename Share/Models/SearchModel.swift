@@ -337,6 +337,9 @@ extension SearchModel: ListComponentModelProtocol {
                                       completionHandler: completionHandler)
         }
     }
+    
+    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
+    }
 }
 
 // MARK: - Event observable
