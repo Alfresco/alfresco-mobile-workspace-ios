@@ -67,6 +67,7 @@ struct KeyConstants {
         static let pendingUploadNodes = "pendingUploadNodes"
         static let uploadedNodes = "uploadedNodes"
         static let userDidInitiateLogout = "userDidInitiateLogout"
+        static let teamID = "W8N95J537P"
     }
     
     struct Tasks {
@@ -78,5 +79,9 @@ struct KeyConstants {
     
     struct FileSize {
         static let taskFileSize = 100.0
+    }
+    
+    struct URLScheme {
+        static let mdm = "amwAirwatch"
     }
 }

@@ -43,6 +43,19 @@
 				<string>iosamw</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>amwAirwatch</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>airwatch</string>
+		<string>AWSSOBroker2</string>
+		<string>awws1enroll</string>
+		<string>wsonesdk</string>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -65,6 +78,8 @@
 	<string>Mobile Workspace requires microphone access to capture audios for upload.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Mobile Workspace requires library access to upload photos from your library.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Mobile Workspace requires Face ID access to authorize the user.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Black.ttf</string>

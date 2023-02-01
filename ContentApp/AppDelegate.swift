@@ -18,9 +18,10 @@
 
 import UIKit
 import Firebase
+import AWSDK
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, AWControllerDelegate {
     var window: UIWindow?
     private var applicationCoordinator: ApplicationCoordinator?
     var orientationLock = UIInterfaceOrientationMask.all
@@ -50,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         migrateDatabaseIfNecessary()
         AnalyticsManager.shared.appLaunched()
+        initializeAirWatchSDK()
         return true
     }
 
@@ -144,6 +146,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return session.resumeExternalUserAgentFlow(with: url)
             }
         }
+        
+        let sourceApplication = options[
+            UIApplication.OpenURLOptionsKey.sourceApplication] as? String
+        let handedBySDKController = AWController.clientInstance().handleOpenURL(
+            url, fromApplication: sourceApplication)
+        if handedBySDKController {
+            AWLogInfo("Handed over open URL to AWController")
+            // SDK Controller will continue with the result from Open URL.
+            return true
+        }
 
         return false
     }
@@ -160,6 +172,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
+    }
+}
+
+// MARK: - Air Watch MDM
+extension AppDelegate {
+    private func initializeAirWatchSDK() {
+        let awcontroller = AWController.clientInstance()
+        awcontroller.callbackScheme = KeyConstants.URLScheme.mdm
+        // enable / disable the App Attestation
+        awcontroller.shouldAttestApp = true
+        // Should provide the team ID if App Attestation is enabled
+        awcontroller.teamID = KeyConstants.AppGroup.teamID
+        awcontroller.delegate = self
+        awcontroller.start()
+    }
+    
+    func controllerDidFinishInitialCheck(error: NSError?) {
+        if error != nil {
+            AWLogError("Initial Check Done Error: \(error ?? NSError())")
+            return
+        }
+        AWLogInfo("SDK Initial Check Done!")
     }
 }
 
