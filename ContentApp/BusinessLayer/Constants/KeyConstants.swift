@@ -48,6 +48,7 @@ struct KeyConstants {
         static let syncStarted = "kAPISyncStartedNotification"
         static let moveFileFolderFinished = "kMoveFileFolderFinishedNotification"
         static let dismissAppExtensionNotification = "dismissAppExtensionNotification"
+        static let internetCheck = "kInternetCheckNotification"
     }
     
     struct AdvanceSearch {

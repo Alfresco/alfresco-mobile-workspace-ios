@@ -120,6 +120,14 @@ class ResultViewController: SystemThemableViewController {
         removeSearchFacetsChips()
         self.pageController?.resultPageDelegate = self
         addAccessibility()
+        addNotifications()
+    }
+    
+    func addNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleConnectivity),
+                                               name: Notification.Name(KeyConstants.Notification.internetCheck),
+                                               object: nil)
     }
     
     private func addAccessibility() {
@@ -829,6 +837,19 @@ extension ResultViewController: ResultPageControllerDelegate {
     func updateChips(for searchFacets: [SearchFacets]) {
         guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: searchFacets) else { return }
         self.updateChips(chipItems)
+    }
+}
+
+// MARK: Connectivity Helpers
+extension ResultViewController {
+
+    @objc private func handleConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        if connectivityService?.hasInternetConnection() == false {
+           // noInternetView.alpha = 1
+        } else {
+           // noInternetView.alpha = 0
+        }
     }
 }
 
