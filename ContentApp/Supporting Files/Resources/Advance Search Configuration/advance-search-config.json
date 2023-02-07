@@ -599,14 +599,7 @@
       },
       {
           "resetButton": true,
-          "filterQueries": [
-              {
-                  "query": "TYPE:'cm:folder'"
-              },
-              {
-                  "query": "NOT cm:creator:System"
-              }
-          ],
+          "filterQueries": [],
           "categories": [
               {
                   "id": "queryType",

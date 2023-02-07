@@ -349,8 +349,27 @@ extension SearchModel {
             delegate?.needsDisplayStateRefresh()
             return
         }
-
-        let offlineNodes = listNodeDataAccessor.querySearchedOffline(title: string)
+        
+        var isFile = true
+        var isFolder = true
+        if selectedSearchFilter != nil {
+            let filterQueries = SearchRequestBuilder.queriesIncluded(searchChips, selectedSearchFilter: selectedSearchFilter)
+            if !filterQueries.isEmpty {
+                let object = filterQueries.first ?? ""
+                if object.contains("folder") && object.contains("content") {
+                    isFile = true
+                    isFolder = true
+                } else if object.contains("folder") {
+                    isFile = false
+                    isFolder = true
+                } else if object.contains("content") {
+                    isFile = true
+                    isFolder = false
+                }
+            }
+        }
+       
+        let offlineNodes = listNodeDataAccessor.querySearchedOffline(title: string, isFile: isFile, isFolder: isFolder)
         let count = Int64(offlineNodes.count)
         let responsePagination = Pagination(count: count,
                                             hasMoreItems: false,

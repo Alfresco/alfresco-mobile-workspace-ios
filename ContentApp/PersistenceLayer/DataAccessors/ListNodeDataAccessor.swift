@@ -89,13 +89,16 @@ class ListNodeDataAccessor: DataAccessor {
         return []
     }
     
-    func querySearchedOffline(title: String) -> [ListNode] {
+    func querySearchedOffline(title: String,
+                              isFile: Bool,
+                              isFolder: Bool) -> [ListNode] {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.markedAsOffline == true &&
                         ListNode.markedFor != MarkedForStatus.removal.rawValue &&
-                    ListNode.title.contains(title, caseSensitive: false)
+                    ListNode.title.contains(title, caseSensitive: false) &&
+                    (ListNode.isFile == isFile || ListNode.isFolder == isFolder)
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
