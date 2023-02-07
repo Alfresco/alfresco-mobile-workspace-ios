@@ -112,7 +112,8 @@ class ResultViewController: SystemThemableViewController {
         // Set up progress view
         progressView?.progress = 0
         progressView?.mode = .indeterminate
-
+       
+        handleConnectivity()
         addLocalization()
         addChipsCollectionViewFlowLayout()
         setupBindings()
@@ -846,10 +847,12 @@ extension ResultViewController {
     @objc private func handleConnectivity() {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.hasInternetConnection() == false {
-           // noInternetView.alpha = 1
+            resultsViewModel?.isConnectedToInternet = false
         } else {
-           // noInternetView.alpha = 0
+            resultsViewModel?.isConnectedToInternet = true
         }
+        
+        resultsViewModel?.loadAppConfigurationsForSearch()
     }
 }
 
