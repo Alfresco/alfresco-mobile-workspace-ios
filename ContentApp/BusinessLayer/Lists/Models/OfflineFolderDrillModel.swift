@@ -166,9 +166,3 @@ extension OfflineFolderDrillModel: EventObservable {
         }
     }
 }
-
-// MARK: - Offline search
-extension OfflineFolderDrillModel {
-    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
-    }
-}

@@ -84,7 +84,7 @@ class ListPageController: ListPageControllerProtocol {
         let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         if connectivityService?.hasInternetConnection() == false {
             if dataSource is SearchModel {
-                dataSource.fetchOfflineItems { [weak self] paginatedResponse in
+                (dataSource as? SearchModel)?.fetchOfflineItems { [weak self] paginatedResponse in
                     guard let sSelf = self else { return }
                     sSelf.handlePaginatedResponse(response: paginatedResponse)
                 }

@@ -141,9 +141,3 @@ extension UploadNodesModel: EventObservable {
         }
     }
 }
-
-// MARK: - Offline search
-extension UploadNodesModel {
-    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
-    }
-}

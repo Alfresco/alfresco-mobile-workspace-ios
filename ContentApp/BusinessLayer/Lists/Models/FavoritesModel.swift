@@ -162,9 +162,3 @@ extension FavoritesModel: EventObservable {
         }
     }
 }
-
-// MARK: - Offline search
-extension FavoritesModel {
-    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
-    }
-}

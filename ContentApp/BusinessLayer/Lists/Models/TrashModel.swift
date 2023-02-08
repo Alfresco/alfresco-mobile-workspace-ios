@@ -112,9 +112,3 @@ extension TrashModel: EventObservable {
         }
     }
 }
-
-// MARK: - Offline search
-extension TrashModel {
-    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
-    }
-}

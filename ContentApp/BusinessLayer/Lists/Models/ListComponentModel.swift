@@ -50,8 +50,6 @@ protocol ListComponentModelProtocol: AnyObject {
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler)
-    
-    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler)
 }
 
 extension ListComponentModelProtocol {

@@ -169,10 +169,3 @@ extension OfflineModel: EventObservable {
         }
     }
 }
-
-// MARK: - Offline search
-extension OfflineModel {
-    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
-    }
-}
-
