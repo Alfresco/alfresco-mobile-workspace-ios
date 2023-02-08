@@ -186,7 +186,10 @@ class ResultViewController: SystemThemableViewController {
     }
     
     @IBAction func chooseCategoryButtonAction(_ sender: Any) {
-        dropDown.show()
+        let isConnectedToInternet = resultsViewModel?.isConnectedToInternet ?? false
+        if isConnectedToInternet {
+            dropDown.show()
+        }
     }
     
     // MARK: - Public Helpers
@@ -848,8 +851,10 @@ extension ResultViewController {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.hasInternetConnection() == false {
             resultsViewModel?.isConnectedToInternet = false
+            configurationImageView.alpha = 0
         } else {
             resultsViewModel?.isConnectedToInternet = true
+            configurationImageView.alpha = 1
         }
         
         resultsViewModel?.loadAppConfigurationsForSearch()
