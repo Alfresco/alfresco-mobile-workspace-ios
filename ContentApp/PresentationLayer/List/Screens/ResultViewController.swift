@@ -195,8 +195,11 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Public Helpers
 
     func startLoading() {
-        progressView?.startAnimating()
-        progressView?.setHidden(false, animated: false)
+        let isConnectedToInternet = resultsViewModel?.isConnectedToInternet ?? false
+        if isConnectedToInternet {
+            progressView?.startAnimating()
+            progressView?.setHidden(false, animated: false)
+        }
     }
 
     func stopLoading() {
