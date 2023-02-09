@@ -119,4 +119,3 @@ extension MyLibrariesModel: EventObservable {
         }
     }
 }
-

@@ -40,7 +40,7 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         
         updateUserImage()
         dateLabel.text = viewModel.dateString
-        userNameLabel.text = viewModel.userName
+        userNameLabel.text = viewModel.commentUserName
         commentLabel.numberOfLines = viewModel.isShowReadMore ? 4:0
         commentLabel.text = viewModel.comment
         DispatchQueue.main.async {

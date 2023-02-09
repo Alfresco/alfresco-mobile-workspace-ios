@@ -169,4 +169,3 @@ extension OfflineModel: EventObservable {
         }
     }
 }
-

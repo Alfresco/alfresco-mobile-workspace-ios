@@ -30,6 +30,8 @@ class SearchViewModel: ListComponentViewModel {
         super.init(model: model)
     }
     
+    var isConnectedToInternet = false
+    
     /// selected category
     var selectedCategory: SearchCategories?
     
@@ -42,7 +44,13 @@ class SearchViewModel: ListComponentViewModel {
     /// search filters array
     var searchFilters: [AdvanceSearchFilters] {
         get {
-            return searchFilterObservable.value
+            var filters = searchFilterObservable.value
+            if isConnectedToInternet {
+                filters = filters.filter {$0.name != "CATEGORY.OFFLINE"}
+            } else {
+                filters = filters.filter {$0.name == "CATEGORY.OFFLINE"}
+            }
+            return filters
         }
         set (newValue) {
             searchFilterObservable.value = newValue
@@ -57,9 +65,8 @@ class SearchViewModel: ListComponentViewModel {
     }
     
     /// all filters names
-    var filterNames: [String] { 
-        let filtered = searchFilters.map {$0.name ?? ""}
-        return filtered
+    var filterNames: [String] {
+        return searchFilters.map {$0.name ?? ""}
     }
     
     /// localized filter names
@@ -85,10 +92,17 @@ class SearchViewModel: ListComponentViewModel {
     
     /// default search filter
     func defaultSearchFilter() -> AdvanceSearchFilters? {
-        if let index = searchFilters.firstIndex(where: {$0.isDefault == true}) {
-              return searchFilters[index]
-        }
-        return nil
+        if isConnectedToInternet {
+            if let index = searchFilters.firstIndex(where: {$0.isDefault == true}) {
+                  return searchFilters[index]
+            }
+            return nil
+        } else {
+            if let index = searchFilters.firstIndex(where: {$0.name == "CATEGORY.OFFLINE"}) {
+                  return searchFilters[index]
+            }
+            return nil
+        } 
     }
     
     func isShowAdvanceFilterView(array: [String]) -> Bool {
