@@ -194,6 +194,7 @@
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Size facet queries";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Search";
 "file-size-unit" = "KB";
+"CATEGORY.OFFLINE" = "Offline";
 
 // MARK: - Group List Section
 "today" = "Today";

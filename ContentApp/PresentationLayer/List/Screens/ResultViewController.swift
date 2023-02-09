@@ -112,7 +112,8 @@ class ResultViewController: SystemThemableViewController {
         // Set up progress view
         progressView?.progress = 0
         progressView?.mode = .indeterminate
-
+       
+        handleConnectivity()
         addLocalization()
         addChipsCollectionViewFlowLayout()
         setupBindings()
@@ -120,6 +121,14 @@ class ResultViewController: SystemThemableViewController {
         removeSearchFacetsChips()
         self.pageController?.resultPageDelegate = self
         addAccessibility()
+        addNotifications()
+    }
+    
+    func addNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleConnectivity),
+                                               name: Notification.Name(KeyConstants.Notification.internetCheck),
+                                               object: nil)
     }
     
     private func addAccessibility() {
@@ -177,14 +186,20 @@ class ResultViewController: SystemThemableViewController {
     }
     
     @IBAction func chooseCategoryButtonAction(_ sender: Any) {
-        dropDown.show()
+        let isConnectedToInternet = resultsViewModel?.isConnectedToInternet ?? false
+        if isConnectedToInternet {
+            dropDown.show()
+        }
     }
     
     // MARK: - Public Helpers
 
     func startLoading() {
-        progressView?.startAnimating()
-        progressView?.setHidden(false, animated: false)
+        let isConnectedToInternet = resultsViewModel?.isConnectedToInternet ?? false
+        if isConnectedToInternet {
+            progressView?.startAnimating()
+            progressView?.setHidden(false, animated: false)
+        }
     }
 
     func stopLoading() {
@@ -829,6 +844,23 @@ extension ResultViewController: ResultPageControllerDelegate {
     func updateChips(for searchFacets: [SearchFacets]) {
         guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: searchFacets) else { return }
         self.updateChips(chipItems)
+    }
+}
+
+// MARK: Connectivity Helpers
+extension ResultViewController {
+
+    @objc private func handleConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        if connectivityService?.hasInternetConnection() == false {
+            resultsViewModel?.isConnectedToInternet = false
+            configurationImageView.alpha = 0
+        } else {
+            resultsViewModel?.isConnectedToInternet = true
+            configurationImageView.alpha = 1
+        }
+        
+        resultsViewModel?.loadAppConfigurationsForSearch()
     }
 }
 

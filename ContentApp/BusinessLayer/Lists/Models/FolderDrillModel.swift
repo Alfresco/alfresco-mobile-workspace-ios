@@ -351,4 +351,3 @@ extension FolderDrillModel: EventObservable {
         }
     }
 }
-

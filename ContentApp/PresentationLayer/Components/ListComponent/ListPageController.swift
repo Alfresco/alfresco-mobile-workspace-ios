@@ -83,12 +83,20 @@ class ListPageController: ListPageControllerProtocol {
     func fetchNextPage() {
         let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         if connectivityService?.hasInternetConnection() == false {
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self else { return }
-                sSelf.update(with: sSelf.dataSource.rawListNodes,
-                             pagination: nil,
-                             error: nil,
-                             source: nil)
+            if dataSource is SearchModel {
+                (dataSource as? SearchModel)?.fetchOfflineItems { [weak self] paginatedResponse in
+                    guard let sSelf = self else { return }
+                    sSelf.handlePaginatedResponse(response: paginatedResponse)
+                }
+                return
+            } else {
+                DispatchQueue.main.async { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.update(with: sSelf.dataSource.rawListNodes,
+                                 pagination: nil,
+                                 error: nil,
+                                 source: nil)
+                }
             }
         }
 

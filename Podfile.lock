@@ -776,7 +776,7 @@ DEPENDENCIES:
   - Gifu
   - GrowingTextView
   - JWTDecode
-  - MaterialComponents (~> 124.2)
+  - MaterialComponents
   - Nuke
   - ObjectBox
   - SVGKit
@@ -849,6 +849,6 @@ SPEC CHECKSUMS:
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: 284cea64b6187c5d6bd83e9a548a64104d546447
 
-PODFILE CHECKSUM: 90b1fac45ff19a1af2e711bbb2f3a41515a20e83
+PODFILE CHECKSUM: 449e659e60e58c1f66734bf54e6dee286c9661a1
 
 COCOAPODS: 1.11.3
