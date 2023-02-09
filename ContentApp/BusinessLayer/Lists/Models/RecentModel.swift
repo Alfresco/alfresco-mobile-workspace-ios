@@ -191,4 +191,3 @@ extension RecentModel: EventObservable {
         }
     }
 }
-

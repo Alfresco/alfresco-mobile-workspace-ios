@@ -123,6 +123,7 @@ class SystemThemableViewController: UIViewController {
                                                        changeHandler: { [weak self] (_, _) in
                                                         guard let sSelf = self else { return }
                                                         sSelf.handleConnectivity()
+                                                        sSelf.triggerInternetChangeNotification()
                                                        })
     }
 
@@ -133,5 +134,11 @@ class SystemThemableViewController: UIViewController {
         } else {
             offlineModeView?.removeFromSuperview()
         }
+    }
+    
+    private func triggerInternetChangeNotification() {
+        let notificationName = Notification.Name(rawValue: KeyConstants.Notification.internetCheck)
+        let notification = Notification(name: notificationName)
+        NotificationCenter.default.post(notification)
     }
 }

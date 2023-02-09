@@ -34,6 +34,7 @@ class SearchModel: SearchModelProtocol {
     var facetIntervals: FacetIntervals?
     var searchType: SearchType = .simple
     var selectedSearchFilter: AdvanceSearchFilters?
+    let listNodeDataAccessor = ListNodeDataAccessor()
 
     init(with services: CoordinatorServices) {
         self.services = services
@@ -335,6 +336,59 @@ extension SearchModel: ListComponentModelProtocol {
                                       facetIntervals: self.facetIntervals,
                                       paginationRequest: requestPagination,
                                       completionHandler: completionHandler)
+        }
+    }
+}
+
+// MARK: - Offline search
+extension SearchModel {
+        
+    func fetchOfflineItems(completionHandler: @escaping PagedResponseCompletionHandler) {
+        guard let string = searchString else {
+            rawListNodes = []
+            delegate?.needsDisplayStateRefresh()
+            return
+        }
+        
+        if string.canPerformLiveSearch() {
+            var isFile = true
+            var isFolder = true
+            if selectedSearchFilter != nil {
+                let filterQueries = SearchRequestBuilder.queriesIncluded(searchChips, selectedSearchFilter: selectedSearchFilter)
+                if !filterQueries.isEmpty {
+                    let object = filterQueries.first ?? ""
+                    if object.contains("folder") && object.contains("content") {
+                        isFile = true
+                        isFolder = true
+                    } else if object.contains("folder") {
+                        isFile = false
+                        isFolder = true
+                    } else if object.contains("content") {
+                        isFile = true
+                        isFolder = false
+                    }
+                }
+            }
+           
+            let offlineNodes = listNodeDataAccessor.querySearchedOffline(title: string, isFile: isFile, isFolder: isFolder)
+            let count = Int64(offlineNodes.count)
+            let responsePagination = Pagination(count: count,
+                                                hasMoreItems: false,
+                                                totalItems: count,
+                                                skipCount: 0,
+                                                maxItems: count)
+            
+            let paginatedResponse = PaginatedResponse(results: offlineNodes,
+                                                      error: nil,
+                                                      requestPagination: nil,
+                                                      responsePagination: responsePagination)
+            completionHandler(paginatedResponse)
+        } else {
+            let paginatedResponse = PaginatedResponse(results: [],
+                                                      error: nil,
+                                                      requestPagination: nil,
+                                                      responsePagination: nil)
+            completionHandler(paginatedResponse)
         }
     }
 }

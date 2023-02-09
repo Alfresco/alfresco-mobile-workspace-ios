@@ -64,7 +64,7 @@ struct SearchRequestBuilder {
         return nil
     }
     
-    private static func queriesIncluded(_ chipFilters: [SearchChipItem],
+    static func queriesIncluded(_ chipFilters: [SearchChipItem],
                                         selectedSearchFilter: AdvanceSearchFilters?) -> [String] {
         var queries = [String]()
         for chip in chipFilters where !chip.selectedValue.isEmpty && chip.componentType != nil {
