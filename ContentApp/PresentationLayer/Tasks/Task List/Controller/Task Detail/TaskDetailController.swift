@@ -274,7 +274,7 @@ class TaskDetailController: NSObject {
             subTitle = ""
         }
         let isHideDetailButton = attachmentsCount > 4 ? false:true
-        let rowVM = TaskHeaderTableCellViewModel(title: title ,
+        let rowVM = TaskHeaderTableCellViewModel(title: title,
                                                  subTitle: subTitle,
                                                  buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
                                                  isHideDetailButton: isHideDetailButton)
