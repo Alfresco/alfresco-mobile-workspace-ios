@@ -29,6 +29,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private var offlineDataSource: OfflineDataSource?
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    let listNodeDataAccessor = ListNodeDataAccessor()
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -82,8 +83,10 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
                      from dataSource: ListComponentModelProtocol) {
         if let navigationViewController = self.navigationViewController {
+            let isNodeOffline = isNodeOffline(node: node)
             if node.isAFolderType() {
-                if dataSource === offlineDataSource?.offlineViewModel.model {
+                
+                if isNodeOffline {
                     let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
                                                                              listNode: node)
                     coordinator.start()
@@ -95,7 +98,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                     self.folderDrillDownCoordinator = coordinator
                 }
             } else if node.isAFileType() {
-                if dataSource === offlineDataSource?.offlineViewModel.model {
+                if isNodeOffline {
                     let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
                                                                    listNode: node,
                                                                    excludedActions: [.moveTrash,
@@ -178,5 +181,16 @@ extension OfflineScreenCoordinator: NodeActionMoveDelegate {
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
         }
+    }
+}
+
+// MARK: - Check if File/Folder is Offline
+extension OfflineScreenCoordinator {
+    private func isNodeOffline(node: ListNode) -> Bool {
+        let offlineNodes = listNodeDataAccessor.queryMarkedOffline()
+        if offlineNodes.contains(node) {
+            return true
+        }
+        return false
     }
 }
