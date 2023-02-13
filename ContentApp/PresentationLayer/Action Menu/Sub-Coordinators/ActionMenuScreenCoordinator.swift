@@ -29,7 +29,7 @@ class ActionMenuScreenCoordinator: NSObject, Coordinator {
     init(with presenter: UINavigationController,
          actionMenuViewModel: ActionMenuViewModel,
          nodeActionViewModel: NodeActionsViewModel,
-         dismissHandler:@escaping () -> Void = {}) {
+         dismissHandler: @escaping () -> Void = {}) {
         self.presenter = presenter
         self.actionMenuViewModel = actionMenuViewModel
         self.nodeActionViewModel = nodeActionViewModel

@@ -103,7 +103,10 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                                                                    listNode: node,
                                                                    excludedActions: [.moveTrash,
                                                                                      .addFavorite,
-                                                                                     .removeFavorite],
+                                                                                     .removeFavorite,
+                                                                                     .renameNode,
+                                                                                     .more,
+                                                                                     .moveToFolder],
                                                                    shouldPreviewLatestContent: false)
                     coordinator.start()
                     self.filePreviewCoordinator = coordinator
@@ -123,19 +126,14 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                                     from dataSource: ListComponentModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel: ActionMenuViewModel
-
-            if dataSource === offlineDataSource?.offlineViewModel.model {
-                actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                              coordinatorServices: coordinatorServices)
-            } else {
-                actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                          coordinatorServices: coordinatorServices,
-                                                          excludedActionTypes: [.moveTrash,
-                                                                                .addFavorite,
-                                                                                .removeFavorite])
-            }
-
+            let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                      coordinatorServices: coordinatorServices,
+                                                      excludedActionTypes: [.moveTrash,
+                                                                            .addFavorite,
+                                                                            .removeFavorite,
+                                                                            .renameNode,
+                                                                            .moveToFolder])
+            
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)

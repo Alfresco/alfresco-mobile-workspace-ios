@@ -243,6 +243,7 @@ class SyncOperationFactory {
                         if url != nil {
                             node.syncStatus = .synced
                             node.markedFor = .undefined
+                            node.markedAsOffline = true
                         } else {
                             node.syncStatus = .error
                         }
