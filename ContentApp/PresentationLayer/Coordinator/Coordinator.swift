@@ -20,6 +20,19 @@ protocol Coordinator {
     func start()
 }
 
+// MARK: - Check if File/Folder is Offline
+extension Coordinator {
+    func isNodeOffline(node: ListNode) -> Bool {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        let offlineNodes = listNodeDataAccessor.queryMarkedOffline()
+        if offlineNodes.contains(node) {
+            return true
+        }
+        return false
+    }
+}
+
+
 class CoordinatorServices {
     var accountService: AccountService?
     var eventBusService: EventBusService?
