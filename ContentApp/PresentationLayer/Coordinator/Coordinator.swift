@@ -24,14 +24,9 @@ protocol Coordinator {
 extension Coordinator {
     func isNodeOffline(node: ListNode) -> Bool {
         let listNodeDataAccessor = ListNodeDataAccessor()
-        let offlineNodes = listNodeDataAccessor.queryMarkedOffline()
-        if offlineNodes.contains(node) {
-            return true
-        }
-        return false
+        return listNodeDataAccessor.queryCheckIfNodeIsOffline(node: node)
     }
 }
-
 
 class CoordinatorServices {
     var accountService: AccountService?

@@ -95,7 +95,6 @@ class ListNodeDataAccessor: DataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedAsOffline == true &&
                         ListNode.markedFor != MarkedForStatus.removal.rawValue &&
                     ListNode.title.contains(title, caseSensitive: false) &&
                     (ListNode.isFile == isFile || ListNode.isFolder == isFolder)
@@ -107,7 +106,25 @@ class ListNodeDataAccessor: DataAccessor {
         }
         return []
     }
-
+    
+    func queryCheckIfNodeIsOffline(node: ListNode) -> Bool {
+        if let listBox = databaseService?.box(entity: ListNode.self) {
+            do {
+                let query: Query<ListNode> = try listBox.query {
+                        ListNode.markedFor != MarkedForStatus.removal.rawValue
+                }.ordered(by: ListNode.title).build()
+                let nodes = try query.find()
+                if nodes.contains(node) {
+                    return true
+                }
+                return false
+            } catch {
+                AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
+            }
+        }
+        return false
+    }
+    
     func queryMarkedForDeletion() -> [ListNode] {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
