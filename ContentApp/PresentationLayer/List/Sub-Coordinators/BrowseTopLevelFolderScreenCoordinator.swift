@@ -102,7 +102,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsModel)
+                                                      nodeActionViewModel: nodeActionsModel,
+                                                      listNode: node)
         coordinator.start()
         actionMenuCoordinator = coordinator
     }
@@ -115,7 +116,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                     coordinatorServices: coordinatorServices)
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsModel)
+                                                      nodeActionViewModel: nodeActionsModel,
+                                                      listNode: nil)
         coordinator.start()
         actionMenuCoordinator = coordinator
     }

@@ -68,7 +68,9 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                                              .removeOffline,
                                                                              .moveTrash,
                                                                              .addFavorite,
-                                                                             .removeFavorite],
+                                                                             .removeFavorite,
+                                                                             .renameNode,
+                                                                             .moveToFolder],
                                                            shouldPreviewLatestContent: false)
             coordinator.start()
             self.filePreviewCoordinator = coordinator
@@ -82,18 +84,19 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices,
-                                                      excludedActionTypes: [.markOffline,
-                                                                            .removeOffline,
-                                                                            .moveTrash,
+                                                      excludedActionTypes: [.moveTrash,
                                                                             .addFavorite,
-                                                                            .removeFavorite])
+                                                                            .removeFavorite,
+                                                                            .renameNode,
+                                                                            .moveToFolder])
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
         nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsModel)
+                                                      nodeActionViewModel: nodeActionsModel,
+                                                      listNode: node)
         coordinator.start()
         actionMenuCoordinator = coordinator
     }
