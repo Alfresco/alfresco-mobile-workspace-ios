@@ -27,7 +27,7 @@ class ActionMenuViewModel {
     private var listNode: ListNode?
     private var toolbarActions: [ActionMenu]
     private var menuActions: [[ActionMenu]]
-    private var excludedActions: [ActionMenuType]
+    var excludedActions: [ActionMenuType]
     private var coordinatorServices: CoordinatorServices?
     private let nodeOperations: NodeOperations
 

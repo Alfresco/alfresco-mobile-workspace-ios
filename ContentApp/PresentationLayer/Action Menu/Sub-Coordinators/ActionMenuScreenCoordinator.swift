@@ -25,18 +25,31 @@ class ActionMenuScreenCoordinator: NSObject, Coordinator {
     private let actionMenuViewModel: ActionMenuViewModel
     let nodeActionViewModel: NodeActionsViewModel
     private let dismissHandler: () -> Void
+    private var listNode: ListNode?
 
     init(with presenter: UINavigationController,
          actionMenuViewModel: ActionMenuViewModel,
          nodeActionViewModel: NodeActionsViewModel,
-         dismissHandler:@escaping () -> Void = {}) {
+         listNode: ListNode?,
+         dismissHandler: @escaping () -> Void = {}) {
         self.presenter = presenter
         self.actionMenuViewModel = actionMenuViewModel
         self.nodeActionViewModel = nodeActionViewModel
+        self.listNode = listNode
         self.dismissHandler = dismissHandler
     }
 
     func start() {
+        if let node = listNode {
+            let isNodeOffline = isNodeOffline(node: node)
+            if isNodeOffline {
+                actionMenuViewModel.excludedActions = [.moveTrash,
+                                                       .addFavorite,
+                                                       .removeFavorite,
+                                                       .renameNode,
+                                                       .moveToFolder]
+            }
+        }
         let viewController = ActionMenuViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
         bottomSheet.delegate = self
