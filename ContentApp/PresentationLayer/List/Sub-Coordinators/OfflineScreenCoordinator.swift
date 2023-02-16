@@ -18,24 +18,21 @@
 
 import UIKit
 
-class OfflineScreenCoordinator: ListCoordinatorProtocol {
+class OfflineScreenCoordinator: PresentingCoordinator, ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var offlineViewController: ListViewController?
     private var navigationViewController: UINavigationController?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var offlineFolderChildrenScreenCoordinator: OfflineFolderChildrenScreenCoordinator?
-    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
-    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var offlineDataSource: OfflineDataSource?
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
-    let listNodeDataAccessor = ListNodeDataAccessor()
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
     }
 
-    func start() {
+    override func start() {
         let offlineViewModelFactory = OfflineViewModelFactory(services: coordinatorServices)
         let offlineDataSource = offlineViewModelFactory.offlineDataSource()
 
@@ -83,36 +80,13 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
                      from dataSource: ListComponentModelProtocol) {
         if let navigationViewController = self.navigationViewController {
-            let isNodeOffline = isNodeOffline(node: node)
-            if node.isAFolderType() {
-                
-                if isNodeOffline {
-                    let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
-                                                                             listNode: node)
-                    coordinator.start()
-                    self.offlineFolderChildrenScreenCoordinator = coordinator
-                } else {
-                    let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
-                                                                      listNode: node)
-                    coordinator.start()
-                    self.folderDrillDownCoordinator = coordinator
-                }
+            if node.isAFolderType() || node.nodeType == .site {
+                startFolderCoordinator(for: node,
+                                       presenter: navigationViewController,
+                                       sourceNodeToMove: nil)
             } else if node.isAFileType() {
-                if isNodeOffline {
-                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                                   listNode: node,
-                                                                   excludedActions: [.moveTrash,
-                                                                                     .addFavorite,
-                                                                                     .removeFavorite],
-                                                                   shouldPreviewLatestContent: false)
-                    coordinator.start()
-                    self.filePreviewCoordinator = coordinator
-                } else {
-                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                                   listNode: node)
-                    coordinator.start()
-                    self.filePreviewCoordinator = coordinator
-                }
+                startFileCoordinator(for: node,
+                                     presenter: navigationViewController)
             } else {
                 AlfrescoLog.error("Unable to show preview for unknown node type")
             }
@@ -123,26 +97,22 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                                     from dataSource: ListComponentModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel: ActionMenuViewModel
-
-            if dataSource === offlineDataSource?.offlineViewModel.model {
-                actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                              coordinatorServices: coordinatorServices)
-            } else {
-                actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                          coordinatorServices: coordinatorServices,
-                                                          excludedActionTypes: [.moveTrash,
-                                                                                .addFavorite,
-                                                                                .removeFavorite])
-            }
-
+            let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                      coordinatorServices: coordinatorServices,
+                                                      excludedActionTypes: [.moveTrash,
+                                                                            .addFavorite,
+                                                                            .removeFavorite,
+                                                                            .renameNode,
+                                                                            .moveToFolder])
+            
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)
             nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
-                                                          nodeActionViewModel: nodeActionsModel)
+                                                          nodeActionViewModel: nodeActionsModel,
+                                                          listNode: node)
             coordinator.start()
             actionMenuCoordinator = coordinator
         }
@@ -181,16 +151,5 @@ extension OfflineScreenCoordinator: NodeActionMoveDelegate {
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
         }
-    }
-}
-
-// MARK: - Check if File/Folder is Offline
-extension OfflineScreenCoordinator {
-    private func isNodeOffline(node: ListNode) -> Bool {
-        let offlineNodes = listNodeDataAccessor.queryMarkedOffline()
-        if offlineNodes.contains(node) {
-            return true
-        }
-        return false
     }
 }

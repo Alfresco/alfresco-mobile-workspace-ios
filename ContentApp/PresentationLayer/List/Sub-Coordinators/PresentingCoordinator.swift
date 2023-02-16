@@ -21,6 +21,7 @@ import UIKit
 class PresentingCoordinator: Coordinator {
     internal var filePreviewCoordinator: FilePreviewScreenCoordinator?
     internal var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
+    private var offlineFolderChildrenScreenCoordinator: OfflineFolderChildrenScreenCoordinator?
 
     func start() {
         // To be overriden in child classes
@@ -28,19 +29,42 @@ class PresentingCoordinator: Coordinator {
 
     func startFileCoordinator(for node: ListNode,
                               presenter: UINavigationController) {
-        let filePreviewCoordinator = FilePreviewScreenCoordinator(with: presenter,
-                                                                  listNode: node)
-        filePreviewCoordinator.start()
-        self.filePreviewCoordinator = filePreviewCoordinator
+        let isNodeOffline = isNodeOffline(node: node)
+        if isNodeOffline {
+            let coordinator = FilePreviewScreenCoordinator(with: presenter,
+                                                           listNode: node,
+                                                           excludedActions: [.moveTrash,
+                                                                             .addFavorite,
+                                                                             .removeFavorite,
+                                                                             .renameNode,
+                                                                             .more,
+                                                                             .moveToFolder],
+                                                           shouldPreviewLatestContent: false)
+            coordinator.start()
+            self.filePreviewCoordinator = coordinator
+        } else {
+            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: presenter,
+                                                                      listNode: node)
+            filePreviewCoordinator.start()
+            self.filePreviewCoordinator = filePreviewCoordinator
+        }
     }
 
     func startFolderCoordinator(for node: ListNode,
                                 presenter: UINavigationController,
                                 sourceNodeToMove: ListNode?) {
-        let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: presenter,
-                                                                         listNode: node)
-        folderDrillDownCoordinator.sourceNodeToMove = sourceNodeToMove
-        folderDrillDownCoordinator.start()
-        self.folderDrillDownCoordinator = folderDrillDownCoordinator
+        let isNodeOffline = isNodeOffline(node: node)
+        if isNodeOffline {
+            let coordinator = OfflineFolderChildrenScreenCoordinator(with: presenter,
+                                                                     listNode: node)
+            coordinator.start()
+            self.offlineFolderChildrenScreenCoordinator = coordinator
+        } else {
+            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: presenter,
+                                                                             listNode: node)
+            folderDrillDownCoordinator.sourceNodeToMove = sourceNodeToMove
+            folderDrillDownCoordinator.start()
+            self.folderDrillDownCoordinator = folderDrillDownCoordinator
+        }
     }
 }
