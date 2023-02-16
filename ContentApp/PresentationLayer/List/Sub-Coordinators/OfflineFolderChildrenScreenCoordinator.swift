@@ -95,7 +95,8 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
         nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsModel)
+                                                      nodeActionViewModel: nodeActionsModel,
+                                                      listNode: node)
         coordinator.start()
         actionMenuCoordinator = coordinator
     }

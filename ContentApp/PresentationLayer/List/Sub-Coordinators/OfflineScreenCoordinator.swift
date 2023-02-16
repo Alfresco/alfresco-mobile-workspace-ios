@@ -111,7 +111,8 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
             nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
-                                                          nodeActionViewModel: nodeActionsModel)
+                                                          nodeActionViewModel: nodeActionsModel,
+                                                          listNode: node)
             coordinator.start()
             actionMenuCoordinator = coordinator
         }
