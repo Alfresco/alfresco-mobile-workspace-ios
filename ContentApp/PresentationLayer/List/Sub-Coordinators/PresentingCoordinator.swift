@@ -44,7 +44,8 @@ class PresentingCoordinator: Coordinator {
             self.filePreviewCoordinator = coordinator
         } else {
             let filePreviewCoordinator = FilePreviewScreenCoordinator(with: presenter,
-                                                                      listNode: node)
+                                                                      listNode: node,
+                                                                      isScannedDocument: isScannedDocument)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }
