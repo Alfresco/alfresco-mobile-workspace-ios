@@ -45,6 +45,7 @@ class ModelNotifications: NSObject {
             notificationType = .preview
             notificationURL = removedURLSchema(from: url)
             notificationURL = checkForValidURL(with: notificationURL)
+            removeAppBanner()
         } else if fragment.contains(NotificationType.viewer.rawValue) {
             notificationType = .viewer
             let notifiedURL = removedURLSchema(from: url)
@@ -83,6 +84,14 @@ class ModelNotifications: NSObject {
         }
         
         return notifiedURL
+    }
+    
+    private func removeAppBanner() {
+        if var previewURL = notificationURL {
+            if !previewURL.contains("mobileapps=true") {
+                notificationURL = previewURL + "?mobileapps=true"
+            }
+        }
     }
     
     func resetNotificationURL() {
