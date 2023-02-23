@@ -66,7 +66,7 @@ class ModelNotifications: NSObject {
         checkForRedirectionURL()
     }
     
-    private func removedURLSchema(from url: URL) -> String {
+    func removedURLSchema(from url: URL) -> String {
         let urlAbsoluteString = url.absoluteString
         var notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
         notifiedURL = notifiedURL.replacingOccurrences(of: "%2F", with: "/")
@@ -87,9 +87,9 @@ class ModelNotifications: NSObject {
     }
     
     private func removeAppBanner() {
-        if var previewURL = notificationURL {
-            if !previewURL.contains("mobileapps=true") {
-                notificationURL = previewURL + "?mobileapps=true"
+        if let previewURL = notificationURL {
+            if !previewURL.contains(KeyConstants.Notification.bannerQueryParam) {
+                notificationURL = previewURL + "?\(KeyConstants.Notification.bannerQueryParam)"
             }
         }
     }
