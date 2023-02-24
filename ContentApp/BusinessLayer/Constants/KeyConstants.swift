@@ -48,6 +48,7 @@ struct KeyConstants {
         static let moveFileFolderFinished = "kMoveFileFolderFinishedNotification"
         static let dismissAppExtensionNotification = "dismissAppExtensionNotification"
         static let internetCheck = "kInternetCheckNotification"
+        static let bannerQueryParam = "mobileapps=true"
     }
     
     struct AdvanceSearch {
