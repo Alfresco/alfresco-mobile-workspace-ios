@@ -45,6 +45,7 @@ class ModelNotifications: NSObject {
             notificationType = .preview
             notificationURL = removedURLSchema(from: url)
             notificationURL = checkForValidURL(with: notificationURL)
+            removeAppBanner()
         } else if fragment.contains(NotificationType.viewer.rawValue) {
             notificationType = .viewer
             let notifiedURL = removedURLSchema(from: url)
@@ -65,7 +66,7 @@ class ModelNotifications: NSObject {
         checkForRedirectionURL()
     }
     
-    private func removedURLSchema(from url: URL) -> String {
+    func removedURLSchema(from url: URL) -> String {
         let urlAbsoluteString = url.absoluteString
         var notifiedURL = urlAbsoluteString.replacingOccurrences(of: ConfigurationKeys.fullURLSchema, with: "")
         notifiedURL = notifiedURL.replacingOccurrences(of: "%2F", with: "/")
@@ -83,6 +84,14 @@ class ModelNotifications: NSObject {
         }
         
         return notifiedURL
+    }
+    
+    private func removeAppBanner() {
+        if let previewURL = notificationURL {
+            if !previewURL.contains(KeyConstants.Notification.bannerQueryParam) {
+                notificationURL = previewURL + "?\(KeyConstants.Notification.bannerQueryParam)"
+            }
+        }
     }
     
     func resetNotificationURL() {

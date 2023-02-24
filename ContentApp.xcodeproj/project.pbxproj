@@ -175,6 +175,7 @@
 		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C928AE32282A5F4900378327 /* TestNodeViewModel.swift */; };
 		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
+		C92E2ED529A60BC500DAFD4B /* TestModelNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92E2ED429A60BC500DAFD4B /* TestModelNotifications.swift */; };
 		C92EBB2028B13B6B003DFA15 /* TaskAttachmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92EBB1F28B13B6B003DFA15 /* TaskAttachmentsViewController.swift */; };
 		C92EBB2228B13B80003DFA15 /* TaskAttachmentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92EBB2128B13B80003DFA15 /* TaskAttachmentsController.swift */; };
 		C92EBB2428B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92EBB2328B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift */; };
@@ -935,6 +936,7 @@
 		C9205C8828A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderTableCellViewModel.swift; sourceTree = "<group>"; };
 		C928AE32282A5F4900378327 /* TestNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNodeViewModel.swift; sourceTree = "<group>"; };
 		C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetFilterMapper.swift; sourceTree = "<group>"; };
+		C92E2ED429A60BC500DAFD4B /* TestModelNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestModelNotifications.swift; sourceTree = "<group>"; };
 		C92EBB1F28B13B6B003DFA15 /* TaskAttachmentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentsViewController.swift; sourceTree = "<group>"; };
 		C92EBB2128B13B80003DFA15 /* TaskAttachmentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentsController.swift; sourceTree = "<group>"; };
 		C92EBB2328B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentsControllerViewModel.swift; sourceTree = "<group>"; };
@@ -2841,6 +2843,7 @@
 				C928AE32282A5F4900378327 /* TestNodeViewModel.swift */,
 				C98DCD3828979E31000AE0E8 /* TestSearchListComponentViewModel.swift */,
 				C98DCD3A2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift */,
+				C92E2ED429A60BC500DAFD4B /* TestModelNotifications.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -4576,6 +4579,7 @@
 				C9DCB7A32726827E0083D80B /* TestPreviewViewModel.swift in Sources */,
 				C95B2A3228BE153E007841F4 /* TestTaskCommentsViewModel.swift in Sources */,
 				C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */,
+				C92E2ED529A60BC500DAFD4B /* TestModelNotifications.swift in Sources */,
 				C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
