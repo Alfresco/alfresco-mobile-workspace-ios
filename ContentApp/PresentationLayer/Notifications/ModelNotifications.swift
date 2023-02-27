@@ -109,6 +109,8 @@ class ModelNotifications: NSObject {
                     DispatchQueue.main.async {
                         self.startPrivateFileCoordinator()
                     }
+                } else {
+                    self.popToPreviousController()
                 }
             }
         } else if notificationType == NotificationType.folder {
@@ -117,6 +119,8 @@ class ModelNotifications: NSObject {
                     DispatchQueue.main.async {
                         self.startFolderCoordinator()
                     }
+                } else {
+                    self.popToPreviousController()
                 }
             }
         }
@@ -200,6 +204,13 @@ class ModelNotifications: NSObject {
                         nodeType: nodeType,
                         syncStatus: syncStatus)
     }
+    
+    private func popToPreviousController() {
+        let topMostViewController = UIApplication.shared.topMostViewController()
+        if topMostViewController is FilePreviewViewController {
+            topMostViewController?.navigationController?.popViewController(animated: true)
+        }
+    }
 }
 
 // MARK: - Check for session
@@ -227,9 +238,13 @@ extension ModelNotifications {
     
     func getSession(completionHandler: @escaping ((_ isValidSession: Bool) -> Void)) {
         guard services.connectivityService?.hasInternetConnection() == true else { return }
-        services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            completionHandler(authenticationProvider.areCredentialsValid())
-        })
+        if (services.accountService?.activeAccount) != nil {
+            services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+                completionHandler(authenticationProvider.areCredentialsValid())
+            })
+        } else {
+            completionHandler(false)
+        }
     }
 }
 
