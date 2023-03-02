@@ -22,7 +22,7 @@ import XCTest
 final class TestModelNotifications: XCTestCase {
 
     func testURL_WhenURLSchemaProvided_ShouldReturnTrue() {
-        if let url = URL(string: "iosamw://https//mobileapps.envalfresco.com/#/preview/s/Zmcm2l6zQ6KeZ9amKX99kQ") {
+        if let url = URL(string: "ENTER_URL_HERE") {
             let urlString = ModelNotifications.shared.removedURLSchema(from: url)
             if urlString.contains(ConfigurationKeys.fullURLSchema) {
                 XCTAssertFalse(false)
