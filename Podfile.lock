@@ -119,7 +119,7 @@ PODS:
   - GoogleUtilities/UserDefaults (7.11.0):
     - GoogleUtilities/Logger
   - GrowingTextView (0.7.2)
-  - JWTDecode (3.0.0)
+  - JWTDecode (3.0.1)
   - MaterialComponents (124.2.0):
     - MaterialComponents/ActionSheet (= 124.2.0)
     - "MaterialComponents/ActionSheet+Theming (= 124.2.0)"
@@ -854,7 +854,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: ea169759df570f4e37bdee1623ec32a7e64e67c4
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
   GrowingTextView: 876bf42005b5e4a4fd740597db12caaf41f0fe6c
-  JWTDecode: 82480a7173f8a811954e7e14a2b59f688ca4222a
+  JWTDecode: 2eed97c2fa46ccaf3049a787004eedf0be474a87
   MaterialComponents: 1a9b2d9d45b1601ae544de85089adc4c464306d4
   MDFInternationalization: d697c55307816222a55685c4ccb1044ffb030c12
   MDFTextAccessibility: f4bb4cc2194286651b59a215fdeaa0e05dc90ba5
@@ -870,4 +870,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5f00f56b109470ba524c42cb6bbc4f2f1b8649d2
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0
