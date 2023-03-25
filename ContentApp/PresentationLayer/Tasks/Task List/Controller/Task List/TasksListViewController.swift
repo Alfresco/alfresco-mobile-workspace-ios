@@ -22,7 +22,7 @@ import AlfrescoContent
 
 class TasksListViewController: SystemSearchViewController {
 
-    weak var tabBarScreenDelegate: TabBarScreenDelegate?
+    var navigationViewController: UINavigationController?
     @IBOutlet weak var emptyListView: UIView!
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
@@ -47,7 +47,6 @@ class TasksListViewController: SystemSearchViewController {
         emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
-        addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         addRefreshControl()
         setupBindings()
         registerCells()
@@ -121,7 +120,7 @@ class TasksListViewController: SystemSearchViewController {
         refreshControl?.tintColor = currentTheme.primaryT1Color
         createTaskButton.backgroundColor = currentTheme.primaryT1Color
         createTaskButton.tintColor = currentTheme.onPrimaryColor
-        self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationController)
+        self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationViewController)
     }
     
     private func addAccessibility() {
@@ -193,16 +192,10 @@ class TasksListViewController: SystemSearchViewController {
                                 withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self))
     }
     
-    // MARK: - IBActions
-    
-    @objc func settingsButtonTapped() {
-        tabBarScreenDelegate?.showSettingsScreen()
-    }
-    
     // MARK: - Coordinator Public Methods
-
-    func scrollToTop() {
-        let indexPath = IndexPath(item: 0, section: 0)
+    
+    func scrollToSection(_ section: Int) {
+        let indexPath = IndexPath(item: 0, section: section)
         var pointToScroll = CGPoint.zero
         if collectionView.cellForItem(at: indexPath) != nil {
             if let attributes =
@@ -330,7 +323,7 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             viewController.viewModel.task = taskNode
             viewController.viewModel.isOpenAfterTaskCreation = isOpenAfterTaskCreation
             viewController.viewModel.isEditTask = isOpenAfterTaskCreation
-            self.navigationController?.pushViewController(viewController, animated: true)
+            self.navigationViewController?.pushViewController(viewController, animated: true)
             viewController.viewModel.didRefreshTaskList = {
                 self.handlePullToRefresh()
             }

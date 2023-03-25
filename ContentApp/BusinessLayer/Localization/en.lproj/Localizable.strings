@@ -391,3 +391,6 @@
 "shutter" = "Shutter";
 "download" = "Download";
 "selected" = "Selected";
+
+// MARK: - Workflows
+"workflows-title" = "Workflows";

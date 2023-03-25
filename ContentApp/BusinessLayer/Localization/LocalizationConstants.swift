@@ -92,6 +92,7 @@ struct LocalizationConstants {
         static let galleryUpload = NSLocalizedString("gallery-upload", comment: "")
         static let transferFiles = NSLocalizedString("transfer-files", comment: "")
         static let tasks = NSLocalizedString("tasks-title", comment: "")
+        static let workflows = NSLocalizedString("workflows-title", comment: "")
     }
 
     struct Help {
