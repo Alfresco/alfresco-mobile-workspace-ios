@@ -55,6 +55,12 @@ class TaskProcessBaseViewController: SystemSearchViewController {
 
         setupScrollingContent()
         tabBar.selectedItem = tabBar.items.first
+        
+        // ReSignIn Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleReSignIn(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.reSignin),
+                                               object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -114,6 +120,14 @@ class TaskProcessBaseViewController: SystemSearchViewController {
     }
     
     // MARK: - IBActions
+    
+    @objc private func handleReSignIn(notification: Notification) {
+        if tabBar.selectedItem?.tag == 0 {
+            taskListViewController?.getTaskList()
+        } else if tabBar.selectedItem?.tag == 1 {
+          //  workflowListViewController?.scrollToSection(0)
+        }
+    }
     
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()

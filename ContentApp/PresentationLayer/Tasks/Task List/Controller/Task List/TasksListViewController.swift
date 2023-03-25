@@ -54,18 +54,11 @@ class TasksListViewController: SystemSearchViewController {
         getTaskList()
         self.dialogTransitionController = MDCDialogTransitionController()
         addAccessibility()
-
-        // ReSignIn Notification
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleReSignIn(notification:)),
-                                               name: Notification.Name(KeyConstants.Notification.reSignin),
-                                               object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
-        addAvatarInSettingsButton()
         collectionView.reloadData()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskTab)
         updateTheme()
@@ -231,10 +224,6 @@ class TasksListViewController: SystemSearchViewController {
             sSelf.viewModel.page = 0
             sSelf.getTaskList()
         }
-    }
-    
-    @objc private func handleReSignIn(notification: Notification) {
-        getTaskList()
     }
 }
 
