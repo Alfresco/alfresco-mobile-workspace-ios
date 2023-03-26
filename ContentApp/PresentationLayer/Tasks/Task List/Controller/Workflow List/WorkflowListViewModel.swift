@@ -20,11 +20,99 @@ import UIKit
 import AlfrescoContent
 
 class WorkflowListViewModel: NSObject {
+    
     let isLoading = Observable<Bool>(true)
+    var size = 0
+    var total = 0
+    var page = 0
+    var requestInProgress = false
+    var shouldRefreshList = true
+    var rawWorkflows: [WorkflowNode] = []
     var services: CoordinatorServices
+    var isTasksConfigured = false
+    var state: ProcessStates? = .running
 
     init(services: CoordinatorServices) {
         self.services = services
     }
     
+    func isEmpty() -> Bool {
+        return rawWorkflows.isEmpty
+    }
+    
+    func numberOfItems(in section: Int) -> Int {
+        return rawWorkflows.count
+    }
+
+    func listNodes() -> [WorkflowNode] {
+        return rawWorkflows
+    }
+
+    func listNode(for indexPath: IndexPath) -> WorkflowNode? {
+        if !rawWorkflows.isEmpty && rawWorkflows.count > indexPath.row {
+            return rawWorkflows[indexPath.row]
+        }
+        return nil
+    }
+    
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return ""
+    }
+    
+    func shouldDisplaTaskListLoadingIndicator() -> Bool {
+        if total > rawWorkflows.count {
+            return true
+        }
+        return false
+    }
+    
+    func shouldAllowToFetchNewTasks() -> Bool {
+        if total > rawWorkflows.count || rawWorkflows.isEmpty || total == 0 && requestInProgress == false {
+            return true
+        }
+        return false
+    }
+    
+    func emptyList() -> EmptyListProtocol {
+        return EmptyWorkflows()
+    }
+    
+    func tasksNotConfigured() -> EmptyListProtocol {
+        return TasksNotConfigured()
+    }
+    
+    // MARK: - Workflows List
+    
+    func workflowList(completionHandler: @escaping (_ workflows: [WorkflowNode], _ error: Error?) -> Void) {
+        
+        if shouldAllowToFetchNewTasks() {
+            self.isLoading.value = true
+            requestInProgress = true
+            services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+                
+                let params = ProcessListParams(state: self.state, page: self.page)
+                ProcessAPI.getProcessList(params: params) {[weak self] data, error in
+                    guard let sSelf = self else { return }
+                    sSelf.isLoading.value = false
+                    if data != nil {
+                        let processes = data?.data ?? []
+                        let processNodes = WorkflowNodeOperations.processNodes(for: processes)
+                        if sSelf.shouldRefreshList {
+                            sSelf.rawWorkflows.removeAll()
+                        }
+                        sSelf.shouldRefreshList = false
+                        sSelf.rawWorkflows.append(contentsOf: processNodes)
+                        sSelf.size = data?.size ?? 0
+                        sSelf.total = data?.total ?? 0
+                        sSelf.page = sSelf.total > sSelf.size ? sSelf.page + 1 : sSelf.page
+                        sSelf.requestInProgress = false
+                        completionHandler(processNodes, nil)
+                    } else {
+                        completionHandler([], error)
+                    }
+                }
+            })
+        }
+    }
 }

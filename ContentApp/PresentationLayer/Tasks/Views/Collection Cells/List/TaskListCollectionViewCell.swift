@@ -26,6 +26,7 @@ class TaskListCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var priorityLabel: UILabel!
     var currentTheme: PresentationTheme?
     lazy var viewModel = TaskPropertiesViewModel()
+    lazy var workflowViewModel = WorkflowViewModel()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -67,5 +68,18 @@ class TaskListCollectionViewCell: ListSelectableCell {
         title.accessibilityValue = title.text
         subtitle.accessibilityValue = subtitle.text
         priorityLabel.accessibilityValue = priorityLabel.text
+    }
+    
+    func setupWorkflowData(for workflow: WorkflowNode?) {
+        guard let workflow = workflow else { return }
+        workflowViewModel.workflow = workflow
+        
+        title.text = workflowViewModel.workflowName
+        subtitle.text = workflowViewModel.userName
+        priorityView.isHidden = true
+        priorityLabel.text = nil
+        
+        title.accessibilityValue = title.text
+        subtitle.accessibilityValue = subtitle.text
     }
 }

@@ -58,7 +58,6 @@ class TasksListViewController: SystemSearchViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
         collectionView.reloadData()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskTab)
         updateTheme()

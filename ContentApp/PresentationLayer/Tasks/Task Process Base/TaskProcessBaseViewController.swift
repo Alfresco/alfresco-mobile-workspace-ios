@@ -91,7 +91,7 @@ class TaskProcessBaseViewController: SystemSearchViewController {
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         taskListViewController?.collectionView.collectionViewLayout.invalidateLayout()
-       // workflowListViewController?.collectionView.collectionViewLayout.invalidateLayout()
+        workflowListViewController?.collectionView.collectionViewLayout.invalidateLayout()
 
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
@@ -122,11 +122,8 @@ class TaskProcessBaseViewController: SystemSearchViewController {
     // MARK: - IBActions
     
     @objc private func handleReSignIn(notification: Notification) {
-        if tabBar.selectedItem?.tag == 0 {
-            taskListViewController?.getTaskList()
-        } else if tabBar.selectedItem?.tag == 1 {
-          //  workflowListViewController?.scrollToSection(0)
-        }
+        taskListViewController?.getTaskList()
+        workflowListViewController?.getWorkflowsList()
     }
     
     @objc func settingsButtonTapped() {
@@ -139,7 +136,7 @@ class TaskProcessBaseViewController: SystemSearchViewController {
         if tabBar.selectedItem?.tag == 0 {
             taskListViewController?.scrollToSection(0)
         } else if tabBar.selectedItem?.tag == 1 {
-          //  workflowListViewController?.scrollToSection(0)
+            workflowListViewController?.scrollToSection(0)
         }
     }
     
@@ -191,8 +188,7 @@ class TaskProcessBaseViewController: SystemSearchViewController {
             workflowListViewController.title = LocalizationConstants.ScreenTitles.workflows
             
             workflowListViewController.coordinatorServices = coordinatorServices
-           // workflowListViewController.tabBarScreenDelegate = presenter
-            
+            workflowListViewController.navigationViewController = self.navigationController
             self.workflowListViewController = workflowListViewController
         }
 
@@ -223,11 +219,6 @@ class TaskProcessBaseViewController: SystemSearchViewController {
                 ])
             }
         }
-
-//        folderAndFilesViewController.startLoading()
-//        folderAndFilesPageController?.refreshList()
-//        librariesViewController.startLoading()
-//        librariesPageController?.refreshList()
     }
     
     func selectTabItem(item: UITabBarItem) {

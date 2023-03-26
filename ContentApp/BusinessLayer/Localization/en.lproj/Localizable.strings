@@ -394,3 +394,6 @@
 
 // MARK: - Workflows
 "workflows-title" = "Workflows";
+"no-workflow-found" = "No Workflows Found";
+"start-workflow-message" = "Start a new workflow that you want to easily find later.";
+"start-workflow" = "Start Workflow";

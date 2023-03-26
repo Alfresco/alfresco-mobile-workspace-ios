@@ -19,14 +19,23 @@
 import Foundation
 import UIKit
 
+// MARK: - Empty Tasks
 struct EmptyTasks: EmptyListProtocol {
     var icon = UIImage(named: "ic-empty-list-tasks")
     var title = LocalizationConstants.Tasks.noTasksFound
     var description = LocalizationConstants.Tasks.createTaskMessage
 }
 
+// MARK: - Tasks not configured
 struct TasksNotConfigured: EmptyListProtocol {
     var icon = UIImage(named: "ic-empty-list-tasks")
     var title = LocalizationConstants.Tasks.noTasksFound
     var description = LocalizationConstants.Tasks.notConfiguredMessage
+}
+
+// MARK: - Empty Workflows
+struct EmptyWorkflows: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-tasks")
+    var title = LocalizationConstants.Workflows.noWorkflowFound
+    var description = LocalizationConstants.Workflows.startWorkflowMessage
 }
