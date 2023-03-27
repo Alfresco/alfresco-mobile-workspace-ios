@@ -19,6 +19,7 @@
 import UIKit
 import MaterialComponents
 import AlfrescoContent
+import DropDown
 
 class WorkflowListViewController: SystemSearchViewController {
     
@@ -38,6 +39,7 @@ class WorkflowListViewController: SystemSearchViewController {
     let regularCellHeight: CGFloat = 60.0
     let sectionCellHeight: CGFloat = 54.0
     private var dialogTransitionController: MDCDialogTransitionController?
+    lazy var dropDown = DropDown()
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -54,6 +56,8 @@ class WorkflowListViewController: SystemSearchViewController {
         getWorkflowsList()
         self.dialogTransitionController = MDCDialogTransitionController()
         addAccessibility()
+        setupDropDownView()
+        setSelectedFilterName()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +109,10 @@ class WorkflowListViewController: SystemSearchViewController {
         startWorkflowButton.tintColor = currentTheme.onPrimaryColor
         
         filtersLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        dropDown.backgroundColor = currentTheme.surfaceColor
+        dropDown.selectionBackgroundColor = currentTheme.primary15T1Color
+        dropDown.textColor = currentTheme.onSurfaceColor
+        dropDown.selectedTextColor = currentTheme.onSurfaceColor
     }
     
     private func addAccessibility() {
@@ -115,7 +123,7 @@ class WorkflowListViewController: SystemSearchViewController {
     // MARK: - IBActions
 
     @IBAction func filtersButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("filters button action")
+        dropDown.show()
     }
     
     @IBAction func startWorkflowButtonAction(_ sender: Any) {
@@ -292,5 +300,31 @@ extension WorkflowListViewController: UICollectionViewDataSource, UICollectionVi
             }
             return cell
         }
+    }
+}
+
+// MARK: - Drop Down
+extension WorkflowListViewController {
+    func setupDropDownView() {
+        dropDown.anchorView = filtersView
+        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
+        dropDown.cornerRadius = 6
+        dropDown.width = 200
+        buildDropDownDataSource()
+    }
+    
+    func buildDropDownDataSource() {
+        let filters = viewModel.localizedFilterNames
+        dropDown.localizationKeysDataSource = filters
+        dropDown.reloadAllComponents()
+        dropDown.selectionAction = { (index: Int, item: String) in
+            self.viewModel.selectedFilter = self.viewModel.filters[index]
+            self.handlePullToRefresh()
+            self.setSelectedFilterName()
+        }
+    }
+    
+    private func setSelectedFilterName() {
+        filtersLabel.text = viewModel.selectedFilter.localizedName
     }
 }

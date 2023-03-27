@@ -39,3 +39,10 @@ struct EmptyWorkflows: EmptyListProtocol {
     var title = LocalizationConstants.Workflows.noWorkflowFound
     var description = LocalizationConstants.Workflows.startWorkflowMessage
 }
+
+// MARK: - Workflows not configured
+struct WorkflowsNotConfigured: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-tasks")
+    var title = LocalizationConstants.Workflows.noWorkflowFound
+    var description = LocalizationConstants.Workflows.notConfiguredMessage
+}

@@ -266,10 +266,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1OB-2i-oDz" userLabel="filtersView">
-                                <rect key="frame" x="20" y="55" width="97" height="45"/>
+                                <rect key="frame" x="20" y="55" width="45" height="45"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-drop-down" translatesAutoresizingMaskIntoConstraints="NO" id="5y3-lB-jb7">
-                                        <rect key="frame" x="62" y="10" width="25" height="25"/>
+                                        <rect key="frame" x="10" y="10" width="25" height="25"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" systemColor="labelColor"/>
                                         <accessibility key="accessibilityConfiguration" identifier="configurationImageView">
@@ -280,8 +280,8 @@
                                             <constraint firstAttribute="width" secondItem="5y3-lB-jb7" secondAttribute="height" id="wWC-S0-aSn"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Active" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YH1-Gz-6wK" userLabel="filtersLabel">
-                                        <rect key="frame" x="0.0" y="0.0" width="52" height="45"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YH1-Gz-6wK" userLabel="filtersLabel">
+                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="45"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <bool key="isElement" value="NO"/>
                                         </accessibility>
@@ -290,7 +290,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPH-dX-RlL" userLabel="filtersButton">
-                                        <rect key="frame" x="0.0" y="0.0" width="97" height="45"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="45" height="45"/>
                                         <state key="normal">
                                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -829,26 +829,26 @@
                                     <constraint firstItem="t53-df-O38" firstAttribute="leading" secondItem="RTv-gf-5DE" secondAttribute="leading" constant="20" id="xdK-ZT-9P6"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="exY-F3-j7S">
-                                <rect key="frame" x="0.0" y="42.666666666666714" width="414" height="506.33333333333326"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="exY-F3-j7S">
+                                <rect key="frame" x="0.0" y="90.5" width="414" height="715"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="mgZ-3F-2PS" id="Dip-Ce-b24"/>
                                     <outlet property="delegate" destination="mgZ-3F-2PS" id="EWS-A2-peG"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JfM-05-0G3" userLabel="divider">
-                                <rect key="frame" x="0.0" y="554" width="414" height="1"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JfM-05-0G3" userLabel="divider">
+                                <rect key="frame" x="0.0" y="810.5" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="nxt-Dv-cSc"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5aX-7v-e19" userLabel="bottomView">
-                                <rect key="frame" x="0.0" y="555" width="414" height="45"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5aX-7v-e19" userLabel="bottomView">
+                                <rect key="frame" x="0.0" y="811.5" width="414" height="50.5"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LK5-UK-8uW" userLabel="sendButtonViewView">
-                                        <rect key="frame" x="344" y="-5" width="70" height="50"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LK5-UK-8uW" userLabel="sendButtonViewView">
+                                        <rect key="frame" x="344" y="0.5" width="70" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aZ-br-n2u" userLabel="sendButton" customClass="MDCButton">
                                                 <rect key="frame" x="0.0" y="5" width="70" height="45"/>
@@ -872,11 +872,11 @@
                                             <constraint firstItem="5aZ-br-n2u" firstAttribute="leading" secondItem="LK5-UK-8uW" secondAttribute="leading" id="vjN-NX-Hfu"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aTv-ey-sHU" userLabel="textBaseView">
-                                        <rect key="frame" x="10" y="10" width="329" height="35"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTv-ey-sHU" userLabel="textBaseView">
+                                        <rect key="frame" x="10" y="10" width="329" height="40.5"/>
                                         <subviews>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2A-We-ZzG" userLabel="textView" customClass="GrowingTextView" customModule="GrowingTextView">
-                                                <rect key="frame" x="0.0" y="0.0" width="329" height="30"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2A-We-ZzG" userLabel="textView" customClass="GrowingTextView" customModule="GrowingTextView">
+                                                <rect key="frame" x="0.0" y="0.0" width="329" height="35.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -1207,6 +1207,11 @@
             <point key="canvasLocation" x="1511.5942028985507" y="766.74107142857144"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="N2A-We-ZzG">
+            <size key="intrinsicContentSize" width="-1" height="30"/>
+        </designable>
+    </designables>
     <resources>
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-close" width="24" height="24"/>

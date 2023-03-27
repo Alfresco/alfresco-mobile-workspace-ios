@@ -397,3 +397,5 @@
 "no-workflow-found" = "No Workflows Found";
 "start-workflow-message" = "Start a new workflow that you want to easily find later.";
 "start-workflow" = "Start Workflow";
+"workflows-not-configured-message" = "Workflows are not enabled for this account.";
+"all-title" = "All";

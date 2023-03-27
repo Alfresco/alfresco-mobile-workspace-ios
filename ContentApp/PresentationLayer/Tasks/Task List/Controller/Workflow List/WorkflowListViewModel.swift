@@ -30,7 +30,8 @@ class WorkflowListViewModel: NSObject {
     var rawWorkflows: [WorkflowNode] = []
     var services: CoordinatorServices
     var isTasksConfigured = false
-    var state: ProcessStates? = .running
+    let filters = WorkflowFilters.getWorkflowFilters()
+    var selectedFilter = WorkflowFilters.defaultFilter()
 
     init(services: CoordinatorServices) {
         self.services = services
@@ -78,7 +79,11 @@ class WorkflowListViewModel: NSObject {
     }
     
     func tasksNotConfigured() -> EmptyListProtocol {
-        return TasksNotConfigured()
+        return WorkflowsNotConfigured()
+    }
+    
+    var localizedFilterNames: [String] {
+        return filters.map({$0.localizedName ?? ""})
     }
     
     // MARK: - Workflows List
@@ -91,7 +96,7 @@ class WorkflowListViewModel: NSObject {
             services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                 
-                let params = ProcessListParams(state: self.state, page: self.page)
+                let params = ProcessListParams(state: self.selectedFilter.state, page: self.page)
                 ProcessAPI.getProcessList(params: params) {[weak self] data, error in
                     guard let sSelf = self else { return }
                     sSelf.isLoading.value = false
