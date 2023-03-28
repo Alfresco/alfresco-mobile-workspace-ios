@@ -92,6 +92,7 @@ struct LocalizationConstants {
         static let galleryUpload = NSLocalizedString("gallery-upload", comment: "")
         static let transferFiles = NSLocalizedString("transfer-files", comment: "")
         static let tasks = NSLocalizedString("tasks-title", comment: "")
+        static let workflows = NSLocalizedString("workflows-title", comment: "")
     }
 
     struct Help {
@@ -363,6 +364,7 @@ struct LocalizationConstants {
         static let shutterButton = NSLocalizedString("shutter", comment: "")
         static let download = NSLocalizedString("download", comment: "")
         static let selected = NSLocalizedString("selected", comment: "")
+        static let startWorkflow = NSLocalizedString("start-workflow", comment: "")
     }
     
     struct EditTask {
@@ -376,5 +378,12 @@ struct LocalizationConstants {
         static let deleteAttachmentAlertTitle = NSLocalizedString("delete-attachment-alert-title", comment: "")
         static let addAttachments = NSLocalizedString("add-attachments", comment: "")
         static let errorFileSizeExceeds = NSLocalizedString("file-size-exceed-error", comment: "")
+    }
+    
+    struct Workflows {
+        static let noWorkflowFound = NSLocalizedString("no-workflow-found", comment: "")
+        static let startWorkflowMessage = NSLocalizedString("start-workflow-message", comment: "")
+        static let notConfiguredMessage = NSLocalizedString("workflows-not-configured-message", comment: "")
+        static let allTitle = NSLocalizedString("all-title", comment: "")
     }
 }

@@ -21,7 +21,7 @@ import UIKit
 class TasksScreenCoordinator: PresentingCoordinator {
 
     private let presenter: TabBarMainViewController
-    private var tasksViewController: TasksListViewController?
+    private var tasksProcessBaseViewController: TaskProcessBaseViewController?
     private var navigationViewController: UINavigationController?
 
     init(with presenter: TabBarMainViewController) {
@@ -30,7 +30,7 @@ class TasksScreenCoordinator: PresentingCoordinator {
     
     override func start() {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskList) as? TasksListViewController {
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskProcessBase) as? TaskProcessBaseViewController {
             viewController.title = LocalizationConstants.ScreenTitles.tasks
             
             viewController.coordinatorServices = coordinatorServices
@@ -39,16 +39,16 @@ class TasksScreenCoordinator: PresentingCoordinator {
             let navigationViewController = UINavigationController(rootViewController: viewController)
             presenter.viewControllers?.append(navigationViewController)
             self.navigationViewController = navigationViewController
-            tasksViewController = viewController
+            tasksProcessBaseViewController = viewController
         }
     }
     
     func scrollToTopOrPopToRoot() {
         if navigationViewController?.viewControllers.count == 1 {
-            tasksViewController?.scrollToTop()
+            tasksProcessBaseViewController?.scrollToTop()
         } else {
             navigationViewController?.popToRootViewController(animated: true)
         }
-        tasksViewController?.cancelSearchMode()
+        tasksProcessBaseViewController?.cancelSearchMode()
     }
 }

@@ -25,6 +25,7 @@ struct StoryboardConstants {
     }
     
     struct controller {
+        static let taskProcessBase = "TaskProcessBaseViewController"
         static let taskList = "TasksListViewController"
         static let taskDetail = "TaskDetailViewController"
         static let taskComments = "TaskCommentsViewController"
@@ -32,5 +33,6 @@ struct StoryboardConstants {
         static let taskDescription = "TaskDescriptionDetailViewController"
         static let taskPriority = "TaskPriorityViewController"
         static let taskAssignee = "TaskAssigneeViewController"
+        static let workflowList = "WorkflowListViewController"
     }
 }
