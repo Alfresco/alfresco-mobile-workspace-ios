@@ -55,9 +55,9 @@ class WorkflowListViewController: SystemSearchViewController {
         registerCells()
         getWorkflowsList()
         self.dialogTransitionController = MDCDialogTransitionController()
-        addAccessibility()
         setupDropDownView()
         setSelectedFilterName()
+        addAccessibility()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,6 +116,10 @@ class WorkflowListViewController: SystemSearchViewController {
     }
     
     private func addAccessibility() {
+        filtersButton.accessibilityLabel = LocalizationConstants.Workflows.filterOptions
+        filtersButton.accessibilityValue = filtersLabel.text
+        filtersButton.accessibilityIdentifier = "filter-button"
+        
         startWorkflowButton.accessibilityLabel = LocalizationConstants.Accessibility.startWorkflow
         startWorkflowButton.accessibilityIdentifier = "start-workflow-button"
     }
