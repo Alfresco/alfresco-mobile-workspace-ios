@@ -14,6 +14,13 @@
 		133825D526300DC6000FFD4E /* String+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133825D426300DC6000FFD4E /* String+Paths.swift */; };
 		1346FA07261DA4CF00336990 /* ModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1346FA06261DA4CF00336990 /* ModeSelector.swift */; };
 		3D13041F3F0D7759B2BA1A16 /* Pods_ContentApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259BCF582B02E2891EB92C7B /* Pods_ContentApp.framework */; };
+		4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */; };
+		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
+		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
+		4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */; };
+		47DC693929D02BD70092A362 /* WorkflowNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693829D02BD70092A362 /* WorkflowNode.swift */; };
+		47DC693B29D02BE70092A362 /* WorkflowNodeOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */; };
+		47DC693D29D04B680092A362 /* WorkflowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693C29D04B680092A362 /* WorkflowViewModel.swift */; };
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
 		52BB80D424BF006BF082991D /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 673C27A53BB0C79A541E3B64 /* Pods_Share.framework */; };
@@ -772,15 +779,22 @@
 		13382592262D87ED000FFD4E /* DataAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataAccessor.swift; sourceTree = "<group>"; };
 		133825D426300DC6000FFD4E /* String+Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Paths.swift"; sourceTree = "<group>"; };
 		1346FA06261DA4CF00336990 /* ModeSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeSelector.swift; sourceTree = "<group>"; };
-		17435E53E88D0CFB146C81C6 /* Pods-ContentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.release.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.release.xcconfig"; sourceTree = "<group>"; };
 		1CDDBFF8A0B9CA864520114E /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		259BCF582B02E2891EB92C7B /* Pods_ContentApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowFilters.swift; sourceTree = "<group>"; };
+		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
+		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
+		4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewModel.swift; sourceTree = "<group>"; };
+		47DC693829D02BD70092A362 /* WorkflowNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNode.swift; sourceTree = "<group>"; };
+		47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNodeOperations.swift; sourceTree = "<group>"; };
+		47DC693C29D04B680092A362 /* WorkflowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowViewModel.swift; sourceTree = "<group>"; };
 		483503457558D185F210C3FD /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		57A689B89FAF85754A4511AE /* Pods-ContentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.debug.xcconfig"; sourceTree = "<group>"; };
 		622EE8312B9A7263F3D61445 /* Pods-ContentAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6276239E2438BFE6E0DDB39D /* Pods-ContentApp-ContentAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp-ContentAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp-ContentAppUITests/Pods-ContentApp-ContentAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		6379D63604EAF5FE2FF9AFB0 /* Pods-ContentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.release.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.release.xcconfig"; sourceTree = "<group>"; };
 		673C27A53BB0C79A541E3B64 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "EntityInfo-ContentApp.generated.swift"; sourceTree = "<group>"; };
 		A2F7E0050B022E42B2A012FB /* Pods_ContentApp_ContentAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp_ContentAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1388,17 +1402,44 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		4792042729CF01C00080BB13 /* Task Process Base */ = {
+			isa = PBXGroup;
+			children = (
+				4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */,
+			);
+			path = "Task Process Base";
+			sourceTree = "<group>";
+		};
+		4792042A29CF0AF50080BB13 /* Workflow List */ = {
+			isa = PBXGroup;
+			children = (
+				4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */,
+				4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */,
+				4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */,
+			);
+			path = "Workflow List";
+			sourceTree = "<group>";
+		};
+		47DC693729D02BC50092A362 /* Workflow Node */ = {
+			isa = PBXGroup;
+			children = (
+				47DC693829D02BD70092A362 /* WorkflowNode.swift */,
+				47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */,
+			);
+			path = "Workflow Node";
+			sourceTree = "<group>";
+		};
 		6F4B75B86F4D71EED5B5B6D5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				57A689B89FAF85754A4511AE /* Pods-ContentApp.debug.xcconfig */,
-				17435E53E88D0CFB146C81C6 /* Pods-ContentApp.release.xcconfig */,
 				6276239E2438BFE6E0DDB39D /* Pods-ContentApp-ContentAppUITests.debug.xcconfig */,
 				0628DE624AEB80C47B5D7350 /* Pods-ContentApp-ContentAppUITests.release.xcconfig */,
 				622EE8312B9A7263F3D61445 /* Pods-ContentAppTests.debug.xcconfig */,
 				B8C8F9E58FDC72F1173F7AA5 /* Pods-ContentAppTests.release.xcconfig */,
 				C733BE845AAF1A36661ED9DA /* Pods-Share.debug.xcconfig */,
 				483503457558D185F210C3FD /* Pods-Share.release.xcconfig */,
+				6379D63604EAF5FE2FF9AFB0 /* Pods-ContentApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -2281,6 +2322,7 @@
 		C97C025B287C148200C3CA52 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				4792042729CF01C00080BB13 /* Task Process Base */,
 				C983A274287EDEC200CEDCAB /* Models */,
 				C915CDCC288FEB5100819F86 /* Views */,
 				C983A263287D5F3D00CEDCAB /* Task List */,
@@ -2308,6 +2350,7 @@
 				C9205C7C28A12B6A00DEF5AC /* Task Comments */,
 				C92EBB1E28B13B4D003DFA15 /* Task Attachments */,
 				C9688BAA28D30DA40020206C /* Create Task */,
+				4792042A29CF0AF50080BB13 /* Workflow List */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2315,6 +2358,7 @@
 		C983A274287EDEC200CEDCAB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				47DC693729D02BC50092A362 /* Workflow Node */,
 				C93A246228A628AF005F46C2 /* Task Attachments */,
 				C9205C7028A0D94300DEF5AC /* Task Comments */,
 				C915CDD328905B6800819F86 /* Task Node */,
@@ -2442,6 +2486,7 @@
 			isa = PBXGroup;
 			children = (
 				C9A7599B289BBAA1006603E0 /* TaskListCollectionViewCell.swift */,
+				47DC693C29D04B680092A362 /* WorkflowViewModel.swift */,
 				C9A7599C289BBAA1006603E0 /* TaskListCollectionViewCell.xib */,
 			);
 			path = List;
@@ -3630,8 +3675,8 @@
 			);
 			mainGroup = E334C03324755D8E00F74880;
 			packageReferences = (
-				B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff" */,
-				B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro" */,
+				B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff.git" */,
+				B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro.git" */,
 			);
 			productRefGroup = E334C03D24755D8E00F74880 /* Products */;
 			projectDirPath = "";
@@ -4167,6 +4212,7 @@
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,
 				B9DBB21B256537840098CF18 /* OperationQueueService.swift in Sources */,
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,
+				4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */,
 				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
 				C91303B0275F4D75001F84D4 /* SearchFacetListComponentViewController.swift in Sources */,
 				C947C5BD27D0D8A80000D902 /* UploadFilesViewController.swift in Sources */,
@@ -4200,6 +4246,7 @@
 				C9848014272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift in Sources */,
 				B97A124D258A2B4D00C052AA /* DatabaseService.swift in Sources */,
 				F1AC6C3C262065680096743B /* PreviewViewModel.swift in Sources */,
+				47DC693D29D04B680092A362 /* WorkflowViewModel.swift in Sources */,
 				C973EC6C2726BD9300912015 /* ListItemCellViewModel.swift in Sources */,
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
 				C9205C6A28A0D6AE00DEF5AC /* TaskProperties+APIs.swift in Sources */,
@@ -4242,6 +4289,7 @@
 				C9A759BB289BE415006603E0 /* Enums.swift in Sources */,
 				E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */,
 				C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */,
+				4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */,
 				C9C51F1B286BEE88007D5BCF /* AnalyticsManager+APITracker.swift in Sources */,
 				B946E84D25592DE500023A39 /* TopLevelBrowseViewModelFactory.swift in Sources */,
 				B90E383D255AAD7D00FAFB81 /* RecentViewModelFactory.swift in Sources */,
@@ -4359,6 +4407,7 @@
 				C93647C72962A4920015F096 /* ModelNotifications.swift in Sources */,
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
+				4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */,
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
 				F1448CD32685AC1A00D90494 /* FullScreenVideoViewController.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
@@ -4429,6 +4478,7 @@
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				C9688BAC28D30DCC0020206C /* CreateTaskViewModel.swift in Sources */,
+				4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */,
 				F14E68922617066A002FDEF9 /* SessionPreview.swift in Sources */,
 				B9834C5D267368A00052E138 /* FavoritesModel.swift in Sources */,
 				C993459627D89CAD0079DABD /* UserDefaultExtension.swift in Sources */,
@@ -4437,6 +4487,7 @@
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
 				E3E9ED3B24CB03E400F1A2C2 /* FavoritesNodeMapper.swift in Sources */,
 				E378D598256D9FDE00E08405 /* String+Range.swift in Sources */,
+				47DC693929D02BD70092A362 /* WorkflowNode.swift in Sources */,
 				C9BC8D8C28D46F4E00EB2B97 /* TaskDescriptionDetailViewModel.swift in Sources */,
 				E32DE5302578F43C001A31EC /* NeedHelpModelProtocol.swift in Sources */,
 				E3AE4EA1250675870095C76E /* ImagePreview.swift in Sources */,
@@ -4530,6 +4581,7 @@
 				1338258E262D817D000FFD4E /* UploadTransferDataAccessor.swift in Sources */,
 				E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */,
 				C9CFA5EB289C48940097E581 /* TaskDetailController.swift in Sources */,
+				47DC693B29D02BE70092A362 /* WorkflowNodeOperations.swift in Sources */,
 				C9205C7B28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift in Sources */,
 				E3208D372541C4E8005DAFB4 /* UIView+RoundCorners.swift in Sources */,
 				C90A2CB42830E286008601F5 /* PDCache.swift in Sources */,
@@ -4892,7 +4944,7 @@
 		};
 		E334C06824755D9000F74880 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 17435E53E88D0CFB146C81C6 /* Pods-ContentApp.release.xcconfig */;
+			baseConfigurationReference = 6379D63604EAF5FE2FF9AFB0 /* Pods-ContentApp.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -5060,7 +5112,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff" */ = {
+		B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onmyway133/DeepDiff.git";
 			requirement = {
@@ -5068,7 +5120,7 @@
 				version = 2.3.1;
 			};
 		};
-		B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro" */ = {
+		B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onmyway133/Micro.git";
 			requirement = {
@@ -5081,22 +5133,22 @@
 /* Begin XCSwiftPackageProductDependency section */
 		B980B0A4264E4CEF00F139CE /* DeepDiff */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff" */;
+			package = B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff.git" */;
 			productName = DeepDiff;
 		};
 		B980B0A7264E4D0500F139CE /* Micro */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro" */;
+			package = B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro.git" */;
 			productName = Micro;
 		};
 		C9AFDF7527B8CDA4007233A5 /* Micro */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro" */;
+			package = B980B0A6264E4D0500F139CE /* XCRemoteSwiftPackageReference "Micro.git" */;
 			productName = Micro;
 		};
 		C9E1800C27A96C490006747E /* DeepDiff */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff" */;
+			package = B980B0A3264E4CEF00F139CE /* XCRemoteSwiftPackageReference "DeepDiff.git" */;
 			productName = DeepDiff;
 		};
 /* End XCSwiftPackageProductDependency section */
