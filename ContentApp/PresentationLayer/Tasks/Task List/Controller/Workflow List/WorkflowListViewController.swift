@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2023 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -19,49 +19,52 @@
 import UIKit
 import MaterialComponents
 import AlfrescoContent
+import DropDown
 
-class TasksListViewController: SystemSearchViewController {
-
+class WorkflowListViewController: SystemSearchViewController {
+    
     var navigationViewController: UINavigationController?
+    @IBOutlet weak var filtersView: UIView!
+    @IBOutlet weak var filtersLabel: UILabel!
+    @IBOutlet weak var filtersButton: UIButton!
     @IBOutlet weak var emptyListView: UIView!
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
-    @IBOutlet weak var filterBaseView: UIView!
-    @IBOutlet weak var createTaskButton: MDCFloatingButton!
+    @IBOutlet weak var startWorkflowButton: MDCFloatingButton!
     var refreshControl: UIRefreshControl?
-    lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
+    lazy var viewModel = WorkflowListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
     let sectionCellHeight: CGFloat = 54.0
-    var sortFilterView: TasksSortAndFilterView?
     private var dialogTransitionController: MDCDialogTransitionController?
+    lazy var dropDown = DropDown()
 
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        filterBaseView.isHidden = true
-        createTaskButton.isHidden = true
+                
+        filtersView.isHidden = true
+        startWorkflowButton.isHidden = true
         emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
         addRefreshControl()
         setupBindings()
         registerCells()
-        addSortAndFilterView()
-        getTaskList()
+        getWorkflowsList()
         self.dialogTransitionController = MDCDialogTransitionController()
+        setupDropDownView()
+        setSelectedFilterName()
         addAccessibility()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-        AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskTab)
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTab)
         updateTheme()
-        getAPSUserDetails()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -89,14 +92,6 @@ class TasksListViewController: SystemSearchViewController {
         self.refreshControl = refreshControl
     }
     
-    private func getAPSUserDetails() {
-        let apsUserID = UserProfile.apsUserID ?? -1
-        if apsUserID == -1 && viewModel.isTasksConfigured {
-            // fetch APS user id
-            ProfileService.fetchAPSProfileDetails()
-        }
-    }
-    
     // MARK: - Public interface
     
     override func applyComponentsThemes() {
@@ -110,33 +105,46 @@ class TasksListViewController: SystemSearchViewController {
         emptyListSubtitle.textAlignment = .center
         
         refreshControl?.tintColor = currentTheme.primaryT1Color
-        createTaskButton.backgroundColor = currentTheme.primaryT1Color
-        createTaskButton.tintColor = currentTheme.onPrimaryColor
-        self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationViewController)
+        startWorkflowButton.backgroundColor = currentTheme.primaryT1Color
+        startWorkflowButton.tintColor = currentTheme.onPrimaryColor
+        
+        filtersLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        dropDown.backgroundColor = currentTheme.surfaceColor
+        dropDown.selectionBackgroundColor = currentTheme.primary15T1Color
+        dropDown.textColor = currentTheme.onSurfaceColor
+        dropDown.selectedTextColor = currentTheme.onSurfaceColor
     }
     
     private func addAccessibility() {
-        createTaskButton.accessibilityLabel = LocalizationConstants.Accessibility.createTask
-        createTaskButton.accessibilityIdentifier = "create-task-button"
+        filtersButton.accessibilityLabel = LocalizationConstants.Workflows.filterOptions
+        filtersButton.accessibilityValue = filtersLabel.text
+        filtersButton.accessibilityIdentifier = "filter-button"
+        
+        startWorkflowButton.accessibilityLabel = LocalizationConstants.Accessibility.startWorkflow
+        startWorkflowButton.accessibilityIdentifier = "start-workflow-button"
     }
     
-    // MARK: - Get Tasks List
-    func getTaskList() {
-        let params = TaskListParams(dueAfter: viewModel.filterParams.dueAfter,
-                                    dueBefore: viewModel.filterParams.dueBefore,
-                                    page: viewModel.page,
-                                    state: viewModel.filterParams.state,
-                                    text: viewModel.filterParams.text)
+    // MARK: - IBActions
+
+    @IBAction func filtersButtonAction(_ sender: Any) {
+        dropDown.show()
+    }
+    
+    @IBAction func startWorkflowButtonAction(_ sender: Any) {
+        AlfrescoLog.debug("start workflow button action")
+    }
+    
+    // MARK: - Get Workflows List
+    func getWorkflowsList() {
         
-        viewModel.taskList(with: params) {[weak self] taskList, error in
+        viewModel.workflowList {[weak self] workflows, error in
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.viewModel.isTasksConfigured = true
                 sSelf.collectionView.reloadData()
                 sSelf.checkEmptyTaskListMessage()
-                sSelf.filterBaseView.isHidden = false
-                sSelf.createTaskButton.isHidden = false
-                sSelf.getAPSUserDetails()
+                sSelf.filtersView.isHidden = false
+                sSelf.startWorkflowButton.isHidden = false
             } else {
                 sSelf.viewModel.isTasksConfigured = false
                 sSelf.showTaskListNotConfiguredMessage()
@@ -161,8 +169,8 @@ class TasksListViewController: SystemSearchViewController {
         emptyListImageView.image = emptyList.icon
         emptyListTitle.text = emptyList.title
         emptyListSubtitle.text = emptyList.description
-        filterBaseView.isHidden = true
-        createTaskButton.isHidden = true
+        filtersView.isHidden = true
+        startWorkflowButton.isHidden = true
     }
     
     // MARK: - Set up Bindings
@@ -221,13 +229,13 @@ class TasksListViewController: SystemSearchViewController {
             sSelf.viewModel.size = 0
             sSelf.viewModel.total = 0
             sSelf.viewModel.page = 0
-            sSelf.getTaskList()
+            sSelf.getWorkflowsList()
         }
     }
 }
 
 // MARK: - Collection view data source and delegate
-extension TasksListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension WorkflowListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -274,7 +282,7 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
         let identifierElement = String(describing: TaskListCollectionViewCell.self)
 
         let node = viewModel.listNode(for: indexPath)
-        if node?.guid == listNodeSectionIdentifier {
+        if node?.processID == listNodeSectionIdentifier {
             guard let cell = collectionView
                     .dequeueReusableCell(withReuseIdentifier: identifierSection,
                                          for: indexPath) as? TaskSectionCollectionViewCell else { return UICollectionViewCell() }
@@ -286,123 +294,41 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
                     .dequeueReusableCell(withReuseIdentifier: identifierElement,
                                          for: indexPath) as? TaskListCollectionViewCell else { return UICollectionViewCell() }
             cell.applyTheme(viewModel.services.themingService?.activeTheme)
-            cell.setupData(for: node)
+            cell.setupWorkflowData(for: node)
 
             let isPaginationEnabled = true
             if isPaginationEnabled &&
                 collectionView.lastItemIndexPath() == indexPath &&
                 viewModel.services.connectivityService?.hasInternetConnection() == true {
-                getTaskList()
+                getWorkflowsList()
             }
             return cell
         }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        let taskNode = viewModel.listNode(for: indexPath)
-        showTaskDetails(for: taskNode)
-    }
-    
-    private func showTaskDetails(for taskNode: TaskNode?, isOpenAfterTaskCreation: Bool = false) {
-        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
-            viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.task = taskNode
-            viewController.viewModel.isOpenAfterTaskCreation = isOpenAfterTaskCreation
-            viewController.viewModel.isEditTask = isOpenAfterTaskCreation
-            self.navigationViewController?.pushViewController(viewController, animated: true)
-            viewController.viewModel.didRefreshTaskList = {
-                self.handlePullToRefresh()
-            }
-        }
-    }
 }
 
-// MARK: - Filter View Delegate
-
-extension TasksListViewController {
-    func addSortAndFilterView() {
-        if let sortFilterView: TasksSortAndFilterView = .fromNib() {
-            sortFilterView.frame = CGRect(x: 0, y: 0, width: filterBaseView.frame.size.width, height: 43.0)
-            sortFilterView.buildDataSource()
-            filterBaseView.addSubview(sortFilterView)
-            self.sortFilterView = sortFilterView
-            sortFilterView.callBack = { (type: ComponentType?, value: [String]) in
-                self.updateComponent(type: type, value: value)
-            }
+// MARK: - Drop Down
+extension WorkflowListViewController {
+    func setupDropDownView() {
+        dropDown.anchorView = filtersView
+        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
+        dropDown.cornerRadius = 6
+        dropDown.width = 200
+        buildDropDownDataSource()
+    }
+    
+    func buildDropDownDataSource() {
+        let filters = viewModel.localizedFilterNames
+        dropDown.localizationKeysDataSource = filters
+        dropDown.reloadAllComponents()
+        dropDown.selectionAction = { (index: Int, item: String) in
+            self.viewModel.selectedFilter = self.viewModel.filters[index]
+            self.handlePullToRefresh()
+            self.setSelectedFilterName()
         }
     }
     
-    private func updateComponent(type: ComponentType?, value: [String]) {
-        switch type {
-        case .createdDateRange:
-            self.updateCalendarComponent(with: value)
-        case .radio:
-            self.updateStatusComponent(with: value)
-        case .text:
-            self.updateTextComponent(with: value)
-        default:
-            self.resetComponents()
-        }
-    }
-    
-    private func updateCalendarComponent(with value: [String]) {
-        self.viewModel.filterParams.dueAfter = value[0]
-        self.viewModel.filterParams.dueBefore = value[1]
-        self.handlePullToRefresh()
-    }
-    
-    private func updateStatusComponent(with value: [String]) {
-        self.viewModel.filterParams.state = value.first
-        self.handlePullToRefresh()
-    }
-    
-    private func updateTextComponent(with value: [String]) {
-        self.viewModel.filterParams.text = value.first
-        self.handlePullToRefresh()
-    }
-    
-    private func resetComponents() {
-        self.viewModel.filterParams.dueBefore = nil
-        self.viewModel.filterParams.dueAfter = nil
-        self.viewModel.filterParams.state = nil
-        self.viewModel.filterParams.text = nil
-        self.handlePullToRefresh()
-    }
-}
-
-// MARK: - Create Task
-
-extension TasksListViewController {
-    
-    @IBAction func createTaskButtonAction(_ sender: Any) {
-        
-        let viewController = CreateNodeSheetViewControler.instantiateViewController()
-        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
-                                                      createTaskViewType: .createTask,
-                                                      task: nil)
-        
-        viewController.coordinatorServices = coordinatorServices
-        viewController.createTaskViewModel = createTaskViewModel
-        viewController.modalPresentationStyle = .custom
-        viewController.transitioningDelegate = dialogTransitionController
-        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
-        self.present(viewController, animated: true)
-        viewController.callBack = { [weak self] (task, title, description) in
-            guard let sSelf = self else { return }
-            sSelf.createTask(with: title, description: description)
-        }
-    }
-
-    private func createTask(with title: String?, description: String?) {
-        AnalyticsManager.shared.didTapCreateTask()
-        let params = TaskBodyCreate(name: title, priority: "0", dueDate: nil, description: description)
-        self.viewModel.createTask(params: params) {[weak self] taskNode, error in
-            guard let sSelf = self else { return }
-            sSelf.resetComponents()
-            sSelf.sortFilterView?.resetFilterButtonAction(Any.self)
-            sSelf.showTaskDetails(for: taskNode, isOpenAfterTaskCreation: true)
-        }
+    private func setSelectedFilterName() {
+        filtersLabel.text = viewModel.selectedFilter.localizedName
     }
 }
