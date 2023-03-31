@@ -385,5 +385,6 @@ struct LocalizationConstants {
         static let startWorkflowMessage = NSLocalizedString("start-workflow-message", comment: "")
         static let notConfiguredMessage = NSLocalizedString("workflows-not-configured-message", comment: "")
         static let allTitle = NSLocalizedString("all-title", comment: "")
+        static let filterOptions = NSLocalizedString("filter-options", comment: "")
     }
 }
