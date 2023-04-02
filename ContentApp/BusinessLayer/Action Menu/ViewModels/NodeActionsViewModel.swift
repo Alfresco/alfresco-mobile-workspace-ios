@@ -82,6 +82,8 @@ class NodeActionsViewModel {
             handleMove(action: action)
         } else if action.type.isDownloadActions {
             handleDownload(action: action)
+        } else if action.type.isWorkflowActions {
+            AlfrescoLog.debug("---- WORKFLOW ACTION ---- Node Actions View Model ------")
         } else {
             let delay = action.type.isMoreAction ? 0.0 : 1.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in

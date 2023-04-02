@@ -68,6 +68,10 @@ enum ActionMenuType: String {
     var isMoreAction: Bool {
         return [.more].contains(self)
     }
+    
+    var isWorkflowActions: Bool {
+        return [.startWorkflow].contains(self)
+    }
 
     // MARK: - Generic
     case placeholder = "ic-placeholder"
