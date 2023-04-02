@@ -160,6 +160,7 @@ extension AIMSAccount: AIMSAccountDelegate {
             session.parameters.remove(for: oldAccountIdentifier)
         }
 
+        APSService.checkIfAPSServiceEnabled()
         let notification = NSNotification.Name(rawValue: KeyConstants.Notification.reSignin)
         NotificationCenter.default.post(name: notification,
                                         object: nil,

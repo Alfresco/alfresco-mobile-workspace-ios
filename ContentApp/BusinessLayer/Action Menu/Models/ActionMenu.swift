@@ -96,4 +96,7 @@ enum ActionMenuType: String {
     case uploadMedia = "ic-action-upload-media-files"
     case uploadFiles = "ic-action-upload-files"
     case renameNode = "ic-action-rename"
+    
+    // MARK: - Workflow
+    case startWorkflow = "ic-action-start-workflow"
 }
