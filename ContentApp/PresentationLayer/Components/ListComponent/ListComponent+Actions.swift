@@ -55,6 +55,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
                 handleSheetCreate(action: action, node: node)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
+            } else if action.type.isWorkflowActions {
+                AlfrescoLog.debug("---- WORKFLOW ACTION ---- ListComponent+Actions ------")
             }
             logEvent(with: action, node: node)
         }

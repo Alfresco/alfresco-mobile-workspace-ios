@@ -14,6 +14,7 @@
 		133825D526300DC6000FFD4E /* String+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133825D426300DC6000FFD4E /* String+Paths.swift */; };
 		1346FA07261DA4CF00336990 /* ModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1346FA06261DA4CF00336990 /* ModeSelector.swift */; };
 		4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */; };
+		476672D629D890E70073E27E /* APSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476672D529D890E70073E27E /* APSService.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
 		4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */; };
@@ -772,6 +773,7 @@
 		1346FA06261DA4CF00336990 /* ModeSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeSelector.swift; sourceTree = "<group>"; };
 		29A47D6A592A38D4559AC74E /* Pods-ContentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.release.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.release.xcconfig"; sourceTree = "<group>"; };
 		4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowFilters.swift; sourceTree = "<group>"; };
+		476672D529D890E70073E27E /* APSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APSService.swift; sourceTree = "<group>"; };
 		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
 		4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewModel.swift; sourceTree = "<group>"; };
@@ -1716,6 +1718,7 @@
 				E35FB745247664A9004674FD /* LoginService.swift */,
 				B9E7D60824911F190056292B /* AccountService.swift */,
 				E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */,
+				476672D529D890E70073E27E /* APSService.swift */,
 				B9ECECFE254302EF0097DB3F /* EventBusService.swift */,
 				B9DBB21A256537840098CF18 /* OperationQueueService.swift */,
 				B9B7530425AC422B004F16E5 /* SyncService.swift */,
@@ -4227,6 +4230,7 @@
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
 				E387387C24D1D1820028F76B /* SystemSearchViewController.swift in Sources */,
 				B9B630AE24813BAF004833BC /* UITextView+Size.swift in Sources */,
+				476672D629D890E70073E27E /* APSService.swift in Sources */,
 				E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */,
 				C9D4FAB5278329F50008C4AA /* FileAsset.swift in Sources */,
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,

@@ -61,6 +61,7 @@ class RecentScreenCoordinator: PresentingCoordinator,
         presenter.viewControllers = [navigationViewController]
         self.navigationViewController = navigationViewController
         recentViewController = viewController
+        APSService.checkIfAPSServiceEnabled()
     }
 
     func scrollToTopOrPopToRoot() {
