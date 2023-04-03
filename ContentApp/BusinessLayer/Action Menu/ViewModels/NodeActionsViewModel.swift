@@ -83,7 +83,7 @@ class NodeActionsViewModel {
         } else if action.type.isDownloadActions {
             handleDownload(action: action)
         } else if action.type.isWorkflowActions {
-            AlfrescoLog.debug("---- WORKFLOW ACTION ---- Node Actions View Model ------")
+            linkContentToAPS(action: action)
         } else {
             let delay = action.type.isMoreAction ? 0.0 : 1.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in
@@ -485,6 +485,46 @@ class NodeActionsViewModel {
                                     animated: true,
                                     completion: nil)
         }
+    }
+}
+
+// MARK: - Workflow
+extension NodeActionsViewModel {
+    private func linkContentToAPS(action: ActionMenu) {
+        AlfrescoLog.debug("---- WORKFLOW ACTION ---- Node Actions View Model ------")
+        guard let node = self.node else { return }
+        let params = ProcessRequestLinkContent(source: "alfresco-1-adw-contentAlfresco",
+                                               mimeType: node.mimeType,
+                                               sourceId: node.guid,
+                                               name: node.title)
+        sessionForCurrentAccount { (_) in
+            ProcessAPI.linkContentToProcess(params: params) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                if error == nil {
+                    print("*** process content ***", data)
+                    print("*** error ***", error)
+                }
+                sSelf.handleResponse(error: error, action: action)
+            }
+        }
+        
+        /*
+        FavoritesAPI.deleteFavorite(personId: APIConstants.me,
+                                    favoriteId: node.guid) { [weak self] (_, error) in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.node?.favorite = false
+                action.type = .addFavorite
+                action.title = LocalizationConstants.ActionMenu.addFavorite
+                action.analyticEventName = "\(ActionMenuType.removeFavorite)"
+
+                let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
+                let eventBusService = sSelf.coordinatorServices?.eventBusService
+                eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
+            }
+            sSelf.handleResponse(error: error, action: action)
+        }
+        */
     }
 }
 
