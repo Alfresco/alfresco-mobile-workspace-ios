@@ -500,31 +500,17 @@ extension NodeActionsViewModel {
         sessionForCurrentAccount { (_) in
             ProcessAPI.linkContentToProcess(params: params) {[weak self] data, error in
                 guard let sSelf = self else { return }
+                StartWorkflowModel.shared.reset()
                 if error == nil {
-                    print("*** process content ***", data)
-                    print("*** error ***", error)
+                    if let data = data {
+                        let attachments = WorkflowAttachmentOperations.processAttachments(for: [data])
+                        StartWorkflowModel.shared.attachments = attachments
+                        print("*** process content ***", StartWorkflowModel.shared.attachments)
+                    }
                 }
                 sSelf.handleResponse(error: error, action: action)
             }
         }
-        
-        /*
-        FavoritesAPI.deleteFavorite(personId: APIConstants.me,
-                                    favoriteId: node.guid) { [weak self] (_, error) in
-            guard let sSelf = self else { return }
-            if error == nil {
-                sSelf.node?.favorite = false
-                action.type = .addFavorite
-                action.title = LocalizationConstants.ActionMenu.addFavorite
-                action.analyticEventName = "\(ActionMenuType.removeFavorite)"
-
-                let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
-                let eventBusService = sSelf.coordinatorServices?.eventBusService
-                eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
-            }
-            sSelf.handleResponse(error: error, action: action)
-        }
-        */
     }
 }
 

@@ -1,58 +1,58 @@
 {
-  "filters": [
-    {
-      "id": 0,
-      "name": "Due date",
-      "selector": "date-range",
-      "accessibilityIdentifier": "due-date",
-      "options": [
+    "filters": [
         {
-          "label": "Due before",
-          "query": "dueBefore",
-          "value": "",
-          "accessibilityIdentifier": "due-before"
+            "id": 0,
+            "name": "Due date",
+            "selector": "date-range",
+            "accessibilityIdentifier": "due-date",
+            "options": [
+                {
+                    "label": "Due before",
+                    "query": "dueBefore",
+                    "value": "",
+                    "accessibilityIdentifier": "due-before"
+                },
+                {
+                    "label": "Due After",
+                    "query": "dueAfter",
+                    "value": "",
+                    "accessibilityIdentifier": "due-after"
+                }
+            ]
         },
         {
-          "label": "Due After",
-          "query": "dueAfter",
-          "value": "",
-          "accessibilityIdentifier": "due-after"
+            "id": 1,
+            "name": "Status",
+            "selector": "radio",
+            "accessibilityIdentifier": "status",
+            "options": [
+                {
+                    "label": "All",
+                    "query": "state",
+                    "value": "all",
+                    "accessibilityIdentifier": "all-title"
+                },
+                {
+                    "label": "Active",
+                    "query": "state",
+                    "value": "",
+                    "accessibilityIdentifier": "active"
+                },
+                {
+                    "label": "Completed",
+                    "query": "state",
+                    "value": "completed",
+                    "accessibilityIdentifier": "completed"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Task Name",
+            "selector": "text",
+            "query": "text",
+            "value": "",
+            "accessibilityIdentifier": "task-name"
         }
-      ]
-    },
-    {
-      "id": 1,
-      "name": "Status",
-      "selector": "radio",
-      "accessibilityIdentifier": "status",
-      "options": [
-        {
-          "label": "Active",
-          "query": "state",
-          "value": "",
-          "accessibilityIdentifier": "active"
-        },
-        {
-          "label": "Completed",
-          "query": "state",
-          "value": "completed",
-          "accessibilityIdentifier": "completed"
-        },
-        {
-          "label": "All",
-          "query": "state",
-          "value": "all",
-          "accessibilityIdentifier": "all-title"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "name": "Task Name",
-      "selector": "text",
-      "query": "text",
-      "value": "",
-      "accessibilityIdentifier": "task-name"
-    }
-  ]
+    ]
 }
