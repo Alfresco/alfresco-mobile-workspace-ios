@@ -83,7 +83,7 @@ class NodeActionsViewModel {
         } else if action.type.isDownloadActions {
             handleDownload(action: action)
         } else if action.type.isWorkflowActions {
-            AlfrescoLog.debug("---- WORKFLOW ACTION ---- Node Actions View Model ------")
+            linkContentToAPS(action: action)
         } else {
             let delay = action.type.isMoreAction ? 0.0 : 1.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in
@@ -484,6 +484,32 @@ class NodeActionsViewModel {
             clearController.present(activityViewController,
                                     animated: true,
                                     completion: nil)
+        }
+    }
+}
+
+// MARK: - Workflow
+extension NodeActionsViewModel {
+    private func linkContentToAPS(action: ActionMenu) {
+        AlfrescoLog.debug("---- WORKFLOW ACTION ---- Node Actions View Model ------")
+        guard let node = self.node else { return }
+        let params = ProcessRequestLinkContent(source: "alfresco-1-adw-contentAlfresco",
+                                               mimeType: node.mimeType,
+                                               sourceId: node.guid,
+                                               name: node.title)
+        sessionForCurrentAccount { (_) in
+            ProcessAPI.linkContentToProcess(params: params) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                StartWorkflowModel.shared.reset()
+                if error == nil {
+                    if let data = data {
+                        let attachments = WorkflowAttachmentOperations.processAttachments(for: [data])
+                        StartWorkflowModel.shared.attachments = attachments
+                        print("*** process content ***", StartWorkflowModel.shared.attachments)
+                    }
+                }
+                sSelf.handleResponse(error: error, action: action)
+            }
         }
     }
 }

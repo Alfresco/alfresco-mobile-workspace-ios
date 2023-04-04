@@ -56,6 +56,7 @@ enum Event {
         case taskTakePhoto = "event_task_upload_photos_or_videos"
         case taskUploadPhoto = "event_task_take_a_photo_or_video"
         case taskUploadFile = "event_task_upload_files"
+        case startWorkflow = "event_start_workflow"
 
     }
     

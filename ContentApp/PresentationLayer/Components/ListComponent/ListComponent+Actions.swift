@@ -56,7 +56,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
             } else if action.type.isWorkflowActions {
-                AlfrescoLog.debug("---- WORKFLOW ACTION ---- ListComponent+Actions ------")
+                handleStartWorkflow(action: action)
             }
             logEvent(with: action, node: node)
         }
@@ -163,5 +163,13 @@ extension ListComponentViewController {
     func logEvent(with action: ActionMenu?, node: ListNode?) {
         guard let action = action else { return }
         AnalyticsManager.shared.fileActionEvent(for: node, action: action)
+    }
+}
+
+// MARK: - Workflow
+extension ListComponentViewController {
+    
+    func handleStartWorkflow(action: ActionMenu) {
+        AlfrescoLog.debug("---- WORKFLOW ACTION ---- ListComponent+Actions ------")
     }
 }
