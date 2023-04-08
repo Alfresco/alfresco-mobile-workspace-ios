@@ -24,6 +24,7 @@ struct CellConstants {
         static let preview = "PreviewCollectionViewCell"
         static let taskList = "TaskListCollectionViewCell"
         static let taskSection = "TaskSectionCollectionViewCell"
+        static let runTimeAppDefinition = "WorkflowListCollectionViewCell"
 
     }
     

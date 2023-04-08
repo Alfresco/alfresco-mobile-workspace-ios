@@ -491,26 +491,10 @@ class NodeActionsViewModel {
 // MARK: - Workflow
 extension NodeActionsViewModel {
     private func linkContentToAPS(action: ActionMenu) {
-        AlfrescoLog.debug("---- WORKFLOW ACTION ---- Node Actions View Model ------")
         guard let node = self.node else { return }
-        let params = ProcessRequestLinkContent(source: "alfresco-1-adw-contentAlfresco",
-                                               mimeType: node.mimeType,
-                                               sourceId: node.guid,
-                                               name: node.title)
-        sessionForCurrentAccount { (_) in
-            ProcessAPI.linkContentToProcess(params: params) {[weak self] data, error in
-                guard let sSelf = self else { return }
-                StartWorkflowModel.shared.reset()
-                if error == nil {
-                    if let data = data {
-                        let attachments = WorkflowAttachmentOperations.processAttachments(for: [data])
-                        StartWorkflowModel.shared.attachments = attachments
-                        print("*** process content ***", StartWorkflowModel.shared.attachments)
-                    }
-                }
-                sSelf.handleResponse(error: error, action: action)
-            }
-        }
+        StartWorkflowModel.shared.reset()
+        StartWorkflowModel.shared.node = node
+        self.handleResponse(error: nil, action: action)
     }
 }
 

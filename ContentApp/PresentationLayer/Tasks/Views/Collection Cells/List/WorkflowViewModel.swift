@@ -20,7 +20,6 @@ import UIKit
 
 class WorkflowViewModel: NSObject {
     var workflow: WorkflowNode?
-
     var workflowName: String? {
         return workflow?.name
     }
