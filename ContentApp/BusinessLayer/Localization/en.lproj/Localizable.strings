@@ -400,4 +400,4 @@
 "workflows-not-configured-message" = "Workflows are not enabled for this account.";
 "all-title" = "All";
 "filter-options" = "Filter Options";
-"select-workflow" = "Select Workflow";
+"select-workflow" = "Select workflow";
