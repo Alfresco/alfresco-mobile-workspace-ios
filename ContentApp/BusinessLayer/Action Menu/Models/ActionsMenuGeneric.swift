@@ -36,6 +36,10 @@ struct ActionsMenuGeneric {
             actions2.append(action)
         }
         
+        if let action = startWorkflowAction(for: node) {
+            actions2.append(action)
+        }
+        
         if let action = renameNodeAction(for: node) {
             actions2.append(action)
         }
@@ -45,10 +49,6 @@ struct ActionsMenuGeneric {
         }
         
         if let action = offlineAction(for: node) {
-            actions2.append(action)
-        }
-        
-        if let action = startWorkflowAction(for: node) {
             actions2.append(action)
         }
         
