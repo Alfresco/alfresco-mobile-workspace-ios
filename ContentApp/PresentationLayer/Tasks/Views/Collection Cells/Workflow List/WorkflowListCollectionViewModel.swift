@@ -16,15 +16,18 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-struct StartWorkflowModel {
-    static var shared = StartWorkflowModel()
-    var node: ListNode?
-    var appDefinition: WFlowAppDefinitions?
+class WorkflowListCollectionViewModel: NSObject {
+    var workflowAppDefinition: WFlowAppDefinitions?
+    var name: String? {
+        return workflowAppDefinition?.name
+    }
+    var definitionDescription: String? {
+        return workflowAppDefinition?.description
+    }
     
-    func reset() {
-        StartWorkflowModel.shared.node = nil
-        StartWorkflowModel.shared.appDefinition = nil
+    var image: UIImage? {
+        return UIImage(named: "ic-action-start-workflow")
     }
 }

@@ -428,6 +428,99 @@
             </objects>
             <point key="canvasLocation" x="-20" y="1522"/>
         </scene>
+        <!--Startable Workflows View Controller-->
+        <scene sceneID="A09-jw-9zB">
+            <objects>
+                <viewController storyboardIdentifier="StartableWorkflowsViewController" id="iBf-DY-yF4" customClass="StartableWorkflowsViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="M5g-YG-WQc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H9U-4H-OE3" userLabel="headerView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-action-start-workflow" translatesAutoresizingMaskIntoConstraints="NO" id="Ww1-Vr-aoA" userLabel="headerImageView">
+                                        <rect key="frame" x="20" y="17.5" width="35" height="35"/>
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Ww1-Vr-aoA" secondAttribute="height" id="4Lg-js-cZB"/>
+                                            <constraint firstAttribute="width" constant="35" id="AcT-PS-xE4"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select workflow" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kVB-pW-8Sp" userLabel="headerTitleLabel">
+                                        <rect key="frame" x="75" y="25" width="319" height="20.5"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="titleScreen">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKc-G7-h2a" userLabel="divider">
+                                        <rect key="frame" x="0.0" y="69" width="414" height="1"/>
+                                        <color key="backgroundColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="2le-MP-vi1"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="kVB-pW-8Sp" secondAttribute="trailing" constant="20" id="4ED-fS-S8q"/>
+                                    <constraint firstItem="Ww1-Vr-aoA" firstAttribute="centerY" secondItem="H9U-4H-OE3" secondAttribute="centerY" id="55J-Qc-jIP"/>
+                                    <constraint firstItem="kVB-pW-8Sp" firstAttribute="centerY" secondItem="H9U-4H-OE3" secondAttribute="centerY" id="CG3-Ne-Kxf"/>
+                                    <constraint firstItem="Ww1-Vr-aoA" firstAttribute="leading" secondItem="H9U-4H-OE3" secondAttribute="leading" constant="20" id="J1A-aT-h6X"/>
+                                    <constraint firstAttribute="bottom" secondItem="vKc-G7-h2a" secondAttribute="bottom" id="M50-ts-SaE"/>
+                                    <constraint firstItem="kVB-pW-8Sp" firstAttribute="leading" secondItem="Ww1-Vr-aoA" secondAttribute="trailing" constant="20" id="N5d-dp-YiD"/>
+                                    <constraint firstAttribute="trailing" secondItem="vKc-G7-h2a" secondAttribute="trailing" id="dHr-Pf-5gs"/>
+                                    <constraint firstItem="vKc-G7-h2a" firstAttribute="leading" secondItem="H9U-4H-OE3" secondAttribute="leading" id="sjx-5y-8q7"/>
+                                    <constraint firstAttribute="height" constant="70" id="t1H-vL-agm"/>
+                                </constraints>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xbY-gl-A96">
+                                <rect key="frame" x="0.0" y="70" width="414" height="100"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="tTY-rw-zic"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="lbM-DO-yYg">
+                                    <size key="itemSize" width="414" height="1063"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="iBf-DY-yF4" id="8vo-PT-zsO"/>
+                                    <outlet property="delegate" destination="iBf-DY-yF4" id="gjG-24-ZeO"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3VJ-mI-jIY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="H9U-4H-OE3" firstAttribute="trailing" secondItem="3VJ-mI-jIY" secondAttribute="trailing" id="PdV-Kz-p9O"/>
+                            <constraint firstItem="xbY-gl-A96" firstAttribute="top" secondItem="H9U-4H-OE3" secondAttribute="bottom" id="QzL-le-NEK"/>
+                            <constraint firstItem="H9U-4H-OE3" firstAttribute="leading" secondItem="3VJ-mI-jIY" secondAttribute="leading" id="XY8-yr-Fmc"/>
+                            <constraint firstItem="3VJ-mI-jIY" firstAttribute="bottom" secondItem="xbY-gl-A96" secondAttribute="bottom" priority="250" id="cRZ-Ow-4Of"/>
+                            <constraint firstItem="H9U-4H-OE3" firstAttribute="top" secondItem="M5g-YG-WQc" secondAttribute="top" id="fmD-dz-haT"/>
+                            <constraint firstItem="xbY-gl-A96" firstAttribute="trailing" secondItem="3VJ-mI-jIY" secondAttribute="trailing" id="uo1-Xh-8hk"/>
+                            <constraint firstItem="xbY-gl-A96" firstAttribute="leading" secondItem="3VJ-mI-jIY" secondAttribute="leading" id="xmK-sx-O0e"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="xbY-gl-A96" id="kke-NO-D9G"/>
+                        <outlet property="collectionViewContraintHeight" destination="tTY-rw-zic" id="Ako-bg-TYh"/>
+                        <outlet property="divider" destination="vKc-G7-h2a" id="br9-FA-93C"/>
+                        <outlet property="headerImageView" destination="Ww1-Vr-aoA" id="EbF-RD-dz0"/>
+                        <outlet property="headerTitleLabel" destination="kVB-pW-8Sp" id="JhC-h6-yRH"/>
+                        <outlet property="headerView" destination="H9U-4H-OE3" id="ods-32-ETb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XS9-Eg-z7r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="722" y="1521"/>
+        </scene>
         <!--Task Priority View Controller-->
         <scene sceneID="U5U-eD-xF1">
             <objects>
@@ -1213,6 +1306,7 @@
         </designable>
     </designables>
     <resources>
+        <image name="ic-action-start-workflow" width="15" height="17"/>
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-close" width="24" height="24"/>
         <image name="ic-drop-down" width="12" height="8"/>

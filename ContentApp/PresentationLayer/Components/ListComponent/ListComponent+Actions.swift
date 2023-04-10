@@ -17,6 +17,8 @@
 //
 
 import Foundation
+import UIKit
+import MaterialComponents
 
 extension ListComponentViewController: NodeActionsViewModelDelegate,
                                        CreateNodeViewModelDelegate {
@@ -170,6 +172,20 @@ extension ListComponentViewController {
 extension ListComponentViewController {
     
     func handleStartWorkflow(action: ActionMenu) {
-        AlfrescoLog.debug("---- WORKFLOW ACTION ---- ListComponent+Actions ------")
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startableWorkflowList) as? StartableWorkflowsViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            viewController.coordinatorServices = coordinatorServices
+            self.present(bottomSheet, animated: true)
+            viewController.didSelectAction = { [weak self] (appDefinition) in
+                guard let sSelf = self else { return }
+                sSelf.startWorkflowAction(appDefinition: appDefinition)
+            }
+        }
+    }
+    
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?) {
+        AlfrescoLog.debug("start workflow with app definition: \(appDefinition)")
+        StartWorkflowModel.shared.appDefinition = appDefinition
     }
 }

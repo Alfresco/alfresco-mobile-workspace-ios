@@ -14,6 +14,8 @@
 		133825D526300DC6000FFD4E /* String+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133825D426300DC6000FFD4E /* String+Paths.swift */; };
 		1346FA07261DA4CF00336990 /* ModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1346FA06261DA4CF00336990 /* ModeSelector.swift */; };
 		4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */; };
+		4734440229DC0CED004A72CD /* StartableWorkflowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */; };
+		4734440429DC0D1E004A72CD /* StartableWorkflowsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */; };
 		476672D629D890E70073E27E /* APSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476672D529D890E70073E27E /* APSService.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
@@ -24,6 +26,11 @@
 		47DC693929D02BD70092A362 /* WorkflowNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693829D02BD70092A362 /* WorkflowNode.swift */; };
 		47DC693B29D02BE70092A362 /* WorkflowNodeOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */; };
 		47DC693D29D04B680092A362 /* WorkflowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693C29D04B680092A362 /* WorkflowViewModel.swift */; };
+		47F5A6E329DE7FED00073D7F /* WorkflowListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6E129DE7FED00073D7F /* WorkflowListCollectionViewCell.swift */; };
+		47F5A6E429DE7FED00073D7F /* WorkflowListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47F5A6E229DE7FED00073D7F /* WorkflowListCollectionViewCell.xib */; };
+		47F5A6E629DE801100073D7F /* WorkflowListCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6E529DE801100073D7F /* WorkflowListCollectionViewModel.swift */; };
+		47F5A6E929DEA4FC00073D7F /* WFlowAppDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6E829DEA4FC00073D7F /* WFlowAppDefinitions.swift */; };
+		47F5A6EB29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */; };
 		4B2D7FA2F97B887A7B192BDB /* Pods_ContentApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */; };
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
@@ -776,6 +783,8 @@
 		1346FA06261DA4CF00336990 /* ModeSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeSelector.swift; sourceTree = "<group>"; };
 		29A47D6A592A38D4559AC74E /* Pods-ContentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.release.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.release.xcconfig"; sourceTree = "<group>"; };
 		4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowFilters.swift; sourceTree = "<group>"; };
+		4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewController.swift; sourceTree = "<group>"; };
+		4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewModel.swift; sourceTree = "<group>"; };
 		476672D529D890E70073E27E /* APSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APSService.swift; sourceTree = "<group>"; };
 		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
@@ -786,6 +795,11 @@
 		47DC693829D02BD70092A362 /* WorkflowNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNode.swift; sourceTree = "<group>"; };
 		47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNodeOperations.swift; sourceTree = "<group>"; };
 		47DC693C29D04B680092A362 /* WorkflowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowViewModel.swift; sourceTree = "<group>"; };
+		47F5A6E129DE7FED00073D7F /* WorkflowListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListCollectionViewCell.swift; sourceTree = "<group>"; };
+		47F5A6E229DE7FED00073D7F /* WorkflowListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkflowListCollectionViewCell.xib; sourceTree = "<group>"; };
+		47F5A6E529DE801100073D7F /* WorkflowListCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListCollectionViewModel.swift; sourceTree = "<group>"; };
+		47F5A6E829DEA4FC00073D7F /* WFlowAppDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowAppDefinitions.swift; sourceTree = "<group>"; };
+		47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowAppDefinitionOperations.swift; sourceTree = "<group>"; };
 		4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		4D9AEC96051A972B6886AC76 /* Pods-ContentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.debug.xcconfig"; sourceTree = "<group>"; };
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -1393,6 +1407,15 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		4734440029DC0CCF004A72CD /* Startable Workflows */ = {
+			isa = PBXGroup;
+			children = (
+				4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */,
+				4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */,
+			);
+			path = "Startable Workflows";
+			sourceTree = "<group>";
+		};
 		4792042729CF01C00080BB13 /* Task Process Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -1435,6 +1458,25 @@
 				47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */,
 			);
 			path = "Workflow Node";
+			sourceTree = "<group>";
+		};
+		47F5A6E029DE7FD200073D7F /* Workflow List */ = {
+			isa = PBXGroup;
+			children = (
+				47F5A6E129DE7FED00073D7F /* WorkflowListCollectionViewCell.swift */,
+				47F5A6E529DE801100073D7F /* WorkflowListCollectionViewModel.swift */,
+				47F5A6E229DE7FED00073D7F /* WorkflowListCollectionViewCell.xib */,
+			);
+			path = "Workflow List";
+			sourceTree = "<group>";
+		};
+		47F5A6E729DEA4DD00073D7F /* WFlowAppDefinitions */ = {
+			isa = PBXGroup;
+			children = (
+				47F5A6E829DEA4FC00073D7F /* WFlowAppDefinitions.swift */,
+				47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */,
+			);
+			path = WFlowAppDefinitions;
 			sourceTree = "<group>";
 		};
 		6F4B75B86F4D71EED5B5B6D5 /* Pods */ = {
@@ -2326,6 +2368,7 @@
 				C92EBB1E28B13B4D003DFA15 /* Task Attachments */,
 				C9688BAA28D30DA40020206C /* Create Task */,
 				4792042A29CF0AF50080BB13 /* Workflow List */,
+				4734440029DC0CCF004A72CD /* Startable Workflows */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2335,6 +2378,7 @@
 			children = (
 				47B61BA129DAD06700EA0598 /* Start Workflow */,
 				47DC693729D02BC50092A362 /* Workflow Node */,
+				47F5A6E729DEA4DD00073D7F /* WFlowAppDefinitions */,
 				47B61B9C29DAB62C00EA0598 /* Workflow Attachment */,
 				C93A246228A628AF005F46C2 /* Task Attachments */,
 				C9205C7028A0D94300DEF5AC /* Task Comments */,
@@ -2446,6 +2490,7 @@
 			children = (
 				C9A75996289BBAA1006603E0 /* Section */,
 				C9A75999289BBAA1006603E0 /* List */,
+				47F5A6E029DE7FD200073D7F /* Workflow List */,
 			);
 			path = "Collection Cells";
 			sourceTree = "<group>";
@@ -3731,6 +3776,7 @@
 				B9973068255E7CC70026166A /* InfoPlist.strings in Resources */,
 				E334C07424755E6B00F74880 /* Localizable.strings in Resources */,
 				C95C28C3289E45C900000080 /* AddCommentTableViewCell.xib in Resources */,
+				47F5A6E429DE7FED00073D7F /* WorkflowListCollectionViewCell.xib in Resources */,
 				C915CDD2288FEBF500819F86 /* TasksSortAndFilterView.xib in Resources */,
 				C9A7599E289BBAA1006603E0 /* TaskSectionCollectionViewCell.xib in Resources */,
 				C95B2A3528BE1866007841F4 /* mockComments.json in Resources */,
@@ -4179,6 +4225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47F5A6E929DEA4FC00073D7F /* WFlowAppDefinitions.swift in Sources */,
 				C93A247128A6445C005F46C2 /* TaskAttachmentTableViewCell.swift in Sources */,
 				B9B908DF2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift in Sources */,
 				E363E3582562867200CB5338 /* EmptySearch.swift in Sources */,
@@ -4283,6 +4330,7 @@
 				C940BB8E286024340064E2E7 /* AnalyticsConstants.swift in Sources */,
 				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				B9318AAE254893090023689D /* FavouriteEvent.swift in Sources */,
+				4734440429DC0D1E004A72CD /* StartableWorkflowsViewModel.swift in Sources */,
 				B99D9BC224867D7C00FBFC9B /* BasicAuthenticationProvider.swift in Sources */,
 				E3E9ED4324CB24E100F1A2C2 /* BrowseStaticNodeCollectionViewCell.swift in Sources */,
 				C93A246428A628C4005F46C2 /* TaskAttachmentOperations.swift in Sources */,
@@ -4327,8 +4375,10 @@
 				F13998CB25F7675B0062F652 /* UITextField+IsEmpty.swift in Sources */,
 				B9B7531025AC8974004F16E5 /* AsyncClosureOperation.swift in Sources */,
 				C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */,
+				4734440229DC0CED004A72CD /* StartableWorkflowsViewController.swift in Sources */,
 				C91303B4275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift in Sources */,
 				C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */,
+				47F5A6EB29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift in Sources */,
 				C9CD69CD2824B42E00A98FD0 /* SystemSearch+ListActions.swift in Sources */,
 				F1E613E12629608B0013A5D8 /* CameraViewController+Layout.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
@@ -4441,6 +4491,7 @@
 				E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */,
 				C9A759B8289BD70B006603E0 /* PriorityTableCellViewModel.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */,
+				47F5A6E629DE801100073D7F /* WorkflowListCollectionViewModel.swift in Sources */,
 				B93E08FA25665297009732C3 /* PrivacyNoticeViewController.swift in Sources */,
 				F14E68B226173B6B002FDEF9 /* CapturedAsset.swift in Sources */,
 				C963196127DA0CFD00BE8746 /* URLExtension.swift in Sources */,
@@ -4533,6 +4584,7 @@
 				E3E2BDA824CC2B3D00D8A7EC /* DeleteNodeMapper.swift in Sources */,
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,
 				B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */,
+				47F5A6E329DE7FED00073D7F /* WorkflowListCollectionViewCell.swift in Sources */,
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
 				C9D3B48028D878C200C919D8 /* DatePickerViewModel.swift in Sources */,
 				E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */,
