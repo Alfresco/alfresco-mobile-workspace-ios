@@ -185,7 +185,12 @@ extension ListComponentViewController {
     }
     
     private func startWorkflowAction(appDefinition: WFlowAppDefinitions?) {
-        AlfrescoLog.debug("start workflow with app definition: \(appDefinition)")
         StartWorkflowModel.shared.appDefinition = appDefinition
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = appDefinition
+            self.navigationViewController?.pushViewController(viewController, animated: true)
+        }
     }
 }

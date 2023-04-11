@@ -87,6 +87,7 @@ enum Event {
         case taskCommentsScreen = "page_view_task_comments"
         case taskAttachmentsScreen = "page_view_attached_files"
         case workflowTab = "page_view_workflows"
+        case startWorkflowScreen = "page_view_start_workflow"
     }
 }
 
