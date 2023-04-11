@@ -17,10 +17,105 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class StartWorkflowViewModel: NSObject {
     let rowViewModels = Observable<[RowViewModel]>([])
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
     var appDefinition: WFlowAppDefinitions?
+    
+    var processDefintionTitle: String {
+        return appDefinition?.name ?? ""
+    }
+    
+    var processDefintionDescription: String {
+        return appDefinition?.description ?? ""
+    }
+
+    var dueDate: Date?
+    
+    var priority: Int = 0
+    
+    var taskPriority: TaskPriority {
+        if priority >= 0 && priority <= 3 {
+            return .low
+        } else if priority >= 4 && priority <= 7 {
+            return .medium
+        } else {
+            return .high
+        }
+    }
+    
+    var assignee: TaskNodeAssignee?
+    
+    var userName: String? {
+        let apsUserID = UserProfile.apsUserID
+        if apsUserID == assigneeUserId {
+            return LocalizationConstants.EditTask.meTitle
+        } else {
+            return assignee?.userName
+        }
+    }
+    
+    var assigneeUserId: Int {
+        return assignee?.assigneeID ?? -1
+    }
+    
+    
+    // MARK: - Get Due date
+    func getDueDate(for dueDate: Date?) -> String? {
+        if let dueDate = dueDate?.dateString(format: "dd MMM yyyy") {
+            return dueDate
+        } else {
+            return LocalizationConstants.Tasks.noDueDate
+        }
+    }
+    
+    // MARK: - Priority Values
+    func getPriorityValues(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
+       
+        var textColor: UIColor = currentTheme.taskErrorTextColor
+        var backgroundColor: UIColor = currentTheme.taskErrorContainer
+        var priorityText = LocalizationConstants.Tasks.low
+       
+        if taskPriority == .low {
+            textColor = currentTheme.taskSuccessTextColor
+            backgroundColor = currentTheme.taskSuccessContainer
+            priorityText = LocalizationConstants.Tasks.low
+        } else if taskPriority == .medium {
+            textColor = currentTheme.taskWarningTextColor
+            backgroundColor = currentTheme.taskWarningContainer
+            priorityText = LocalizationConstants.Tasks.medium
+        } else if taskPriority == .high {
+            textColor = currentTheme.taskErrorTextColor
+            backgroundColor = currentTheme.taskErrorContainer
+            priorityText = LocalizationConstants.Tasks.high
+        }
+        return(textColor, backgroundColor, priorityText)
+    }
+    
+    // MARK: - Process defintion
+    func fetchProcessDefinition(completionHandler: @escaping (_ processDefinition: WFlowProcessDefinitions?, _ error: Error?) -> Void) {
+        
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let appDefinitionId = self.appDefinition?.addDefinitionID ?? -1
+            
+            ProcessAPI.processDefinition(appDefinitionId: String(appDefinitionId)) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+
+                if data != nil {
+                    let processDefinitions = data?.data ?? []
+                    let processDefinition = WFlowProcessDefinitionsOperations.processNodes(for: processDefinitions)
+                    StartWorkflowModel.shared.processDefiniton = processDefinition
+                    completionHandler(processDefinition, nil)
+                } else {
+                    completionHandler(nil, error)
+                }
+            }
+        })
+    }
 }

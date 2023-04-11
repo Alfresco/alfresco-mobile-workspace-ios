@@ -387,5 +387,7 @@ struct LocalizationConstants {
         static let allTitle = NSLocalizedString("all-title", comment: "")
         static let filterOptions = NSLocalizedString("filter-options", comment: "")
         static let selectWorkflow = NSLocalizedString("select-workflow", comment: "")
+        static let workflowTitle = NSLocalizedString("workflow-title", comment: "")
     }
 }
+

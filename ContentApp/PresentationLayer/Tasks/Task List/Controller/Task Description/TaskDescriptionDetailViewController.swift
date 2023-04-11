@@ -62,7 +62,7 @@ class TaskDescriptionDetailViewController: SystemSearchViewController {
     }
     
     private func applyLocalization() {
-        headerTitleLabel.text = LocalizationConstants.EditTask.taskTitle
+        headerTitleLabel.text = viewModel.headerTitle
     }
     
     func addAccessibility() {

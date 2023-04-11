@@ -22,9 +22,11 @@ struct StartWorkflowModel {
     static var shared = StartWorkflowModel()
     var node: ListNode?
     var appDefinition: WFlowAppDefinitions?
+    var processDefiniton: WFlowProcessDefinitions?
     
     func reset() {
         StartWorkflowModel.shared.node = nil
         StartWorkflowModel.shared.appDefinition = nil
+        StartWorkflowModel.shared.processDefiniton = nil
     }
 }

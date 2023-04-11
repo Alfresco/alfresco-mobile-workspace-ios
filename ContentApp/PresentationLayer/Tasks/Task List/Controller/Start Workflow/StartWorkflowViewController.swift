@@ -39,6 +39,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
+        viewModel.appDefinition = StartWorkflowModel.shared.appDefinition
         addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -48,10 +49,9 @@ class StartWorkflowViewController: SystemSearchViewController {
         addAccessibility()
         controller.buildViewModel()
         setupBindings()
-     //   getWorkflowDetails()
+        getWorkflowDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
-     //   updateCompleteTaskUI()
 
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -187,32 +187,32 @@ class StartWorkflowViewController: SystemSearchViewController {
         
         /* observing read more description */
         controller.didSelectReadMoreActionForDescription = {
-          //  self.showTaskDescription()
+            self.showWorkflowDescription()
         }
         
         /* observing edit title */
         controller.didSelectEditTitle = {
-           // self.editTitleAndDescriptionAction()
+            self.editTitleAndDescriptionAction()
         }
         
         /* observing edit due date */
         controller.didSelectEditDueDate = {
-          //  self.editDueDateAction()
+            self.editDueDateAction()
         }
         
         /* observing reset due date */
         controller.didSelectResetDueDate = {
-          //  self.resetDueDateAction()
+            self.resetDueDateAction()
         }
         
         /* observing priority */
         controller.didSelectPriority = {
-          //  self.changePriorityAction()
+            self.changePriorityAction()
         }
         
         /* observing assignee */
         controller.didSelectAssignee = {
-          //  self.changeAssigneeAction()
+            self.changeAssigneeAction()
         }
         
         /* observer did select add attachment */
@@ -221,6 +221,23 @@ class StartWorkflowViewController: SystemSearchViewController {
         }
     }
     
+    // MARK: - Workflow details
+    private func getWorkflowDetails() {
+        viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
+            guard let sSelf = self else { return }
+            sSelf.tableView.reloadData()
+        }
+    }
+    
+    private func showWorkflowDescription() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDescription) as? TaskDescriptionDetailViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = viewModel.appDefinition
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true)
+        }
+    }
 }
 
 // MARK: - Table View Data Source and Delegates
@@ -269,5 +286,115 @@ extension StartWorkflowViewController: UITableViewDelegate, UITableViewDataSourc
         default:
             return UITableView.automaticDimension
         }
+    }
+}
+
+// MARK: - Edit Task Name and description
+extension StartWorkflowViewController {
+    
+    private func editTitleAndDescriptionAction() {
+        
+        let viewController = CreateNodeSheetViewControler.instantiateViewController()
+        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
+                                                      createTaskViewType: .editTask,
+                                                      task: createTaskNodeObject())
+        
+        viewController.coordinatorServices = coordinatorServices
+        viewController.createTaskViewModel = createTaskViewModel
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = dialogTransitionController
+        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        self.present(viewController, animated: true)
+        viewController.callBack = { [weak self] (task, title, description) in
+            guard let sSelf = self else { return }
+            sSelf.updateTaskTitleAndDescription(with: title, description: description)
+        }
+    }
+
+    private func updateTaskTitleAndDescription(with title: String?, description: String?) {
+        viewModel.appDefinition?.name = title
+        viewModel.appDefinition?.description = description
+        controller.buildViewModel()
+    }
+    
+    private func createTaskNodeObject() -> TaskNode {
+        return TaskNode(guid: "0",
+                        title: viewModel.processDefintionTitle,
+                        name: viewModel.processDefintionTitle,
+                        description: viewModel.processDefintionDescription)
+    }
+}
+
+// MARK: - Edit Due Date
+extension StartWorkflowViewController {
+    
+    func editDueDateAction() {
+        
+        let viewController = DatePickerViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        viewController.coordinatorServices = coordinatorServices
+        viewController.viewModel.selectedDate = viewModel.dueDate
+        self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+        viewController.callBack = { [weak self] (dueDate) in
+            guard let sSelf = self else { return }
+            sSelf.updateDueDate(with: dueDate)
+        }
+    }
+    
+    func resetDueDateAction() {
+        self.updateDueDate(with: nil)
+    }
+    
+    private func updateDueDate(with dueDate: Date?) {
+        viewModel.dueDate = dueDate
+        controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Priority
+extension StartWorkflowViewController {
+    
+    func changePriorityAction() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskPriority) as? TaskPriorityViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.priority = viewModel.priority
+            self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+            viewController.callBack = { [weak self] (priority) in
+                guard let sSelf = self else { return }
+                sSelf.updateTaskPriority(with: priority)
+            }
+        }
+    }
+    
+    private func updateTaskPriority(with priority: Int) {
+        viewModel.priority = priority
+        controller.buildViewModel()
+    }
+}
+
+// MARK: - Edit Assignee
+extension StartWorkflowViewController {
+    
+    func changeAssigneeAction() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
+            viewController.coordinatorServices = coordinatorServices
+
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true)
+            viewController.callBack = { [weak self] (assignee) in
+                guard let sSelf = self else { return }
+                sSelf.updateAssignee(with: assignee)
+            }
+        }
+    }
+    
+    private func updateAssignee(with assignee: TaskNodeAssignee) {
+        viewModel.assignee = assignee
+        controller.buildViewModel()
     }
 }
