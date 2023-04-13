@@ -118,27 +118,47 @@ extension AnalyticsManager {
         self.logEvent(name: Event.Action.doneTask.rawValue, parameters: parameters)
     }
     
-    func didTapUploadTaskAttachment() {
+    func didTapUploadTaskAttachment(isWorkflow: Bool = false) {
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.uploadTaskAttachment.rawValue
-        self.logEvent(name: Event.Action.uploadTaskAttachment.rawValue, parameters: parameters)
+        if isWorkflow {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.uploadWorkflowAttachment.rawValue
+            self.logEvent(name: Event.Action.uploadWorkflowAttachment.rawValue, parameters: parameters)
+        } else {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.uploadTaskAttachment.rawValue
+            self.logEvent(name: Event.Action.uploadTaskAttachment.rawValue, parameters: parameters)
+        }
     }
     
-    func takePhotoforTasks() {
+    func takePhotoforTasks(isWorkflow: Bool = false) {
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskTakePhoto.rawValue
-        self.logEvent(name: Event.Action.taskTakePhoto.rawValue, parameters: parameters)
+        if isWorkflow {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.workflowTakePhoto.rawValue
+            self.logEvent(name: Event.Action.workflowTakePhoto.rawValue, parameters: parameters)
+        } else {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskTakePhoto.rawValue
+            self.logEvent(name: Event.Action.taskTakePhoto.rawValue, parameters: parameters)
+        }
     }
     
-    func uploadPhotoforTasks() {
+    func uploadPhotoforTasks(isWorkflow: Bool = false) {
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadPhoto.rawValue
-        self.logEvent(name: Event.Action.taskUploadPhoto.rawValue, parameters: parameters)
+        if isWorkflow {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.workflowUploadPhoto.rawValue
+            self.logEvent(name: Event.Action.workflowUploadPhoto.rawValue, parameters: parameters)
+        } else {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadPhoto.rawValue
+            self.logEvent(name: Event.Action.taskUploadPhoto.rawValue, parameters: parameters)
+        }
     }
     
-    func uploadFilesforTasks() {
+    func uploadFilesforTasks(isWorkflow: Bool = false) {
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadFile.rawValue
-        self.logEvent(name: Event.Action.taskUploadFile.rawValue, parameters: parameters)
+        if isWorkflow {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.workflowUploadFile.rawValue
+            self.logEvent(name: Event.Action.workflowUploadFile.rawValue, parameters: parameters)
+        } else {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskUploadFile.rawValue
+            self.logEvent(name: Event.Action.taskUploadFile.rawValue, parameters: parameters)
+        }
     }
 }

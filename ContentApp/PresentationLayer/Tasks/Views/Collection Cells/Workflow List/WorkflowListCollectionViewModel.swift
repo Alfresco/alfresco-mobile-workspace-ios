@@ -26,8 +26,4 @@ class WorkflowListCollectionViewModel: NSObject {
     var definitionDescription: String? {
         return workflowAppDefinition?.description
     }
-    
-    var image: UIImage? {
-        return UIImage(named: "ic-action-start-workflow")
-    }
 }

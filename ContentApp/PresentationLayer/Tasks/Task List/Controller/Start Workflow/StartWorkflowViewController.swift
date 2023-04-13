@@ -217,7 +217,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         
         /* observer did select add attachment */
         controller.didSelectAddAttachment = {
-          //  self.addAttachmentButtonAction()
+            self.addAttachmentButtonAction()
         }
     }
     
@@ -396,5 +396,38 @@ extension StartWorkflowViewController {
     private func updateAssignee(with assignee: TaskNodeAssignee) {
         viewModel.assignee = assignee
         controller.buildViewModel()
+    }
+}
+
+// MARK: - Add Attachment
+extension StartWorkflowViewController {
+    
+    private func addAttachmentButtonAction() {
+        AnalyticsManager.shared.didTapUploadTaskAttachment(isWorkflow: true)
+
+        let actions = ActionsMenuFolderAttachments.actions()
+        let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
+                                                      coordinatorServices: coordinatorServices)
+        let viewController = ActionMenuViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        viewController.coordinatorServices = coordinatorServices
+        viewController.actionMenuModel = actionMenuViewModel
+        self.present(bottomSheet, animated: true, completion: nil)
+        viewController.didSelectAction = {[weak self] (action) in
+            guard let sSelf = self else { return }
+            sSelf.handleAction(action: action)
+        }
+    }
+    
+    private func handleAction(action: ActionMenu) {
+        if action.type.isCreateActions {
+            if action.type == .uploadMedia {
+                
+            } else if action.type == .createMedia {
+                
+            } else if action.type == .uploadFiles {
+                
+            }
+        }
     }
 }

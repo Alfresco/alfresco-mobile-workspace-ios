@@ -190,6 +190,7 @@ extension ListComponentViewController {
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.appDefinition = appDefinition
+            viewController.viewModel.isEditMode = true
             self.navigationViewController?.pushViewController(viewController, animated: true)
         }
     }

@@ -24,7 +24,8 @@ class StartWorkflowViewModel: NSObject {
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
     var appDefinition: WFlowAppDefinitions?
-    
+    var isEditMode = false
+
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
     }
@@ -61,7 +62,6 @@ class StartWorkflowViewModel: NSObject {
     var assigneeUserId: Int {
         return assignee?.assigneeID ?? -1
     }
-    
     
     // MARK: - Get Due date
     func getDueDate(for dueDate: Date?) -> String? {
