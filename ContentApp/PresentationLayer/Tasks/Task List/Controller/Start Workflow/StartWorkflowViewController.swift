@@ -422,12 +422,56 @@ extension StartWorkflowViewController {
     private func handleAction(action: ActionMenu) {
         if action.type.isCreateActions {
             if action.type == .uploadMedia {
-                
+                showPhotoLibrary()
             } else if action.type == .createMedia {
-                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showCamera()
+                })
             } else if action.type == .uploadFiles {
-                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showFiles()
+                })
             }
         }
     }
+
+    func showPhotoLibrary() {
+        AnalyticsManager.shared.uploadPhotoforTasks(isWorkflow: true)
+//        if let presenter = self.navigationController {
+//            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+//                                                            parentListNode: taskNode(),
+//                                                            isTaskAttachment: true)
+//            coordinator.start()
+//            photoLibraryCoordinator = coordinator
+//        }
+    }
+
+    func showCamera() {
+        AnalyticsManager.shared.takePhotoforTasks(isWorkflow: true)
+//        if let presenter = self.navigationController {
+//            let coordinator = CameraScreenCoordinator(with: presenter,
+//                                                      parentListNode: taskNode(),
+//                                                      isTaskAttachment: true)
+//            coordinator.start()
+//            cameraCoordinator = coordinator
+//        }
+    }
+
+    func showFiles() {
+        AnalyticsManager.shared.uploadFilesforTasks(isWorkflow: true)
+//        if let presenter = self.navigationController {
+//            let coordinator = FileManagerScreenCoordinator(with: presenter,
+//                                                            parentListNode: taskNode(),
+//                                                           isTaskAttachment: true)
+//            coordinator.start()
+//            fileManagerCoordinator = coordinator
+//        }
+    }
+
+//    func taskNode() -> ListNode {
+//        return ListNode(guid: viewModel.taskID,
+//                        title: viewModel.taskName ?? "",
+//                        path: "",
+//                        nodeType: .folder)
+//    }
 }
