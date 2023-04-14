@@ -22,7 +22,7 @@ class WFlowProcessDefinitionsOperations: NSObject {
     
     static func processNodes(for processDefinitions: [ProcessDefinitionDetail]) -> WFlowProcessDefinitions? {
         
-        if !processDefinitions.isEmpty, let processDefinition = processDefinitions.first  {
+        if !processDefinitions.isEmpty, let processDefinition = processDefinitions.first {
             return WFlowProcessDefinitions(processId: processDefinition.id,
                                            name: processDefinition.name,
                                            description: processDefinition.description,
