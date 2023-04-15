@@ -402,3 +402,5 @@
 "filter-options" = "Filter Options";
 "select-workflow" = "Select workflow";
 "workflow-title" = "Workflow";
+"individual-title" = "Individual";
+"group-title" = "Group";

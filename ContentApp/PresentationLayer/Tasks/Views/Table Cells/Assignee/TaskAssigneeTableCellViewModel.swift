@@ -25,6 +25,7 @@ class TaskAssigneeTableCellViewModel: RowViewModel {
     var lastName: String?
     var userName: String?
     var didSelectUserAction: (() -> Void)?
+    var groupName: String?
 
     func cellIdentifier() -> String {
         return "TaskAssigneeTableViewCell"
@@ -32,7 +33,8 @@ class TaskAssigneeTableCellViewModel: RowViewModel {
     
     init(userID: Int?,
          firstName: String?,
-         lastName: String?) {
+         lastName: String?,
+         groupName: String?) {
         
         let fName = firstName ?? ""
         let lName = lastName ?? ""
@@ -40,5 +42,14 @@ class TaskAssigneeTableCellViewModel: RowViewModel {
         self.firstName = fName
         self.lastName = lName
         self.userName = String(format: "%@ %@", fName, lName).trimmingCharacters(in: .whitespacesAndNewlines)
+        self.groupName = groupName
+    }
+    
+    func displayName() -> String? {
+        if let groupName = groupName, !groupName.isEmpty {
+            return groupName
+        } else {
+            return userName
+        }
     }
 }

@@ -54,6 +54,8 @@ class StartWorkflowViewModel: NSObject {
         let apsUserID = UserProfile.apsUserID
         if apsUserID == assigneeUserId {
             return LocalizationConstants.EditTask.meTitle
+        } else if let groupName = assignee?.groupName, !groupName.isEmpty {
+            return groupName
         } else {
             return assignee?.userName
         }
