@@ -202,17 +202,14 @@ extension StartWorkflowViewModel {
                         
                         if let attachement = TaskAttachmentOperations.processAttachments(for: [node], taskId: transfer.parentNodeId).first {
                             let listNode = transfer.updateListNode(with: attachement)
+                            transferDataAccessor.updateNode(node: transfer)
                             completionHandler(listNode, nil)
-                            // delete file from local storage
-                            transferDataAccessor.remove(transfer: transfer)
                         }
                     } else {
                         AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadWorkflowAttachment.rawValue, fileSize: fileSize, success: false)
                         transfer.syncStatus = .error
                         let listNode = transfer.listNode()
                         completionHandler(listNode, nil)
-                        // delete file from local storage
-                        transferDataAccessor.remove(transfer: transfer)
                     }
                 }
             } catch {

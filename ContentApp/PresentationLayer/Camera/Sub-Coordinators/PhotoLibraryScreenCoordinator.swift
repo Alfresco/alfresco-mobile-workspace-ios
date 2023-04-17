@@ -130,13 +130,12 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
             uploadTransfers.append(uploadTransfer)
         }
 
-        if attachmentType == .workflow {
-            didSelectAttachment?(uploadTransfers)
-            return
-        } else {
-            let uploadTransferDataAccessor = UploadTransferDataAccessor()
-            uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
+        if attachmentType != .workflow {
             triggerUpload()
+        } else {
+            didSelectAttachment?(uploadTransfers)
         }
     }
     

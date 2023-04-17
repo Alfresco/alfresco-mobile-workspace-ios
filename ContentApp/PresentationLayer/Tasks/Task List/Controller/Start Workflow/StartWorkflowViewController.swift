@@ -411,7 +411,6 @@ extension StartWorkflowViewController {
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.isWorkflowSearch = true
-            
             let navigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController, animated: true)
             viewController.callBack = { [weak self] (assignee) in
@@ -480,24 +479,10 @@ extension StartWorkflowViewController {
 
     func showCamera() {
         AnalyticsManager.shared.takePhotoforTasks(isWorkflow: true)
-//        if let presenter = self.navigationController {
-//            let coordinator = CameraScreenCoordinator(with: presenter,
-//                                                      parentListNode: taskNode(),
-//                                                      isTaskAttachment: true)
-//            coordinator.start()
-//            cameraCoordinator = coordinator
-//        }
     }
 
     func showFiles() {
         AnalyticsManager.shared.uploadFilesforTasks(isWorkflow: true)
-//        if let presenter = self.navigationController {
-//            let coordinator = FileManagerScreenCoordinator(with: presenter,
-//                                                            parentListNode: taskNode(),
-//                                                           isTaskAttachment: true)
-//            coordinator.start()
-//            fileManagerCoordinator = coordinator
-//        }
     }
 
     func workflowNode() -> ListNode {

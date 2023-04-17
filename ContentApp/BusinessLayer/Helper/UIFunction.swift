@@ -31,4 +31,10 @@ class UIFunction: NSObject {
         let keyboardFrameBegin = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height
         return (height: keyboardFrameBegin, duration: duration, curve: animationCurve)
     }
+    
+    func currentTimeInMilliSeconds() -> Int {
+        let currentDate = Date()
+        let since1970 = currentDate.timeIntervalSince1970
+        return Int(since1970 * 1000)
+    }
 }
