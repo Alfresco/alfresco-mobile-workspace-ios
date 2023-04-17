@@ -18,6 +18,7 @@
 
 import Foundation
 import ObjectBox
+import UIKit
 
 class UploadTransfer: Entity, Codable {
     var id: Id = 0 // swiftlint:disable:this identifier_name
@@ -29,7 +30,7 @@ class UploadTransfer: Entity, Codable {
     var localFilenamePath = ""
     // objectbox: convert = { "default": ".undefined" }
     var syncStatus: SyncStatus = .pending
-    var isTaskAttachment = false
+    var attachmentType: String = "content"
 
     // Default initializer required by ObjectBox
 
@@ -41,14 +42,14 @@ class UploadTransfer: Entity, Codable {
          mimetype: String,
          nodeDescription: String?,
          localFilenamePath: String,
-         isTaskAttachment: Bool = false) {
+         attachmentType: AttachmentType) {
         self.parentNodeId = parentNodeId
         self.nodeName = nodeName
         self.extensionType = extensionType
         self.mimetype = mimetype
         self.nodeDescription = nodeDescription ?? ""
         self.localFilenamePath = localFilenamePath
-        self.isTaskAttachment = isTaskAttachment
+        self.attachmentType = attachmentType.rawValue
     }
 
     // MARK: - Public Helpers

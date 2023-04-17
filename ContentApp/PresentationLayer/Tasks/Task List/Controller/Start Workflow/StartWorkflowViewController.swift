@@ -219,6 +219,33 @@ class StartWorkflowViewController: SystemSearchViewController {
         controller.didSelectAddAttachment = {
             self.addAttachmentButtonAction()
         }
+        
+        /* observing attachments */
+        viewModel.attachments.addObserver { [weak self] (attachments) in
+            guard let sSelf = self else { return }
+            DispatchQueue.main.async {
+                sSelf.tableView.reloadData()
+            }
+        }
+        
+        /* observe view all attachments action */
+        viewModel.viewAllAttachmentsAction = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.viewAllAttachments()
+        }
+        
+        /* observer did select task attachment */
+        viewModel.didSelectAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectAttachment(attachment: attachment)
+        }
+        
+        /* observer did select delete attachment */
+        viewModel.didSelectDeleteAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectDeleteAttachment(attachment: attachment)
+        }
+        
     }
     
     // MARK: - Workflow details
@@ -438,13 +465,17 @@ extension StartWorkflowViewController {
 
     func showPhotoLibrary() {
         AnalyticsManager.shared.uploadPhotoforTasks(isWorkflow: true)
-//        if let presenter = self.navigationController {
-//            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
-//                                                            parentListNode: taskNode(),
-//                                                            isTaskAttachment: true)
-//            coordinator.start()
-//            photoLibraryCoordinator = coordinator
-//        }
+        if let presenter = self.navigationController {
+            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                            parentListNode: workflowNode(),
+                                                            attachmentType: .workflow)
+            coordinator.start()
+            photoLibraryCoordinator = coordinator
+            coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+            }
+        }
     }
 
     func showCamera() {
@@ -469,10 +500,57 @@ extension StartWorkflowViewController {
 //        }
     }
 
-//    func taskNode() -> ListNode {
-//        return ListNode(guid: viewModel.taskID,
-//                        title: viewModel.taskName ?? "",
-//                        path: "",
-//                        nodeType: .folder)
-//    }
+    func workflowNode() -> ListNode {
+        return ListNode(guid: viewModel.processDefintionID,
+                        title: viewModel.processDefintionTitle,
+                        path: "",
+                        nodeType: .folder)
+    }
+    
+    private func viewAllAttachments() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.attachments = viewModel.attachments
+            //viewController.viewModel.task = viewModel.task
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    private func didSelectAttachment(attachment: ListNode) {
+//        if attachment.syncStatus == .undefined || attachment.syncStatus == .synced {
+//            let title = attachment.title
+//            let attachmentId = attachment.guid
+//            viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
+//                guard let sSelf = self, let path = path else { return }
+//                sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+//            }
+//        } else {
+            viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
+//        }
+    }
+    
+    private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
+        print("----- upload transfers ------ \(uploadTransfers)")
+        for uploadTransfer in uploadTransfers {
+            viewModel.uploadAttachmentOperation(transfer: uploadTransfer) { listNode, error in
+                print("----- listNode ------ \(listNode)")
+                self.controller.handleSyncStatus(eventNode: listNode)
+            }
+        }
+    }
+}
+
+// MARK: - Delete Attachment
+extension StartWorkflowViewController {
+    
+    private func didSelectDeleteAttachment(attachment: ListNode) {
+        AnalyticsManager.shared.didTapDeleteTaskAttachment(isWorkflow: true)
+        var attachments = viewModel.attachments.value
+        if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
+            attachments.remove(at: index)
+            viewModel.attachments.value = attachments
+            controller.buildViewModel()
+        }
+    }
 }

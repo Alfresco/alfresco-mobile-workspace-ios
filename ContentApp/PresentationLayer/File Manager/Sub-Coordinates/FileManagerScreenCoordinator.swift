@@ -23,21 +23,21 @@ class FileManagerScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private let parentListNode: ListNode
     private var fileManagerDataSource: FileManagerDataSource?
-    var isTaskAttachment = false
+    var attachmentType: AttachmentType
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
-         isTaskAttachment: Bool = false) {
+         attachmentType: AttachmentType) {
         self.parentListNode = parentListNode
         self.presenter = presenter
-        self.isTaskAttachment = isTaskAttachment
+        self.attachmentType = attachmentType
     }
     
     func start() {
         let viewController = FileManagerViewController.instantiateViewController()
         viewController.fileManagerDelegate = self
         viewController.modalPresentationStyle = .fullScreen
-        viewController.isTaskAttachment = self.isTaskAttachment
+        viewController.attachmentType = self.attachmentType
         
         let accountIdentifier = self.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
         let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
@@ -75,7 +75,7 @@ extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
                                                 mimetype: assetURL.mimeType(),
                                                 nodeDescription: fileAsset.description,
                                                 localFilenamePath: assetURL.lastPathComponent,
-                                                isTaskAttachment: self.isTaskAttachment)
+                                                attachmentType: self.attachmentType)
             uploadTransfers.append(uploadTransfer)
         }
 

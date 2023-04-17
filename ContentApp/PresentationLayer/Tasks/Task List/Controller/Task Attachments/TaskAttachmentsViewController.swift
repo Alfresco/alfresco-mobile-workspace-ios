@@ -192,7 +192,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
                 sSelf.viewModel.attachments.value = taskAttachments
 
                 // Insert nodes to be uploaded
-                _ = sSelf.controller.uploadTransferDataAccessor.queryAll(for: sSelf.viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+                _ = sSelf.controller.uploadTransferDataAccessor.queryAll(for: sSelf.viewModel.taskID, attachmentType: .task) { uploadTransfers in
                     sSelf.controller.insert(uploadTransfers: uploadTransfers)
                 }
                 
@@ -310,7 +310,7 @@ extension TaskAttachmentsViewController {
         if let presenter = self.navigationController {
             let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
                                                             parentListNode: taskNode(),
-                                                            isTaskAttachment: true)
+                                                            attachmentType: .task)
             coordinator.start()
             photoLibraryCoordinator = coordinator
         }
@@ -321,7 +321,7 @@ extension TaskAttachmentsViewController {
         if let presenter = self.navigationController {
             let coordinator = CameraScreenCoordinator(with: presenter,
                                                       parentListNode: taskNode(),
-                                                      isTaskAttachment: true)
+                                                      attachmentType: .task)
             coordinator.start()
             cameraCoordinator = coordinator
         }
@@ -331,8 +331,8 @@ extension TaskAttachmentsViewController {
         AnalyticsManager.shared.uploadFilesforTasks()
         if let presenter = self.navigationController {
             let coordinator = FileManagerScreenCoordinator(with: presenter,
-                                                            parentListNode: taskNode(),
-                                                           isTaskAttachment: true)
+                                                           parentListNode: taskNode(),
+                                                           attachmentType: .task)
             coordinator.start()
             fileManagerCoordinator = coordinator
         }

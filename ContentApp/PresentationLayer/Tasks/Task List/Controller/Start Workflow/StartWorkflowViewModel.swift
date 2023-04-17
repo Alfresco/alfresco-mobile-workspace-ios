@@ -25,6 +25,16 @@ class StartWorkflowViewModel: NSObject {
     let isLoading = Observable<Bool>(true)
     var appDefinition: WFlowAppDefinitions?
     var isEditMode = false
+    var attachments = Observable<[ListNode]>([])
+    var didSelectAttachment: ((ListNode) -> Void)?
+    var didSelectDeleteAttachment: ((ListNode) -> Void)?
+    internal var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    var viewAllAttachmentsAction: (() -> Void)?
+
+    var processDefintionID: String {
+        return String(appDefinition?.addDefinitionID ?? -1)
+    }
 
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
@@ -117,6 +127,97 @@ class StartWorkflowViewModel: NSObject {
                 } else {
                     completionHandler(nil, error)
                 }
+            }
+        })
+    }
+}
+
+// MARK: - Sync status
+extension StartWorkflowViewModel {
+    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
+        if node.isAFileType() && node.markedFor == .upload {
+            let nodeSyncStatus = node.syncStatus
+            var entryListStatus: ListEntrySyncStatus
+
+            switch nodeSyncStatus {
+            case .pending:
+                entryListStatus = .pending
+            case .error:
+                entryListStatus = .error
+            case .inProgress:
+                entryListStatus = .inProgress
+            case .synced:
+                entryListStatus = .uploaded
+            default:
+                entryListStatus = .undefined
+            }
+
+            return entryListStatus
+        }
+
+        return node.isMarkedOffline() ? .markedForOffline : .undefined
+    }
+
+    func startFileCoordinator(for node: ListNode, presenter: UINavigationController?) {
+        if let presenter = presenter {
+            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: presenter,
+                                                           listNode: node,
+                                                           excludedActions: [.moveTrash,
+                                                                             .addFavorite,
+                                                                             .removeFavorite,
+                                                                             .download,
+                                                                             .startWorkflow],
+                                                           shouldPreviewLatestContent: false)
+            filePreviewCoordinator.start()
+            self.filePreviewCoordinator = filePreviewCoordinator
+        }
+    }
+}
+
+// MARK: - Upload Attachmemnt
+extension StartWorkflowViewModel {
+    
+    func uploadAttachmentOperation(transfer: UploadTransfer, completionHandler: @escaping (_ listNode: ListNode, _ error: Error?) -> Void) {
+        
+        transfer.syncStatus = .inProgress
+        completionHandler(transfer.listNode(), nil)
+        let transferDataAccessor = UploadTransferDataAccessor()
+
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            guard let fileURL = transferDataAccessor.uploadLocalPath(for: transfer) else { return }
+
+            do {
+                let fileData = try Data(contentsOf: fileURL)
+                let fileSize = fileURL.fileSize
+                let fileName = String(format: "%@.%@", transfer.nodeName, transfer.extensionType)
+
+                TasksAPI.uploadContentToWorkflow(fileData: fileData,
+                                                 fileName: fileName,
+                                                 mimeType: transfer.mimetype) { data, error in
+                    
+                    if error == nil, let node = data {
+                        AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadWorkflowAttachment.rawValue, fileSize: fileSize, success: true)
+                        transfer.syncStatus = .synced
+                        
+                        if let attachement = TaskAttachmentOperations.processAttachments(for: [node], taskId: transfer.parentNodeId).first {
+                            let listNode = transfer.updateListNode(with: attachement)
+                            completionHandler(listNode, nil)
+                            // delete file from local storage
+                            transferDataAccessor.remove(transfer: transfer)
+                        }
+                    } else {
+                        AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadWorkflowAttachment.rawValue, fileSize: fileSize, success: false)
+                        transfer.syncStatus = .error
+                        let listNode = transfer.listNode()
+                        completionHandler(listNode, nil)
+                        // delete file from local storage
+                        transferDataAccessor.remove(transfer: transfer)
+                    }
+                }
+            } catch {
+                transfer.syncStatus = .error
+                completionHandler(transfer.listNode(), nil)
             }
         })
     }

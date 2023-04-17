@@ -183,7 +183,7 @@ extension TaskPropertiesViewModel {
     }
     
     func isAttachmentsPendingForUpload() -> Bool {
-        let attachments = self.uploadTransferDataAccessor.queryAll(for: taskID, isTaskAttachment: true) { transfers in }
+        let attachments = self.uploadTransferDataAccessor.queryAll(for: taskID, attachmentType: .task) { transfers in }
         
         if attachments.isEmpty {
             return false

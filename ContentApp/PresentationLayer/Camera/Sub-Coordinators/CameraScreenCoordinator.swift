@@ -24,14 +24,14 @@ class CameraScreenCoordinator: NSObject, Coordinator {
     private var navigationViewController: UINavigationController?
     private let parentListNode: ListNode
     private var mediaFilesFolderPath: String?
-    var isTaskAttachment = false
-    
+    var attachmentType: AttachmentType
+
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
-         isTaskAttachment: Bool = false) {
+         attachmentType: AttachmentType) {
         self.presenter = presenter
         self.parentListNode = parentListNode
-        self.isTaskAttachment = isTaskAttachment
+        self.attachmentType = attachmentType
     }
     
     func start() {
@@ -107,7 +107,7 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
         coordinatorServices.locationService?.stopUpdatingLocation()
         
         var isFileSizeExcceds = false
-        if isTaskAttachment {
+        if attachmentType == .task {
             for capturedAsset in capturedAssets {
                 let assetURL = URL(fileURLWithPath: capturedAsset.path)
                 if assetURL.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
@@ -149,7 +149,7 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
                                                 localFilenamePath: assetURL.lastPathComponent,
-                                                isTaskAttachment: self.isTaskAttachment)
+                                                attachmentType: self.attachmentType)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
         }

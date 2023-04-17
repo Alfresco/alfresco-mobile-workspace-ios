@@ -131,21 +131,24 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     
     func showCamera() {
         let coordinator = CameraScreenCoordinator(with: presenter,
-                                                  parentListNode: listNode)
+                                                  parentListNode: listNode,
+                                                  attachmentType: .content)
         coordinator.start()
         cameraCoordinator = coordinator
     }
     
     func showPhotoLibrary() {
         let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
-                                                        parentListNode: listNode)
+                                                        parentListNode: listNode,
+                                                        attachmentType: .content)
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
     
     func showFiles() {
         let coordinator = FileManagerScreenCoordinator(with: presenter,
-                                                        parentListNode: listNode)
+                                                       parentListNode: listNode,
+                                                       attachmentType: .content)
         coordinator.start()
         fileManagerCoordinator = coordinator
     }

@@ -187,10 +187,11 @@ extension ListComponentViewController {
     private func startWorkflowAction(appDefinition: WFlowAppDefinitions?) {
         StartWorkflowModel.shared.appDefinition = appDefinition
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController, let attachment = StartWorkflowModel.shared.node {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.appDefinition = appDefinition
             viewController.viewModel.isEditMode = true
+            viewController.viewModel.attachments.value = [attachment]
             self.navigationViewController?.pushViewController(viewController, animated: true)
         }
     }

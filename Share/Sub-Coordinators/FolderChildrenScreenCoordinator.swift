@@ -116,7 +116,8 @@ extension FolderChildrenScreenCoordinator: FileManagerAssetDelegate {
                                                 extensionType: fileAsset.fileExtension ?? "",
                                                 mimetype: assetURL.mimeType(),
                                                 nodeDescription: fileAsset.description,
-                                                localFilenamePath: assetURL.lastPathComponent)
+                                                localFilenamePath: assetURL.lastPathComponent,
+                                                attachmentType: .content)
             uploadTransfers.append(uploadTransfer)
         }
 

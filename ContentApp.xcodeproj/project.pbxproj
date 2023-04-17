@@ -16,6 +16,7 @@
 		4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */; };
 		4734440229DC0CED004A72CD /* StartableWorkflowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */; };
 		4734440429DC0D1E004A72CD /* StartableWorkflowsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */; };
+		47665C9029EACB3100679747 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759BA289BE415006603E0 /* Enums.swift */; };
 		476672D629D890E70073E27E /* APSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476672D529D890E70073E27E /* APSService.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
@@ -4233,6 +4234,7 @@
 				C9A9115C27A7B97F002EBC7F /* String+CompareVersions.swift in Sources */,
 				C9A9110D27A7B7C5002EBC7F /* PrivacyNoticeModelProtocol.swift in Sources */,
 				C9AFDF7827B8D171007233A5 /* SystemThemableViewController.swift in Sources */,
+				47665C9029EACB3100679747 /* Enums.swift in Sources */,
 				C992F4D427FAC754002C4D41 /* CreateNodeSheetCoordinator.swift in Sources */,
 				C9A911AD27A7BB95002EBC7F /* DarkTheme.swift in Sources */,
 				C9A9110227A7B798002EBC7F /* UILabel+Theming.swift in Sources */,

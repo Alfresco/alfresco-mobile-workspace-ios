@@ -365,7 +365,7 @@ extension TaskDetailController: EventObservable {
             }
             
             // Insert nodes to be uploaded
-            _ = self.viewModel.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+            _ = self.viewModel.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, attachmentType: .task) { uploadTransfers in
                 self.insert(uploadTransfers: uploadTransfers)
             }
         }
