@@ -135,24 +135,18 @@ extension StartWorkflowViewModel {
         if node.isAFileType() && node.markedFor == .upload {
             let nodeSyncStatus = node.syncStatus
             var entryListStatus: ListEntrySyncStatus
-
+            
             switch nodeSyncStatus {
-            case .pending:
-                entryListStatus = .pending
-            case .error:
-                entryListStatus = .error
-            case .inProgress:
+            case .pending, .error, .inProgress:
                 entryListStatus = .inProgress
             case .synced:
                 entryListStatus = .uploaded
             default:
                 entryListStatus = .undefined
             }
-
             return entryListStatus
         }
-
-        return node.isMarkedOffline() ? .markedForOffline : .undefined
+        return node.isMarkedOffline() ? .uploaded : .undefined
     }
 
     func startFileCoordinator(for node: ListNode, presenter: UINavigationController?) {

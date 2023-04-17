@@ -516,10 +516,8 @@ extension StartWorkflowViewController {
     }
     
     private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
-        print("----- upload transfers ------ \(uploadTransfers)")
         for uploadTransfer in uploadTransfers {
             viewModel.uploadAttachmentOperation(transfer: uploadTransfer) { listNode, error in
-                print("----- listNode ------ \(listNode)")
                 self.controller.handleSyncStatus(eventNode: listNode)
             }
         }
