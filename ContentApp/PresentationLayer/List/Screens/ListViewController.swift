@@ -36,6 +36,7 @@ class ListViewController: SystemSearchViewController {
         super.viewDidLoad()
 
         let listComponentViewController = ListComponentViewController.instantiateViewController()
+        listComponentViewController.navigationViewController = self.navigationController
         listComponentViewController.pageController = pageController
         listComponentViewController.viewModel = viewModel
         listComponentViewController.coordinatorServices = self.coordinatorServices
@@ -82,6 +83,7 @@ class ListViewController: SystemSearchViewController {
         } else {
             viewModel?.fireAnalyticEvent()
         }
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

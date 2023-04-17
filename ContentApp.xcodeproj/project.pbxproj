@@ -31,6 +31,11 @@
 		47F5A6E629DE801100073D7F /* WorkflowListCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6E529DE801100073D7F /* WorkflowListCollectionViewModel.swift */; };
 		47F5A6E929DEA4FC00073D7F /* WFlowAppDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6E829DEA4FC00073D7F /* WFlowAppDefinitions.swift */; };
 		47F5A6EB29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */; };
+		47FBDF6129E3FF6D00EE56AC /* StartWorkflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6029E3FF6D00EE56AC /* StartWorkflowViewController.swift */; };
+		47FBDF6329E3FFD600EE56AC /* StartWorkflowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6229E3FFD600EE56AC /* StartWorkflowController.swift */; };
+		47FBDF6529E3FFEB00EE56AC /* StartWorkflowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6429E3FFEB00EE56AC /* StartWorkflowViewModel.swift */; };
+		47FBDF6829E5394B00EE56AC /* WFlowProcessDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6729E5394B00EE56AC /* WFlowProcessDefinitions.swift */; };
+		47FBDF6A29E5395800EE56AC /* WFlowProcessDefinitionsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6929E5395800EE56AC /* WFlowProcessDefinitionsOperations.swift */; };
 		4B2D7FA2F97B887A7B192BDB /* Pods_ContentApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */; };
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
@@ -800,6 +805,11 @@
 		47F5A6E529DE801100073D7F /* WorkflowListCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListCollectionViewModel.swift; sourceTree = "<group>"; };
 		47F5A6E829DEA4FC00073D7F /* WFlowAppDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowAppDefinitions.swift; sourceTree = "<group>"; };
 		47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowAppDefinitionOperations.swift; sourceTree = "<group>"; };
+		47FBDF6029E3FF6D00EE56AC /* StartWorkflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowViewController.swift; sourceTree = "<group>"; };
+		47FBDF6229E3FFD600EE56AC /* StartWorkflowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowController.swift; sourceTree = "<group>"; };
+		47FBDF6429E3FFEB00EE56AC /* StartWorkflowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowViewModel.swift; sourceTree = "<group>"; };
+		47FBDF6729E5394B00EE56AC /* WFlowProcessDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowProcessDefinitions.swift; sourceTree = "<group>"; };
+		47FBDF6929E5395800EE56AC /* WFlowProcessDefinitionsOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowProcessDefinitionsOperations.swift; sourceTree = "<group>"; };
 		4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		4D9AEC96051A972B6886AC76 /* Pods-ContentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.debug.xcconfig"; sourceTree = "<group>"; };
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
@@ -1477,6 +1487,25 @@
 				47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */,
 			);
 			path = WFlowAppDefinitions;
+			sourceTree = "<group>";
+		};
+		47FBDF5F29E3FF5200EE56AC /* Start Workflow */ = {
+			isa = PBXGroup;
+			children = (
+				47FBDF6029E3FF6D00EE56AC /* StartWorkflowViewController.swift */,
+				47FBDF6229E3FFD600EE56AC /* StartWorkflowController.swift */,
+				47FBDF6429E3FFEB00EE56AC /* StartWorkflowViewModel.swift */,
+			);
+			path = "Start Workflow";
+			sourceTree = "<group>";
+		};
+		47FBDF6629E5392F00EE56AC /* WFlow Process Definition */ = {
+			isa = PBXGroup;
+			children = (
+				47FBDF6729E5394B00EE56AC /* WFlowProcessDefinitions.swift */,
+				47FBDF6929E5395800EE56AC /* WFlowProcessDefinitionsOperations.swift */,
+			);
+			path = "WFlow Process Definition";
 			sourceTree = "<group>";
 		};
 		6F4B75B86F4D71EED5B5B6D5 /* Pods */ = {
@@ -2369,6 +2398,7 @@
 				C9688BAA28D30DA40020206C /* Create Task */,
 				4792042A29CF0AF50080BB13 /* Workflow List */,
 				4734440029DC0CCF004A72CD /* Startable Workflows */,
+				47FBDF5F29E3FF5200EE56AC /* Start Workflow */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2379,6 +2409,7 @@
 				47B61BA129DAD06700EA0598 /* Start Workflow */,
 				47DC693729D02BC50092A362 /* Workflow Node */,
 				47F5A6E729DEA4DD00073D7F /* WFlowAppDefinitions */,
+				47FBDF6629E5392F00EE56AC /* WFlow Process Definition */,
 				47B61B9C29DAB62C00EA0598 /* Workflow Attachment */,
 				C93A246228A628AF005F46C2 /* Task Attachments */,
 				C9205C7028A0D94300DEF5AC /* Task Comments */,
@@ -4294,6 +4325,7 @@
 				E3724FD825CBD2D10005AA1C /* KeyConstants.swift in Sources */,
 				B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */,
 				C9A75990289BB0CC006603E0 /* TasksListViewController.swift in Sources */,
+				47FBDF6329E3FFD600EE56AC /* StartWorkflowController.swift in Sources */,
 				F14E689C261727B1002FDEF9 /* CameraFeatures.swift in Sources */,
 				F168F465262484FC0002D3A5 /* PhotoGalleryViewController.swift in Sources */,
 				B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */,
@@ -4324,6 +4356,7 @@
 				E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */,
 				C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */,
 				4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */,
+				47FBDF6A29E5395800EE56AC /* WFlowProcessDefinitionsOperations.swift in Sources */,
 				C9C51F1B286BEE88007D5BCF /* AnalyticsManager+APITracker.swift in Sources */,
 				B946E84D25592DE500023A39 /* TopLevelBrowseViewModelFactory.swift in Sources */,
 				B90E383D255AAD7D00FAFB81 /* RecentViewModelFactory.swift in Sources */,
@@ -4450,6 +4483,7 @@
 				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,
 				C989FEA2272FD11D0081EB7E /* UITextField+MaxLength.swift in Sources */,
 				F14E68A126172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift in Sources */,
+				47FBDF6829E5394B00EE56AC /* WFlowProcessDefinitions.swift in Sources */,
 				C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
 				47B61BA329DAD07400EA0598 /* StartWorkflowModel.swift in Sources */,
@@ -4522,6 +4556,7 @@
 				B9B17B0F25DBE95D00F534E6 /* ListComponent+DataSource.swift in Sources */,
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
 				E3E9ED3B24CB03E400F1A2C2 /* FavoritesNodeMapper.swift in Sources */,
+				47FBDF6129E3FF6D00EE56AC /* StartWorkflowViewController.swift in Sources */,
 				E378D598256D9FDE00E08405 /* String+Range.swift in Sources */,
 				47DC693929D02BD70092A362 /* WorkflowNode.swift in Sources */,
 				C9BC8D8C28D46F4E00EB2B97 /* TaskDescriptionDetailViewModel.swift in Sources */,
@@ -4570,6 +4605,7 @@
 				B9A90E7D2664F25F00B89766 /* SearchViewModel.swift in Sources */,
 				C911EF9C2890F67600C55F67 /* TasksSortAndFilterViewModel.swift in Sources */,
 				B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */,
+				47FBDF6529E3FFEB00EE56AC /* StartWorkflowViewModel.swift in Sources */,
 				F185B1A326175C8800407451 /* CameraStoryboardInstantiable.swift in Sources */,
 				E30ADEF524A1EB7400C8C4E2 /* DiskService.swift in Sources */,
 				C97BEB8026EB3AC700E05375 /* CollectionFlowLayout.swift in Sources */,

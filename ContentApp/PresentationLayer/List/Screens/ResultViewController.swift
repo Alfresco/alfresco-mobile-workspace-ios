@@ -71,6 +71,7 @@ class ResultViewController: SystemThemableViewController {
         super.viewDidLoad()
 
         let listComponentViewController = ListComponentViewController.instantiateViewController()
+        listComponentViewController.navigationViewController = self.navigationController
         listComponentViewController.listActionDelegate = self
         listComponentViewController.coordinatorServices = coordinatorServices
         listComponentViewController.pageController = pageController

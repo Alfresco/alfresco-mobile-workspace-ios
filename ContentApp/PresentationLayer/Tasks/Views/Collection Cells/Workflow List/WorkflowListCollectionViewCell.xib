@@ -17,18 +17,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="385" height="71"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hmf-si-Q8k" userLabel="workflowImageView">
-                        <rect key="frame" x="24" y="23.666666666666671" width="24" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="24" id="AvA-7y-8YO"/>
-                            <constraint firstAttribute="width" secondItem="hmf-si-Q8k" secondAttribute="height" multiplier="1:1" id="ZOR-oD-LPW"/>
-                        </constraints>
-                    </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="wkn-fX-gFW">
-                        <rect key="frame" x="72" y="18.333333333333332" width="289" height="34.666666666666671"/>
+                        <rect key="frame" x="24" y="18.333333333333332" width="337" height="34.666666666666671"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bg5-Rp-WnF">
-                                <rect key="frame" x="0.0" y="0.0" width="289" height="19.333333333333332"/>
+                                <rect key="frame" x="0.0" y="0.0" width="337" height="19.333333333333332"/>
                                 <accessibility key="accessibilityConfiguration" identifier="nodeTitleLabel">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -37,7 +30,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SubLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NbB-Uh-Pk0">
-                                <rect key="frame" x="0.0" y="20.333333333333332" width="289" height="14.333333333333332"/>
+                                <rect key="frame" x="0.0" y="20.333333333333332" width="337" height="14.333333333333332"/>
                                 <accessibility key="accessibilityConfiguration" identifier="nodeSubtitleLabel">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -51,18 +44,14 @@
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstItem="hmf-si-Q8k" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="6Zc-fg-6MS"/>
+                <constraint firstItem="wkn-fX-gFW" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="24" id="8nK-48-o6j"/>
                 <constraint firstItem="wkn-fX-gFW" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="BSY-sT-55u"/>
-                <constraint firstItem="hmf-si-Q8k" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="24" id="JWa-fR-r5j"/>
-                <constraint firstItem="wkn-fX-gFW" firstAttribute="leading" secondItem="hmf-si-Q8k" secondAttribute="trailing" constant="24" id="YB2-1O-DWh"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="wkn-fX-gFW" secondAttribute="trailing" constant="24" id="uB3-g8-hDt"/>
             </constraints>
             <size key="customSize" width="385" height="102"/>
             <connections>
                 <outlet property="subtitleLabel" destination="NbB-Uh-Pk0" id="9Pp-Gt-BE0"/>
                 <outlet property="titleLabel" destination="Bg5-Rp-WnF" id="xto-nP-DS5"/>
-                <outlet property="widthImageView" destination="AvA-7y-8YO" id="UXc-yI-PP1"/>
-                <outlet property="workflowImageView" destination="hmf-si-Q8k" id="PNM-8y-w9d"/>
             </connections>
             <point key="canvasLocation" x="252.67175572519082" y="37.676056338028168"/>
         </collectionViewCell>

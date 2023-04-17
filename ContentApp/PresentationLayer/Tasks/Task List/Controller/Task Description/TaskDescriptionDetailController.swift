@@ -45,12 +45,12 @@ class TaskDescriptionDetailController: NSObject {
     
     // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
-        var taskDescription = viewModel.taskDescription ?? ""
+        var taskDescription = viewModel.descriptionDetail
         if taskDescription.isEmpty {
             taskDescription = LocalizationConstants.Tasks.noDescription
         }
 
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName,
+        let rowVM = TitleTableCellViewModel(title: viewModel.title,
                                             subTitle: taskDescription,
                                             isHideReadMore: true,
                                             isEditMode: false)

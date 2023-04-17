@@ -35,5 +35,6 @@ struct StoryboardConstants {
         static let taskAssignee = "TaskAssigneeViewController"
         static let workflowList = "WorkflowListViewController"
         static let startableWorkflowList = "StartableWorkflowsViewController"
+        static let startWorkflowPage = "StartWorkflowViewController"
     }
 }

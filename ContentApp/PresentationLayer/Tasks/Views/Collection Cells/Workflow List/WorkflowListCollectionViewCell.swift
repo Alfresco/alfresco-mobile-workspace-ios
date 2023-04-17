@@ -20,10 +20,8 @@ import UIKit
 
 class WorkflowListCollectionViewCell: ListSelectableCell {
 
-    @IBOutlet weak var workflowImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var widthImageView: NSLayoutConstraint!
     var currentTheme: PresentationTheme?
     lazy var viewModel = WorkflowListCollectionViewModel()
 
@@ -34,11 +32,9 @@ class WorkflowListCollectionViewCell: ListSelectableCell {
     private func addAccessibility() {
         titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
         subtitleLabel.accessibilityLabel = LocalizationConstants.Accessibility.assignee
-        workflowImageView.accessibilityLabel = LocalizationConstants.Accessibility.priority
         
         titleLabel.accessibilityIdentifier = "title"
         subtitleLabel.accessibilityIdentifier = "sub-title"
-        workflowImageView.accessibilityIdentifier = "workflow-image"
     }
     
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -49,14 +45,12 @@ class WorkflowListCollectionViewCell: ListSelectableCell {
         titleLabel.lineBreakMode = .byTruncatingTail
         subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitleLabel.lineBreakMode = .byTruncatingHead
-        workflowImageView.tintColor = currentTheme.onSurface70Color
     }
     
     func setupData(for workflowAppDefinition: WFlowAppDefinitions?) {
         guard let workflowAppDefinition = workflowAppDefinition else { return }
         viewModel.workflowAppDefinition = workflowAppDefinition
         
-        workflowImageView.image = viewModel.image
         titleLabel.text = viewModel.name
         subtitleLabel.text = viewModel.definitionDescription
         
