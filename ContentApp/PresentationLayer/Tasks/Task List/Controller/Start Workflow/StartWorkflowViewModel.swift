@@ -31,10 +31,7 @@ class StartWorkflowViewModel: NSObject {
     internal var filePreviewCoordinator: FilePreviewScreenCoordinator?
     let uploadTransferDataAccessor = UploadTransferDataAccessor()
     var viewAllAttachmentsAction: (() -> Void)?
-
-    var processDefintionID: String {
-        return String(appDefinition?.addDefinitionID ?? -1)
-    }
+    var tempWorkflowId: String = ""
 
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""

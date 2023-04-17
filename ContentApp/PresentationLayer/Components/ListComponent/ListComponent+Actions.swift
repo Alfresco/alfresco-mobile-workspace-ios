@@ -192,6 +192,7 @@ extension ListComponentViewController {
             viewController.viewModel.appDefinition = appDefinition
             viewController.viewModel.isEditMode = true
             viewController.viewModel.attachments.value = [attachment]
+            viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
             self.navigationViewController?.pushViewController(viewController, animated: true)
         }
     }

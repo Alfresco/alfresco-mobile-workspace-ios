@@ -486,7 +486,7 @@ extension StartWorkflowViewController {
     }
 
     func workflowNode() -> ListNode {
-        return ListNode(guid: viewModel.processDefintionID,
+        return ListNode(guid: viewModel.tempWorkflowId,
                         title: viewModel.processDefintionTitle,
                         path: "",
                         nodeType: .folder)

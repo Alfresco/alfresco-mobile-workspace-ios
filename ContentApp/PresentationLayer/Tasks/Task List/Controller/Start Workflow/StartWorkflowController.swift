@@ -264,7 +264,7 @@ extension StartWorkflowController {
             }
             
             // Insert nodes to be uploaded
-            _ = self.viewModel.uploadTransferDataAccessor.queryAll(for: viewModel.processDefintionID, attachmentType: .workflow) { uploadTransfers in
+            _ = self.viewModel.uploadTransferDataAccessor.queryAll(for: viewModel.tempWorkflowId, attachmentType: .workflow) { uploadTransfers in
                 self.insert(uploadTransfers: uploadTransfers)
             }
         }

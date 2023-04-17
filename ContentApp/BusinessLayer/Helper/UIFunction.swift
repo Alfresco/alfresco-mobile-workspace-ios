@@ -32,9 +32,10 @@ class UIFunction: NSObject {
         return (height: keyboardFrameBegin, duration: duration, curve: animationCurve)
     }
     
-    func currentTimeInMilliSeconds() -> Int {
+    class func currentTimeInMilliSeconds() -> String {
         let currentDate = Date()
         let since1970 = currentDate.timeIntervalSince1970
-        return Int(since1970 * 1000)
+        let time = Int(since1970 * 1000)
+        return String(time)
     }
 }
