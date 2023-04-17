@@ -384,7 +384,6 @@ extension StartWorkflowViewController {
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.isWorkflowSearch = true
-            
             let navigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController, animated: true)
             viewController.callBack = { [weak self] (assignee) in
@@ -475,4 +474,5 @@ extension StartWorkflowViewController {
 //                        path: "",
 //                        nodeType: .folder)
 //    }
+    }
 }
