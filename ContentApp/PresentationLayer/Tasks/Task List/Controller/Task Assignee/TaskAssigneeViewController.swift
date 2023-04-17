@@ -121,9 +121,15 @@ class TaskAssigneeViewController: SystemThemableViewController {
     }
     
     private func applyLocalization() {
-        emailButton.setTitle(LocalizationConstants.EditTask.byEmail, for: UIControl.State.normal)
-        nameButton.setTitle(LocalizationConstants.EditTask.byName, for: UIControl.State.normal)
-        searchTextField.placeholder = LocalizationConstants.EditTask.searchPlaceholder
+        if !viewModel.isWorkflowSearch {
+            emailButton.setTitle(LocalizationConstants.EditTask.byEmail, for: UIControl.State.normal)
+            nameButton.setTitle(LocalizationConstants.EditTask.byName, for: UIControl.State.normal)
+            searchTextField.placeholder = LocalizationConstants.EditTask.searchPlaceholder
+        } else {
+            nameButton.setTitle(LocalizationConstants.Workflows.individualTitle, for: UIControl.State.normal)
+            emailButton.setTitle(LocalizationConstants.Workflows.groupTitle, for: UIControl.State.normal)
+            searchTextField.placeholder = LocalizationConstants.EditTask.searchPlaceholder
+        }
     }
     
     func addAccessibility() {
@@ -289,20 +295,30 @@ extension TaskAssigneeViewController: UITextFieldDelegate {
             return
         } else if viewModel.isSearchByName && viewModel.minimumCharactersToSearch > text.count {
             return
-        } else if !viewModel.isSearchByName && !text.isValidEmail {
+        } else if !viewModel.isSearchByName && !text.isValidEmail && !viewModel.isWorkflowSearch {
+            return
+        } else if !viewModel.isSearchByName && viewModel.isWorkflowSearch && viewModel.minimumCharactersToSearch > text.count {
             return
         }
         
         var searchText = viewModel.searchText
         var email: String?
-        if !viewModel.isSearchByName {
+        if !viewModel.isSearchByName && !viewModel.isWorkflowSearch {
             searchText = nil
             email = viewModel.searchText
         }
         
-        viewModel.searchUser(with: searchText, email: email) {[weak self] assignee, error in
-            guard let sSelf = self else { return }
-            sSelf.viewModel.users.value = assignee
+        if viewModel.isWorkflowSearch && !viewModel.isSearchByName {
+            // search group
+            viewModel.searchGroup(with: searchText) {[weak self] assignee, error in
+                guard let sSelf = self else { return }
+                sSelf.viewModel.users.value = assignee
+            }
+        } else {
+            viewModel.searchUser(with: searchText, email: email) {[weak self] assignee, error in
+                guard let sSelf = self else { return }
+                sSelf.viewModel.users.value = assignee
+            }
         }
     }
     

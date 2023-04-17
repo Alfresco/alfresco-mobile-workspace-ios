@@ -388,6 +388,8 @@ struct LocalizationConstants {
         static let filterOptions = NSLocalizedString("filter-options", comment: "")
         static let selectWorkflow = NSLocalizedString("select-workflow", comment: "")
         static let workflowTitle = NSLocalizedString("workflow-title", comment: "")
+        static let individualTitle = NSLocalizedString("individual-title", comment: "")
+        static let groupTitle = NSLocalizedString("group-title", comment: "")
+        static let warningUploadingInQueue = NSLocalizedString("warning-message-uploading-in-progress", comment: "")
     }
 }
-

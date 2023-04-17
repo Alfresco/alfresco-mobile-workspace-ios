@@ -383,7 +383,7 @@ extension StartWorkflowViewController {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
             viewController.coordinatorServices = coordinatorServices
-
+            viewController.viewModel.isWorkflowSearch = true
             let navigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController, animated: true)
             viewController.callBack = { [weak self] (assignee) in
@@ -422,12 +422,28 @@ extension StartWorkflowViewController {
     private func handleAction(action: ActionMenu) {
         if action.type.isCreateActions {
             if action.type == .uploadMedia {
-                
+                showPhotoLibrary()
             } else if action.type == .createMedia {
-                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showCamera()
+                })
             } else if action.type == .uploadFiles {
-                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                    self.showFiles()
+                })
             }
         }
+    }
+
+    func showPhotoLibrary() {
+        AnalyticsManager.shared.uploadPhotoforTasks(isWorkflow: true)
+    }
+
+    func showCamera() {
+        AnalyticsManager.shared.takePhotoforTasks(isWorkflow: true)
+    }
+
+    func showFiles() {
+        AnalyticsManager.shared.uploadFilesforTasks(isWorkflow: true)
     }
 }

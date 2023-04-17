@@ -27,7 +27,11 @@ class TaskCommentOperations: NSObject {
             let assignee = TaskNodeAssignee(assigneeID: comment.createdBy?.id ?? -1,
                                             firstName: comment.createdBy?.firstName,
                                             lastName: comment.createdBy?.lastName,
-                                            email: comment.createdBy?.email)
+                                            email: comment.createdBy?.email,
+                                            groupName: nil,
+                                            externalId: nil,
+                                            status: nil,
+                                            parentGroupId: nil)
            
             let comment = TaskCommentModel(created: comment.created,
                                            createdBy: assignee,
