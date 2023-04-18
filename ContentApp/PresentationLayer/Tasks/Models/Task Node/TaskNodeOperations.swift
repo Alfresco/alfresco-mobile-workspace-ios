@@ -27,7 +27,12 @@ class TaskNodeOperations: NSObject {
             let assignee = TaskNodeAssignee(assigneeID: task.assignee?.id ?? -1,
                                             firstName: task.assignee?.firstName,
                                             lastName: task.assignee?.lastName,
-                                            email: task.assignee?.email)
+                                            email: task.assignee?.email,
+                                            groupName: task.assignee?.groupName,
+                                            externalId: task.assignee?.externalId,
+                                            status: task.assignee?.status,
+                                            parentGroupId: task.assignee?.parentGroupId)
+            
             let node = TaskNode(guid: "",
                                 taskID: task.id,
                                 title: "",
@@ -70,9 +75,13 @@ class TaskNodeOperations: NSObject {
         var taskAssignee: [TaskNodeAssignee] = []
         for user in assignee {
             let nodeAssignee = TaskNodeAssignee(assigneeID: user.id,
-                                            firstName: user.firstName,
-                                            lastName: user.lastName,
-                                            email: user.email)
+                                                firstName: user.firstName,
+                                                lastName: user.lastName,
+                                                email: user.email,
+                                                groupName: user.groupName,
+                                                externalId: user.externalId,
+                                                status: user.status,
+                                                parentGroupId: user.parentGroupId)
             taskAssignee.append(nodeAssignee)
         }
         

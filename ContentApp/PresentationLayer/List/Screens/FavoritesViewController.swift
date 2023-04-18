@@ -83,6 +83,7 @@ class FavoritesViewController: SystemSearchViewController {
             }
         }
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.favoritesTab)
+        self.tabBarController?.tabBar.isHidden = false
     }
 
     override func willTransition(to newCollection: UITraitCollection,
@@ -170,6 +171,7 @@ class FavoritesViewController: SystemSearchViewController {
     func setupScrollingContent() {
         // Set up the folders and files view
         let folderAndFilesViewController = ListComponentViewController.instantiateViewController()
+        folderAndFilesViewController.navigationViewController = self.navigationController
         folderAndFilesViewController.coordinatorServices = coordinatorServices
         folderAndFilesViewController.pageController = folderAndFilesPageController
         folderAndFilesViewController.pageController?.delegate = folderAndFilesViewController
@@ -181,6 +183,7 @@ class FavoritesViewController: SystemSearchViewController {
 
         // Set up the libraries view
         let librariesViewController = ListComponentViewController.instantiateViewController()
+        librariesViewController.navigationViewController = self.navigationController
         librariesViewController.coordinatorServices = coordinatorServices
         librariesViewController.pageController = librariesPageController
         librariesViewController.pageController?.delegate = librariesViewController

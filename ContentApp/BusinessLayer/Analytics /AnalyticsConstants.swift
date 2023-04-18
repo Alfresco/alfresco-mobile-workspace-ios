@@ -55,7 +55,11 @@ enum Event {
         case taskTakePhoto = "event_task_upload_photos_or_videos"
         case taskUploadPhoto = "event_task_take_a_photo_or_video"
         case taskUploadFile = "event_task_upload_files"
-
+        case startWorkflow = "event_start_workflow"
+        case uploadWorkflowAttachment = "event_upload_workflow_attachment"
+        case workflowUploadPhoto = "event_workflow_take_a_photo_or_video"
+        case workflowTakePhoto = "event_workflow_upload_photos_or_videos"
+        case workflowUploadFile = "event_workflow_upload_files"
     }
 
     enum API: String {
@@ -85,6 +89,7 @@ enum Event {
         case taskCommentsScreen = "page_view_task_comments"
         case taskAttachmentsScreen = "page_view_attached_files"
         case workflowTab = "page_view_workflows"
+        case startWorkflowScreen = "page_view_start_workflow"
     }
 }
 

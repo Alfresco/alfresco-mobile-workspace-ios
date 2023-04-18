@@ -16,24 +16,17 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class WorkflowViewModel: NSObject {
-    var workflow: WorkflowNode?
-    var workflowName: String? {
-        return workflow?.name
-    }
+struct StartWorkflowModel {
+    static var shared = StartWorkflowModel()
+    var node: ListNode?
+    var appDefinition: WFlowAppDefinitions?
+    var processDefiniton: WFlowProcessDefinitions?
     
-    var userName: String? {
-        let apsUserID = UserProfile.apsUserID
-        if apsUserID == assigneeUserId {
-            return LocalizationConstants.EditTask.meTitle
-        } else {
-            return workflow?.startedBy?.userName
-        }
-    }
-    
-    var assigneeUserId: Int {
-        return workflow?.startedBy?.assigneeID ?? -1
+    func reset() {
+        StartWorkflowModel.shared.node = nil
+        StartWorkflowModel.shared.appDefinition = nil
+        StartWorkflowModel.shared.processDefiniton = nil
     }
 }

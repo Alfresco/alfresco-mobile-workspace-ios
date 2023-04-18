@@ -36,6 +36,10 @@ struct ActionsMenuGeneric {
             actions2.append(action)
         }
         
+        if let action = startWorkflowAction(for: node) {
+            actions2.append(action)
+        }
+        
         if let action = renameNodeAction(for: node) {
             actions2.append(action)
         }
@@ -143,5 +147,17 @@ struct ActionsMenuGeneric {
         default:
             return node.hasPersmission(to: .delete) ? renameAction : nil
         }
+    }
+    
+    static private func startWorkflowAction(for node: ListNode) -> ActionMenu? {
+        let isAPSEnable = APSService.isAPSServiceEnable ?? false
+        if isAPSEnable {
+            let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
+                                          type: .startWorkflow)
+            if node.isAFileType() {
+                return workflowAction
+            }
+        }
+        return nil
     }
 }

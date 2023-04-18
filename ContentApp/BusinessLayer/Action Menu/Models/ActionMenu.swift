@@ -68,6 +68,10 @@ enum ActionMenuType: String {
     var isMoreAction: Bool {
         return [.more].contains(self)
     }
+    
+    var isWorkflowActions: Bool {
+        return [.startWorkflow].contains(self)
+    }
 
     // MARK: - Generic
     case placeholder = "ic-placeholder"
@@ -97,4 +101,5 @@ enum ActionMenuType: String {
     case uploadFiles = "ic-action-upload-files"
     case renameNode = "ic-action-rename"
     case scanDocuments = "ic-action-scan-documents"
+    case startWorkflow = "ic-action-start-workflow"
 }

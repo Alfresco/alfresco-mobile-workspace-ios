@@ -17,6 +17,8 @@
 //
 
 import Foundation
+import UIKit
+import MaterialComponents
 
 extension ListComponentViewController: NodeActionsViewModelDelegate,
                                        CreateNodeViewModelDelegate {
@@ -55,6 +57,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
                 handleSheetCreate(action: action, node: node)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
+            } else if action.type.isWorkflowActions {
+                handleStartWorkflow(action: action)
             }
             logEvent(with: action, node: node)
         }
@@ -163,5 +167,33 @@ extension ListComponentViewController {
     func logEvent(with action: ActionMenu?, node: ListNode?) {
         guard let action = action else { return }
         AnalyticsManager.shared.fileActionEvent(for: node, action: action)
+    }
+}
+
+// MARK: - Workflow
+extension ListComponentViewController {
+    
+    func handleStartWorkflow(action: ActionMenu) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startableWorkflowList) as? StartableWorkflowsViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            viewController.coordinatorServices = coordinatorServices
+            self.present(bottomSheet, animated: true)
+            viewController.didSelectAction = { [weak self] (appDefinition) in
+                guard let sSelf = self else { return }
+                sSelf.startWorkflowAction(appDefinition: appDefinition)
+            }
+        }
+    }
+    
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?) {
+        StartWorkflowModel.shared.appDefinition = appDefinition
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = appDefinition
+            viewController.viewModel.isEditMode = true
+            self.navigationViewController?.pushViewController(viewController, animated: true)
+        }
     }
 }
