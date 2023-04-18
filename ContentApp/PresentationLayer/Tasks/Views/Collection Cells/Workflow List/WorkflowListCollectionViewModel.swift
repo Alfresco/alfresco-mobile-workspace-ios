@@ -18,22 +18,12 @@
 
 import UIKit
 
-class WorkflowViewModel: NSObject {
-    var workflow: WorkflowNode?
-    var workflowName: String? {
-        return workflow?.name
+class WorkflowListCollectionViewModel: NSObject {
+    var workflowAppDefinition: WFlowAppDefinitions?
+    var name: String? {
+        return workflowAppDefinition?.name
     }
-    
-    var userName: String? {
-        let apsUserID = UserProfile.apsUserID
-        if apsUserID == assigneeUserId {
-            return LocalizationConstants.EditTask.meTitle
-        } else {
-            return workflow?.startedBy?.userName
-        }
-    }
-    
-    var assigneeUserId: Int {
-        return workflow?.startedBy?.assigneeID ?? -1
+    var definitionDescription: String? {
+        return workflowAppDefinition?.description
     }
 }

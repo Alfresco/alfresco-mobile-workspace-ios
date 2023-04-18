@@ -37,7 +37,7 @@ class TaskAssigneeTableViewCell: UITableViewCell, CellConfigurable {
         self.viewModel = viewModel
         
         updateUserImage()
-        userNameLabel.text = viewModel.userName
+        userNameLabel.text = viewModel.displayName()
         addAccessibility()
         addTapGesture()
     }
@@ -52,7 +52,7 @@ class TaskAssigneeTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func updateUserImage() {
-        if let userName = viewModel?.userName, let currentTheme = currentTheme {
+        if let userName = viewModel?.displayName(), let currentTheme = currentTheme {
             let attributes = getTextAttributes()
             userImageView.setImageForName(userName, backgroundColor: currentTheme.onSurface12Color, circular: true, textAttributes: attributes, gradient: false)
         }
@@ -69,7 +69,7 @@ class TaskAssigneeTableViewCell: UITableViewCell, CellConfigurable {
     private func addAccessibility() {
         baseView.isAccessibilityElement = true
         baseView.accessibilityIdentifier = "user-details"
-        baseView.accessibilityLabel = viewModel?.userName
+        baseView.accessibilityLabel = viewModel?.displayName()
     }
     
     // MARK: - Apply Themes and Localization

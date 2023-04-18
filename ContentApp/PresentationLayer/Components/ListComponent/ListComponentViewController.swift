@@ -55,6 +55,7 @@ class ListComponentViewController: SystemThemableViewController {
     
     var destinationNodeToMove: ListNode?
     var sourceNodeToMove: ListNode?
+    var navigationViewController: UINavigationController?
 
     // MARK: - View Life Cycle
     

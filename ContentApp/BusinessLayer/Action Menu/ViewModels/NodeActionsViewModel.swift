@@ -82,6 +82,8 @@ class NodeActionsViewModel {
             handleMove(action: action)
         } else if action.type.isDownloadActions {
             handleDownload(action: action)
+        } else if action.type.isWorkflowActions {
+            linkContentToAPS(action: action)
         } else {
             let delay = action.type.isMoreAction ? 0.0 : 1.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in
@@ -483,6 +485,16 @@ class NodeActionsViewModel {
                                     animated: true,
                                     completion: nil)
         }
+    }
+}
+
+// MARK: - Workflow
+extension NodeActionsViewModel {
+    private func linkContentToAPS(action: ActionMenu) {
+        guard let node = self.node else { return }
+        StartWorkflowModel.shared.reset()
+        StartWorkflowModel.shared.node = node
+        self.handleResponse(error: nil, action: action)
     }
 }
 

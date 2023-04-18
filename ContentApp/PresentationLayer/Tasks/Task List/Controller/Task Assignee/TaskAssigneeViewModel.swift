@@ -28,6 +28,7 @@ class TaskAssigneeViewModel: NSObject {
     var searchTimer: Timer?
     var searchText: String?
     var users = Observable<[TaskNodeAssignee]>([])
+    var isWorkflowSearch = false
 
     var searchByNameImage: UIImage? {
         if isSearchByName {
@@ -53,20 +54,42 @@ class TaskAssigneeViewModel: NSObject {
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             TasksAPI.searchUser(filter: filter, email: email) { data, error in
                 
-                if data != nil {
-                    if let taskAssignee = data?.data {
-                        let assignee = TaskNodeOperations.processTaskAssignee(for: taskAssignee)
-                        completionHandler(assignee, nil)
-                    } else {
-                        completionHandler([], nil)
-                    }
-                    AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: true)
-                } else {
-                    AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: false)
-                    completionHandler([], error)
-                }
+                let assignee = self.processData(data: data, error).assignee
+                let error = self.processData(data: data, error).error
+                completionHandler(assignee, error)
                 self.isLoading.value = false
             }
         })
+    }
+    
+    // MARK: - GET Search Group
+    func searchGroup(with filter: String?, completionHandler: @escaping (_ assignee: [TaskNodeAssignee], _ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            ProcessAPI.searchGroup(filter: filter) { data, error in
+                
+                let assignee = self.processData(data: data, error).assignee
+                let error = self.processData(data: data, error).error
+                completionHandler(assignee, error)
+                self.isLoading.value = false
+            }
+        })
+    }
+    
+    private func processData(data: TaskAssigneeUserList?, _ error: Error?) -> (assignee: [TaskNodeAssignee], error: Error?) {
+        if data != nil {
+            AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: true)
+            if let taskAssignee = data?.data {
+                let assignee = TaskNodeOperations.processTaskAssignee(for: taskAssignee)
+                return(assignee, nil)
+            } else {
+                return([], nil)
+            }
+        } else {
+            AnalyticsManager.shared.apiTracker(name: Event.API.apiSearchUser.rawValue, fileSize: 0, success: false)
+            return([], nil)
+        }
     }
 }

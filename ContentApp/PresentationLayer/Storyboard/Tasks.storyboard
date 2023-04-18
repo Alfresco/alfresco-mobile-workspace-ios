@@ -428,6 +428,182 @@
             </objects>
             <point key="canvasLocation" x="-20" y="1522"/>
         </scene>
+        <!--Startable Workflows View Controller-->
+        <scene sceneID="A09-jw-9zB">
+            <objects>
+                <viewController storyboardIdentifier="StartableWorkflowsViewController" id="iBf-DY-yF4" customClass="StartableWorkflowsViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="M5g-YG-WQc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H9U-4H-OE3" userLabel="headerView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-action-start-workflow" translatesAutoresizingMaskIntoConstraints="NO" id="Ww1-Vr-aoA" userLabel="headerImageView">
+                                        <rect key="frame" x="20" y="17.5" width="35" height="35"/>
+                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Ww1-Vr-aoA" secondAttribute="height" id="4Lg-js-cZB"/>
+                                            <constraint firstAttribute="width" constant="35" id="AcT-PS-xE4"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select workflow" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kVB-pW-8Sp" userLabel="headerTitleLabel">
+                                        <rect key="frame" x="75" y="25" width="319" height="20.5"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="titleScreen">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vKc-G7-h2a" userLabel="divider">
+                                        <rect key="frame" x="0.0" y="69" width="414" height="1"/>
+                                        <color key="backgroundColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="2le-MP-vi1"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="kVB-pW-8Sp" secondAttribute="trailing" constant="20" id="4ED-fS-S8q"/>
+                                    <constraint firstItem="Ww1-Vr-aoA" firstAttribute="centerY" secondItem="H9U-4H-OE3" secondAttribute="centerY" id="55J-Qc-jIP"/>
+                                    <constraint firstItem="kVB-pW-8Sp" firstAttribute="centerY" secondItem="H9U-4H-OE3" secondAttribute="centerY" id="CG3-Ne-Kxf"/>
+                                    <constraint firstItem="Ww1-Vr-aoA" firstAttribute="leading" secondItem="H9U-4H-OE3" secondAttribute="leading" constant="20" id="J1A-aT-h6X"/>
+                                    <constraint firstAttribute="bottom" secondItem="vKc-G7-h2a" secondAttribute="bottom" id="M50-ts-SaE"/>
+                                    <constraint firstItem="kVB-pW-8Sp" firstAttribute="leading" secondItem="Ww1-Vr-aoA" secondAttribute="trailing" constant="20" id="N5d-dp-YiD"/>
+                                    <constraint firstAttribute="trailing" secondItem="vKc-G7-h2a" secondAttribute="trailing" id="dHr-Pf-5gs"/>
+                                    <constraint firstItem="vKc-G7-h2a" firstAttribute="leading" secondItem="H9U-4H-OE3" secondAttribute="leading" id="sjx-5y-8q7"/>
+                                    <constraint firstAttribute="height" constant="70" id="t1H-vL-agm"/>
+                                </constraints>
+                            </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xbY-gl-A96">
+                                <rect key="frame" x="0.0" y="70" width="414" height="100"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="tTY-rw-zic"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="lbM-DO-yYg">
+                                    <size key="itemSize" width="414" height="1063"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="iBf-DY-yF4" id="8vo-PT-zsO"/>
+                                    <outlet property="delegate" destination="iBf-DY-yF4" id="gjG-24-ZeO"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3VJ-mI-jIY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="H9U-4H-OE3" firstAttribute="trailing" secondItem="3VJ-mI-jIY" secondAttribute="trailing" id="PdV-Kz-p9O"/>
+                            <constraint firstItem="xbY-gl-A96" firstAttribute="top" secondItem="H9U-4H-OE3" secondAttribute="bottom" id="QzL-le-NEK"/>
+                            <constraint firstItem="H9U-4H-OE3" firstAttribute="leading" secondItem="3VJ-mI-jIY" secondAttribute="leading" id="XY8-yr-Fmc"/>
+                            <constraint firstItem="3VJ-mI-jIY" firstAttribute="bottom" secondItem="xbY-gl-A96" secondAttribute="bottom" priority="250" id="cRZ-Ow-4Of"/>
+                            <constraint firstItem="H9U-4H-OE3" firstAttribute="top" secondItem="M5g-YG-WQc" secondAttribute="top" id="fmD-dz-haT"/>
+                            <constraint firstItem="xbY-gl-A96" firstAttribute="trailing" secondItem="3VJ-mI-jIY" secondAttribute="trailing" id="uo1-Xh-8hk"/>
+                            <constraint firstItem="xbY-gl-A96" firstAttribute="leading" secondItem="3VJ-mI-jIY" secondAttribute="leading" id="xmK-sx-O0e"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="xbY-gl-A96" id="kke-NO-D9G"/>
+                        <outlet property="collectionViewContraintHeight" destination="tTY-rw-zic" id="Ako-bg-TYh"/>
+                        <outlet property="divider" destination="vKc-G7-h2a" id="br9-FA-93C"/>
+                        <outlet property="headerImageView" destination="Ww1-Vr-aoA" id="EbF-RD-dz0"/>
+                        <outlet property="headerTitleLabel" destination="kVB-pW-8Sp" id="JhC-h6-yRH"/>
+                        <outlet property="headerView" destination="H9U-4H-OE3" id="ods-32-ETb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XS9-Eg-z7r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="722" y="1521"/>
+        </scene>
+        <!--Start Workflow View Controller-->
+        <scene sceneID="FSs-IQ-Lfi">
+            <objects>
+                <viewController storyboardIdentifier="StartWorkflowViewController" id="xxR-Ya-sru" customClass="StartWorkflowViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LW2-3t-oeS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YGC-wH-7CB" customClass="MDCProgressView">
+                                <rect key="frame" x="0.0" y="48" width="414" height="2"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="Jzk-Q1-AAX"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fen-E1-i6l" userLabel="startWorkflowView">
+                                <rect key="frame" x="0.0" y="772" width="414" height="90"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpW-km-D1V" userLabel="startWorkflowButton" customClass="MDCButton">
+                                        <rect key="frame" x="20" y="5" width="374" height="48"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="YrL-Bb-noG"/>
+                                        </constraints>
+                                        <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Complete">
+                                            <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <state key="disabled">
+                                            <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startWorkflowButtonAction:" destination="xxR-Ya-sru" eventType="touchUpInside" id="Jfm-iO-bck"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="7b6-7H-rfr"/>
+                                    <constraint firstItem="MpW-km-D1V" firstAttribute="top" secondItem="fen-E1-i6l" secondAttribute="top" constant="5" id="UoV-NT-Kvg"/>
+                                    <constraint firstItem="MpW-km-D1V" firstAttribute="leading" secondItem="fen-E1-i6l" secondAttribute="leading" constant="20" id="ZbK-QC-JRC"/>
+                                    <constraint firstAttribute="trailing" secondItem="MpW-km-D1V" secondAttribute="trailing" constant="20" id="oQ3-Rf-Re2"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="iTf-2O-Nsd">
+                                <rect key="frame" x="0.0" y="60" width="414" height="712"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="xxR-Ya-sru" id="E8n-BR-KCH"/>
+                                    <outlet property="delegate" destination="xxR-Ya-sru" id="BtA-ou-1iY"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="1sS-3Y-NCG"/>
+                        <color key="backgroundColor" systemColor="systemMintColor"/>
+                        <constraints>
+                            <constraint firstItem="YGC-wH-7CB" firstAttribute="top" secondItem="1sS-3Y-NCG" secondAttribute="top" id="HfZ-xt-tnc"/>
+                            <constraint firstItem="fen-E1-i6l" firstAttribute="top" secondItem="iTf-2O-Nsd" secondAttribute="bottom" id="JMN-HF-P43"/>
+                            <constraint firstItem="fen-E1-i6l" firstAttribute="trailing" secondItem="1sS-3Y-NCG" secondAttribute="trailing" id="NPf-Ef-1uY"/>
+                            <constraint firstItem="YGC-wH-7CB" firstAttribute="leading" secondItem="LW2-3t-oeS" secondAttribute="leading" id="NR8-qq-oHp"/>
+                            <constraint firstItem="iTf-2O-Nsd" firstAttribute="top" secondItem="YGC-wH-7CB" secondAttribute="bottom" constant="10" id="ThI-Zc-feH"/>
+                            <constraint firstAttribute="trailing" secondItem="YGC-wH-7CB" secondAttribute="trailing" id="ZoQ-Jt-JCW"/>
+                            <constraint firstItem="1sS-3Y-NCG" firstAttribute="bottom" secondItem="fen-E1-i6l" secondAttribute="bottom" id="eW0-5k-sgK"/>
+                            <constraint firstItem="fen-E1-i6l" firstAttribute="leading" secondItem="1sS-3Y-NCG" secondAttribute="leading" id="lOz-de-ZzW"/>
+                            <constraint firstItem="iTf-2O-Nsd" firstAttribute="leading" secondItem="1sS-3Y-NCG" secondAttribute="leading" id="tsA-lR-Qor"/>
+                            <constraint firstItem="iTf-2O-Nsd" firstAttribute="trailing" secondItem="1sS-3Y-NCG" secondAttribute="trailing" id="v2s-gw-7rS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="progressView" destination="YGC-wH-7CB" id="mVg-Vh-cbY"/>
+                        <outlet property="startWorkflowButton" destination="MpW-km-D1V" id="nhV-Py-Lrj"/>
+                        <outlet property="startWorkflowView" destination="fen-E1-i6l" id="b3F-8W-5pf"/>
+                        <outlet property="tableView" destination="iTf-2O-Nsd" id="eoG-DH-yTs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3JW-Is-nT5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1512" y="1521"/>
+        </scene>
         <!--Task Priority View Controller-->
         <scene sceneID="U5U-eD-xF1">
             <objects>
@@ -829,26 +1005,26 @@
                                     <constraint firstItem="t53-df-O38" firstAttribute="leading" secondItem="RTv-gf-5DE" secondAttribute="leading" constant="20" id="xdK-ZT-9P6"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="exY-F3-j7S">
-                                <rect key="frame" x="0.0" y="90.5" width="414" height="715"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="exY-F3-j7S">
+                                <rect key="frame" x="0.0" y="90.5" width="414" height="720.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="mgZ-3F-2PS" id="Dip-Ce-b24"/>
                                     <outlet property="delegate" destination="mgZ-3F-2PS" id="EWS-A2-peG"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JfM-05-0G3" userLabel="divider">
-                                <rect key="frame" x="0.0" y="810.5" width="414" height="1"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JfM-05-0G3" userLabel="divider">
+                                <rect key="frame" x="0.0" y="816" width="414" height="1"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="nxt-Dv-cSc"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5aX-7v-e19" userLabel="bottomView">
-                                <rect key="frame" x="0.0" y="811.5" width="414" height="50.5"/>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5aX-7v-e19" userLabel="bottomView">
+                                <rect key="frame" x="0.0" y="817" width="414" height="45"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LK5-UK-8uW" userLabel="sendButtonViewView">
-                                        <rect key="frame" x="344" y="0.5" width="70" height="50"/>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LK5-UK-8uW" userLabel="sendButtonViewView">
+                                        <rect key="frame" x="344" y="-5" width="70" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aZ-br-n2u" userLabel="sendButton" customClass="MDCButton">
                                                 <rect key="frame" x="0.0" y="5" width="70" height="45"/>
@@ -872,11 +1048,11 @@
                                             <constraint firstItem="5aZ-br-n2u" firstAttribute="leading" secondItem="LK5-UK-8uW" secondAttribute="leading" id="vjN-NX-Hfu"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTv-ey-sHU" userLabel="textBaseView">
-                                        <rect key="frame" x="10" y="10" width="329" height="40.5"/>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aTv-ey-sHU" userLabel="textBaseView">
+                                        <rect key="frame" x="10" y="10" width="329" height="35"/>
                                         <subviews>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2A-We-ZzG" userLabel="textView" customClass="GrowingTextView" customModule="GrowingTextView">
-                                                <rect key="frame" x="0.0" y="0.0" width="329" height="35.5"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2A-We-ZzG" userLabel="textView" customClass="GrowingTextView" customModule="GrowingTextView">
+                                                <rect key="frame" x="0.0" y="0.0" width="329" height="30"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -1207,12 +1383,8 @@
             <point key="canvasLocation" x="1511.5942028985507" y="766.74107142857144"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="N2A-We-ZzG">
-            <size key="intrinsicContentSize" width="-1" height="30"/>
-        </designable>
-    </designables>
     <resources>
+        <image name="ic-action-start-workflow" width="15" height="17"/>
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-close" width="24" height="24"/>
         <image name="ic-drop-down" width="12" height="8"/>
@@ -1225,6 +1397,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemMintColor">
+            <color red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

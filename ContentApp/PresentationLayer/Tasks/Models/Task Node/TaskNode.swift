@@ -142,17 +142,33 @@ struct TaskNodeAssignee: Codable {
     var lastName: String?
     var email: String?
     var userName: String?
-
+    var groupName: String?
+    var externalId: String?
+    var status: String?
+    var parentGroupId: String?
+    
     enum CodingKeys: String, CodingKey {
         case assigneeID = "id"
         case firstName, lastName, email
+        case groupName, externalId, status, parentGroupId
     }
     
-    init(assigneeID: Int, firstName: String?, lastName: String?, email: String?) {
+    init(assigneeID: Int,
+         firstName: String?,
+         lastName: String?,
+         email: String?,
+         groupName: String?,
+         externalId: String?,
+         status: String?,
+         parentGroupId: String?) {
         self.assigneeID = assigneeID
         self.firstName = firstName
         self.lastName = lastName
         self.email = email        
         self.userName = String(format: "%@ %@", firstName ?? "", lastName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        self.groupName = groupName
+        self.externalId = externalId
+        self.status = status
+        self.parentGroupId = parentGroupId
     }
 }

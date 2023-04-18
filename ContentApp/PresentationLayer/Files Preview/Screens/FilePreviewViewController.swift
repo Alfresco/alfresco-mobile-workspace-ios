@@ -501,6 +501,8 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                 handleDownload(action: action, node: node)
             } else if action.type.isCreateActions {
                 handleSheetCreate(action: action, node: node)
+            } else if action.type.isWorkflowActions {
+                AlfrescoLog.debug("---- WORKFLOW ACTION ---- FilePreviewViewController ------")
             }
             logEvent(with: action, node: node)
         }

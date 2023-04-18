@@ -20,4 +20,26 @@ import UIKit
 
 class TaskDescriptionDetailViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
+    var appDefinition: WFlowAppDefinitions?
+    
+    var headerTitle: String {
+        if appDefinition != nil {
+            return LocalizationConstants.Workflows.workflowTitle
+        }
+        return LocalizationConstants.EditTask.taskTitle
+    }
+    
+    var descriptionDetail: String {
+        if appDefinition != nil {
+            return appDefinition?.description ?? ""
+        }
+        return taskDescription ?? ""
+    }
+    
+    var title: String {
+        if appDefinition != nil {
+            return appDefinition?.name ?? ""
+        }
+        return taskName ?? ""
+    }
 }

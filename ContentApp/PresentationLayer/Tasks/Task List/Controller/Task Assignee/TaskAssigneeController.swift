@@ -53,7 +53,7 @@ class TaskAssigneeController: NSObject {
     private func meCellVM() -> TaskAssigneeTableCellViewModel? {
         if let apsUserID = UserProfile.apsUserID {
             let name = LocalizationConstants.EditTask.meTitle
-            let rowVM = TaskAssigneeTableCellViewModel(userID: apsUserID, firstName: name, lastName: nil)
+            let rowVM = TaskAssigneeTableCellViewModel(userID: apsUserID, firstName: name, lastName: nil, groupName: nil)
             rowVM.didSelectUserAction = {[weak self] in
                 guard let sSelf = self else { return }
                 sSelf.didSelectUserAction?(sSelf.loggedInUser())
@@ -65,7 +65,14 @@ class TaskAssigneeController: NSObject {
     
     private func loggedInUser() -> TaskNodeAssignee {
         let apsUserID = UserProfile.apsUserID ?? -1
-        let user = TaskNodeAssignee(assigneeID: apsUserID, firstName: UserProfile.firstName, lastName: UserProfile.lastName, email: UserProfile.email)
+        let user = TaskNodeAssignee(assigneeID: apsUserID,
+                                    firstName: UserProfile.firstName,
+                                    lastName: UserProfile.lastName,
+                                    email: UserProfile.email,
+                                    groupName: nil,
+                                    externalId: nil,
+                                    status: nil,
+                                    parentGroupId: nil)
         return user
     }
     
@@ -74,7 +81,7 @@ class TaskAssigneeController: NSObject {
         let apsUserID = UserProfile.apsUserID ?? -1
         let searchedUsers = viewModel.users.value
         for user in searchedUsers where user.assigneeID != apsUserID {
-            let rowVM = TaskAssigneeTableCellViewModel(userID: user.assigneeID, firstName: user.firstName, lastName: user.lastName)
+            let rowVM = TaskAssigneeTableCellViewModel(userID: user.assigneeID, firstName: user.firstName, lastName: user.lastName, groupName: user.groupName)
             rowVM.didSelectUserAction = { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.didSelectUserAction?(user)
