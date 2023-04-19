@@ -16,7 +16,7 @@
 //  limitations under the License.
 //
 
-"copyright-format" = "© %d Alfresco Software, Inc. Todos los derechos reservados.";
+"copyright-format" = "© %d Hyland Software, Inc. y sus afiliados. Todos los derechos reservados.";
 "product-name" = "Alfresco\nMobile Workspace";
 
 // MARK: - General
@@ -193,6 +193,7 @@
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Consultas con filtros por tamaño";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Buscar";
 "file-size-unit" = "KB";
+"CATEGORY.OFFLINE" = "Sin conexión";
 
 // MARK: - Group List Section
 "today" = "Hoy";
@@ -390,4 +391,17 @@
 "shutter" = "Obturador";
 "download" = "Descargar";
 "selected" = "Seleccionado";
-"CATEGORY.OFFLINE" = "Sin conexión";
+
+// MARK: - Workflows
+"workflows-title" = "Flujos de trabajo";
+"no-workflow-found" = "No se encontró ningún flujo de trabajo";
+"start-workflow-message" = "Puede crear un flujo de trabajo que desee encontrar con facilidad más adelante.";
+"start-workflow" = "Iniciar flujo de trabajo";
+"workflows-not-configured-message" = "Los flujos de trabajo no están habilitados para esta cuenta.";
+"all-title" = "Todos";
+"filter-options" = "Opciones de filtro";
+"select-workflow" = "Seleccionar el flujo de trabajo";
+"workflow-title" = "Flujo de trabajo";
+"individual-title" = "Personal";
+"group-title" = "Grupo";
+"warning-message-uploading-in-progress" = "La carga ya está en curso. ¿Desea continuar sin cargar?";
