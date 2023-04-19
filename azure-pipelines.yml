@@ -1,7 +1,7 @@
 trigger:
 - main
 pool:
-  vmImage: 'macOS-13.3'
+  vmImage: 'macOS-12.5'
 
 variables:
   - group: git-credentials
@@ -75,7 +75,7 @@ steps:
     secureFile: '$(provisioning_profile_share)'
 
 - script: |
-    sudo xcode-select -s /Applications/Xcode_14.3.app
+    sudo xcode-select -s /Applications/Xcode_14.2.app
   displayName: Selects a specific version of Xcode
 
 - task: CmdLine@2
