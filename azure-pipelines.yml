@@ -1,7 +1,7 @@
 trigger:
 - main
 pool:
-  vmImage: 'macOS-13'
+  vmImage: 'macOS-12'
 
 variables:
   - group: git-credentials
