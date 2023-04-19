@@ -5,8 +5,8 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'ContentApp' do
-  #pod 'SwiftLint', '~> 0.48.0'
-  pod 'SwiftLint'
+  pod 'SwiftLint', '~> 0.48.0'
+  #pod 'SwiftLint'
   pod 'JWTDecode'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
