@@ -135,9 +135,9 @@ class StartWorkflowController: NSObject {
     // MARK: - Priority
     private func priorityCellVM() -> PriorityTableCellViewModel? {
         if let currentTheme = self.currentTheme {
-            let textColor = viewModel.getPriorityValues(for: currentTheme).textColor
-            let backgroundColor = viewModel.getPriorityValues(for: currentTheme).backgroundColor
-            let priorityText = viewModel.getPriorityValues(for: currentTheme).priorityText
+            let textColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).textColor
+            let backgroundColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).backgroundColor
+            let priorityText = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).priorityText
 
             let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
                                                    priority: priorityText,
@@ -170,20 +170,9 @@ class StartWorkflowController: NSObject {
         let rowVM = SpaceTableCellViewModel()
         return rowVM
     }
-    
-//    private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel? {
-//        let title = LocalizationConstants.Tasks.attachedFilesTitle
-//        let subTitle = ""
-//        let isHideDetailButton = true
-//        let rowVM = TaskHeaderTableCellViewModel(title: title,
-//                                                 subTitle: subTitle,
-//                                                 buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
-//                                                 isHideDetailButton: isHideDetailButton)
-//        return rowVM
-//    }
-    
+
     private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel? {
-        let attachmentsCount = viewModel.attachments.value.count
+        let attachmentsCount = viewModel.workflowOperationsModel?.attachments.value.count ?? 0
         if attachmentsCount == 0 {
             return nil
         }
@@ -214,7 +203,8 @@ class StartWorkflowController: NSObject {
     }
     
     private func attachmentsPlaceholderCellVM() -> EmptyPlaceholderTableCellViewModel? {
-        if viewModel.attachments.value.isEmpty {
+        let attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        if attachments.isEmpty {
             let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
             let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
             return rowVM
@@ -224,13 +214,13 @@ class StartWorkflowController: NSObject {
     
     private func attachmentsCellVM() -> [RowViewModel] {
         var rowVMs = [RowViewModel]()
-        var attachments = viewModel.attachments.value
+        var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
         let arraySlice = attachments.prefix(4)
         attachments = Array(arraySlice)
         
         if !attachments.isEmpty {
             for attachment in attachments {
-                let syncStatus = viewModel.syncStatus(for: attachment)
+                let syncStatus = viewModel.workflowOperationsModel?.syncStatus(for: attachment)
                 let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
                                                              mimeType: attachment.mimeType,
                                                              syncStatus: syncStatus)
@@ -248,37 +238,5 @@ class StartWorkflowController: NSObject {
             }
         }
         return rowVMs
-    }
-}
-
-// MARK: - Attachments
-extension StartWorkflowController {
-
-    func handleSyncStatus(eventNode: ListNode) {
-        var attachments = viewModel.attachments.value
-        if eventNode.syncStatus != .error {
-            for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
-                attachments[index] = eventNode
-                self.viewModel.attachments.value = attachments
-                self.buildViewModel()
-            }
-            
-            // Insert nodes to be uploaded
-            _ = self.viewModel.uploadTransferDataAccessor.queryAll(for: viewModel.tempWorkflowId, attachmentType: .workflow) { uploadTransfers in
-                self.insert(uploadTransfers: uploadTransfers)
-            }
-        }
-    }
-    
-    func insert(uploadTransfers: [UploadTransfer]) {
-        var attachments = viewModel.attachments.value
-        uploadTransfers.forEach { transfer in
-            let listNode = transfer.listNode()
-            if !attachments.contains(listNode) {
-                attachments.insert(listNode, at: 0)
-                self.viewModel.attachments.value = attachments
-                self.buildViewModel()
-            }
-        }
     }
 }

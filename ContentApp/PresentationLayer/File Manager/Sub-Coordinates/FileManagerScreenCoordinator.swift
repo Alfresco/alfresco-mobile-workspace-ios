@@ -24,6 +24,7 @@ class FileManagerScreenCoordinator: Coordinator {
     private let parentListNode: ListNode
     private var fileManagerDataSource: FileManagerDataSource?
     var attachmentType: AttachmentType
+    var didSelectAttachment: (([UploadTransfer]) -> Void)?
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
@@ -82,7 +83,11 @@ extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
         uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
 
-        triggerUpload()
+        if attachmentType != .workflow {
+            triggerUpload()
+        } else {
+            didSelectAttachment?(uploadTransfers)
+        }
     }
     
     func triggerUpload() {

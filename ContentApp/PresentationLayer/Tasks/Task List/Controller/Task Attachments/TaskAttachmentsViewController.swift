@@ -48,12 +48,22 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         controller.buildViewModel()
         setupBindings()
         getTaskAttachments()
-        AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskAttachmentsScreen)
+        logScreenEvent()
         checkForAddAttachmentButton()
+    }
+    
+    private func logScreenEvent() {
+        if viewModel.attachmentType == .task {
+            AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskAttachmentsScreen)
+        } else {
+            viewModel.isLoading.value = false
+            AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowAttachmentsScreen)
+        }
     }
 
     private func checkForAddAttachmentButton() {
-        if viewModel.isTaskCompleted {
+        
+        if viewModel.isTaskCompleted && viewModel.attachmentType == .task {
             addAttachmentButton.isHidden = true
             tableView.contentInset.bottom = 0
         } else {
@@ -84,11 +94,13 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
     
     func addRefreshControl() {
-        let refreshControl = UIRefreshControl()
-        tableView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
-                                 for: .valueChanged)
-        self.refreshControl = refreshControl
+        if viewModel.attachmentType == .task {
+            let refreshControl = UIRefreshControl()
+            tableView.addSubview(refreshControl)
+            refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
+                                     for: .valueChanged)
+            self.refreshControl = refreshControl
+        }
     }
 
     private func applyLocalization() {
@@ -162,7 +174,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
             }
         }
         
-        /* observing comments */
+        /* observing attachments */
         viewModel.attachments.addObserver() { [weak self] (attachments) in
             guard let sSelf = self else { return }
             DispatchQueue.main.async {
@@ -185,6 +197,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
     
     private func getTaskAttachments() {
+        if viewModel.attachmentType == .workflow { return }
         let taskID = viewModel.taskID
         viewModel.taskAttachments(with: taskID) { [weak self] taskAttachments, error in
             guard let sSelf = self else { return }
@@ -202,15 +215,19 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
     
     private func didSelectAttachment(attachment: ListNode) {
-        if attachment.syncStatus == .undefined || attachment.syncStatus == .synced {
-            let title = attachment.title
-            let attachmentId = attachment.guid
-            viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
-                guard let sSelf = self, let path = path else { return }
-                sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+        if viewModel.attachmentType == .task {
+            if attachment.syncStatus == .undefined || attachment.syncStatus == .synced {
+                let title = attachment.title
+                let attachmentId = attachment.guid
+                viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
+                    guard let sSelf = self, let path = path else { return }
+                    sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+                }
+            } else {
+                viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
             }
         } else {
-            viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
+            viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
         }
     }
 }
@@ -248,10 +265,20 @@ extension TaskAttachmentsViewController: UITableViewDelegate, UITableViewDataSou
 extension TaskAttachmentsViewController {
     
     private func didSelectDeleteAttachment(attachment: ListNode) {
-        viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
-            guard let sSelf = self else { return }
-            if success {
-                sSelf.deleteAttachmentFromList(attachment: attachment)
+        if viewModel.attachmentType == .task {
+            viewModel.showDeleteAttachmentAlert(for: attachment, on: self) {[weak self] success in
+                guard let sSelf = self else { return }
+                if success {
+                    sSelf.deleteAttachmentFromList(attachment: attachment)
+                }
+            }
+        } else {
+            AnalyticsManager.shared.didTapDeleteTaskAttachment(isWorkflow: true)
+            var attachments = viewModel.workflowAttachments
+            if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
+                attachments.remove(at: index)
+                viewModel.workflowOperationsModel?.attachments.value = attachments
+                controller.buildViewModel()
             }
         }
     }
@@ -273,7 +300,11 @@ extension TaskAttachmentsViewController {
 extension TaskAttachmentsViewController {
     
     @IBAction func addAttachmentButtonAction(_ sender: Any) {
-        AnalyticsManager.shared.didTapUploadTaskAttachment()
+        if viewModel.attachmentType == .task {
+            AnalyticsManager.shared.didTapUploadTaskAttachment()
+        } else {
+            AnalyticsManager.shared.didTapUploadTaskAttachment(isWorkflow: true)
+        }
         
         let actions = ActionsMenuFolderAttachments.actions()
         let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
@@ -288,7 +319,7 @@ extension TaskAttachmentsViewController {
             sSelf.handleAction(action: action)
         }
     }
-    
+
     private func handleAction(action: ActionMenu) {
         if action.type.isCreateActions {
             if action.type == .uploadMedia {
@@ -306,35 +337,81 @@ extension TaskAttachmentsViewController {
     }
     
     func showPhotoLibrary() {
-        AnalyticsManager.shared.uploadPhotoforTasks()
-        if let presenter = self.navigationController {
-            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
-                                                            parentListNode: taskNode(),
-                                                            attachmentType: .task)
-            coordinator.start()
-            photoLibraryCoordinator = coordinator
+        
+        if viewModel.attachmentType == .task {
+            AnalyticsManager.shared.uploadPhotoforTasks()
+            if let presenter = self.navigationController {
+                let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                                parentListNode: taskNode(),
+                                                                attachmentType: .task)
+                coordinator.start()
+                photoLibraryCoordinator = coordinator
+            }
+        } else {
+            AnalyticsManager.shared.uploadPhotoforTasks(isWorkflow: true)
+            if let presenter = self.navigationController {
+                let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                                parentListNode: workflowNode(),
+                                                                attachmentType: .workflow)
+                coordinator.start()
+                photoLibraryCoordinator = coordinator
+                coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                    guard let sSelf = self else { return }
+                    sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+                }
+            }
         }
     }
         
     func showCamera() {
-        AnalyticsManager.shared.takePhotoforTasks()
-        if let presenter = self.navigationController {
-            let coordinator = CameraScreenCoordinator(with: presenter,
-                                                      parentListNode: taskNode(),
-                                                      attachmentType: .task)
-            coordinator.start()
-            cameraCoordinator = coordinator
+        if viewModel.attachmentType == .task {
+            AnalyticsManager.shared.takePhotoforTasks()
+            if let presenter = self.navigationController {
+                let coordinator = CameraScreenCoordinator(with: presenter,
+                                                          parentListNode: taskNode(),
+                                                          attachmentType: .task)
+                coordinator.start()
+                cameraCoordinator = coordinator
+            }
+        } else {
+            AnalyticsManager.shared.takePhotoforTasks(isWorkflow: true)
+            if let presenter = self.navigationController {
+                let coordinator = CameraScreenCoordinator(with: presenter,
+                                                          parentListNode: workflowNode(),
+                                                          attachmentType: .workflow)
+                coordinator.start()
+                cameraCoordinator = coordinator
+                coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                    guard let sSelf = self else { return }
+                    sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+                }
+            }
         }
     }
     
     func showFiles() {
-        AnalyticsManager.shared.uploadFilesforTasks()
-        if let presenter = self.navigationController {
-            let coordinator = FileManagerScreenCoordinator(with: presenter,
-                                                           parentListNode: taskNode(),
-                                                           attachmentType: .task)
-            coordinator.start()
-            fileManagerCoordinator = coordinator
+        if viewModel.attachmentType == .task {
+            AnalyticsManager.shared.uploadFilesforTasks()
+            if let presenter = self.navigationController {
+                let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                               parentListNode: taskNode(),
+                                                               attachmentType: .task)
+                coordinator.start()
+                fileManagerCoordinator = coordinator
+            }
+        } else {
+            AnalyticsManager.shared.uploadFilesforTasks(isWorkflow: true)
+            if let presenter = self.navigationController {
+                let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                               parentListNode: workflowNode(),
+                                                               attachmentType: .workflow)
+                coordinator.start()
+                fileManagerCoordinator = coordinator
+                coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                    guard let sSelf = self else { return }
+                    sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+                }
+            }
         }
     }
     
@@ -343,5 +420,24 @@ extension TaskAttachmentsViewController {
                         title: viewModel.taskName ?? "",
                         path: "",
                         nodeType: .folder)
+    }
+    
+    func workflowNode() -> ListNode {
+        return ListNode(guid: viewModel.tempWorkflowId,
+                        title: viewModel.processDefintionTitle,
+                        path: "",
+                        nodeType: .folder)
+    }
+    
+    private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
+        for uploadTransfer in uploadTransfers {
+            viewModel.workflowOperationsModel?.uploadAttachmentOperation(transfer: uploadTransfer, completionHandler: {[weak self] isError in
+                guard let sSelf = self else { return }
+                sSelf.controller.buildViewModel()
+                DispatchQueue.main.async {
+                    sSelf.tableView.reloadData()
+                }
+            })
+        }
     }
 }

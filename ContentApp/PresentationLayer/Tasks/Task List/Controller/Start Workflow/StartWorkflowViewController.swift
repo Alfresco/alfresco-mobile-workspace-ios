@@ -37,6 +37,8 @@ class StartWorkflowViewController: SystemSearchViewController {
         super.viewDidLoad()
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        viewModel.workflowOperationsModel = WorkflowOperationsModel(services: viewModel.services, tempWorkflowId: viewModel.tempWorkflowId)
+        viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
         viewModel.appDefinition = StartWorkflowModel.shared.appDefinition
@@ -218,14 +220,6 @@ class StartWorkflowViewController: SystemSearchViewController {
         /* observer did select add attachment */
         controller.didSelectAddAttachment = {
             self.addAttachmentButtonAction()
-        }
-        
-        /* observing attachments */
-        viewModel.attachments.addObserver { [weak self] (attachments) in
-            guard let sSelf = self else { return }
-            DispatchQueue.main.async {
-                sSelf.tableView.reloadData()
-            }
         }
         
         /* observe view all attachments action */
@@ -479,10 +473,32 @@ extension StartWorkflowViewController {
 
     func showCamera() {
         AnalyticsManager.shared.takePhotoforTasks(isWorkflow: true)
+        if let presenter = self.navigationController {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: workflowNode(),
+                                                      attachmentType: .workflow)
+            coordinator.start()
+            cameraCoordinator = coordinator
+            coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+            }
+        }
     }
 
     func showFiles() {
         AnalyticsManager.shared.uploadFilesforTasks(isWorkflow: true)
+        if let presenter = self.navigationController {
+            let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                           parentListNode: workflowNode(),
+                                                           attachmentType: .workflow)
+            coordinator.start()
+            fileManagerCoordinator = coordinator
+            coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+            }
+        }
     }
 
     func workflowNode() -> ListNode {
@@ -496,30 +512,27 @@ extension StartWorkflowViewController {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
             viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.attachments = viewModel.attachments
-            //viewController.viewModel.task = viewModel.task
+            viewController.viewModel.attachmentType = .workflow
+            viewController.viewModel.tempWorkflowId = viewModel.tempWorkflowId
+            viewController.viewModel.processDefintionTitle = viewModel.processDefintionTitle
+            viewController.viewModel.workflowOperationsModel = viewModel.workflowOperationsModel
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
     private func didSelectAttachment(attachment: ListNode) {
-//        if attachment.syncStatus == .undefined || attachment.syncStatus == .synced {
-//            let title = attachment.title
-//            let attachmentId = attachment.guid
-//            viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
-//                guard let sSelf = self, let path = path else { return }
-//                sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
-//            }
-//        } else {
-            viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
-//        }
+        viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
     }
     
     private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
         for uploadTransfer in uploadTransfers {
-            viewModel.uploadAttachmentOperation(transfer: uploadTransfer) { listNode, error in
-                self.controller.handleSyncStatus(eventNode: listNode)
-            }
+            viewModel.workflowOperationsModel?.uploadAttachmentOperation(transfer: uploadTransfer, completionHandler: {[weak self] isError in
+                guard let sSelf = self else { return }
+                sSelf.controller.buildViewModel()
+                DispatchQueue.main.async {
+                    sSelf.tableView.reloadData()
+                }
+            })
         }
     }
 }
@@ -529,11 +542,12 @@ extension StartWorkflowViewController {
     
     private func didSelectDeleteAttachment(attachment: ListNode) {
         AnalyticsManager.shared.didTapDeleteTaskAttachment(isWorkflow: true)
-        var attachments = viewModel.attachments.value
-        if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
-            attachments.remove(at: index)
-            viewModel.attachments.value = attachments
-            controller.buildViewModel()
+        if var attachments = viewModel.workflowOperationsModel?.attachments.value {
+            if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
+                attachments.remove(at: index)
+                viewModel.workflowOperationsModel?.attachments.value = attachments
+                controller.buildViewModel()
+            }
         }
     }
 }

@@ -175,9 +175,9 @@ class TaskDetailController: NSObject {
     
     private func priorityCellVM() -> PriorityTableCellViewModel? {
         if let currentTheme = self.currentTheme {
-            let textColor = viewModel.getPriorityValues(for: currentTheme).textColor
-            let backgroundColor = viewModel.getPriorityValues(for: currentTheme).backgroundColor
-            let priorityText = viewModel.getPriorityValues(for: currentTheme).priorityText
+            let textColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).textColor
+            let backgroundColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).backgroundColor
+            let priorityText = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).priorityText
 
             let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
                                                    priority: priorityText,

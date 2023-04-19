@@ -25,6 +25,7 @@ class CameraScreenCoordinator: NSObject, Coordinator {
     private let parentListNode: ListNode
     private var mediaFilesFolderPath: String?
     var attachmentType: AttachmentType
+    var didSelectAttachment: (([UploadTransfer]) -> Void)?
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
@@ -137,6 +138,7 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             })
         }
         
+        var uploadTransfers: [UploadTransfer] = []
         if let capturedAsset = capturedAssets.first {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
             let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
@@ -152,10 +154,15 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
                                                 attachmentType: self.attachmentType)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+            uploadTransfers.append(uploadTransfer)
         }
 
         _ = DiskService.delete(itemAtPath: mediaPath)
-        triggerUpload()
+        if attachmentType != .workflow {
+            triggerUpload()
+        } else {
+            didSelectAttachment?(uploadTransfers)
+        }
     }
 
     func triggerUpload() {
