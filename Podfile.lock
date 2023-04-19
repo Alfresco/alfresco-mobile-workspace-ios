@@ -777,7 +777,7 @@ PODS:
     - PromisesObjC (= 2.2.0)
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
-  - SwiftLint (0.51.0)
+  - SwiftLint (0.48.0)
 
 DEPENDENCIES:
   - AlfrescoAuth
