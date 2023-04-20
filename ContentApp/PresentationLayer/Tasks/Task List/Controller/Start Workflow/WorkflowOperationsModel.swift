@@ -34,8 +34,9 @@ class WorkflowOperationsModel: NSObject {
     func uploadAttachmentOperation(transfer: UploadTransfer, completionHandler: @escaping (_ isError: Bool) -> Void) {
         
         transfer.syncStatus = .inProgress
-        handleSyncStatus(eventNode: transfer.listNode())
-        completionHandler(false)
+        handleSyncStatus(eventNode: transfer.listNode()) { isError in
+            completionHandler(isError)
+        }
         
         let transferDataAccessor = UploadTransferDataAccessor()
         services?.accountService?.getSessionForCurrentAccount(completionHandler: {[weak self] authenticationProvider in 
@@ -59,47 +60,54 @@ class WorkflowOperationsModel: NSObject {
                         if let attachement = TaskAttachmentOperations.processAttachments(for: [node], taskId: transfer.parentNodeId).first {
                             let listNode = transfer.updateListNode(with: attachement)
                             transferDataAccessor.updateNode(node: transfer)
-                            sSelf.handleSyncStatus(eventNode: listNode)
-                            completionHandler(false)
+                            sSelf.handleSyncStatus(eventNode: listNode) { isError in
+                                completionHandler(isError)
+                            }
                         }
                     } else {
                         AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadWorkflowAttachment.rawValue, fileSize: fileSize, success: false)
                         transfer.syncStatus = .error
                         let listNode = transfer.listNode()
-                        sSelf.handleSyncStatus(eventNode: listNode)
-                        completionHandler(false)
+                        sSelf.handleSyncStatus(eventNode: listNode) { isError in
+                            completionHandler(isError)
+                        }
                     }
                 }
             } catch {
                 transfer.syncStatus = .error
-                sSelf.handleSyncStatus(eventNode: transfer.listNode())
-                completionHandler(false)
+                sSelf.handleSyncStatus(eventNode: transfer.listNode()) { isError in
+                    completionHandler(isError)
+                }
             }
         })
     }
     
-    func handleSyncStatus(eventNode: ListNode) {
+    func handleSyncStatus(eventNode: ListNode, completionHandler: @escaping (_ isError: Bool) -> Void) {
         var attachments = attachments.value
         if eventNode.syncStatus != .error {
             for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
                 attachments[index] = eventNode
                 self.attachments.value = attachments
+                completionHandler(false)
             }
             
             // Insert nodes to be uploaded
             _ = self.uploadTransferDataAccessor.queryAll(for: self.tempWorkflowId, attachmentType: .workflow) { uploadTransfers in
-                self.insert(uploadTransfers: uploadTransfers)
+                self.insert(uploadTransfers: uploadTransfers) { isError in
+                    completionHandler(isError)
+                }
             }
         }
     }
     
-    func insert(uploadTransfers: [UploadTransfer]) {
+    func insert(uploadTransfers: [UploadTransfer], completionHandler: @escaping (_ isError: Bool) -> Void) {
         var attachments = attachments.value
         uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()
             if !attachments.contains(listNode) {
                 attachments.insert(listNode, at: 0)
                 self.attachments.value = attachments
+                completionHandler(false)
             }
         }
     }

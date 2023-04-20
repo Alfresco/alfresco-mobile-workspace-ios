@@ -529,9 +529,6 @@ extension StartWorkflowViewController {
             viewModel.workflowOperationsModel?.uploadAttachmentOperation(transfer: uploadTransfer, completionHandler: {[weak self] isError in
                 guard let sSelf = self else { return }
                 sSelf.controller.buildViewModel()
-                DispatchQueue.main.async {
-                    sSelf.tableView.reloadData()
-                }
             })
         }
     }
