@@ -25,7 +25,6 @@ enum TaskPriority {
     case high
 }
 
-
 // MARK: - Enum Attachment Type
 enum AttachmentType: String, Codable {
     case task = "task"
