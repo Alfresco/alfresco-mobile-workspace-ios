@@ -51,6 +51,10 @@ class TaskAssigneeController: NSObject {
     
     // MARK: - Me Table Cell
     private func meCellVM() -> TaskAssigneeTableCellViewModel? {
+        if viewModel.isWorkflowSearch && !viewModel.isSearchByName {
+            return nil
+        }
+        
         if let apsUserID = UserProfile.apsUserID {
             let name = LocalizationConstants.EditTask.meTitle
             let rowVM = TaskAssigneeTableCellViewModel(userID: apsUserID, firstName: name, lastName: nil, groupName: nil)
