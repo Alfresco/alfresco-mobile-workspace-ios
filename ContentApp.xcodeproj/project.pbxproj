@@ -25,6 +25,7 @@
 		47B61B9E29DAB64400EA0598 /* WorkflowAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */; };
 		47B61BA029DAB81800EA0598 /* WorkflowAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61B9F29DAB81800EA0598 /* WorkflowAttachment.swift */; };
 		47B61BA329DAD07400EA0598 /* StartWorkflowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61BA229DAD07400EA0598 /* StartWorkflowModel.swift */; };
+		47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */; };
 		47DC693929D02BD70092A362 /* WorkflowNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693829D02BD70092A362 /* WorkflowNode.swift */; };
 		47DC693B29D02BE70092A362 /* WorkflowNodeOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */; };
 		47DC693D29D04B680092A362 /* WorkflowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693C29D04B680092A362 /* WorkflowViewModel.swift */; };
@@ -800,6 +801,7 @@
 		47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowAttachmentOperations.swift; sourceTree = "<group>"; };
 		47B61B9F29DAB81800EA0598 /* WorkflowAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowAttachment.swift; sourceTree = "<group>"; };
 		47B61BA229DAD07400EA0598 /* StartWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowModel.swift; sourceTree = "<group>"; };
+		47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowModel.swift; sourceTree = "<group>"; };
 		47DC693829D02BD70092A362 /* WorkflowNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNode.swift; sourceTree = "<group>"; };
 		47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNodeOperations.swift; sourceTree = "<group>"; };
 		47DC693C29D04B680092A362 /* WorkflowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowViewModel.swift; sourceTree = "<group>"; };
@@ -2956,6 +2958,7 @@
 				C98DCD3828979E31000AE0E8 /* TestSearchListComponentViewModel.swift */,
 				C98DCD3A2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift */,
 				C92E2ED429A60BC500DAFD4B /* TestModelNotifications.swift */,
+				47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -4708,6 +4711,7 @@
 				C95B2A3228BE153E007841F4 /* TestTaskCommentsViewModel.swift in Sources */,
 				C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */,
 				C92E2ED529A60BC500DAFD4B /* TestModelNotifications.swift in Sources */,
+				47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */,
 				C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
