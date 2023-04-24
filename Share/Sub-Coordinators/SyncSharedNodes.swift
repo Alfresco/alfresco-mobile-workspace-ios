@@ -28,7 +28,7 @@ class SyncSharedNodes: NSObject {
         if !pending.isEmpty {
             // store from local database
             let uploadTransferAccessor = UploadTransferDataAccessor()
-            let nodes = uploadTransferAccessor.queryAll()
+            let nodes = uploadTransferAccessor.queryAll(attachmentType: .content)
             try? userDefaults?.setObjects(nodes, forKey: KeyConstants.AppGroup.pendingUploadNodes)
         } else {
             try? userDefaults?.setObjects(uploadTransfers, forKey: KeyConstants.AppGroup.pendingUploadNodes)

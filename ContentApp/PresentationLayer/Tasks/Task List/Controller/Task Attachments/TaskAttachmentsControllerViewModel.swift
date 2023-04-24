@@ -17,13 +17,28 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     var attachmentsCount: String? {
-        if attachments.value.count > 1 {
-            return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.value.count)
+        if attachmentType == .task {
+            if attachments.value.count > 1 {
+                return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.value.count)
+            }
+        } else if attachmentType == .workflow {
+            if workflowAttachments.count > 1 {
+                return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, workflowAttachments.count)
+            }
         }
+        
         return nil
+    }
+    var attachmentType: AttachmentType = .task
+    var tempWorkflowId: String = ""
+    var processDefintionTitle: String = ""
+    var workflowOperationsModel: WorkflowOperationsModel?
+    var workflowAttachments: [ListNode] {
+        return workflowOperationsModel?.attachments.value ?? []
     }
 }

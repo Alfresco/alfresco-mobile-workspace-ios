@@ -35,7 +35,7 @@ class SyncBannerService: NSObject {
     
     class func totalUploadNodes() -> Int {
         let uploadTransferAccessor = UploadTransferDataAccessor()
-        return uploadTransferAccessor.queryAll().count
+        return uploadTransferAccessor.queryAll(attachmentType: .content).count
     }
     
     class func totalUploadedNodes() -> Int {

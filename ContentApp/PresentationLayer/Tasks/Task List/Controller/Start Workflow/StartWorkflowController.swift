@@ -28,7 +28,7 @@ class StartWorkflowController: NSObject {
     var didSelectPriority: (() -> Void)?
     var didSelectAssignee: (() -> Void)?
     var didSelectAddAttachment: (() -> Void)?
-    
+
     init(viewModel: StartWorkflowViewModel = StartWorkflowViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
         self.currentTheme = currentTheme
@@ -80,6 +80,8 @@ class StartWorkflowController: NSObject {
             rowViewModels.append(attachmentsPlaceholderCellVM()!)
         }
         
+        let attachments = attachmentsCellVM()
+        rowViewModels.append(contentsOf: attachments)
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
@@ -133,9 +135,9 @@ class StartWorkflowController: NSObject {
     // MARK: - Priority
     private func priorityCellVM() -> PriorityTableCellViewModel? {
         if let currentTheme = self.currentTheme {
-            let textColor = viewModel.getPriorityValues(for: currentTheme).textColor
-            let backgroundColor = viewModel.getPriorityValues(for: currentTheme).backgroundColor
-            let priorityText = viewModel.getPriorityValues(for: currentTheme).priorityText
+            let textColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).textColor
+            let backgroundColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).backgroundColor
+            let priorityText = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).priorityText
 
             let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
                                                    priority: priorityText,
@@ -168,15 +170,26 @@ class StartWorkflowController: NSObject {
         let rowVM = SpaceTableCellViewModel()
         return rowVM
     }
-    
+
     private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel? {
+        let attachmentsCount = viewModel.workflowOperationsModel?.attachments.value.count ?? 0
+        if attachmentsCount == 0 {
+            return nil
+        }
+
         let title = LocalizationConstants.Tasks.attachedFilesTitle
-        let subTitle = ""
-        let isHideDetailButton = true
+        var subTitle = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachmentsCount)
+        if attachmentsCount < 2 {
+            subTitle = ""
+        }
+        let isHideDetailButton = attachmentsCount > 4 ? false:true
         let rowVM = TaskHeaderTableCellViewModel(title: title,
                                                  subTitle: subTitle,
                                                  buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
                                                  isHideDetailButton: isHideDetailButton)
+        rowVM.viewAllAction = {
+            self.viewModel.viewAllAttachmentsAction?()
+        }
         return rowVM
     }
     
@@ -190,8 +203,40 @@ class StartWorkflowController: NSObject {
     }
     
     private func attachmentsPlaceholderCellVM() -> EmptyPlaceholderTableCellViewModel? {
-        let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
-        let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
-        return rowVM
+        let attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        if attachments.isEmpty {
+            let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+            let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
+            return rowVM
+        }
+        return nil
+    }
+    
+    private func attachmentsCellVM() -> [RowViewModel] {
+        var rowVMs = [RowViewModel]()
+        var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        let arraySlice = attachments.prefix(4)
+        attachments = Array(arraySlice)
+        
+        if !attachments.isEmpty {
+            for attachment in attachments {
+                let syncStatus = viewModel.workflowOperationsModel?.syncStatus(for: attachment)
+                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
+                                                             mimeType: attachment.mimeType,
+                                                             syncStatus: syncStatus)
+                rowVM.didSelectTaskAttachment = { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.viewModel.didSelectAttachment?(attachment)
+                }
+                
+                rowVM.didSelectDeleteAttachment = { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.viewModel.didSelectDeleteAttachment?(attachment)
+                }
+                
+                rowVMs.append(rowVM)
+            }
+        }
+        return rowVMs
     }
 }

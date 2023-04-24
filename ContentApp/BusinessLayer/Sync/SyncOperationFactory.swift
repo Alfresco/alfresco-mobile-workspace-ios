@@ -121,7 +121,7 @@ class SyncOperationFactory {
         var uploadOperations: [AsyncClosureOperation] = []
 
         for transfer in transfers {
-            if transfer.isTaskAttachment {
+            if transfer.attachmentType == AttachmentType.task.rawValue {
                 let fileUploadOperation = uploadTaskAttachmentOperation(transfer: transfer)
                 uploadOperations.append(fileUploadOperation)
             } else {
