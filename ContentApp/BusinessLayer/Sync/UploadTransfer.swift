@@ -42,7 +42,7 @@ class UploadTransfer: Entity, Codable {
          mimetype: String,
          nodeDescription: String?,
          localFilenamePath: String,
-         attachmentType: AttachmentType) {
+         attachmentType: AttachmentType = .content) {
         self.parentNodeId = parentNodeId
         self.nodeName = nodeName
         self.extensionType = extensionType
