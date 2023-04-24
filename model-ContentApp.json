@@ -144,7 +144,7 @@
     },
     {
       "id": "2:381938179637751040",
-      "lastPropertyId": "11:5623670516983788288",
+      "lastPropertyId": "12:324241094815251456",
       "name": "UploadTransfer",
       "properties": [
         {
@@ -189,9 +189,9 @@
           "type": 9
         },
         {
-          "id": "11:5623670516983788288",
-          "name": "isTaskAttachment",
-          "type": 1
+          "id": "12:324241094815251456",
+          "name": "attachmentType",
+          "type": 9
         }
       ],
       "relations": []
@@ -208,7 +208,8 @@
   "retiredPropertyUids": [
     1132591789422262528,
     7705025082092647680,
-    3230068557200613376
+    3230068557200613376,
+    5623670516983788288
   ],
   "retiredRelationUids": [],
   "version": 1

@@ -17,6 +17,8 @@
 		4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */; };
 		4734440229DC0CED004A72CD /* StartableWorkflowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */; };
 		4734440429DC0D1E004A72CD /* StartableWorkflowsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */; };
+		474172C229F03C48001F1403 /* WorkflowOperationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474172C129F03C48001F1403 /* WorkflowOperationsModel.swift */; };
+		47665C9029EACB3100679747 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759BA289BE415006603E0 /* Enums.swift */; };
 		476672D629D890E70073E27E /* APSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476672D529D890E70073E27E /* APSService.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
@@ -24,6 +26,7 @@
 		47B61B9E29DAB64400EA0598 /* WorkflowAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */; };
 		47B61BA029DAB81800EA0598 /* WorkflowAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61B9F29DAB81800EA0598 /* WorkflowAttachment.swift */; };
 		47B61BA329DAD07400EA0598 /* StartWorkflowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61BA229DAD07400EA0598 /* StartWorkflowModel.swift */; };
+		47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */; };
 		47DC693929D02BD70092A362 /* WorkflowNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693829D02BD70092A362 /* WorkflowNode.swift */; };
 		47DC693B29D02BE70092A362 /* WorkflowNodeOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */; };
 		47DC693D29D04B680092A362 /* WorkflowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DC693C29D04B680092A362 /* WorkflowViewModel.swift */; };
@@ -800,6 +803,7 @@
 		4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowFilters.swift; sourceTree = "<group>"; };
 		4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewController.swift; sourceTree = "<group>"; };
 		4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewModel.swift; sourceTree = "<group>"; };
+		474172C129F03C48001F1403 /* WorkflowOperationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowOperationsModel.swift; sourceTree = "<group>"; };
 		476672D529D890E70073E27E /* APSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APSService.swift; sourceTree = "<group>"; };
 		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
@@ -807,6 +811,7 @@
 		47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowAttachmentOperations.swift; sourceTree = "<group>"; };
 		47B61B9F29DAB81800EA0598 /* WorkflowAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowAttachment.swift; sourceTree = "<group>"; };
 		47B61BA229DAD07400EA0598 /* StartWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowModel.swift; sourceTree = "<group>"; };
+		47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowModel.swift; sourceTree = "<group>"; };
 		47DC693829D02BD70092A362 /* WorkflowNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNode.swift; sourceTree = "<group>"; };
 		47DC693A29D02BE60092A362 /* WorkflowNodeOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowNodeOperations.swift; sourceTree = "<group>"; };
 		47DC693C29D04B680092A362 /* WorkflowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowViewModel.swift; sourceTree = "<group>"; };
@@ -1512,6 +1517,7 @@
 				47FBDF6029E3FF6D00EE56AC /* StartWorkflowViewController.swift */,
 				47FBDF6229E3FFD600EE56AC /* StartWorkflowController.swift */,
 				47FBDF6429E3FFEB00EE56AC /* StartWorkflowViewModel.swift */,
+				474172C129F03C48001F1403 /* WorkflowOperationsModel.swift */,
 			);
 			path = "Start Workflow";
 			sourceTree = "<group>";
@@ -2993,6 +2999,7 @@
 				C98DCD3828979E31000AE0E8 /* TestSearchListComponentViewModel.swift */,
 				C98DCD3A2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift */,
 				C92E2ED429A60BC500DAFD4B /* TestModelNotifications.swift */,
+				47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -4276,6 +4283,7 @@
 				C9A9115C27A7B97F002EBC7F /* String+CompareVersions.swift in Sources */,
 				C9A9110D27A7B7C5002EBC7F /* PrivacyNoticeModelProtocol.swift in Sources */,
 				C9AFDF7827B8D171007233A5 /* SystemThemableViewController.swift in Sources */,
+				47665C9029EACB3100679747 /* Enums.swift in Sources */,
 				C992F4D427FAC754002C4D41 /* CreateNodeSheetCoordinator.swift in Sources */,
 				C9A911AD27A7BB95002EBC7F /* DarkTheme.swift in Sources */,
 				C9A9110227A7B798002EBC7F /* UILabel+Theming.swift in Sources */,
@@ -4471,6 +4479,7 @@
 				C91F75AB290017B7008F31EF /* SpaceTableViewCell.swift in Sources */,
 				B9233FC025A708D1006EA4DA /* OfflineViewModelFactory.swift in Sources */,
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
+				474172C229F03C48001F1403 /* WorkflowOperationsModel.swift in Sources */,
 				E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */,
 				B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */,
 				C9EA38F7281E416C008AC8C8 /* FilesandFolderListViewController.swift in Sources */,
@@ -4752,6 +4761,7 @@
 				C95B2A3228BE153E007841F4 /* TestTaskCommentsViewModel.swift in Sources */,
 				C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */,
 				C92E2ED529A60BC500DAFD4B /* TestModelNotifications.swift in Sources */,
+				47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */,
 				C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

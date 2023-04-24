@@ -199,7 +199,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
     private func startSyncOperation() {
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
-        let nodes = uploadTransferDataAccessor.queryAll()
+        let nodes = uploadTransferDataAccessor.queryAll(attachmentType: .content)
         
         guard let syncService = self.syncService,
               accountService?.activeAccount != nil else { return }

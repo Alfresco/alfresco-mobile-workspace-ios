@@ -560,9 +560,9 @@ extension UploadTransfer: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "nodeDescription", type: PropertyType.string, id: 4, uid: 8762750373210733056)
         try entityBuilder.addProperty(name: "localFilenamePath", type: PropertyType.string, id: 10, uid: 5866070128195577600)
         try entityBuilder.addProperty(name: "syncStatus", type: PropertyType.string, id: 6, uid: 370033443724301568)
-        try entityBuilder.addProperty(name: "isTaskAttachment", type: PropertyType.bool, id: 11, uid: 5623670516983788288)
+        try entityBuilder.addProperty(name: "attachmentType", type: PropertyType.string, id: 12, uid: 324241094815251456)
 
-        try entityBuilder.lastProperty(id: 11, uid: 5623670516983788288)
+        try entityBuilder.lastProperty(id: 12, uid: 324241094815251456)
     }
 }
 
@@ -619,8 +619,8 @@ extension UploadTransfer {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { UploadTransfer.isTaskAttachment == true }
-    internal static var isTaskAttachment: Property<UploadTransfer, Bool, Void> { return Property<UploadTransfer, Bool, Void>(propertyId: 11, isPrimaryKey: false) }
+    ///     box.query { UploadTransfer.attachmentType.startsWith("X") }
+    internal static var attachmentType: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 12, isPrimaryKey: false) }
 
     fileprivate func __setId(identifier: ObjectBox.Id) {
         self.id = Id(identifier)
@@ -696,9 +696,9 @@ extension ObjectBox.Property where E == UploadTransfer {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .isTaskAttachment == true }
+    ///     box.query { .attachmentType.startsWith("X") }
 
-    internal static var isTaskAttachment: Property<UploadTransfer, Bool, Void> { return Property<UploadTransfer, Bool, Void>(propertyId: 11, isPrimaryKey: false) }
+    internal static var attachmentType: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 12, isPrimaryKey: false) }
 
 }
 
@@ -729,9 +729,9 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         let propertyOffset_nodeDescription = propertyCollector.prepare(string: entity.nodeDescription)
         let propertyOffset_localFilenamePath = propertyCollector.prepare(string: entity.localFilenamePath)
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
+        let propertyOffset_attachmentType = propertyCollector.prepare(string: entity.attachmentType)
 
         propertyCollector.collect(id, at: 2 + 2 * 1)
-        propertyCollector.collect(entity.isTaskAttachment, at: 2 + 2 * 11)
         propertyCollector.collect(dataOffset: propertyOffset_parentNodeId, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_nodeName, at: 2 + 2 * 3)
         propertyCollector.collect(dataOffset: propertyOffset_extensionType, at: 2 + 2 * 8)
@@ -739,6 +739,7 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_nodeDescription, at: 2 + 2 * 4)
         propertyCollector.collect(dataOffset: propertyOffset_localFilenamePath, at: 2 + 2 * 10)
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 6)
+        propertyCollector.collect(dataOffset: propertyOffset_attachmentType, at: 2 + 2 * 12)
     }
 
     internal func createEntity(entityReader: ObjectBox.FlatBufferReader, store: ObjectBox.Store) -> EntityType {
@@ -752,7 +753,7 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         entity.nodeDescription = entityReader.read(at: 2 + 2 * 4)
         entity.localFilenamePath = entityReader.read(at: 2 + 2 * 10)
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 6)) ?? .undefined
-        entity.isTaskAttachment = entityReader.read(at: 2 + 2 * 11)
+        entity.attachmentType = entityReader.read(at: 2 + 2 * 12)
 
         return entity
     }

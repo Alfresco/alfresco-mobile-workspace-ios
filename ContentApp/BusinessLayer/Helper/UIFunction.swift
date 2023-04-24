@@ -37,4 +37,33 @@ class UIFunction: NSObject {
         let keyboardFrameBegin = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height
         return (height: keyboardFrameBegin, duration: duration, curve: animationCurve)
     }
+    
+    class func currentTimeInMilliSeconds() -> String {
+        let currentDate = Date()
+        let since1970 = currentDate.timeIntervalSince1970
+        let time = Int(since1970 * 1000)
+        return String(time)
+    }
+    
+    class func getPriorityValues(for currentTheme: PresentationTheme, taskPriority: TaskPriority) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
+       
+        var textColor: UIColor = currentTheme.taskErrorTextColor
+        var backgroundColor: UIColor = currentTheme.taskErrorContainer
+        var priorityText = LocalizationConstants.Tasks.low
+       
+        if taskPriority == .low {
+            textColor = currentTheme.taskSuccessTextColor
+            backgroundColor = currentTheme.taskSuccessContainer
+            priorityText = LocalizationConstants.Tasks.low
+        } else if taskPriority == .medium {
+            textColor = currentTheme.taskWarningTextColor
+            backgroundColor = currentTheme.taskWarningContainer
+            priorityText = LocalizationConstants.Tasks.medium
+        } else if taskPriority == .high {
+            textColor = currentTheme.taskErrorTextColor
+            backgroundColor = currentTheme.taskErrorContainer
+            priorityText = LocalizationConstants.Tasks.high
+        }
+        return(textColor, backgroundColor, priorityText)
+    }
 }

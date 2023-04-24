@@ -16,7 +16,7 @@
 //  limitations under the License.
 //
 
-"copyright-format" = "© %d Alfresco Software, Inc. Tous droits réservés.";
+"copyright-format" = "© %d Hyland Software, Inc. et ses filiales. Tous droits réservés.";
 "product-name" = "Alfresco\nMobile Workspace";
 
 // MARK: - General
@@ -193,6 +193,7 @@
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Recherches avec filtre par taille";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Rechercher";
 "file-size-unit" = "Ko";
+"CATEGORY.OFFLINE" = "Hors ligne";
 
 // MARK: - Group List Section
 "today" = "Aujourd'hui";
@@ -393,4 +394,17 @@
 "shutter" = "Obturateur";
 "download" = "Télécharger";
 "selected" = "Sélectionné";
-"CATEGORY.OFFLINE" = "Hors ligne";
+
+// MARK: - Workflows
+"workflows-title" = "Workflows";
+"no-workflow-found" = "Pas de workflow trouvé";
+"start-workflow-message" = "Démarrez un nouveau workflow que vous pourrez facilement retrouver plus tard.";
+"start-workflow" = "Démarrer un workflow";
+"workflows-not-configured-message" = "Les workflows ne sont pas activées pour ce compte.";
+"all-title" = "Tout";
+"filter-options" = "Option de filtre";
+"select-workflow" = "Sélectionner le workflow";
+"workflow-title" = "Workflow";
+"individual-title" = "Individuel";
+"group-title" = "Groupe";
+"warning-message-uploading-in-progress" = "L'importation est actuellement en cours. Voulez-vous continuer sans importer ?";

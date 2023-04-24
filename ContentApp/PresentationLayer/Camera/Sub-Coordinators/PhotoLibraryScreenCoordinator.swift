@@ -23,14 +23,15 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private let parentListNode: ListNode
     private var galleryDataSource: PhotoGalleryDataSource?
-    var isTaskAttachment = false
+    var attachmentType: AttachmentType
+    var didSelectAttachment: (([UploadTransfer]) -> Void)?
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
-         isTaskAttachment: Bool = false) {
+         attachmentType: AttachmentType) {
         self.parentListNode = parentListNode
         self.presenter = presenter
-        self.isTaskAttachment = isTaskAttachment
+        self.attachmentType = attachmentType
     }
     
     func start() {
@@ -82,7 +83,7 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
         
         var isFileSizeExcceds = false
-        if isTaskAttachment {
+        if attachmentType == .task || attachmentType == .workflow {
             for capturedAsset in capturedAssets {
                 let assetURL = URL(fileURLWithPath: capturedAsset.path)
                 if assetURL.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
@@ -125,13 +126,17 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
                                                 localFilenamePath: assetURL.lastPathComponent,
-                                                isTaskAttachment: self.isTaskAttachment)
+                                                attachmentType: self.attachmentType)
             uploadTransfers.append(uploadTransfer)
         }
 
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
         uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
-        triggerUpload()
+        if attachmentType != .workflow {
+            triggerUpload()
+        } else {
+            didSelectAttachment?(uploadTransfers)
+        }
     }
     
     func triggerUpload() {

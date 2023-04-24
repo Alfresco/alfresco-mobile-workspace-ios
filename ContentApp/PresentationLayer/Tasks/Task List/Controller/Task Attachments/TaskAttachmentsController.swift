@@ -48,10 +48,16 @@ class TaskAttachmentsController: NSObject {
     
     private func attachmentsCellVM() -> [RowViewModel] {
         var rowVMs = [RowViewModel]()
-        let attachments = viewModel.attachments.value
+        var attachments = viewModel.attachments.value
+        if viewModel.attachmentType == .workflow {
+            attachments = viewModel.workflowAttachments
+        }
         if !attachments.isEmpty {
             for attachment in attachments {
-                let syncStatus = viewModel.syncStatus(for: attachment)
+                var syncStatus = viewModel.syncStatus(for: attachment)
+                if viewModel.attachmentType == .workflow {
+                    syncStatus = viewModel.workflowOperationsModel?.syncStatus(for: attachment) ?? .inProgress
+                }
                 let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
                                                              mimeType: attachment.mimeType,
                                                              syncStatus: syncStatus)
@@ -97,7 +103,7 @@ extension TaskAttachmentsController: EventObservable {
         }
         
         // Insert nodes to be uploaded
-        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, isTaskAttachment: true) { uploadTransfers in
+        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, attachmentType: .task) { uploadTransfers in
             self.insert(uploadTransfers: uploadTransfers)
         }
     }

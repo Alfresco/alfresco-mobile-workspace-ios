@@ -64,29 +64,7 @@ class TaskPropertiesViewModel: NSObject {
             return .high
         }
     }
-    
-    func getPriorityValues(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
-       
-        var textColor: UIColor = currentTheme.taskErrorTextColor
-        var backgroundColor: UIColor = currentTheme.taskErrorContainer
-        var priorityText = LocalizationConstants.Tasks.low
-       
-        if taskPriority == .low {
-            textColor = currentTheme.taskSuccessTextColor
-            backgroundColor = currentTheme.taskSuccessContainer
-            priorityText = LocalizationConstants.Tasks.low
-        } else if taskPriority == .medium {
-            textColor = currentTheme.taskWarningTextColor
-            backgroundColor = currentTheme.taskWarningContainer
-            priorityText = LocalizationConstants.Tasks.medium
-        } else if taskPriority == .high {
-            textColor = currentTheme.taskErrorTextColor
-            backgroundColor = currentTheme.taskErrorContainer
-            priorityText = LocalizationConstants.Tasks.high
-        }
-        return(textColor, backgroundColor, priorityText)
-    }
-    
+
     var dueDate: Date? {
         return task?.dueDate
     }
@@ -183,7 +161,7 @@ extension TaskPropertiesViewModel {
     }
     
     func isAttachmentsPendingForUpload() -> Bool {
-        let attachments = self.uploadTransferDataAccessor.queryAll(for: taskID, isTaskAttachment: true) { transfers in }
+        let attachments = self.uploadTransferDataAccessor.queryAll(for: taskID, attachmentType: .task) { transfers in }
         
         if attachments.isEmpty {
             return false
