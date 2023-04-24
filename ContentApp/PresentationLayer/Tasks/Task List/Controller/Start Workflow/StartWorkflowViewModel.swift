@@ -25,7 +25,13 @@ class StartWorkflowViewModel: NSObject {
     let isLoading = Observable<Bool>(true)
     var appDefinition: WFlowAppDefinitions?
     var isEditMode = false
-
+    var didSelectAttachment: ((ListNode) -> Void)?
+    var didSelectDeleteAttachment: ((ListNode) -> Void)?
+    let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    var viewAllAttachmentsAction: (() -> Void)?
+    var tempWorkflowId: String = ""
+    var workflowOperationsModel: WorkflowOperationsModel?
+    var selectedAttachments = [ListNode]()
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
     }
@@ -65,6 +71,14 @@ class StartWorkflowViewModel: NSObject {
         return assignee?.assigneeID ?? -1
     }
     
+    var attachmentsCount: String? {
+        let count = workflowOperationsModel?.attachments.value.count ?? 0
+        if count > 1 {
+            return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, count)
+        }
+        return nil
+    }
+    
     // MARK: - Get Due date
     func getDueDate(for dueDate: Date?) -> String? {
         if let dueDate = dueDate?.dateString(format: "dd MMM yyyy") {
@@ -72,29 +86,6 @@ class StartWorkflowViewModel: NSObject {
         } else {
             return LocalizationConstants.Tasks.noDueDate
         }
-    }
-    
-    // MARK: - Priority Values
-    func getPriorityValues(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
-       
-        var textColor: UIColor = currentTheme.taskErrorTextColor
-        var backgroundColor: UIColor = currentTheme.taskErrorContainer
-        var priorityText = LocalizationConstants.Tasks.low
-       
-        if taskPriority == .low {
-            textColor = currentTheme.taskSuccessTextColor
-            backgroundColor = currentTheme.taskSuccessContainer
-            priorityText = LocalizationConstants.Tasks.low
-        } else if taskPriority == .medium {
-            textColor = currentTheme.taskWarningTextColor
-            backgroundColor = currentTheme.taskWarningContainer
-            priorityText = LocalizationConstants.Tasks.medium
-        } else if taskPriority == .high {
-            textColor = currentTheme.taskErrorTextColor
-            backgroundColor = currentTheme.taskErrorContainer
-            priorityText = LocalizationConstants.Tasks.high
-        }
-        return(textColor, backgroundColor, priorityText)
     }
     
     // MARK: - Process defintion

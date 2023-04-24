@@ -159,8 +159,8 @@ let maxConcurrentSyncOperationCount = 3
     private func processPendingUploads() {
         syncServiceStatus = .uploadPendingNodes
         let dataAccessor = UploadTransferDataAccessor()
-        var pendingUploadTransfers = dataAccessor.queryAll()
-        let pendingTasksUploadTransfers = dataAccessor.queryAll(isTaskAttachments: true)
+        var pendingUploadTransfers = dataAccessor.queryAll(attachmentType: .content)
+        let pendingTasksUploadTransfers = dataAccessor.queryAll(attachmentType: .task)
         pendingUploadTransfers = pendingUploadTransfers + pendingTasksUploadTransfers
 
         let uploadOperations = syncOperationFactory.uploadPendingContentOperation(transfers: pendingUploadTransfers)

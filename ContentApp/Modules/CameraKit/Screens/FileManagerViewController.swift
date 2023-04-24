@@ -22,7 +22,7 @@ import UniformTypeIdentifiers
 class FileManagerViewController: UIViewController {
     weak var fileManagerDelegate: FileManagerAssetDelegate?
     var fileManagerDataSource: FileManagerDataSource?
-    var isTaskAttachment = false
+    var attachmentType: AttachmentType = .content
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -54,7 +54,7 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         var isFileSizeExcceds = false
-        if isTaskAttachment {
+        if attachmentType == .task {
             for url in urls where url.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
                 isFileSizeExcceds = true
                 break

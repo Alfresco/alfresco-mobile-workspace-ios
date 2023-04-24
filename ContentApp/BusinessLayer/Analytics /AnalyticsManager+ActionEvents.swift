@@ -100,10 +100,15 @@ extension AnalyticsManager {
         self.logEvent(name: Event.Action.updateTask.rawValue, parameters: parameters)
     }
     
-    func didTapDeleteTaskAttachment() {
+    func didTapDeleteTaskAttachment(isWorkflow: Bool = false) {
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.deleteTaskAttachment.rawValue
-        self.logEvent(name: Event.Action.deleteTaskAttachment.rawValue, parameters: parameters)
+        if isWorkflow {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.deleteWorkflowAttachment.rawValue
+            self.logEvent(name: Event.Action.deleteWorkflowAttachment.rawValue, parameters: parameters)
+        } else {
+            parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.deleteTaskAttachment.rawValue
+            self.logEvent(name: Event.Action.deleteTaskAttachment.rawValue, parameters: parameters)
+        }
     }
     
     func didTapEditTask() {

@@ -85,13 +85,13 @@ class UploadTransferDataAccessor: DataAccessor {
         return false
     }
 
-    func queryAll(isTaskAttachments: Bool = false) -> [UploadTransfer] {
+    func queryAll(attachmentType: AttachmentType) -> [UploadTransfer] {
         guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
         
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
                 UploadTransfer.syncStatus != SyncStatus.synced.rawValue && UploadTransfer.syncStatus != SyncStatus.inProgress.rawValue &&
-                UploadTransfer.isTaskAttachment == isTaskAttachments
+                UploadTransfer.attachmentType == attachmentType.rawValue
             }.build()
             return try query.find()
         } catch {
@@ -101,14 +101,14 @@ class UploadTransferDataAccessor: DataAccessor {
     }
     
     func queryAll(for parentNodeId: String,
-                  isTaskAttachment: Bool = false,
+                  attachmentType: AttachmentType,
                   changeHandler: @escaping ([UploadTransfer]) -> Void) -> [UploadTransfer] {
 
         guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
-        
+
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
-                UploadTransfer.parentNodeId == parentNodeId && UploadTransfer.syncStatus != SyncStatus.synced.rawValue && UploadTransfer.isTaskAttachment == isTaskAttachment
+                UploadTransfer.parentNodeId == parentNodeId && UploadTransfer.syncStatus != SyncStatus.synced.rawValue && UploadTransfer.attachmentType == attachmentType.rawValue
             }.build()
             allTransfersQueryObserver = query.subscribe(resultHandler: { transfers, _ in
                 changeHandler(transfers)
