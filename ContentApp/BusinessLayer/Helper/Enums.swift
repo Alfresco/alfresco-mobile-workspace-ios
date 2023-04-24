@@ -24,3 +24,10 @@ enum TaskPriority {
     case medium
     case high
 }
+
+// MARK: - Enum Attachment Type
+enum AttachmentType: String, Codable {
+    case task = "task"
+    case workflow = "workflow"
+    case content = "content"
+}

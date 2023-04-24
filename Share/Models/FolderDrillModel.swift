@@ -101,7 +101,7 @@ class FolderDrillModel: ListComponentModelProtocol {
                     
                     // Insert nodes to be uploaded
                     let responsePagination = result?.list?.pagination
-                    let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid) { uploadTransfers in
+                    let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid, attachmentType: .content) { uploadTransfers in
                         guard let sSelf = self else { return }
                         sSelf.insert(uploadTransfers: uploadTransfers,
                                      to: &sSelf.rawListNodes,
@@ -161,7 +161,7 @@ class FolderDrillModel: ListComponentModelProtocol {
                 
                 // Insert nodes to be uploaded
                 let responsePagination = result?.list?.pagination
-                let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid) { uploadTransfers in
+                let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid, attachmentType: .content) { uploadTransfers in
                     guard let sSelf = self else { return }
                     sSelf.insert(uploadTransfers: uploadTransfers,
                                  to: &sSelf.rawListNodes,

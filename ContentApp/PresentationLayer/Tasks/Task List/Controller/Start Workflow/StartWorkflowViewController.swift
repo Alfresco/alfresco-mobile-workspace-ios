@@ -37,6 +37,8 @@ class StartWorkflowViewController: SystemSearchViewController {
         super.viewDidLoad()
         
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        viewModel.workflowOperationsModel = WorkflowOperationsModel(services: viewModel.services, tempWorkflowId: viewModel.tempWorkflowId)
+        viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
         viewModel.appDefinition = StartWorkflowModel.shared.appDefinition
@@ -219,6 +221,25 @@ class StartWorkflowViewController: SystemSearchViewController {
         controller.didSelectAddAttachment = {
             self.addAttachmentButtonAction()
         }
+        
+        /* observe view all attachments action */
+        viewModel.viewAllAttachmentsAction = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.viewAllAttachments()
+        }
+        
+        /* observer did select task attachment */
+        viewModel.didSelectAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectAttachment(attachment: attachment)
+        }
+        
+        /* observer did select delete attachment */
+        viewModel.didSelectDeleteAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectDeleteAttachment(attachment: attachment)
+        }
+        
     }
     
     // MARK: - Workflow details
@@ -437,13 +458,93 @@ extension StartWorkflowViewController {
 
     func showPhotoLibrary() {
         AnalyticsManager.shared.uploadPhotoforTasks(isWorkflow: true)
+        if let presenter = self.navigationController {
+            let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                            parentListNode: workflowNode(),
+                                                            attachmentType: .workflow)
+            coordinator.start()
+            photoLibraryCoordinator = coordinator
+            coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+            }
+        }
     }
 
     func showCamera() {
         AnalyticsManager.shared.takePhotoforTasks(isWorkflow: true)
+        if let presenter = self.navigationController {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: workflowNode(),
+                                                      attachmentType: .workflow)
+            coordinator.start()
+            cameraCoordinator = coordinator
+            coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+            }
+        }
     }
 
     func showFiles() {
         AnalyticsManager.shared.uploadFilesforTasks(isWorkflow: true)
+        if let presenter = self.navigationController {
+            let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                           parentListNode: workflowNode(),
+                                                           attachmentType: .workflow)
+            coordinator.start()
+            fileManagerCoordinator = coordinator
+            coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
+                guard let sSelf = self else { return }
+                sSelf.didSelectUploadTransfers(uploadTransfers: uploadTransfers)
+            }
+        }
+    }
+
+    func workflowNode() -> ListNode {
+        return ListNode(guid: viewModel.tempWorkflowId,
+                        title: viewModel.processDefintionTitle,
+                        path: "",
+                        nodeType: .folder)
+    }
+    
+    private func viewAllAttachments() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.attachmentType = .workflow
+            viewController.viewModel.tempWorkflowId = viewModel.tempWorkflowId
+            viewController.viewModel.processDefintionTitle = viewModel.processDefintionTitle
+            viewController.viewModel.workflowOperationsModel = viewModel.workflowOperationsModel
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    private func didSelectAttachment(attachment: ListNode) {
+        viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
+    }
+    
+    private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
+        for uploadTransfer in uploadTransfers {
+            viewModel.workflowOperationsModel?.uploadAttachmentOperation(transfer: uploadTransfer, completionHandler: {[weak self] isError in
+                guard let sSelf = self else { return }
+                sSelf.controller.buildViewModel()
+            })
+        }
+    }
+}
+
+// MARK: - Delete Attachment
+extension StartWorkflowViewController {
+    
+    private func didSelectDeleteAttachment(attachment: ListNode) {
+        AnalyticsManager.shared.didTapDeleteTaskAttachment(isWorkflow: true)
+        if var attachments = viewModel.workflowOperationsModel?.attachments.value {
+            if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
+                attachments.remove(at: index)
+                viewModel.workflowOperationsModel?.attachments.value = attachments
+                controller.buildViewModel()
+            }
+        }
     }
 }

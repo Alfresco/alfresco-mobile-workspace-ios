@@ -133,21 +133,24 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     
     func showCamera() {
         let coordinator = CameraScreenCoordinator(with: presenter,
-                                                  parentListNode: personalFilesNode())
+                                                  parentListNode: personalFilesNode(),
+                                                  attachmentType: .content)
         coordinator.start()
         cameraCoordinator = coordinator
     }
     
     func showPhotoLibrary() {
         let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
-                                                        parentListNode: personalFilesNode())
+                                                        parentListNode: personalFilesNode(),
+                                                        attachmentType: .content)
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
     
     func showFiles() {
         let coordinator = FileManagerScreenCoordinator(with: presenter,
-                                                        parentListNode: personalFilesNode())
+                                                       parentListNode: personalFilesNode(),
+                                                       attachmentType: .content)
         coordinator.start()
         fileManagerCoordinator = coordinator
     }
