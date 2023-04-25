@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialDialogs
 
 class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
@@ -26,6 +27,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    private var scanDocumentsCoordinator: ScanDocumentsScreenCoordinator?
     var sourceNodeToMove: ListNode?
     var nodeActionsModel: NodeActionsViewModel?
 
@@ -132,11 +134,17 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
     
     func showCamera() {
-        let coordinator = CameraScreenCoordinator(with: presenter,
-                                                  parentListNode: personalFilesNode(),
-                                                  attachmentType: .content)
-        coordinator.start()
-        cameraCoordinator = coordinator
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: personalFilesNode(),
+                                                      attachmentType: .content)
+            coordinator.start()
+            cameraCoordinator = coordinator
+        } else {
+            let title = LocalizationConstants.Alert.alertTitle
+            let message = LocalizationConstants.Alert.cameraUnavailable
+            self.showAlert(with: title, and: message)
+        }
     }
     
     func showPhotoLibrary() {
@@ -147,12 +155,36 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         photoLibraryCoordinator = coordinator
     }
     
+    private func showAlert(with title: String,
+                           and message: String) {
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) {  _ in
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        _ = presenter.showDialog(title: title,
+                                  message: message,
+                                  actions: [confirmAction],
+                                  completionHandler: {})
+    }
+    
     func showFiles() {
         let coordinator = FileManagerScreenCoordinator(with: presenter,
                                                        parentListNode: personalFilesNode(),
                                                        attachmentType: .content)
         coordinator.start()
         fileManagerCoordinator = coordinator
+    }
+    
+    func scanDocumentsAction() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let coordinator = ScanDocumentsScreenCoordinator(with: presenter,
+                                                            parentListNode: personalFilesNode())
+            coordinator.start()
+            scanDocumentsCoordinator = coordinator
+        } else {
+            let title = LocalizationConstants.Alert.alertTitle
+            let message = LocalizationConstants.Alert.cameraUnavailable
+            self.showAlert(with: title, and: message)
+        }
     }
     
     func moveNodeTapped(for sourceNode: ListNode,
