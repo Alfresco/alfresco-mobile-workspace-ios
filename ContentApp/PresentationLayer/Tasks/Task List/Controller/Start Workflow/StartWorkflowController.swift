@@ -28,6 +28,7 @@ class StartWorkflowController: NSObject {
     var didSelectPriority: (() -> Void)?
     var didSelectAssignee: (() -> Void)?
     var didSelectAddAttachment: (() -> Void)?
+    internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: StartWorkflowViewModel = StartWorkflowViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -238,5 +239,25 @@ class StartWorkflowController: NSObject {
             }
         }
         return rowVMs
+    }
+}
+
+// MARK: - Events
+extension StartWorkflowController: EventObservable {
+    
+    func registerEvents() {
+        viewModel.services?.eventBusService?.register(observer: self,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
+    }
+    
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
+        }
+    }
+    
+    func handleSyncStatus(event: SyncStatusEvent) {
+        self.buildViewModel()
     }
 }

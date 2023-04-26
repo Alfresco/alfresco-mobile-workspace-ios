@@ -54,6 +54,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         getWorkflowDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
+        controller.registerEvents()
 
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -528,7 +529,7 @@ extension StartWorkflowViewController {
         for uploadTransfer in uploadTransfers {
             viewModel.workflowOperationsModel?.uploadAttachmentOperation(transfer: uploadTransfer, completionHandler: {[weak self] isError in
                 guard let sSelf = self else { return }
-                sSelf.controller.buildViewModel()
+                AlfrescoLog.debug("\(isError)")
             })
         }
     }
