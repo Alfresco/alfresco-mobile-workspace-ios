@@ -72,6 +72,14 @@ class ListViewController: SystemSearchViewController {
 
         listController?.startLoading()
         pageController?.refreshList()
+        registerNotifications()
+    }
+    
+    private func registerNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleFilesFolderMoveFinishedNotification(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.moveFileFolderFinished),
+                                               object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,6 +114,11 @@ class ListViewController: SystemSearchViewController {
 
     func scrollToTop() {
         listController?.scrollToSection(0)
+    }
+    
+    @objc private func handleFilesFolderMoveFinishedNotification(notification: Notification) {
+        appDelegate()?.isMoveFilesAndFolderFlow = false
+        listController?.moveFilesBottomView.isHidden = true
     }
 }
 
