@@ -274,11 +274,15 @@ extension TaskAttachmentsViewController {
             }
         } else {
             AnalyticsManager.shared.didTapDeleteTaskAttachment(isWorkflow: true)
-            var attachments = viewModel.workflowAttachments
+            var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
             if let index = attachments.firstIndex(where: {$0.guid == attachment.guid}) {
                 attachments.remove(at: index)
                 viewModel.workflowOperationsModel?.attachments.value = attachments
                 controller.buildViewModel()
+                DispatchQueue.main.async {
+                    self.applyLocalization()
+                }
+                popToPreviousController(attachments: attachments)
             }
         }
     }
@@ -289,10 +293,16 @@ extension TaskAttachmentsViewController {
             attachments.remove(at: index)
             viewModel.attachments.value = attachments
             controller.buildViewModel()
+            popToPreviousController(attachments: attachments)
+        }
+    }
+    
+    private func popToPreviousController(attachments: [ListNode]) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
             if attachments.isEmpty {
                 self.navigationController?.popViewController(animated: true)
             }
-        }
+        })
     }
 }
 

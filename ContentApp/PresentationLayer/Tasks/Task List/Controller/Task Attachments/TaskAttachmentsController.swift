@@ -50,7 +50,7 @@ class TaskAttachmentsController: NSObject {
         var rowVMs = [RowViewModel]()
         var attachments = viewModel.attachments.value
         if viewModel.attachmentType == .workflow {
-            attachments = viewModel.workflowAttachments
+            attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
         }
         if !attachments.isEmpty {
             for attachment in attachments {

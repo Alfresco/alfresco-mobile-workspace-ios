@@ -67,6 +67,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         updateTheme()
+        controller.buildViewModel()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -528,7 +529,7 @@ extension StartWorkflowViewController {
     private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
         for uploadTransfer in uploadTransfers {
             viewModel.workflowOperationsModel?.uploadAttachmentOperation(transfer: uploadTransfer, completionHandler: {[weak self] isError in
-                guard let sSelf = self else { return }
+                guard self != nil else { return }
                 AlfrescoLog.debug("\(isError)")
             })
         }
