@@ -50,7 +50,7 @@ class TaskAttachmentsController: NSObject {
         var rowVMs = [RowViewModel]()
         var attachments = viewModel.attachments.value
         if viewModel.attachmentType == .workflow {
-            attachments = viewModel.workflowAttachments
+            attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
         }
         if !attachments.isEmpty {
             for attachment in attachments {
@@ -94,17 +94,21 @@ extension TaskAttachmentsController: EventObservable {
     }
 
     func handleSyncStatus(event: SyncStatusEvent) {
-        var attachments = viewModel.attachments.value
-        let eventNode = event.node
-        for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
-            attachments[index] = eventNode
-            self.viewModel.attachments.value = attachments
+        if viewModel.attachmentType == .workflow {
             self.buildViewModel()
-        }
-        
-        // Insert nodes to be uploaded
-        _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, attachmentType: .task) { uploadTransfers in
-            self.insert(uploadTransfers: uploadTransfers)
+        } else {
+            var attachments = viewModel.attachments.value
+            let eventNode = event.node
+            for (index, listNode) in attachments.enumerated() where listNode.id == eventNode.id {
+                attachments[index] = eventNode
+                self.viewModel.attachments.value = attachments
+                self.buildViewModel()
+            }
+            
+            // Insert nodes to be uploaded
+            _ = self.uploadTransferDataAccessor.queryAll(for: viewModel.taskID, attachmentType: .task) { uploadTransfers in
+                self.insert(uploadTransfers: uploadTransfers)
+            }
         }
     }
     
