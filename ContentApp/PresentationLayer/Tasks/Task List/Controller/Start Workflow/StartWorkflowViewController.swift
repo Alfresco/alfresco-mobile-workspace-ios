@@ -54,6 +54,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         getWorkflowDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
+        controller.registerEvents()
 
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -66,6 +67,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         updateTheme()
+        controller.buildViewModel()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -527,8 +529,8 @@ extension StartWorkflowViewController {
     private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
         for uploadTransfer in uploadTransfers {
             viewModel.workflowOperationsModel?.uploadAttachmentOperation(transfer: uploadTransfer, completionHandler: {[weak self] isError in
-                guard let sSelf = self else { return }
-                sSelf.controller.buildViewModel()
+                guard self != nil else { return }
+                AlfrescoLog.debug("\(isError)")
             })
         }
     }

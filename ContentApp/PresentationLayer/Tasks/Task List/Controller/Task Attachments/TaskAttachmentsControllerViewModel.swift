@@ -27,8 +27,9 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
                 return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.value.count)
             }
         } else if attachmentType == .workflow {
-            if workflowAttachments.count > 1 {
-                return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, workflowAttachments.count)
+            let attachments = workflowOperationsModel?.attachments.value ?? []
+            if attachments.count > 1 {
+                return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count)
             }
         }
         
@@ -38,7 +39,4 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
     var tempWorkflowId: String = ""
     var processDefintionTitle: String = ""
     var workflowOperationsModel: WorkflowOperationsModel?
-    var workflowAttachments: [ListNode] {
-        return workflowOperationsModel?.attachments.value ?? []
-    }
 }
