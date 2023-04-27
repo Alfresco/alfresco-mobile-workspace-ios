@@ -97,6 +97,7 @@ class WorkflowOperationsModel: NSObject {
                     completionHandler(isError)
                 }
             }
+            publishSyncStatusEvent(for: eventNode)
         }
     }
     
@@ -153,5 +154,13 @@ extension WorkflowOperationsModel {
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }
+    }
+}
+
+// MARK: - Publish Sync
+extension WorkflowOperationsModel {
+    private func publishSyncStatusEvent(for listNode: ListNode) {
+        let syncStatusEvent = SyncStatusEvent(node: listNode)
+        services?.eventBusService?.publish(event: syncStatusEvent, on: .mainQueue)
     }
 }
