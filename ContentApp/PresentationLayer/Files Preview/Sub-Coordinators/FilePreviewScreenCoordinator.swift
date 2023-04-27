@@ -165,7 +165,7 @@ extension FilePreviewScreenCoordinator: CreateNodeCoordinatorDelegate {
                                                 extensionType: extensionType,
                                                 mimetype: node.mimeType ?? "",
                                                 nodeDescription: "",
-                                                localFilenamePath: node.uploadLocalPath ?? "")
+                                                localFilenamePath: node.uploadLocalPath ?? "", attachmentType: AttachmentType.content)
             
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfers: [uploadTransfer])
