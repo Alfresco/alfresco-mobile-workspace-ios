@@ -41,7 +41,6 @@ class StartWorkflowViewController: SystemSearchViewController {
         viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
-        viewModel.appDefinition = StartWorkflowModel.shared.appDefinition
         addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate

@@ -492,8 +492,6 @@ class NodeActionsViewModel {
 extension NodeActionsViewModel {
     private func linkContentToAPS(action: ActionMenu) {
         guard let node = self.node else { return }
-        StartWorkflowModel.shared.reset()
-        StartWorkflowModel.shared.node = node
         self.handleResponse(error: nil, action: action)
     }
 }

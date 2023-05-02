@@ -58,7 +58,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
             } else if action.type.isWorkflowActions {
-                handleStartWorkflow(action: action)
+                handleStartWorkflow(action: action, node: node)
             }
             logEvent(with: action, node: node)
         }
@@ -171,7 +171,7 @@ extension ListComponentViewController {
 // MARK: - Workflow
 extension ListComponentViewController {
     
-    func handleStartWorkflow(action: ActionMenu) {
+    func handleStartWorkflow(action: ActionMenu, node: ListNode?) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startableWorkflowList) as? StartableWorkflowsViewController {
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
@@ -179,20 +179,20 @@ extension ListComponentViewController {
             self.present(bottomSheet, animated: true)
             viewController.didSelectAction = { [weak self] (appDefinition) in
                 guard let sSelf = self else { return }
-                sSelf.startWorkflowAction(appDefinition: appDefinition)
+                sSelf.startWorkflowAction(appDefinition: appDefinition, node: node)
             }
         }
     }
     
-    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?) {
-        StartWorkflowModel.shared.appDefinition = appDefinition
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: ListNode?) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController, let attachment = StartWorkflowModel.shared.node {
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController, let attachment = node {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.appDefinition = appDefinition
             viewController.viewModel.isEditMode = true
             viewController.viewModel.selectedAttachments = [attachment]
             viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+            viewController.viewModel.attachmentNode = node
             self.navigationViewController?.pushViewController(viewController, animated: true)
         }
     }

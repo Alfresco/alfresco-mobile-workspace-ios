@@ -20,6 +20,8 @@ import UIKit
 import AlfrescoContent
 
 class StartWorkflowViewModel: NSObject {
+    var attachmentNode: ListNode?
+    var processDefinition: WFlowProcessDefinitions??
     let rowViewModels = Observable<[RowViewModel]>([])
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
@@ -103,7 +105,7 @@ class StartWorkflowViewModel: NSObject {
                 if data != nil {
                     let processDefinitions = data?.data ?? []
                     let processDefinition = WFlowProcessDefinitionsOperations.processNodes(for: processDefinitions)
-                    StartWorkflowModel.shared.processDefiniton = processDefinition
+                    sSelf.processDefinition = processDefinition
                     completionHandler(processDefinition, nil)
                 } else {
                     completionHandler(nil, error)
