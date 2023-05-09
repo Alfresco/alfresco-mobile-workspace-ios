@@ -109,6 +109,7 @@ class ListComponentDataSource: DataSource {
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
+            cell.setFileSelectedStatus()
 
             if node?.nodeType == .fileLink || node?.nodeType == .folderLink {
                 cell.moreButton.isHidden = true
@@ -132,6 +133,7 @@ class ListComponentDataSource: DataSource {
                                                                       itemAtIndexPath: indexPath)
                 }
             }
+            
             return cell
         }
     }

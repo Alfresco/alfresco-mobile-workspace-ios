@@ -365,6 +365,7 @@ struct LocalizationConstants {
         static let download = NSLocalizedString("download", comment: "")
         static let selected = NSLocalizedString("selected", comment: "")
         static let startWorkflow = NSLocalizedString("start-workflow", comment: "")
+        static let multipleSelection = NSLocalizedString("multiple-selection", comment: "")
     }
     
     struct EditTask {

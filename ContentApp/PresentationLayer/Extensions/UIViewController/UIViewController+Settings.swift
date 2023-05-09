@@ -20,6 +20,7 @@ import UIKit
 
 extension UIViewController {
     private static var _settingsButton = [String: UIButton]()
+    private static var _multipleSelectionButton = [String: UIButton]()
 
     var settingsButton: UIButton {
         get {
@@ -29,6 +30,17 @@ extension UIViewController {
         set(newValue) {
             let tmpAddress = String(format: "%p", unsafeBitCast(self, to: UIButton.self))
             UIViewController._settingsButton[tmpAddress] = newValue
+        }
+    }
+    
+    var multipleSelectionButton: UIButton {
+        get {
+            let tmpAddress = String(format: "%p", unsafeBitCast(self, to: UIButton.self))
+            return UIViewController._multipleSelectionButton[tmpAddress] ?? UIButton()
+        }
+        set(newValue) {
+            let tmpAddress = String(format: "%p", unsafeBitCast(self, to: UIButton.self))
+            UIViewController._multipleSelectionButton[tmpAddress] = newValue
         }
     }
 
@@ -66,5 +78,28 @@ extension UIViewController {
             }
         })
         settingsButton.setImage(avatarImage, for: .normal)
+    }
+    
+    func addMultipleSelectionButton(action: Selector, target: Any?) {
+        let settingsButtonAspectRatio: CGFloat = 30.0
+        multipleSelectionButton = UIButton(type: .custom)
+        multipleSelectionButton.accessibilityIdentifier = "multipleSelectionButton"
+        multipleSelectionButton.accessibilityLabel = LocalizationConstants.Accessibility.multipleSelection
+        multipleSelectionButton.frame = CGRect(x: 0.0, y: 0.0,
+                                      width: settingsButtonAspectRatio,
+                                      height: settingsButtonAspectRatio)
+        multipleSelectionButton.imageView?.contentMode = .scaleAspectFill
+        multipleSelectionButton.layer.masksToBounds = true
+        multipleSelectionButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
+        multipleSelectionButton.setImage(UIImage(named: "select_all"), for: .normal)
+
+        let settingsBarButtonItem = UIBarButtonItem(customView: multipleSelectionButton)
+        settingsBarButtonItem.accessibilityIdentifier = "multipleSelectionBarButton"
+        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: settingsButtonAspectRatio)
+        currWidth?.isActive = true
+        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: settingsButtonAspectRatio)
+        currHeight?.isActive = true
+
+        self.navigationItem.rightBarButtonItem = settingsBarButtonItem
     }
 }

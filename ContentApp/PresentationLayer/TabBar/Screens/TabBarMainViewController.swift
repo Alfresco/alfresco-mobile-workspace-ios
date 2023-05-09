@@ -21,6 +21,7 @@ import MaterialComponents
 
 protocol TabBarScreenDelegate: AnyObject {
     func showSettingsScreen()
+    func showMultipleSelectionOption()
 }
 
 class TabBarMainViewController: UITabBarController {
@@ -157,6 +158,10 @@ extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
 extension TabBarMainViewController: TabBarScreenDelegate {
     func showSettingsScreen() {
         tabBarCoordinatorDelegate?.showSettingsScreen()
+    }
+    
+    func showMultipleSelectionOption() {
+        tabBarCoordinatorDelegate?.showMultipleSelectionOption()
     }
 }
 

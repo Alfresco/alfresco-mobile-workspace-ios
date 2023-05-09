@@ -30,6 +30,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var syncStatusImageView: UIImageView!
     @IBOutlet weak var disableView: UIView!
+    @IBOutlet weak var selectionButton: UIButton!
     weak var delegate: ListElementCollectionViewCellDelegate?
     var currentTheme: PresentationTheme?
 
@@ -47,6 +48,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
             iconImageView.image = FileIcon.icon(for: node)
             addAccessibility(for: node)
             setAccessibilitySequence()
+            updateMultipleSelectionUI()
         }
     }
 
@@ -76,6 +78,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
         iconImageView.tintColor = currentTheme.onSurface70Color
         moreButton.tintColor = currentTheme.onSurface70Color
         syncStatusImageView.tintColor = currentTheme.onSurface70Color
+        selectionButton.backgroundColor = currentTheme.surfaceColor
         disableFiles(isDisable: isDisable)
     }
     
@@ -105,8 +108,51 @@ class ListElementCollectionViewCell: ListSelectableCell {
         }
     }
     
+    func setFileSelectedStatus() {
+        let isMultipleFileSelection = MultipleSelectionModel.shared.isMultipleFileSelection
+        if isMultipleFileSelection {
+            iconImageView.isHidden = true
+            selectionButton.isHidden = false
+        } else {
+            iconImageView.isHidden = false
+            selectionButton.isHidden = true
+        }
+    }
+    
     @IBAction func moreButtonTapped(_ sender: UIButton) {
         delegate?.moreButtonTapped(for: node, in: self)
+    }
+    
+    @IBAction func fileSelectionButtonAction(_ sender: Any) {
+        let isMultipleFileSelection = MultipleSelectionModel.shared.isMultipleFileSelection
+        if isMultipleFileSelection {
+            var nodes = MultipleSelectionModel.shared.multipleSelectedNodes
+            guard let node = node else { return }
+            if !nodes.contains(node) {
+                nodes.append(node)
+                selectionButton.isSelected = true
+            } else {
+                if let index = nodes.firstIndex(where: {$0 == node}) {
+                    nodes.remove(at: index)
+                    selectionButton.isSelected = false
+                }
+            }
+            MultipleSelectionModel.shared.multipleSelectedNodes = nodes
+            MultipleSelectionModel.shared.showMultipleFilesSelectionUI()
+        }
+    }
+    
+    private func updateMultipleSelectionUI() {
+        let isMultipleFileSelection = MultipleSelectionModel.shared.isMultipleFileSelection
+        if isMultipleFileSelection {
+            let nodes = MultipleSelectionModel.shared.multipleSelectedNodes
+            guard let node = node else { return }
+            if nodes.contains(node) {
+                selectionButton.isSelected = true
+            } else {
+                selectionButton.isSelected = false
+            }
+        }        
     }
     
     // MARK: - Private Methods

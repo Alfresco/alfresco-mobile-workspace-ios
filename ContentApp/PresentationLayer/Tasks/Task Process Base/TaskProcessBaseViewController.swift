@@ -129,7 +129,7 @@ class TaskProcessBaseViewController: SystemSearchViewController {
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
     }
-    
+        
     // MARK: - Coordinator Public Methods
 
     func scrollToTop() {

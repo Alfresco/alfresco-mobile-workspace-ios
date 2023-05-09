@@ -26,6 +26,7 @@ protocol TabBarScreenCoordinatorDelegate: AnyObject {
     func showSettingsScreen()
     func scrollToTopOrPopToRoot(forScreen item: Int)
     func showTasksScreen()
+    func showMultipleSelectionOption()
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -150,4 +151,16 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
             break
         }
     }
+    
+    func showMultipleSelectionOption() {
+        print("show multiple selection option")
+        MultipleSelectionModel.shared.isMultipleFileSelection = !MultipleSelectionModel.shared.isMultipleFileSelection
+        MultipleSelectionModel.shared.multipleSelectedNodes.removeAll()
+        MultipleSelectionModel.shared.showMultipleFilesSelectionUI()
+
+        recentCoordinator?.showMultipleSelectionOption()
+        favoritesCoordinator?.showMultipleSelectionOption()
+        offlineCoordinator?.showMultipleSelectionOption()
+    }
 }
+

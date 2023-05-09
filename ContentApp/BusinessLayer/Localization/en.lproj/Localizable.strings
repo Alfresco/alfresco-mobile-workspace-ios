@@ -327,6 +327,7 @@
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";
+"multiple-selection" = "Multiple selection";
 "reset-filters" = "Reset Filters";
 "tasks-filter-collection" = "Tasks filter collection";
 "tasks-filter-collection-hint" = "Used to filter and reset tasks";

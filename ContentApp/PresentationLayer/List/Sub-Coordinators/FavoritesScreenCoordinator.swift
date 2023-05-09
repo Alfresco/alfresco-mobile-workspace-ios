@@ -74,6 +74,10 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
         }
         favoritesViewController?.cancelSearchMode()
     }
+    
+    func showMultipleSelectionOption() {
+        favoritesViewController?.folderAndFilesViewController?.collectionView.reloadData()
+    }
 }
 
 extension FavoritesScreenCoordinator: ListItemActionDelegate {

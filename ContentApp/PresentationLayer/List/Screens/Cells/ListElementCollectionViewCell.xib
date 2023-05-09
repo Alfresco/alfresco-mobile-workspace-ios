@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -28,6 +28,17 @@
                             <constraint firstAttribute="height" constant="24" id="a8c-k2-oow"/>
                         </constraints>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pxc-f0-RjN" userLabel="selectionButton">
+                        <rect key="frame" x="24" y="21" width="24" height="24"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="Button" image="multiple_unselection">
+                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <state key="selected" image="multiple_selection"/>
+                        <connections>
+                            <action selector="fileSelectionButtonAction:" destination="TZI-a9-K3a" eventType="touchUpInside" id="tVo-1X-nOx"/>
+                        </connections>
+                    </button>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="XIF-x5-06A">
                         <rect key="frame" x="72" y="15.5" width="268" height="35"/>
                         <subviews>
@@ -83,14 +94,18 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="3o2-1v-beg" firstAttribute="leading" secondItem="XIF-x5-06A" secondAttribute="trailing" constant="5" id="2SO-iH-8CB"/>
+                    <constraint firstItem="pxc-f0-RjN" firstAttribute="bottom" secondItem="5U9-6I-Aoy" secondAttribute="bottom" id="2a5-iE-lYF"/>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="3Xe-Cq-IYQ"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="leading" secondItem="5U9-6I-Aoy" secondAttribute="trailing" constant="24" id="5jr-G8-6nt"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="leading" secondItem="zWN-x9-knr" secondAttribute="leading" constant="24" id="9zI-jq-c4P"/>
                     <constraint firstItem="2ac-6u-5eL" firstAttribute="top" secondItem="zWN-x9-knr" secondAttribute="top" id="AJV-xG-LiK"/>
+                    <constraint firstItem="pxc-f0-RjN" firstAttribute="leading" secondItem="5U9-6I-Aoy" secondAttribute="leading" id="Dov-b0-utU"/>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="leadingMargin" secondItem="XIF-x5-06A" secondAttribute="trailing" constant="24" id="ESQ-LN-QhT"/>
                     <constraint firstAttribute="trailing" secondItem="YfJ-2w-APk" secondAttribute="trailingMargin" constant="24" id="Imx-ML-NnS"/>
+                    <constraint firstItem="pxc-f0-RjN" firstAttribute="trailing" secondItem="5U9-6I-Aoy" secondAttribute="trailing" id="Owh-zc-4hH"/>
                     <constraint firstItem="2ac-6u-5eL" firstAttribute="leading" secondItem="zWN-x9-knr" secondAttribute="leading" id="RNg-FV-eLU"/>
                     <constraint firstAttribute="bottom" secondItem="2ac-6u-5eL" secondAttribute="bottom" id="U8z-PM-Jap"/>
+                    <constraint firstItem="pxc-f0-RjN" firstAttribute="top" secondItem="5U9-6I-Aoy" secondAttribute="top" id="XCF-sc-8fN"/>
                     <constraint firstItem="3o2-1v-beg" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="bGo-BO-Hm8"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="iDa-6v-qzU"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="jiv-k9-Ifw"/>
@@ -102,6 +117,7 @@
                 <outlet property="disableView" destination="2ac-6u-5eL" id="JJm-WD-8l5"/>
                 <outlet property="iconImageView" destination="5U9-6I-Aoy" id="z4N-k4-OX1"/>
                 <outlet property="moreButton" destination="YfJ-2w-APk" id="7XB-ik-Rl2"/>
+                <outlet property="selectionButton" destination="pxc-f0-RjN" id="xeh-zz-fRG"/>
                 <outlet property="subtitle" destination="dbq-hM-j4M" id="Tbm-Pq-VNJ"/>
                 <outlet property="syncStatusImageView" destination="3o2-1v-beg" id="BRj-Ev-qcK"/>
                 <outlet property="title" destination="MzF-td-FzW" id="Ewd-8Z-lzG"/>
@@ -111,8 +127,10 @@
     </objects>
     <resources>
         <image name="ic-action-more" width="24" height="24"/>
+        <image name="multiple_selection" width="24" height="24"/>
+        <image name="multiple_unselection" width="24" height="24"/>
         <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

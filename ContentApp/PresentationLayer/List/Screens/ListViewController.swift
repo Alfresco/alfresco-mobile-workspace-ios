@@ -70,6 +70,7 @@ class ListViewController: SystemSearchViewController {
             addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         }
 
+        addMultipleSelectionButton(action: #selector(multipleSelectionTapped), target: self)
         listController?.startLoading()
         pageController?.refreshList()
     }
@@ -100,6 +101,10 @@ class ListViewController: SystemSearchViewController {
 
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
+    }
+    
+    @objc func multipleSelectionTapped() {
+        tabBarScreenDelegate?.showMultipleSelectionOption()
     }
 
     // MARK: - Coordinator Public Methods

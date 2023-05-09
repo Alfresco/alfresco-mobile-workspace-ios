@@ -44,6 +44,8 @@ class FavoritesViewController: SystemSearchViewController {
             addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         }
 
+        addMultipleSelectionButton(action: #selector(multipleSelectionTapped), target: self)
+
         view.addSubview(tabBar)
         view.addSubview(scrollView)
 
@@ -110,6 +112,10 @@ class FavoritesViewController: SystemSearchViewController {
 
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
+    }
+    
+    @objc func multipleSelectionTapped() {
+        tabBarScreenDelegate?.showMultipleSelectionOption()
     }
 
     // MARK: - Coordinator Public Methods

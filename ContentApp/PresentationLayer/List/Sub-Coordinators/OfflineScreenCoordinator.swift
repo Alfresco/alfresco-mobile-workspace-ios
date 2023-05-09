@@ -74,6 +74,10 @@ class OfflineScreenCoordinator: PresentingCoordinator, ListCoordinatorProtocol {
         }
         offlineViewController?.cancelSearchMode()
     }
+    
+    func showMultipleSelectionOption() {
+        offlineViewController?.listController?.collectionView.reloadData()
+    }
 }
 
 extension OfflineScreenCoordinator: ListItemActionDelegate {

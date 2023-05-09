@@ -72,6 +72,10 @@ class RecentScreenCoordinator: PresentingCoordinator,
         }
         recentViewController?.cancelSearchMode()
     }
+    
+    func showMultipleSelectionOption() {
+        recentViewController?.listController?.collectionView.reloadData()
+    }
 }
 
 extension RecentScreenCoordinator: ListItemActionDelegate {
