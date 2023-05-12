@@ -21,14 +21,9 @@ import UIKit
 class MultipleSelectionOptions: UIView {
 
     @IBOutlet weak var baseView: UIView!
-    @IBOutlet weak var moveButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
     var nodeActionsModel: NodeActionsViewModel?
 
-    @IBAction func moveButtonAction(_ sender: Any) {
-        print("move button action")
-    }
-    
     @IBAction func deleteButtonAction(_ sender: Any) {
         let action = ActionMenu(title: "Move to Trash", type: .moveTrash)
                 
