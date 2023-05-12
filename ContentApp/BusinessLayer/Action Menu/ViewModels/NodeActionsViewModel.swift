@@ -109,20 +109,20 @@ class NodeActionsViewModel {
     }
 
     private func handleMove(action: ActionMenu) {
-        sessionForCurrentAccount { [weak self] (_) in
-            guard let sSelf = self else { return }
+        sessionForCurrentAccount { (_) in
+            //guard let sSelf = self else { return }
             switch action.type {
             case .moveTrash:
-                sSelf.requestMoveToTrash(action: action)
+                self.requestMoveToTrash(action: action)
             case .restore:
-                sSelf.requestRestoreFromTrash(action: action)
+                self.requestRestoreFromTrash(action: action)
             case .permanentlyDelete:
-                sSelf.requestPermanentlyDelete(action: action)
+                self.requestPermanentlyDelete(action: action)
             case .moveToFolder:
-                sSelf.requestMoveToFolder(action: action)
+                self.requestMoveToFolder(action: action)
             default: break
             }
-            sSelf.logEvent(with: action, node: sSelf.node)
+            self.logEvent(with: action, node: self.node)
         }
     }
 
@@ -242,21 +242,21 @@ class NodeActionsViewModel {
                 sSelf.handleResponse(error: error, action: action)
             }
         } else {
-            NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
-                guard let sSelf = self else { return }
+            NodesAPI.deleteNode(nodeId: node.guid) { (_, error) in
+               // guard let sSelf = self else { return }
                 if error == nil {
-                    sSelf.node?.trashed = true
+                    self.node?.trashed = true
 
-                    if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
+                    if let queriedNode = self.listNodeDataAccessor.query(node: node) {
                         queriedNode.markedFor = .removal
-                        sSelf.listNodeDataAccessor.store(node: queriedNode)
+                        self.listNodeDataAccessor.store(node: queriedNode)
                     }
 
                     let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
-                    let eventBusService = sSelf.coordinatorServices?.eventBusService
+                    let eventBusService = self.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
-                sSelf.handleResponse(error: error, action: action)
+                self.handleResponse(error: error, action: action)
             }
         }
     }

@@ -18,6 +18,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z4M-zk-asO" userLabel="baseView">
                     <rect key="frame" x="0.0" y="0.0" width="769" height="124"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j7W-gb-I4J" userLabel="divider">
+                            <rect key="frame" x="0.0" y="0.0" width="769" height="1"/>
+                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="hp4-rI-O9d"/>
+                            </constraints>
+                        </view>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="9UQ-Mw-f5V">
                             <rect key="frame" x="0.0" y="0.0" width="769" height="124"/>
                             <subviews>
@@ -46,10 +53,13 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="9UQ-Mw-f5V" firstAttribute="top" secondItem="z4M-zk-asO" secondAttribute="top" id="Dyw-qP-iZv"/>
+                        <constraint firstAttribute="trailing" secondItem="j7W-gb-I4J" secondAttribute="trailing" id="AuK-g0-EY8"/>
                         <constraint firstAttribute="trailing" secondItem="9UQ-Mw-f5V" secondAttribute="trailing" id="QXi-H9-9s8"/>
+                        <constraint firstItem="j7W-gb-I4J" firstAttribute="top" secondItem="z4M-zk-asO" secondAttribute="top" id="U4X-Q2-XpN"/>
                         <constraint firstItem="9UQ-Mw-f5V" firstAttribute="leading" secondItem="z4M-zk-asO" secondAttribute="leading" id="dbN-j0-ufc"/>
+                        <constraint firstItem="9UQ-Mw-f5V" firstAttribute="top" secondItem="j7W-gb-I4J" secondAttribute="top" id="kct-eU-ZH3"/>
                         <constraint firstAttribute="bottom" secondItem="9UQ-Mw-f5V" secondAttribute="bottom" id="ooY-lC-eRU"/>
+                        <constraint firstItem="j7W-gb-I4J" firstAttribute="leading" secondItem="z4M-zk-asO" secondAttribute="leading" id="xVG-Ol-0N3"/>
                     </constraints>
                 </view>
             </subviews>

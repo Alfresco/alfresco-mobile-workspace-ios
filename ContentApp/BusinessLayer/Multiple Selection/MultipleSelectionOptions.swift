@@ -23,6 +23,7 @@ class MultipleSelectionOptions: UIView {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var moveButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
+    var nodeActionsModel: NodeActionsViewModel?
 
     @IBAction func moveButtonAction(_ sender: Any) {
         print("move button action")
@@ -30,5 +31,72 @@ class MultipleSelectionOptions: UIView {
     
     @IBAction func deleteButtonAction(_ sender: Any) {
         print("delete button action")
+        let action = ActionMenu(title: "Move to Trash", type: .moveTrash)
+                
+        let nodes = MultipleSelectionModel.shared.multipleSelectedNodes
+        for node in nodes {
+            self.nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        delegate: nil,
+                                                        coordinatorServices: coordinatorServices)
+            self.nodeActionsModel?.tapped(on: action, finished: {
+            })
+        }
+        self.removeFromSuperview()
+    }
+}
+
+// MARK: - services
+extension MultipleSelectionOptions {
+    var repository: ServiceRepository {
+        return ApplicationBootstrap.shared().repository
+    }
+
+    var accountService: AccountService? {
+        let identifier = AccountService.identifier
+        return repository.service(of: identifier) as? AccountService
+    }
+
+    var themingService: MaterialDesignThemingService? {
+        let identifier = MaterialDesignThemingService.identifier
+        return repository.service(of: identifier) as? MaterialDesignThemingService
+    }
+
+    var eventBusService: EventBusService? {
+        let identifier = EventBusService.identifier
+        return repository.service(of: identifier) as? EventBusService
+    }
+
+    var syncService: SyncService? {
+        let identifier = SyncService.identifier
+        return repository.service(of: identifier) as? SyncService
+    }
+
+    var syncTriggersService: SyncTriggersService? {
+        let identifier = SyncTriggersService.identifier
+        return repository.service(of: identifier) as? SyncTriggersService
+    }
+
+    var connectivityService: ConnectivityService? {
+        let identifier = ConnectivityService.identifier
+        return repository.service(of: identifier) as? ConnectivityService
+    }
+    
+    var locationService: LocationService? {
+        let identifier = LocationService.identifier
+        return repository.service(of: identifier) as? LocationService
+    }
+
+    var coordinatorServices: CoordinatorServices {
+        let coordinatorServices = CoordinatorServices()
+
+        coordinatorServices.accountService = accountService
+        coordinatorServices.eventBusService = eventBusService
+        coordinatorServices.themingService = themingService
+        coordinatorServices.syncService = syncService
+        coordinatorServices.syncTriggersService = syncTriggersService
+        coordinatorServices.connectivityService = connectivityService
+        coordinatorServices.locationService = locationService
+
+        return coordinatorServices
     }
 }
