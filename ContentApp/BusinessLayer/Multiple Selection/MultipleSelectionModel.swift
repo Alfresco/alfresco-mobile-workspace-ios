@@ -24,6 +24,7 @@ class MultipleSelectionModel: NSObject {
     var isMultipleFileSelection = false
     var multipleSelectedNodes = [ListNode]()
     var multpleSelectedOptionsView = MultipleSelectionOptions.loadFromXib()
+    var tabBarScreenCoordinator: TabBarScreenCoordinator?
 
     func showMultipleFilesSelectionUI() {
         let nodes = MultipleSelectionModel.shared.multipleSelectedNodes
@@ -35,5 +36,12 @@ class MultipleSelectionModel: NSObject {
             let window = UIApplication.shared.windows.last!
             window.addSubview(multpleSelectedOptionsView)
         }
+    }
+    
+    func toggleMultipleSelection() {
+        MultipleSelectionModel.shared.isMultipleFileSelection = !MultipleSelectionModel.shared.isMultipleFileSelection
+        MultipleSelectionModel.shared.multipleSelectedNodes.removeAll()
+        MultipleSelectionModel.shared.showMultipleFilesSelectionUI()
+        tabBarScreenCoordinator?.reloadCollectionViews()
     }
 }

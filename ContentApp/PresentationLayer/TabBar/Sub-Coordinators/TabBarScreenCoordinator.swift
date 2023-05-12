@@ -153,11 +153,12 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
     }
     
     func showMultipleSelectionOption() {
-        print("show multiple selection option")
-        MultipleSelectionModel.shared.isMultipleFileSelection = !MultipleSelectionModel.shared.isMultipleFileSelection
-        MultipleSelectionModel.shared.multipleSelectedNodes.removeAll()
-        MultipleSelectionModel.shared.showMultipleFilesSelectionUI()
-
+        MultipleSelectionModel.shared.toggleMultipleSelection()
+        MultipleSelectionModel.shared.tabBarScreenCoordinator = self
+        reloadCollectionViews()
+    }
+    
+    func reloadCollectionViews() {
         recentCoordinator?.showMultipleSelectionOption()
         favoritesCoordinator?.showMultipleSelectionOption()
         offlineCoordinator?.showMultipleSelectionOption()

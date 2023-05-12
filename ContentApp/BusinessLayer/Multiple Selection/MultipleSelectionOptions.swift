@@ -30,7 +30,6 @@ class MultipleSelectionOptions: UIView {
     }
     
     @IBAction func deleteButtonAction(_ sender: Any) {
-        print("delete button action")
         let action = ActionMenu(title: "Move to Trash", type: .moveTrash)
                 
         let nodes = MultipleSelectionModel.shared.multipleSelectedNodes
@@ -41,7 +40,7 @@ class MultipleSelectionOptions: UIView {
             self.nodeActionsModel?.tapped(on: action, finished: {
             })
         }
-        self.removeFromSuperview()
+        MultipleSelectionModel.shared.toggleMultipleSelection()
     }
 }
 
