@@ -248,6 +248,12 @@ class StartWorkflowViewController: SystemSearchViewController {
         viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
             guard let sSelf = self else { return }
             sSelf.tableView.reloadData()
+            sSelf.getFormFields()
+        }
+    }
+    
+    private func getFormFields() {
+        viewModel.getFormFieldsToCheckAssigneeType {[weak self] error in            
         }
     }
     

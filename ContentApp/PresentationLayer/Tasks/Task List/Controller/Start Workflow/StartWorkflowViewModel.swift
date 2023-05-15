@@ -46,6 +46,8 @@ class StartWorkflowViewModel: NSObject {
     
     var priority: Int = 0
     
+    var isSingleReviewer = true
+    
     var taskPriority: TaskPriority {
         if priority >= 0 && priority <= 3 {
             return .low
@@ -109,6 +111,34 @@ class StartWorkflowViewModel: NSObject {
                     completionHandler(processDefinition, nil)
                 } else {
                     completionHandler(nil, error)
+                }
+            }
+        })
+    }
+    
+    // MARK: - Check Assignee type
+    func getFormFieldsToCheckAssigneeType(completionHandler: @escaping (_ error: Error?) -> Void) {
+        
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let name = self.processDefinition??.processId ?? ""
+            
+            ProcessAPI.formFields(name: name) {[weak self] data, fields, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+
+                if data != nil && !fields.isEmpty {
+                    for field in fields {
+                        if field.id == "reviewer" {
+                            sSelf.isSingleReviewer = true
+                        } else if field.id == "reviewgroups" {
+                            sSelf.isSingleReviewer = false
+                        }
+                    }
+                    completionHandler(nil)
+                } else {
+                    completionHandler(error)
                 }
             }
         })
