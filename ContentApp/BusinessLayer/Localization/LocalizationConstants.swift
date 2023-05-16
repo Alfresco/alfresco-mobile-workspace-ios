@@ -391,5 +391,7 @@ struct LocalizationConstants {
         static let individualTitle = NSLocalizedString("individual-title", comment: "")
         static let groupTitle = NSLocalizedString("group-title", comment: "")
         static let warningUploadingInQueue = NSLocalizedString("warning-message-uploading-in-progress", comment: "")
+        static let placeholderSearchUser = NSLocalizedString("search-user", comment: "")
+        static let placeholderSearchGroup = NSLocalizedString("search-group", comment: "")
     }
 }
