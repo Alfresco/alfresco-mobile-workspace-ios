@@ -405,3 +405,5 @@
 "individual-title" = "Individual";
 "group-title" = "Group";
 "warning-message-uploading-in-progress" = "The upload is currently in progress. Do you want to continue without uploading?";
+"search-user" = "Search User";
+"search-group" = "Search Group";

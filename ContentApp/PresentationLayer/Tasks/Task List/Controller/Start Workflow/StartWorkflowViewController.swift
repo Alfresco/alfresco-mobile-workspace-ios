@@ -41,7 +41,6 @@ class StartWorkflowViewController: SystemSearchViewController {
         viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
-        viewModel.appDefinition = StartWorkflowModel.shared.appDefinition
         addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -249,6 +248,12 @@ class StartWorkflowViewController: SystemSearchViewController {
         viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
             guard let sSelf = self else { return }
             sSelf.tableView.reloadData()
+            sSelf.getFormFields()
+        }
+    }
+    
+    private func getFormFields() {
+        viewModel.getFormFieldsToCheckAssigneeType { error in
         }
     }
     
@@ -407,6 +412,7 @@ extension StartWorkflowViewController {
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.isWorkflowSearch = true
+            viewController.viewModel.isSearchByName = viewModel.isSingleReviewer
             let navigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController, animated: true)
             viewController.callBack = { [weak self] (assignee) in
