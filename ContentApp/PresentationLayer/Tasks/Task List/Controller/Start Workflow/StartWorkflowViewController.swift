@@ -253,7 +253,7 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     private func getFormFields() {
-        viewModel.getFormFieldsToCheckAssigneeType {[weak self] error in            
+        viewModel.getFormFieldsToCheckAssigneeType { error in
         }
     }
     
