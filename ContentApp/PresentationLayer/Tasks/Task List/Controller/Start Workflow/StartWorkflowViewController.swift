@@ -48,13 +48,13 @@ class StartWorkflowViewController: SystemSearchViewController {
         applyLocalization()
         registerCells()
         addAccessibility()
-        controller.buildViewModel()
         setupBindings()
         getWorkflowDetails()
+        linkContent()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
         controller.registerEvents()
-
+        
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -135,7 +135,35 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     @IBAction func startWorkflowButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("start workflow button action")
+        if viewModel.isLocalContentAvailable() {
+            showUploadingInQueueWarning()
+        } else {
+            startWorkflowAPIIntegration()
+        }
+    }
+    
+    private func showUploadingInQueueWarning() {
+        let title = LocalizationConstants.Workflows.warningTitle
+        let message = LocalizationConstants.Workflows.attachmentInProgressWarning
+    
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.startWorkflowAPIIntegration()
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    // MARK: - Start workflow API integration
+    private func startWorkflowAPIIntegration() {
+        AlfrescoLog.debug("--- START WORKFLOW API ---")
     }
     
     private func addBackButton() {
@@ -249,6 +277,25 @@ class StartWorkflowViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             sSelf.tableView.reloadData()
             sSelf.getFormFields()
+        }
+    }
+    
+    // MARK: - Link content
+    private func linkContent() {
+        viewModel.linkContentToAPS { [weak self] node, error in
+            guard let sSelf = self else { return }
+            if let node = node {
+                sSelf.updateListNodeForLinkContent(node: node)
+            }
+        }
+    }
+    
+    private func updateListNodeForLinkContent(node: ListNode) {
+        var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        if let index = attachments.firstIndex(where: {$0.guid == node.parentGuid}) {
+            attachments[index] = node
+            viewModel.workflowOperationsModel?.attachments.value = attachments
+            controller.buildViewModel()
         }
     }
     

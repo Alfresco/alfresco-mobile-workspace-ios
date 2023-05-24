@@ -20,7 +20,6 @@ import UIKit
 import AlfrescoContent
 
 class StartWorkflowViewModel: NSObject {
-    var attachmentNode: ListNode?
     var processDefinition: WFlowProcessDefinitions??
     let rowViewModels = Observable<[RowViewModel]>([])
     var services: CoordinatorServices?
@@ -142,5 +141,51 @@ class StartWorkflowViewModel: NSObject {
                 }
             }
         })
+    }
+}
+
+// MARK: - Link content to APS
+extension StartWorkflowViewModel {
+    
+    func linkContentToAPS(completionHandler: @escaping (_ node: ListNode?, _ error: Error?) -> Void) {
+        
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            
+            if let params = linkContentParams() {
+                ProcessAPI.linkContentToProcess(params: params) {[weak self] data, error in
+                    guard let sSelf = self else { return }
+                    sSelf.isLoading.value = false
+                    if error == nil {
+                        if let data = data {
+                            let attachment = WorkflowAttachmentOperations.processAttachment(for: data)
+                            completionHandler(attachment, nil)
+                        }
+                    } else {
+                        completionHandler(nil, error)
+                    }
+                }
+            }
+        })
+    }
+    
+    private func linkContentParams() -> ProcessRequestLinkContent? {
+        if let node = selectedAttachments.first {
+            let params = ProcessRequestLinkContent(source: "alfresco-1-adw-contentAlfresco",
+                                                   mimeType: node.mimeType,
+                                                   sourceId: node.guid,
+                                                   name: node.title)
+            return params
+        }
+        return nil
+    }
+    
+    func isLocalContentAvailable() -> Bool {
+        let attachments = workflowOperationsModel?.attachments.value ?? []
+        for attachment in attachments where attachment.syncStatus != .synced {
+            return true
+        }
+        return false
     }
 }
