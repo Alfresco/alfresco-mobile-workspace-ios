@@ -19,32 +19,22 @@
 import AlfrescoContent
 
 class WorkflowAttachmentOperations: NSObject {
-
-    static func processAttachments(for attachments: [ProcessContentDetails]) -> [WorkflowAttachment] {
-        var nodes: [WorkflowAttachment] = []
-        for attachment in attachments {
-            let assignee = ProcessNodeAssignee(assigneeID: attachment.createdBy?.id ?? -1,
-                                               firstName: attachment.createdBy?.firstName,
-                                               lastName: attachment.createdBy?.lastName,
-                                               email: attachment.createdBy?.email)
     
-            let node = WorkflowAttachment(attachmentId: attachment.id,
-                                          name: attachment.name,
-                                          created: attachment.created,
-                                          createdBy: assignee,
-                                          relatedContent: attachment.relatedContent,
-                                          contentAvailable: attachment.contentAvailable,
-                                          link: attachment.link,
-                                          source: attachment.source,
-                                          sourceId: attachment.sourceId,
-                                          mimeType: attachment.mimeType,
-                                          simpleType: attachment.simpleType,
-                                          previewStatus: attachment.previewStatus,
-                                          thumbnailStatus: attachment.thumbnailStatus)
-
-            nodes.append(node)
-        }
+    static func processAttachment(for attachment: ProcessContentDetails) -> ListNode {
         
-        return nodes
+        let firstName = attachment.createdBy?.firstName ?? ""
+        let lastName = attachment.createdBy?.lastName ?? ""
+        let userName = String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
+        return ListNode(guid: String(attachment.id ?? -1),
+                        parentGuid: attachment.sourceId,
+                        mimeType: attachment.mimeType,
+                        title: attachment.name ?? "",
+                        path: "",
+                        nodeType: .file,
+                        assigneeID: attachment.createdBy?.id,
+                        firstName: attachment.createdBy?.firstName,
+                        lastName: attachment.createdBy?.lastName,
+                        email: attachment.createdBy?.email,
+                        userName: userName)
     }
 }
