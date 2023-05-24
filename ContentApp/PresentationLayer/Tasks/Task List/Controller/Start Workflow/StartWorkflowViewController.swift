@@ -136,10 +136,34 @@ class StartWorkflowViewController: SystemSearchViewController {
     
     @IBAction func startWorkflowButtonAction(_ sender: Any) {
         if viewModel.isLocalContentAvailable() {
-            AlfrescoLog.debug("--- LOCAL CONTENT AVAILABLE ---")
+            showUploadingInQueueWarning()
         } else {
-            AlfrescoLog.debug("--- START WORKFLOW API ---")
+            startWorkflowAPIIntegration()
         }
+    }
+    
+    private func showUploadingInQueueWarning() {
+        let title = LocalizationConstants.Workflows.warningTitle
+        let message = LocalizationConstants.Workflows.attachmentInProgressWarning
+    
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.startWorkflowAPIIntegration()
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    // MARK: - Start workflow API integration
+    private func startWorkflowAPIIntegration() {
+        AlfrescoLog.debug("--- START WORKFLOW API ---")
     }
     
     private func addBackButton() {

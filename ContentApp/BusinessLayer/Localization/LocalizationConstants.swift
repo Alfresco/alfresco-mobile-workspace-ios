@@ -393,5 +393,7 @@ struct LocalizationConstants {
         static let warningUploadingInQueue = NSLocalizedString("warning-message-uploading-in-progress", comment: "")
         static let placeholderSearchUser = NSLocalizedString("search-user", comment: "")
         static let placeholderSearchGroup = NSLocalizedString("search-group", comment: "")
+        static let warningTitle = NSLocalizedString("warning-title", comment: "")
+        static let attachmentInProgressWarning = NSLocalizedString("workflow-attachment-in-progress-warning-message", comment: "")
     }
 }
