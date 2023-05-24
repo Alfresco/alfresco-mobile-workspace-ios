@@ -180,4 +180,12 @@ extension StartWorkflowViewModel {
         }
         return nil
     }
+    
+    func isLocalContentAvailable() -> Bool {
+        let attachments = workflowOperationsModel?.attachments.value ?? []
+        for attachment in attachments where attachment.syncStatus != .synced {
+            return true
+        }
+        return false
+    }
 }

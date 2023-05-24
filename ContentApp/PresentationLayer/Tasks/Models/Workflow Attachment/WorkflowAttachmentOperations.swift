@@ -31,6 +31,7 @@ class WorkflowAttachmentOperations: NSObject {
                         title: attachment.name ?? "",
                         path: "",
                         nodeType: .file,
+                        syncStatus: .synced,
                         assigneeID: attachment.createdBy?.id,
                         firstName: attachment.createdBy?.firstName,
                         lastName: attachment.createdBy?.lastName,

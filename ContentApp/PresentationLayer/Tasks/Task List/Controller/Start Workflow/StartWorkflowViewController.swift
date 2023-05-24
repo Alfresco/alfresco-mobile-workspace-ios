@@ -54,7 +54,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
         controller.registerEvents()
-
+        
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -135,7 +135,11 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     @IBAction func startWorkflowButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("start workflow button action")
+        if viewModel.isLocalContentAvailable() {
+            AlfrescoLog.debug("--- LOCAL CONTENT AVAILABLE ---")
+        } else {
+            AlfrescoLog.debug("--- START WORKFLOW API ---")
+        }
     }
     
     private func addBackButton() {
@@ -263,8 +267,10 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     private func updateListNodeForLinkContent(node: ListNode) {
-        if let index = viewModel.selectedAttachments.firstIndex(where: {$0.guid == node.parentGuid}) {
-            viewModel.selectedAttachments[index] = node
+        var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        if let index = attachments.firstIndex(where: {$0.guid == node.parentGuid}) {
+            attachments[index] = node
+            viewModel.workflowOperationsModel?.attachments.value = attachments
             controller.buildViewModel()
         }
     }
