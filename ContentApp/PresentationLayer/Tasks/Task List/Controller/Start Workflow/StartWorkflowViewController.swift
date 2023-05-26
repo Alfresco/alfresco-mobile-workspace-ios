@@ -300,7 +300,9 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     private func getFormFields() {
-        viewModel.getFormFieldsToCheckAssigneeType { error in
+        viewModel.getFormFieldsToCheckAssigneeType {[weak self] error in
+            guard let sSelf = self else { return }
+            sSelf.controller.buildViewModel()
         }
     }
     
@@ -455,16 +457,18 @@ extension StartWorkflowViewController {
 extension StartWorkflowViewController {
     
     func changeAssigneeAction() {
-        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
-            viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.isWorkflowSearch = true
-            viewController.viewModel.isSearchByName = viewModel.isSingleReviewer
-            let navigationController = UINavigationController(rootViewController: viewController)
-            self.present(navigationController, animated: true)
-            viewController.callBack = { [weak self] (assignee) in
-                guard let sSelf = self else { return }
-                sSelf.updateAssignee(with: assignee)
+        if viewModel.isAllowedToEditAssignee {
+            let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+            if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
+                viewController.coordinatorServices = coordinatorServices
+                viewController.viewModel.isWorkflowSearch = true
+                viewController.viewModel.isSearchByName = viewModel.isSingleReviewer
+                let navigationController = UINavigationController(rootViewController: viewController)
+                self.present(navigationController, animated: true)
+                viewController.callBack = { [weak self] (assignee) in
+                    guard let sSelf = self else { return }
+                    sSelf.updateAssignee(with: assignee)
+                }
             }
         }
     }

@@ -47,6 +47,8 @@ class StartWorkflowViewModel: NSObject {
     
     var isSingleReviewer = true
     
+    var isAllowedToEditAssignee = false
+    
     var taskPriority: TaskPriority {
         if priority >= 0 && priority <= 3 {
             return .low
@@ -60,14 +62,17 @@ class StartWorkflowViewModel: NSObject {
     var assignee: TaskNodeAssignee?
     
     var userName: String? {
-        let apsUserID = UserProfile.apsUserID
-        if apsUserID == assigneeUserId {
-            return LocalizationConstants.EditTask.meTitle
-        } else if let groupName = assignee?.groupName, !groupName.isEmpty {
-            return groupName
-        } else {
-            return assignee?.userName
+        if isAllowedToEditAssignee {
+            let apsUserID = UserProfile.apsUserID
+            if apsUserID == assigneeUserId && isSingleReviewer {
+                return LocalizationConstants.EditTask.meTitle
+            } else if let groupName = assignee?.groupName, !groupName.isEmpty {
+                return groupName
+            } else {
+                return assignee?.userName
+            }
         }
+        return nil
     }
     
     var assigneeUserId: Int {
@@ -126,7 +131,8 @@ class StartWorkflowViewModel: NSObject {
             ProcessAPI.formFields(name: name) {[weak self] data, fields, error in
                 guard let sSelf = self else { return }
                 sSelf.isLoading.value = false
-
+                sSelf.isAllowedToEditAssignee = true
+                
                 if data != nil && !fields.isEmpty {
                     for field in fields {
                         if field.id == "reviewer" {
