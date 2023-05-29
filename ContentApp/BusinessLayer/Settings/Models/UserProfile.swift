@@ -113,6 +113,19 @@ class UserProfile {
             UserDefaultsModel.set(value: newValue, for: key)
         }
     }
+    
+    static var apsSource: String? {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.kAPSSource)"
+            return UserDefaultsModel.value(for: key) as? String ?? ""
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.kAPSSource)"
+            UserDefaultsModel.set(value: newValue ?? "", for: key)
+        }
+    }
 
     // MARK: - Persist Data
 

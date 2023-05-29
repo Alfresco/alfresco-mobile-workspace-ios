@@ -395,5 +395,6 @@ struct LocalizationConstants {
         static let placeholderSearchGroup = NSLocalizedString("search-group", comment: "")
         static let warningTitle = NSLocalizedString("warning-title", comment: "")
         static let attachmentInProgressWarning = NSLocalizedString("workflow-attachment-in-progress-warning-message", comment: "")
+        static let selectAssigneeMessage = NSLocalizedString("please-select-assignee", comment: "")
     }
 }

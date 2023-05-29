@@ -58,6 +58,18 @@ class WorkflowListViewController: SystemSearchViewController {
         setupDropDownView()
         setSelectedFilterName()
         addAccessibility()
+        addNotifications()
+    }
+    
+    private func addNotifications() {        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.refreshWorkflowList(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.refreshWorkflows),
+                                               object: nil)
+    }
+   
+    @objc private func refreshWorkflowList(notification: Notification) {
+        handlePullToRefresh()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -135,7 +147,7 @@ class WorkflowListViewController: SystemSearchViewController {
     }
     
     // MARK: - Get Workflows List
-    func getWorkflowsList() {
+    @objc func getWorkflowsList() {
         
         viewModel.workflowList {[weak self] workflows, error in
             guard let sSelf = self else { return }
