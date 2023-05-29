@@ -229,12 +229,13 @@ extension StartWorkflowViewModel {
         if !dateString.isEmpty {
             dateString = String(format: "%@T00:00:00Z", dateString)
         }
-        let attachIds = attachmentIds()
+        let attachIds = attachmentIds()        
         let params = StartProcessParams(message: appDefinition?.description ?? "",
                                         dueDate: dateString,
                                         attachmentIds: attachIds,
                                         priority: priority,
-                                        reviewer: reviewer(),
+                                        reviewer: reviewer().singleReviewer,
+                                        reviewgroups: reviewer().groupReviewer,
                                         sendemailnotifications: false)
         
         let processDefinitionId = self.processDefinition??.processId ?? ""
@@ -260,10 +261,22 @@ extension StartWorkflowViewModel {
         return attachIds
     }
     
-    private func reviewer() -> ReviewerParams {
-        return ReviewerParams(email: assignee?.email ?? "",
-                                      firstName: assignee?.firstName ?? "",
-                                      lastName: assignee?.lastName ?? "",
-                                      id: assigneeUserId)
+    private func reviewer() -> (singleReviewer: ReviewerParams?, groupReviewer: GroupReviewerParams?) {
+        
+        if isSingleReviewer {
+            let reviewer = ReviewerParams(email: assignee?.email ?? "",
+                                          firstName: assignee?.firstName ?? "",
+                                          lastName: assignee?.lastName ?? "",
+                                          id: assigneeUserId)
+            return (reviewer, nil)
+        } else {
+            let reviewer = GroupReviewerParams(id: assignee?.assigneeID ?? -1,
+                                             name: assignee?.groupName ?? "",
+                                             externalId: assignee?.externalId,
+                                             status: assignee?.status,
+                                             parentGroupId: assignee?.parentGroupId,
+                                             groups: nil)
+            return (nil, reviewer)
+        }
     }
 }

@@ -173,10 +173,18 @@ class StartWorkflowViewController: SystemSearchViewController {
             viewModel.startWorkflow {[weak self] isError in
                 guard let sSelf = self else { return }
                 if !isError {
+                    sSelf.updateWorkflowsList()
                     sSelf.backButtonAction()
                 }
             }
         }
+    }
+    
+    private func updateWorkflowsList() {
+        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.refreshWorkflows)
+        NotificationCenter.default.post(name: notification,
+                                        object: nil,
+                                        userInfo: nil)
     }
 
     private func addBackButton() {
