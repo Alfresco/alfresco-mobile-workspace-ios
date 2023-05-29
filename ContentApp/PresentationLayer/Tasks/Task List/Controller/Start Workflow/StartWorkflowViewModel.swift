@@ -195,3 +195,75 @@ extension StartWorkflowViewModel {
         return false
     }
 }
+
+// MARK: - Start Workflow
+extension StartWorkflowViewModel {
+    
+    func isAllowedToStartWorkflow() -> Bool {
+        if assigneeUserId >= 0 {
+            return true
+        }
+        return false
+    }
+    
+    func startWorkflow(completionHandler: @escaping (_ isError: Bool) -> Void) {
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: {[weak self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            guard let sSelf = self else { return }
+            let params = sSelf.startProcessParams()
+            ProcessAPI.startProcess(params: params) { data, error in
+                sSelf.isLoading.value = false
+                if error == nil {
+                    completionHandler(false)
+                } else {
+                    completionHandler(true)
+                }
+            }
+        })
+    }
+    
+    private func startProcessParams() -> StartProcessBodyCreate {
+        let priority = String(format: "%@", taskPriority.rawValue)
+        var dateString = dueDate?.dateString(format: "yyyy-MM-dd") ?? ""
+        if !dateString.isEmpty {
+            dateString = String(format: "%@T00:00:00Z", dateString)
+        }
+        let attachIds = attachmentIds()
+        let params = StartProcessParams(message: appDefinition?.description ?? "",
+                                        dueDate: dateString,
+                                        attachmentIds: attachIds,
+                                        priority: priority,
+                                        reviewer: reviewer(),
+                                        sendemailnotifications: false)
+        
+        let processDefinitionId = self.processDefinition??.processId ?? ""
+        return StartProcessBodyCreate(name: appDefinition?.name ?? "",
+                                      processDefinitionId: processDefinitionId,
+                                      params: params)
+    }
+    
+    private func attachmentIds() -> String {
+        var attachIds = ""
+        let attachments = workflowOperationsModel?.attachments.value ?? []
+        for attachment in attachments where attachment.syncStatus == .synced {
+            if !attachIds.isEmpty {
+                attachIds = String(format: "%@,", attachIds)
+            }
+            
+            let guid = attachment.guid
+            if !guid.isEmpty {
+                attachIds = String(format: "%@%@", attachIds, guid)
+            }
+        }
+        
+        return attachIds
+    }
+    
+    private func reviewer() -> ReviewerParams {
+        return ReviewerParams(email: assignee?.email ?? "",
+                                      firstName: assignee?.firstName ?? "",
+                                      lastName: assignee?.lastName ?? "",
+                                      id: assigneeUserId)
+    }
+}

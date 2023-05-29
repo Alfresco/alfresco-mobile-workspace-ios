@@ -54,6 +54,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
         controller.registerEvents()
+        ProfileService.getAPSSource() // to get APS Source
         
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -162,10 +163,22 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     // MARK: - Start workflow API integration
-    private func startWorkflowAPIIntegration() {
-        AlfrescoLog.debug("--- START WORKFLOW API ---")
+    private func startWorkflowAPIIntegration() {        
+        if !viewModel.isAllowedToStartWorkflow() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                Snackbar.display(with: String(format: LocalizationConstants.Workflows.selectAssigneeMessage),
+                                 type: .warning, finish: nil)
+            })
+        } else {
+            viewModel.startWorkflow {[weak self] isError in
+                guard let sSelf = self else { return }
+                if !isError {
+                    sSelf.backButtonAction()
+                }
+            }
+        }
     }
-    
+
     private func addBackButton() {
         let backButton = UIButton(type: .custom)
         backButton.accessibilityIdentifier = "backButton"

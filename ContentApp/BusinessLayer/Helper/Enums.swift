@@ -19,10 +19,10 @@
 import UIKit
 
 // MARK: - Task Priority
-enum TaskPriority {
-    case low
-    case medium
-    case high
+enum TaskPriority: String {
+    case low = "Low"
+    case medium = "Medium"
+    case high = "High"
 }
 
 // MARK: - Enum Attachment Type

@@ -409,3 +409,4 @@
 "search-group" = "Search Group";
 "warning-title" = "Warning";
 "workflow-attachment-in-progress-warning-message" = "Files uploading is in progress. Tap on Confirm to continue without in-progress files.";
+"please-select-assignee" = "Please select assignee";

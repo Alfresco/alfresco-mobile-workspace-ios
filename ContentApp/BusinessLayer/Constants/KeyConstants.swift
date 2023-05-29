@@ -40,6 +40,7 @@ struct KeyConstants {
         static let displayLastName = "kSaveDiplayLastName"
         static let apsUserId = "kAPSUserId"
         static let isAPSEnabled = "isAPSEnabled"
+        static let kAPSSource = "kAPSSource"
     }
 
     struct Notification {
