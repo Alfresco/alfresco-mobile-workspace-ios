@@ -89,4 +89,23 @@ class ProfileService {
             }
         }
     }
+    
+    // MARK: - Get APS Source
+    static func getAPSSource() {
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            ProcessAPI.getAPSSource { data, error in
+                if let data = data?.data {
+                    if !data.isEmpty {
+                        let profileId = data.first?.id ?? -1
+                        let name = data.first?.name ?? ""
+                        UserProfile.apsSource = "alfresco-\(profileId)-\(name)Alfresco"
+                    } else {
+                        UserProfile.apsSource = "undefinedAlfresco"
+                    }
+                }
+            }
+        })
+    }
 }

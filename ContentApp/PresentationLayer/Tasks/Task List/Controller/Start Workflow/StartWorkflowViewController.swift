@@ -41,7 +41,6 @@ class StartWorkflowViewController: SystemSearchViewController {
         viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
-        viewModel.appDefinition = StartWorkflowModel.shared.appDefinition
         addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -49,13 +48,14 @@ class StartWorkflowViewController: SystemSearchViewController {
         applyLocalization()
         registerCells()
         addAccessibility()
-        controller.buildViewModel()
         setupBindings()
         getWorkflowDetails()
+        linkContent()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
         controller.registerEvents()
-
+        ProfileService.getAPSSource() // to get APS Source
+        
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -136,9 +136,57 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     @IBAction func startWorkflowButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("start workflow button action")
+        if viewModel.isLocalContentAvailable() {
+            showUploadingInQueueWarning()
+        } else {
+            startWorkflowAPIIntegration()
+        }
     }
     
+    private func showUploadingInQueueWarning() {
+        let title = LocalizationConstants.Workflows.warningTitle
+        let message = LocalizationConstants.Workflows.attachmentInProgressWarning
+    
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.startWorkflowAPIIntegration()
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    // MARK: - Start workflow API integration
+    private func startWorkflowAPIIntegration() {        
+        if !viewModel.isAllowedToStartWorkflow() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                Snackbar.display(with: String(format: LocalizationConstants.Workflows.selectAssigneeMessage),
+                                 type: .warning, finish: nil)
+            })
+        } else {
+            viewModel.startWorkflow {[weak self] isError in
+                guard let sSelf = self else { return }
+                if !isError {
+                    sSelf.updateWorkflowsList()
+                    sSelf.backButtonAction()
+                }
+            }
+        }
+    }
+    
+    private func updateWorkflowsList() {
+        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.refreshWorkflows)
+        NotificationCenter.default.post(name: notification,
+                                        object: nil,
+                                        userInfo: nil)
+    }
+
     private func addBackButton() {
         let backButton = UIButton(type: .custom)
         backButton.accessibilityIdentifier = "backButton"
@@ -249,6 +297,33 @@ class StartWorkflowViewController: SystemSearchViewController {
         viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
             guard let sSelf = self else { return }
             sSelf.tableView.reloadData()
+            sSelf.getFormFields()
+        }
+    }
+    
+    // MARK: - Link content
+    private func linkContent() {
+        viewModel.linkContentToAPS { [weak self] node, error in
+            guard let sSelf = self else { return }
+            if let node = node {
+                sSelf.updateListNodeForLinkContent(node: node)
+            }
+        }
+    }
+    
+    private func updateListNodeForLinkContent(node: ListNode) {
+        var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        if let index = attachments.firstIndex(where: {$0.guid == node.parentGuid}) {
+            attachments[index] = node
+            viewModel.workflowOperationsModel?.attachments.value = attachments
+            controller.buildViewModel()
+        }
+    }
+    
+    private func getFormFields() {
+        viewModel.getFormFieldsToCheckAssigneeType {[weak self] error in
+            guard let sSelf = self else { return }
+            sSelf.controller.buildViewModel()
         }
     }
     
@@ -403,15 +478,18 @@ extension StartWorkflowViewController {
 extension StartWorkflowViewController {
     
     func changeAssigneeAction() {
-        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
-            viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.isWorkflowSearch = true
-            let navigationController = UINavigationController(rootViewController: viewController)
-            self.present(navigationController, animated: true)
-            viewController.callBack = { [weak self] (assignee) in
-                guard let sSelf = self else { return }
-                sSelf.updateAssignee(with: assignee)
+        if viewModel.isAllowedToEditAssignee {
+            let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+            if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
+                viewController.coordinatorServices = coordinatorServices
+                viewController.viewModel.isWorkflowSearch = true
+                viewController.viewModel.isSearchByName = viewModel.isSingleReviewer
+                let navigationController = UINavigationController(rootViewController: viewController)
+                self.present(navigationController, animated: true)
+                viewController.callBack = { [weak self] (assignee) in
+                    guard let sSelf = self else { return }
+                    sSelf.updateAssignee(with: assignee)
+                }
             }
         }
     }
