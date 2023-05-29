@@ -29,6 +29,8 @@ class TaskAssigneeViewController: SystemThemableViewController {
     @IBOutlet weak var emailButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
+    @IBOutlet weak var radioButtonView: UIView!
+    @IBOutlet weak var heightRadioButtonView: NSLayoutConstraint!
     
     var viewModel: TaskAssigneeViewModel { return controller.viewModel }
     lazy var controller: TaskAssigneeController = { return TaskAssigneeController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -54,6 +56,8 @@ class TaskAssigneeViewController: SystemThemableViewController {
             searchTextField.becomeFirstResponder()
         }
         searchTextField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
+        heightRadioButtonView.constant = viewModel.heightOfRadioButtonsView
+        radioButtonView.isHidden = viewModel.isHideRadioButtonView
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -124,11 +128,11 @@ class TaskAssigneeViewController: SystemThemableViewController {
         if !viewModel.isWorkflowSearch {
             emailButton.setTitle(LocalizationConstants.EditTask.byEmail, for: UIControl.State.normal)
             nameButton.setTitle(LocalizationConstants.EditTask.byName, for: UIControl.State.normal)
-            searchTextField.placeholder = LocalizationConstants.EditTask.searchPlaceholder
+            searchTextField.placeholder = viewModel.placeholder
         } else {
             nameButton.setTitle(LocalizationConstants.Workflows.individualTitle, for: UIControl.State.normal)
             emailButton.setTitle(LocalizationConstants.Workflows.groupTitle, for: UIControl.State.normal)
-            searchTextField.placeholder = LocalizationConstants.EditTask.searchPlaceholder
+            searchTextField.placeholder = viewModel.placeholder
         }
     }
     

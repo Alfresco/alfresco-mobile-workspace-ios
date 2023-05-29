@@ -46,6 +46,34 @@ class TaskAssigneeViewModel: NSObject {
         }
     }
     
+    var heightOfRadioButtonsView: CGFloat {
+        if isWorkflowSearch {
+            return 0
+        } else {
+            return 60.0
+        }
+    }
+    
+    var isHideRadioButtonView: Bool {
+        if isWorkflowSearch {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    var placeholder: String {
+        if isWorkflowSearch {
+            if isSearchByName {
+                return LocalizationConstants.Workflows.placeholderSearchUser
+            } else {
+                return LocalizationConstants.Workflows.placeholderSearchGroup
+            }
+        } else {
+            return LocalizationConstants.EditTask.searchPlaceholder
+        }
+    }
+    
     // MARK: - GET Search user
     func searchUser(with filter: String?, email: String?, completionHandler: @escaping (_ assignee: [TaskNodeAssignee], _ error: Error?) -> Void) {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }

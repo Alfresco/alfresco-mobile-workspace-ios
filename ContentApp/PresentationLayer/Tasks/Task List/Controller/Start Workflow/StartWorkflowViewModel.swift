@@ -20,6 +20,7 @@ import UIKit
 import AlfrescoContent
 
 class StartWorkflowViewModel: NSObject {
+    var processDefinition: WFlowProcessDefinitions??
     let rowViewModels = Observable<[RowViewModel]>([])
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
@@ -44,6 +45,10 @@ class StartWorkflowViewModel: NSObject {
     
     var priority: Int = 0
     
+    var isSingleReviewer = true
+    
+    var isAllowedToEditAssignee = false
+    
     var taskPriority: TaskPriority {
         if priority >= 0 && priority <= 3 {
             return .low
@@ -57,14 +62,17 @@ class StartWorkflowViewModel: NSObject {
     var assignee: TaskNodeAssignee?
     
     var userName: String? {
-        let apsUserID = UserProfile.apsUserID
-        if apsUserID == assigneeUserId {
-            return LocalizationConstants.EditTask.meTitle
-        } else if let groupName = assignee?.groupName, !groupName.isEmpty {
-            return groupName
-        } else {
-            return assignee?.userName
+        if isAllowedToEditAssignee {
+            let apsUserID = UserProfile.apsUserID
+            if apsUserID == assigneeUserId && isSingleReviewer {
+                return LocalizationConstants.EditTask.meTitle
+            } else if let groupName = assignee?.groupName, !groupName.isEmpty {
+                return groupName
+            } else {
+                return assignee?.userName
+            }
         }
+        return nil
     }
     
     var assigneeUserId: Int {
@@ -103,12 +111,172 @@ class StartWorkflowViewModel: NSObject {
                 if data != nil {
                     let processDefinitions = data?.data ?? []
                     let processDefinition = WFlowProcessDefinitionsOperations.processNodes(for: processDefinitions)
-                    StartWorkflowModel.shared.processDefiniton = processDefinition
+                    sSelf.processDefinition = processDefinition
                     completionHandler(processDefinition, nil)
                 } else {
                     completionHandler(nil, error)
                 }
             }
         })
+    }
+    
+    // MARK: - Check Assignee type
+    func getFormFieldsToCheckAssigneeType(completionHandler: @escaping (_ error: Error?) -> Void) {
+        
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let name = self.processDefinition??.processId ?? ""
+            
+            ProcessAPI.formFields(name: name) {[weak self] data, fields, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                sSelf.isAllowedToEditAssignee = true
+                
+                if data != nil && !fields.isEmpty {
+                    for field in fields {
+                        if field.id == "reviewer" {
+                            sSelf.isSingleReviewer = true
+                        } else if field.id == "reviewgroups" {
+                            sSelf.isSingleReviewer = false
+                        }
+                    }
+                    completionHandler(nil)
+                } else {
+                    completionHandler(error)
+                }
+            }
+        })
+    }
+}
+
+// MARK: - Link content to APS
+extension StartWorkflowViewModel {
+    
+    func linkContentToAPS(completionHandler: @escaping (_ node: ListNode?, _ error: Error?) -> Void) {
+        
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            
+            if let params = linkContentParams() {
+                ProcessAPI.linkContentToProcess(params: params) {[weak self] data, error in
+                    guard let sSelf = self else { return }
+                    sSelf.isLoading.value = false
+                    if error == nil {
+                        if let data = data {
+                            let attachment = WorkflowAttachmentOperations.processAttachment(for: data)
+                            completionHandler(attachment, nil)
+                        }
+                    } else {
+                        completionHandler(nil, error)
+                    }
+                }
+            }
+        })
+    }
+    
+    private func linkContentParams() -> ProcessRequestLinkContent? {
+        if let node = selectedAttachments.first {
+            let params = ProcessRequestLinkContent(source: "alfresco-1-adw-contentAlfresco",
+                                                   mimeType: node.mimeType,
+                                                   sourceId: node.guid,
+                                                   name: node.title)
+            return params
+        }
+        return nil
+    }
+    
+    func isLocalContentAvailable() -> Bool {
+        let attachments = workflowOperationsModel?.attachments.value ?? []
+        for attachment in attachments where attachment.syncStatus != .synced {
+            return true
+        }
+        return false
+    }
+}
+
+// MARK: - Start Workflow
+extension StartWorkflowViewModel {
+    
+    func isAllowedToStartWorkflow() -> Bool {
+        if assigneeUserId >= 0 {
+            return true
+        }
+        return false
+    }
+    
+    func startWorkflow(completionHandler: @escaping (_ isError: Bool) -> Void) {
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: {[weak self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            guard let sSelf = self else { return }
+            let params = sSelf.startProcessParams()
+            ProcessAPI.startProcess(params: params) { data, error in
+                sSelf.isLoading.value = false
+                if error == nil {
+                    completionHandler(false)
+                } else {
+                    completionHandler(true)
+                }
+            }
+        })
+    }
+    
+    private func startProcessParams() -> StartProcessBodyCreate {
+        let priority = String(format: "%@", taskPriority.rawValue)
+        var dateString = dueDate?.dateString(format: "yyyy-MM-dd") ?? ""
+        if !dateString.isEmpty {
+            dateString = String(format: "%@T00:00:00Z", dateString)
+        }
+        let attachIds = attachmentIds()        
+        let params = StartProcessParams(message: appDefinition?.description ?? "",
+                                        dueDate: dateString,
+                                        attachmentIds: attachIds,
+                                        priority: priority,
+                                        reviewer: reviewer().singleReviewer,
+                                        reviewgroups: reviewer().groupReviewer,
+                                        sendemailnotifications: false)
+        
+        let processDefinitionId = self.processDefinition??.processId ?? ""
+        return StartProcessBodyCreate(name: appDefinition?.name ?? "",
+                                      processDefinitionId: processDefinitionId,
+                                      params: params)
+    }
+    
+    private func attachmentIds() -> String {
+        var attachIds = ""
+        let attachments = workflowOperationsModel?.attachments.value ?? []
+        for attachment in attachments where attachment.syncStatus == .synced {
+            if !attachIds.isEmpty {
+                attachIds = String(format: "%@,", attachIds)
+            }
+            
+            let guid = attachment.guid
+            if !guid.isEmpty {
+                attachIds = String(format: "%@%@", attachIds, guid)
+            }
+        }
+        
+        return attachIds
+    }
+    
+    private func reviewer() -> (singleReviewer: ReviewerParams?, groupReviewer: GroupReviewerParams?) {
+        
+        if isSingleReviewer {
+            let reviewer = ReviewerParams(email: assignee?.email ?? "",
+                                          firstName: assignee?.firstName ?? "",
+                                          lastName: assignee?.lastName ?? "",
+                                          id: assigneeUserId)
+            return (reviewer, nil)
+        } else {
+            let reviewer = GroupReviewerParams(id: assignee?.assigneeID ?? -1,
+                                             name: assignee?.groupName ?? "",
+                                             externalId: assignee?.externalId,
+                                             status: assignee?.status,
+                                             parentGroupId: assignee?.parentGroupId,
+                                             groups: nil)
+            return (nil, reviewer)
+        }
     }
 }
