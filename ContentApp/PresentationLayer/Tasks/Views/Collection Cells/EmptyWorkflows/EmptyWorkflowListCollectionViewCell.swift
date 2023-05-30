@@ -18,12 +18,13 @@
 
 import UIKit
 
-class WorkflowListCollectionViewCell: ListSelectableCell {
+class EmptyWorkflowListCollectionViewCell: ListSelectableCell {
 
+    @IBOutlet weak var baseView: UIView!
+    @IBOutlet weak var imageViewEmptyWorkflows: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel!
     var currentTheme: PresentationTheme?
-    lazy var viewModel = WorkflowListCollectionViewModel()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,30 +33,28 @@ class WorkflowListCollectionViewCell: ListSelectableCell {
     
     private func addAccessibility() {
         titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        subtitleLabel.accessibilityLabel = LocalizationConstants.Accessibility.assignee
+        titleLabel.accessibilityValue = LocalizationConstants.Workflows.workflowsUnavailableTitle
+        subTitleLabel.accessibilityLabel = LocalizationConstants.Accessibility.subTitle
+        subTitleLabel.accessibilityValue = LocalizationConstants.Workflows.workflowsUnavailableMessage
         
         titleLabel.accessibilityIdentifier = "title"
-        subtitleLabel.accessibilityIdentifier = "sub-title"
+        subTitleLabel.accessibilityIdentifier = "sub-title"
+        imageViewEmptyWorkflows.accessibilityIdentifier = "empty-imageView"
     }
     
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
         self.currentTheme = currentTheme
         backgroundColor = currentTheme.surfaceColor
-        titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
-        titleLabel.lineBreakMode = .byTruncatingTail
-        subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
-        subtitleLabel.lineBreakMode = .byTruncatingHead
+
+        titleLabel.applyStyleBoldOnSurface(theme: currentTheme)
+        titleLabel.textAlignment = .center
+        subTitleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        subTitleLabel.textAlignment = .center
     }
     
-    func setupData(for workflowAppDefinition: WFlowAppDefinitions?) {
-        guard let workflowAppDefinition = workflowAppDefinition else { return }
-        viewModel.workflowAppDefinition = workflowAppDefinition
-        
-        titleLabel.text = viewModel.name
-        subtitleLabel.text = viewModel.definitionDescription
-        
-        titleLabel.accessibilityValue = titleLabel.text
-        subtitleLabel.accessibilityValue = subtitleLabel.text
+    func setupData() {
+        titleLabel.text = LocalizationConstants.Workflows.workflowsUnavailableTitle
+        subTitleLabel.text = LocalizationConstants.Workflows.workflowsUnavailableMessage
     }
 }

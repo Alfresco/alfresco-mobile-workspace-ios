@@ -396,7 +396,6 @@ struct LocalizationConstants {
         static let warningTitle = NSLocalizedString("warning-title", comment: "")
         static let attachmentInProgressWarning = NSLocalizedString("workflow-attachment-in-progress-warning-message", comment: "")
         static let selectAssigneeMessage = NSLocalizedString("please-select-assignee", comment: "")
-        
         static let workflowsUnavailableTitle = NSLocalizedString("workflows_unavailable_title", comment: "")
         static let workflowsUnavailableMessage = NSLocalizedString("workflow_unavailable_message", comment: "")
         static let approveTitle = NSLocalizedString("text_approve", comment: "")

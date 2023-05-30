@@ -17,6 +17,8 @@
 		4734440229DC0CED004A72CD /* StartableWorkflowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */; };
 		4734440429DC0D1E004A72CD /* StartableWorkflowsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */; };
 		474172C229F03C48001F1403 /* WorkflowOperationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474172C129F03C48001F1403 /* WorkflowOperationsModel.swift */; };
+		474D3C972A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474D3C952A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.swift */; };
+		474D3C982A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 474D3C962A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.xib */; };
 		47665C9029EACB3100679747 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759BA289BE415006603E0 /* Enums.swift */; };
 		476672D629D890E70073E27E /* APSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476672D529D890E70073E27E /* APSService.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
@@ -792,6 +794,8 @@
 		4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewController.swift; sourceTree = "<group>"; };
 		4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewModel.swift; sourceTree = "<group>"; };
 		474172C129F03C48001F1403 /* WorkflowOperationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowOperationsModel.swift; sourceTree = "<group>"; };
+		474D3C952A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyWorkflowListCollectionViewCell.swift; sourceTree = "<group>"; };
+		474D3C962A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyWorkflowListCollectionViewCell.xib; sourceTree = "<group>"; };
 		476672D529D890E70073E27E /* APSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APSService.swift; sourceTree = "<group>"; };
 		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
@@ -1425,6 +1429,15 @@
 				4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */,
 			);
 			path = "Startable Workflows";
+			sourceTree = "<group>";
+		};
+		474D3C942A25F78C00247DF9 /* EmptyWorkflows */ = {
+			isa = PBXGroup;
+			children = (
+				474D3C952A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.swift */,
+				474D3C962A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.xib */,
+			);
+			path = EmptyWorkflows;
 			sourceTree = "<group>";
 		};
 		4792042729CF01C00080BB13 /* Task Process Base */ = {
@@ -2514,6 +2527,7 @@
 				C9A75996289BBAA1006603E0 /* Section */,
 				C9A75999289BBAA1006603E0 /* List */,
 				47F5A6E029DE7FD200073D7F /* Workflow List */,
+				474D3C942A25F78C00247DF9 /* EmptyWorkflows */,
 			);
 			path = "Collection Cells";
 			sourceTree = "<group>";
@@ -3806,6 +3820,7 @@
 				C95B2A3528BE1866007841F4 /* mockComments.json in Resources */,
 				C97BEB7F26EB3AC700E05375 /* PreviewCollectionViewCell.xib in Resources */,
 				B9F17141256C115700AD1E3A /* excel.xlsx in Resources */,
+				474D3C982A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.xib in Resources */,
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
 				C973EC6A2726BD7D00912015 /* ListItemTableViewCell.xib in Resources */,
 				B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */,
@@ -4563,6 +4578,7 @@
 				B95605022501208600D955BA /* PDFRenderer.swift in Sources */,
 				B9A9F126263AEB7900F4428D /* CameraKit.swift in Sources */,
 				C915CDD828905B6800819F86 /* TaskNodeOperations.swift in Sources */,
+				474D3C972A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.swift in Sources */,
 				C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */,
 				C9B28F1A28DC1AAA00C01A91 /* TaskPriorityViewController.swift in Sources */,
 				C97BEB8126EB3AC700E05375 /* PhotoGalleryCollectionViewCell.swift in Sources */,
