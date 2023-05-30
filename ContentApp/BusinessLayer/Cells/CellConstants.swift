@@ -25,7 +25,7 @@ struct CellConstants {
         static let taskList = "TaskListCollectionViewCell"
         static let taskSection = "TaskSectionCollectionViewCell"
         static let runTimeAppDefinition = "WorkflowListCollectionViewCell"
-
+        static let emptyWorkflowList = "EmptyWorkflowListCollectionViewCell"
     }
     
     struct TableCells {
