@@ -31,11 +31,13 @@ class StartableWorkflowsViewController: SystemThemableViewController {
     lazy var viewModel = StartableWorkflowsViewModel()
     private var activityIndicator = MDCActivityIndicator()
     let actionMenuCellHeight: CGFloat = 55.0
+    let emptyViewHeight: CGFloat = 200.0
     var didSelectAction: ((WFlowAppDefinitions) -> Void)?
 
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.isHidden = true
         navigationController?.setNavigationBarHidden(true, animated: true)
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         viewModel.delegate = self
@@ -67,6 +69,7 @@ class StartableWorkflowsViewController: SystemThemableViewController {
     private func fetchAppDefinitions() {
         viewModel.fetchWorkflowsList {[weak self] appDefinitions, error in
             guard let sSelf = self else { return }
+            sSelf.collectionView.isHidden = false
             sSelf.collectionView?.reloadData()
         }
     }
@@ -74,7 +77,11 @@ class StartableWorkflowsViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let numberOfActions = viewModel.numberOfActions()
-        collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        if numberOfActions == 0 {
+            collectionViewContraintHeight.constant = emptyViewHeight
+        } else {
+            collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        }
         activityIndicator.center = CGPoint(x: view.center.x,
                                            y: view.center.y)
         view.isHidden = false
@@ -95,6 +102,8 @@ class StartableWorkflowsViewController: SystemThemableViewController {
     
     private func registerCells() {
         collectionView.register(UINib(nibName: CellConstants.CollectionCells.runTimeAppDefinition, bundle: nil), forCellWithReuseIdentifier: CellConstants.CollectionCells.runTimeAppDefinition)
+        
+        collectionView.register(UINib(nibName: CellConstants.CollectionCells.emptyWorkflowList, bundle: nil), forCellWithReuseIdentifier: CellConstants.CollectionCells.emptyWorkflowList)
     }
 }
 
@@ -103,7 +112,8 @@ class StartableWorkflowsViewController: SystemThemableViewController {
 extension StartableWorkflowsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return Int(viewModel.numberOfActions())
+        let numberOfActions = Int(viewModel.numberOfActions())
+        return numberOfActions == 0 ? 1: numberOfActions
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -113,13 +123,24 @@ extension StartableWorkflowsViewController: UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let reuseIdentifier = String(describing: WorkflowListCollectionViewCell.self)
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
-                                                         for: indexPath) as? WorkflowListCollectionViewCell {
-            let appDefinition = viewModel.appDefinitions[indexPath.row]
-            cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
-            cell.setupData(for: appDefinition)
-            return cell
+        let numberOfActions = Int(viewModel.numberOfActions())
+        if numberOfActions == 0 {
+            let reuseIdentifier = String(describing: EmptyWorkflowListCollectionViewCell.self)
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
+                                                             for: indexPath) as? EmptyWorkflowListCollectionViewCell {
+                cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+                cell.setupData()
+                return cell
+            }
+        } else {
+            let reuseIdentifier = String(describing: WorkflowListCollectionViewCell.self)
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
+                                                             for: indexPath) as? WorkflowListCollectionViewCell {
+                let appDefinition = viewModel.appDefinitions[indexPath.row]
+                cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+                cell.setupData(for: appDefinition)
+                return cell
+            }
         }
         return UICollectionViewCell()
     }
@@ -127,15 +148,22 @@ extension StartableWorkflowsViewController: UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width,
-                      height: actionMenuCellHeight)
+        let numberOfActions = Int(viewModel.numberOfActions())
+        if numberOfActions == 0 {
+            return CGSize(width: collectionView.frame.width, height: emptyViewHeight)
+        } else {
+            return CGSize(width: collectionView.frame.width, height: actionMenuCellHeight)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        let appDefinition = viewModel.appDefinitions[indexPath.row]
-        self.didSelectAction?(appDefinition)
-        self.dismiss(animated: true)
+        let numberOfActions = Int(viewModel.numberOfActions())
+        if numberOfActions != 0 {
+            let appDefinition = viewModel.appDefinitions[indexPath.row]
+            self.didSelectAction?(appDefinition)
+            self.dismiss(animated: true)
+        }
     }
 }
 
@@ -144,7 +172,11 @@ extension StartableWorkflowsViewController: UICollectionViewDataSource, UICollec
 extension StartableWorkflowsViewController: ActionMenuViewModelDelegate {
     func finishedLoadingActions() {
         let numberOfActions = viewModel.numberOfActions()
-        collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        if numberOfActions == 0 {
+            collectionViewContraintHeight.constant = emptyViewHeight
+        } else {
+            collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        }
         collectionView.reloadData()
         activityIndicator.stopAnimating()
     }

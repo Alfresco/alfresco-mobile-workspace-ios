@@ -423,3 +423,9 @@
 "warning-title" = "Warning";
 "workflow-attachment-in-progress-warning-message" = "Files uploading is in progress. Tap on Confirm to continue without in-progress files.";
 "please-select-assignee" = "Please select assignee";
+"workflows_unavailable_title" = "Workflows unavailable!";
+"workflow_unavailable_message" = "Workflows will appear here when created.";
+"text_approve" = "Approve";
+"text_reject" = "Reject";
+"text_send_approval_again" = "Send for Approval Again";
+"text_stop_approval_request" = "Stop Approval Request";
