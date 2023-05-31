@@ -47,9 +47,9 @@ class EmptyWorkflowListCollectionViewCell: ListSelectableCell {
         self.currentTheme = currentTheme
         backgroundColor = currentTheme.surfaceColor
 
-        titleLabel.applyStyleBoldOnSurface(theme: currentTheme)
+        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         titleLabel.textAlignment = .center
-        subTitleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        subTitleLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
         subTitleLabel.textAlignment = .center
     }
     

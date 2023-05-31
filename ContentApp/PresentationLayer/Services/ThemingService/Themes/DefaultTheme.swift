@@ -34,7 +34,6 @@ struct DefaultTheme: PresentationTheme {
     var overlineTextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 10.0), lineHeight: 1.60, letterSpacing: 0.2)
     var headLineBoldTextStyle = TextStyle(font: UIFont.inter(style: .bold, size: 14.0), lineHeight: 1.42, letterSpacing: 0.0)
     var toolBarTextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 16.0), lineHeight: 1.43, letterSpacing: 0.1)
-    var titleBoldTextStyle = TextStyle(font: UIFont.inter(style: .bold, size: 16.0), lineHeight: 1.42, letterSpacing: 0.0)
     
     // COLORS
 
@@ -70,5 +69,4 @@ struct DefaultTheme: PresentationTheme {
     var taskSuccessTextColor = UIColor(hex: "#003A02")
     var neutral95Color = UIColor(hex: "#EFF1F1")
     var onSurface12TextColor = UIColor(hex: "#262626")
-    var boldTextColor = UIColor(hex: "#212121")
 }
