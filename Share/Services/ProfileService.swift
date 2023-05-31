@@ -34,4 +34,16 @@ class ProfileService {
             }
         }
     }
+    
+    // MARK: - APS Profile Id
+    static func fetchAPSProfileDetails() {
+        let nodeOperations = NodeOperations(accountService: accountService)
+        nodeOperations.fetchAPSUserDetails { result, error in
+            if let result = result {
+                UserProfile.apsUserID = result.id
+            } else if let error = error {
+                AlfrescoLog.error(error)
+            }
+        }
+    }
 }

@@ -92,6 +92,8 @@ class AimsViewModel {
                     if let person = personEntry?.entry {
                         UserProfile.persistUserProfile(person: person)
                         ProfileService.featchPersonalFilesID()
+                        ProfileService.fetchAPSProfileDetails()
+                        
                         DispatchQueue.main.async {
                             sSelf.delegate?.logInSuccessful()
                         }

@@ -34,7 +34,6 @@ protocol PresentationTheme {
     var overlineTextStyle: TextStyle { get }
     var headLineBoldTextStyle: TextStyle { get }
     var toolBarTextStyle: TextStyle { get }
-    var titleBoldTextStyle: TextStyle { get }
     
     // COLORS
 
@@ -70,5 +69,4 @@ protocol PresentationTheme {
     var taskSuccessTextColor: UIColor { get }
     var neutral95Color: UIColor { get }
     var onSurface12TextColor: UIColor { get }
-    var boldTextColor: UIColor { get }
 }
