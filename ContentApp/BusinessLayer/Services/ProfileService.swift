@@ -93,7 +93,6 @@ class ProfileService {
     // MARK: - Get APS Source
     static func getAPSSource() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             ProcessAPI.getAPSSource { data, error in
                 if let data = data?.data {

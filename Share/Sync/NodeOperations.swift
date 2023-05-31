@@ -160,4 +160,13 @@ class NodeOperations {
                                 ("cm:title", JSONValue(stringLiteral: name)))
         }
     }
+    
+    // MARK: - Fetch APS User Details
+    func fetchAPSUserDetails(completion: @escaping ((_ result: UserData?, _ error: Error?) -> Void)) {
+        sessionForCurrentAccount { _ in
+            AlfrescoContent.UserProfile.getUserProfile { result, error in
+                completion(result, error)
+            }
+        }
+    }
 }
