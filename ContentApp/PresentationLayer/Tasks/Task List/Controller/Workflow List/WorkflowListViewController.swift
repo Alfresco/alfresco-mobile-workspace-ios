@@ -142,10 +142,6 @@ class WorkflowListViewController: SystemSearchViewController {
         dropDown.show()
     }
     
-    @IBAction func startWorkflowButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("start workflow button action")
-    }
-    
     // MARK: - Get Workflows List
     @objc func getWorkflowsList() {
         
@@ -342,5 +338,34 @@ extension WorkflowListViewController {
     
     private func setSelectedFilterName() {
         filtersLabel.text = viewModel.selectedFilter.localizedName
+    }
+}
+
+// MARK: - Workflow
+extension WorkflowListViewController {
+    
+    @IBAction func startWorkflowButtonAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startableWorkflowList) as? StartableWorkflowsViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            viewController.coordinatorServices = coordinatorServices
+            self.present(bottomSheet, animated: true)
+            viewController.didSelectAction = { [weak self] (appDefinition) in
+                guard let sSelf = self else { return }
+                sSelf.startWorkflowAction(appDefinition: appDefinition, node: nil)
+            }
+        }
+    }
+        
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: ListNode?) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = appDefinition
+            viewController.viewModel.isEditMode = true
+            viewController.viewModel.selectedAttachments = []
+            viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+            self.navigationViewController?.pushViewController(viewController, animated: true)
+        }
     }
 }
