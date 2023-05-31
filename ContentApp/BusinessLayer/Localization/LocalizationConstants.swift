@@ -403,5 +403,11 @@ struct LocalizationConstants {
         static let warningTitle = NSLocalizedString("warning-title", comment: "")
         static let attachmentInProgressWarning = NSLocalizedString("workflow-attachment-in-progress-warning-message", comment: "")
         static let selectAssigneeMessage = NSLocalizedString("please-select-assignee", comment: "")
+        static let workflowsUnavailableTitle = NSLocalizedString("workflows_unavailable_title", comment: "")
+        static let workflowsUnavailableMessage = NSLocalizedString("workflow_unavailable_message", comment: "")
+        static let approveTitle = NSLocalizedString("text_approve", comment: "")
+        static let rejectTitle = NSLocalizedString("text_reject", comment: "")
+        static let reApprovalTitle = NSLocalizedString("text_send_approval_again", comment: "")
+        static let stopApproval = NSLocalizedString("text_stop_approval_request", comment: "")
     }
 }
