@@ -155,9 +155,13 @@ class StartWorkflowController: NSObject {
     
     // MARK: - Assigned
     private func assignedCellVM() -> InfoTableCellViewModel {
+        var userName = viewModel.userName ?? ""
+        if userName.isEmpty {
+            userName = LocalizationConstants.Workflows.selectAssignee
+        }
         let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon",
                                            title: LocalizationConstants.Accessibility.assignee,
-                                           value: viewModel.userName,
+                                           value: userName,
                                            isEditMode: viewModel.isEditMode,
                                            editImage: "ic-edit-icon")
         rowVM.didSelectEditInfo = {

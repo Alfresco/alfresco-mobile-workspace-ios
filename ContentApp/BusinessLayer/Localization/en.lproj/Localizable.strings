@@ -416,3 +416,4 @@
 "text_reject" = "Reject";
 "text_send_approval_again" = "Send for Approval Again";
 "text_stop_approval_request" = "Stop Approval Request";
+"select-assignee" = "Select assignee";
