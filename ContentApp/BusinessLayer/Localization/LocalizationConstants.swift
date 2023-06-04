@@ -403,5 +403,7 @@ struct LocalizationConstants {
         static let reApprovalTitle = NSLocalizedString("text_send_approval_again", comment: "")
         static let stopApproval = NSLocalizedString("text_stop_approval_request", comment: "")
         static let selectAssignee = NSLocalizedString("select-assignee", comment: "")
+        static let startDate = NSLocalizedString("start-date-title", comment: "")
+        static let startedBy = NSLocalizedString("started-by", comment: "")
     }
 }
