@@ -30,6 +30,14 @@ class TasksListViewModel: NSObject {
     var services: CoordinatorServices
     lazy var filterParams = TaskListFilterParams()
     var isTasksConfigured = false
+    var workflowDetailNode: WorkflowNode?
+
+    var isWorkflowDetail: Bool {
+        if workflowDetailNode != nil {
+            return true
+        }
+        return false
+    }
     
     init(services: CoordinatorServices) {
         self.services = services
