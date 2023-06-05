@@ -29,6 +29,7 @@ class StartWorkflowController: NSObject {
     var didSelectAssignee: (() -> Void)?
     var didSelectAddAttachment: (() -> Void)?
     internal var supportedNodeTypes: [NodeType] = []
+    var didSelectTasksDetails: (() -> Void)?
 
     init(viewModel: StartWorkflowViewModel = StartWorkflowViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -60,30 +61,34 @@ class StartWorkflowController: NSObject {
     
     // MARK: - Build View Models
     func buildViewModel() {
-        var rowViewModels = [RowViewModel]()
-        rowViewModels.append(titleCellVM())
-        rowViewModels.append(dueDateCellVM())
-        rowViewModels.append(priorityCellVM()!)
-        rowViewModels.append(assignedCellVM())
-        
-        /* attachments */
-        rowViewModels.append(spaceCellVM())
-        
-        if attachmentsHeaderCellVM() != nil {
-            rowViewModels.append(attachmentsHeaderCellVM()!)
+        if viewModel.isDetailWorkflow {
+            buildViewModelForWorkflowDetail()
+        } else {
+            var rowViewModels = [RowViewModel]()
+            rowViewModels.append(titleCellVM())
+            rowViewModels.append(dueDateCellVM())
+            rowViewModels.append(priorityCellVM()!)
+            rowViewModels.append(assignedCellVM())
+            
+            /* attachments */
+            rowViewModels.append(spaceCellVM())
+            
+            if attachmentsHeaderCellVM() != nil {
+                rowViewModels.append(attachmentsHeaderCellVM()!)
+            }
+            
+            if addAttachmentCellVM() != nil {
+                rowViewModels.append(addAttachmentCellVM()!)
+            }
+            
+            if attachmentsPlaceholderCellVM() != nil {
+                rowViewModels.append(attachmentsPlaceholderCellVM()!)
+            }
+            
+            let attachments = attachmentsCellVM()
+            rowViewModels.append(contentsOf: attachments)
+            self.viewModel.rowViewModels.value = rowViewModels
         }
-        
-        if addAttachmentCellVM() != nil {
-            rowViewModels.append(addAttachmentCellVM()!)
-        }
-        
-        if attachmentsPlaceholderCellVM() != nil {
-            rowViewModels.append(attachmentsPlaceholderCellVM()!)
-        }
-        
-        let attachments = attachmentsCellVM()
-        rowViewModels.append(contentsOf: attachments)
-        self.viewModel.rowViewModels.value = rowViewModels
     }
     
     // MARK: - Title
@@ -155,9 +160,13 @@ class StartWorkflowController: NSObject {
     
     // MARK: - Assigned
     private func assignedCellVM() -> InfoTableCellViewModel {
+        var userName = viewModel.userName ?? ""
+        if userName.isEmpty {
+            userName = LocalizationConstants.Workflows.selectAssignee
+        }
         let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon",
                                            title: LocalizationConstants.Accessibility.assignee,
-                                           value: viewModel.userName,
+                                           value: userName,
                                            isEditMode: viewModel.isEditMode,
                                            editImage: "ic-edit-icon")
         rowVM.didSelectEditInfo = {
@@ -259,5 +268,78 @@ extension StartWorkflowController: EventObservable {
     
     func handleSyncStatus(event: SyncStatusEvent) {
         self.buildViewModel()
+    }
+}
+
+// MARK: - Detail screen
+extension StartWorkflowController {
+    
+    func buildViewModelForWorkflowDetail() {
+        var rowViewModels = [RowViewModel]()
+        rowViewModels.append(workflowDetail_titleCellVM())
+        rowViewModels.append(workflowDetail_startDateCellVM())
+        rowViewModels.append(workflowDetail_startedByCellVM())
+        rowViewModels.append(workflowDetail_statusCellVM())
+        if let tasksCount = workflowDetail_tasksCountCellVM() {
+            rowViewModels.append(tasksCount)
+        }
+        self.viewModel.rowViewModels.value = rowViewModels
+    }
+    
+    // MARK: - Title
+    private func workflowDetail_titleCellVM() -> TitleTableCellViewModel {
+        let title = viewModel.workflowDetailNode?.name ?? ""
+        let descriptionn = LocalizationConstants.Tasks.noDescription
+        
+        let rowVM = TitleTableCellViewModel(title: title, subTitle: descriptionn, isEditMode: viewModel.isEditMode)
+        return rowVM
+    }
+    
+    // MARK: - Start Date
+    private func workflowDetail_startDateCellVM() -> InfoTableCellViewModel {
+        
+        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon",
+                                           title: LocalizationConstants.Workflows.startDate,
+                                           value: viewModel.getDueDate(for: viewModel.workflowDetailNode?.started),
+                                           isEditMode: false,
+                                           editImage: nil,
+                                           accesssibilityLabel: nil)
+        return rowVM
+    }
+    
+    // MARK: - Status
+    private func workflowDetail_statusCellVM() -> InfoTableCellViewModel {
+        var status = LocalizationConstants.Tasks.active
+        if (viewModel.workflowDetailNode?.ended) != nil {
+            status = LocalizationConstants.Tasks.completed
+        }
+        
+        let rowVM = InfoTableCellViewModel(imageName: "ic-status-icon", title: LocalizationConstants.Tasks.status, value: status, isEditMode: false, editImage: nil)
+        return rowVM
+    }
+    
+    // MARK: - Started by
+    private func workflowDetail_startedByCellVM() -> InfoTableCellViewModel {
+        let startedBy = viewModel.workflowDetailNode?.startedBy?.userName ?? ""
+        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Workflows.startedBy, value: startedBy, isEditMode: false, editImage: nil)
+        return rowVM
+    }
+    
+    // MARK: - Tasks count
+    private func workflowDetail_tasksCountCellVM() -> InfoTableCellViewModel? {
+        if viewModel.isShowTasksCountOnWorkflowDetail {
+            let count = viewModel.workflowDetailTasks.count
+            let rowVM = InfoTableCellViewModel(imageName: "ic-tasks-icon", title: LocalizationConstants.ScreenTitles.tasks, value: "\(count)", isEditMode: true, editImage: "ic-next")
+            rowVM.didSelectEditInfo = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.didSelectTasksDetails?()
+            }
+            rowVM.didSelectValue = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.didSelectTasksDetails?()
+            }
+            return rowVM
+        }
+        return nil
     }
 }

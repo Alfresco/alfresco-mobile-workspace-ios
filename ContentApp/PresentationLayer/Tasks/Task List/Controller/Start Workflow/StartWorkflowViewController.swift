@@ -54,7 +54,10 @@ class StartWorkflowViewController: SystemSearchViewController {
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         self.dialogTransitionController = MDCDialogTransitionController()
         controller.registerEvents()
-        ProfileService.getAPSSource() // to get APS Source
+        if !viewModel.isDetailWorkflow {
+            ProfileService.getAPSSource() // to get APS Source
+        }
+        getTaskList() // to get tasks count in workflow detail
         
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -87,7 +90,7 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     private func applyLocalization() {
-        self.title = LocalizationConstants.Accessibility.startWorkflow
+        self.title = viewModel.screenTitle
     }
     
     func registerCells() {
@@ -119,6 +122,10 @@ class StartWorkflowViewController: SystemSearchViewController {
         startWorkflowButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         startWorkflowButton.setShadowColor(.clear, for: .normal)
         startWorkflowButton.setTitleColor(.white, for: .normal)
+        
+        if viewModel.isDetailWorkflow {
+            startWorkflowView.isHidden = true
+        }
     }
     
     func startLoading() {
@@ -132,7 +139,6 @@ class StartWorkflowViewController: SystemSearchViewController {
     }
     
     @objc private func handleReSignIn(notification: Notification) {
-        // getTaskDetails()
     }
     
     @IBAction func startWorkflowButtonAction(_ sender: Any) {
@@ -290,10 +296,15 @@ class StartWorkflowViewController: SystemSearchViewController {
             sSelf.didSelectDeleteAttachment(attachment: attachment)
         }
         
+        controller.didSelectTasksDetails = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.didSelectTasksDetails()
+        }
     }
     
     // MARK: - Workflow details
     private func getWorkflowDetails() {
+        if viewModel.isDetailWorkflow { return }
         viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
             guard let sSelf = self else { return }
             sSelf.tableView.reloadData()
@@ -303,6 +314,7 @@ class StartWorkflowViewController: SystemSearchViewController {
     
     // MARK: - Link content
     private func linkContent() {
+        if viewModel.isDetailWorkflow { return }
         viewModel.linkContentToAPS { [weak self] node, error in
             guard let sSelf = self else { return }
             if let node = node {
@@ -626,5 +638,26 @@ extension StartWorkflowViewController {
                 controller.buildViewModel()
             }
         }
+    }
+}
+
+// MARK: - Workflow details
+extension StartWorkflowViewController {
+    
+    func getTaskList() {
+        if !viewModel.isDetailWorkflow { return }
+        let params = TaskListParams(page: 0,
+                                    processInstanceId: viewModel.workflowDetailNode?.processID,
+                                    state: "all")
+        viewModel.taskList(with: params) {[weak self] taskList, error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.controller.buildViewModel()
+            }
+        }
+    }
+    
+    private func didSelectTasksDetails() {
+        
     }
 }

@@ -23,7 +23,6 @@ class WorkflowNodeOperations: NSObject {
     static func processNodes(for processes: [Process]) -> [WorkflowNode] {
         var nodes: [WorkflowNode] = []
         for process in processes {
-            
             let assignee = WorkflowNodeOperations.processWorkflowNodeAssignee(for: process.startedBy)
            
             let node = WorkflowNode(processID: process.id,
