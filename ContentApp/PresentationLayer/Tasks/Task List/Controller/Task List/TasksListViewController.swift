@@ -31,6 +31,7 @@ class TasksListViewController: SystemSearchViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var filterBaseView: UIView!
     @IBOutlet weak var createTaskButton: MDCFloatingButton!
+    @IBOutlet weak var heightFilterBaseView: NSLayoutConstraint!
     var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
@@ -54,6 +55,7 @@ class TasksListViewController: SystemSearchViewController {
         getTaskList()
         self.dialogTransitionController = MDCDialogTransitionController()
         addAccessibility()
+        updateUIForWorkflowDetails()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +127,7 @@ class TasksListViewController: SystemSearchViewController {
         let params = TaskListParams(dueAfter: viewModel.filterParams.dueAfter,
                                     dueBefore: viewModel.filterParams.dueBefore,
                                     page: viewModel.page,
+                                    processInstanceId: viewModel.workflowDetailNode?.processID,
                                     state: viewModel.filterParams.state,
                                     text: viewModel.filterParams.text)
         
@@ -137,6 +140,7 @@ class TasksListViewController: SystemSearchViewController {
                 sSelf.filterBaseView.isHidden = false
                 sSelf.createTaskButton.isHidden = false
                 sSelf.getAPSUserDetails()
+                sSelf.updateUIForWorkflowDetails()
             } else {
                 sSelf.viewModel.isTasksConfigured = false
                 sSelf.showTaskListNotConfiguredMessage()
@@ -152,6 +156,7 @@ class TasksListViewController: SystemSearchViewController {
             emptyListImageView.image = emptyList.icon
             emptyListTitle.text = emptyList.title
             emptyListSubtitle.text = emptyList.description
+            updateUIForWorkflowDetails()
         }
     }
     
@@ -163,6 +168,7 @@ class TasksListViewController: SystemSearchViewController {
         emptyListSubtitle.text = emptyList.description
         filterBaseView.isHidden = true
         createTaskButton.isHidden = true
+        updateUIForWorkflowDetails()
     }
     
     // MARK: - Set up Bindings
@@ -323,6 +329,7 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
 
 extension TasksListViewController {
     func addSortAndFilterView() {
+        if viewModel.isWorkflowDetail { return }
         if let sortFilterView: TasksSortAndFilterView = .fromNib() {
             sortFilterView.frame = CGRect(x: 0, y: 0, width: filterBaseView.frame.size.width, height: 43.0)
             sortFilterView.buildDataSource()
@@ -403,6 +410,19 @@ extension TasksListViewController {
             sSelf.resetComponents()
             sSelf.sortFilterView?.resetFilterButtonAction(Any.self)
             sSelf.showTaskDetails(for: taskNode, isOpenAfterTaskCreation: true)
+        }
+    }
+}
+
+// MARK: - Workflow details
+
+extension TasksListViewController {
+    
+    private func updateUIForWorkflowDetails() {
+        if viewModel.isWorkflowDetail {
+            emptyListSubtitle.text = nil
+            createTaskButton.isHidden = true
+            heightFilterBaseView.constant = 0
         }
     }
 }
