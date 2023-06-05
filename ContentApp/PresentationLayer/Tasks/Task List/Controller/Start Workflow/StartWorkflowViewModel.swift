@@ -33,6 +33,8 @@ class StartWorkflowViewModel: NSObject {
     var tempWorkflowId: String = ""
     var workflowOperationsModel: WorkflowOperationsModel?
     var selectedAttachments = [ListNode]()
+    var workflowDetailTasks = [TaskNode]()
+    
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
     }
@@ -85,6 +87,18 @@ class StartWorkflowViewModel: NSObject {
             return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, count)
         }
         return nil
+    }
+    
+    var workflowDetailNode: WorkflowNode?
+    var isDetailWorkflow = false
+    var isShowTasksCountOnWorkflowDetail = false
+    
+    var screenTitle: String? {
+        if isDetailWorkflow {
+            return LocalizationConstants.Workflows.workflowTitle
+        } else {
+            return LocalizationConstants.Accessibility.startWorkflow
+        }
     }
     
     // MARK: - Get Due date
@@ -278,5 +292,31 @@ extension StartWorkflowViewModel {
                                              groups: nil)
             return (nil, reviewer)
         }
+    }
+}
+
+// MARK: - Workflow details
+extension StartWorkflowViewModel {
+    
+    func taskList(with params: TaskListParams, completionHandler: @escaping (_ taskNodes: [TaskNode], _ error: Error?) -> Void) {
+       
+        isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            
+            TasksAPI.getTasksList(params: params) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                sSelf.isShowTasksCountOnWorkflowDetail = true
+                if data != nil {
+                    let task = data?.data ?? []
+                    let taskNodes = TaskNodeOperations.processNodes(for: task)
+                    sSelf.workflowDetailTasks = taskNodes
+                    completionHandler(taskNodes, nil)
+                } else {
+                    completionHandler([], error)
+                }
+            }
+        })
     }
 }

@@ -16,7 +16,7 @@
 //  limitations under the License.
 //
 
-"copyright-format" = "© %d Hyland Software, Inc. All rights reserved.";
+"copyright-format" = "© %d Hyland Software, Inc. and its affiliates. All rights reserved.";
 "product-name" = "Alfresco\nMobile Workspace";
 
 // MARK: - General
@@ -429,3 +429,6 @@
 "text_reject" = "Reject";
 "text_send_approval_again" = "Send for Approval Again";
 "text_stop_approval_request" = "Stop Approval Request";
+"select-assignee" = "Select assignee";
+"start-date-title" = "Start date";
+"started-by" = "Started by";
