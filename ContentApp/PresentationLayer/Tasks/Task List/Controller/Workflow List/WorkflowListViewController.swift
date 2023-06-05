@@ -313,6 +313,11 @@ extension WorkflowListViewController: UICollectionViewDataSource, UICollectionVi
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let node = viewModel.listNode(for: indexPath)
+        startWorkflowAction(appDefinition: nil, node: nil, workflowNode: node, isDetailFlow: true)
+    }
 }
 
 // MARK: - Drop Down
@@ -352,19 +357,25 @@ extension WorkflowListViewController {
             self.present(bottomSheet, animated: true)
             viewController.didSelectAction = { [weak self] (appDefinition) in
                 guard let sSelf = self else { return }
-                sSelf.startWorkflowAction(appDefinition: appDefinition, node: nil)
+                sSelf.startWorkflowAction(appDefinition: appDefinition, node: nil, workflowNode: nil)
             }
         }
     }
         
-    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: ListNode?) {
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: ListNode?, workflowNode: WorkflowNode?, isDetailFlow: Bool = false) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
             viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.appDefinition = appDefinition
-            viewController.viewModel.isEditMode = true
-            viewController.viewModel.selectedAttachments = []
-            viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+            if isDetailFlow {
+                viewController.viewModel.isEditMode = false
+                viewController.viewModel.workflowDetailNode = workflowNode
+            } else {
+                viewController.viewModel.appDefinition = appDefinition
+                viewController.viewModel.isEditMode = true
+                viewController.viewModel.selectedAttachments = []
+                viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+            }
+            viewController.viewModel.isDetailWorkflow = isDetailFlow
             self.navigationViewController?.pushViewController(viewController, animated: true)
         }
     }
