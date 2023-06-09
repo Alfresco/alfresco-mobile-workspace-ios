@@ -886,6 +886,51 @@
             </objects>
             <point key="canvasLocation" x="722" y="767"/>
         </scene>
+        <!--Wflow Task Detail View Controller-->
+        <scene sceneID="kmt-cl-Api">
+            <objects>
+                <viewController storyboardIdentifier="WflowTaskDetailViewController" id="kCy-gE-OIg" customClass="WflowTaskDetailViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VCs-0E-LdK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2J-FV-buj" customClass="MDCProgressView">
+                                <rect key="frame" x="0.0" y="48" width="414" height="2"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="5PC-wB-c39"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fHc-KK-MWu">
+                                <rect key="frame" x="0.0" y="60" width="414" height="802"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="kCy-gE-OIg" id="yU2-1o-GNc"/>
+                                    <outlet property="delegate" destination="kCy-gE-OIg" id="p60-a4-VR1"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="RuT-nh-AuV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="E2J-FV-buj" firstAttribute="top" secondItem="RuT-nh-AuV" secondAttribute="top" id="D4c-a7-Prl"/>
+                            <constraint firstAttribute="trailing" secondItem="E2J-FV-buj" secondAttribute="trailing" id="Flh-Ke-HDl"/>
+                            <constraint firstItem="fHc-KK-MWu" firstAttribute="leading" secondItem="RuT-nh-AuV" secondAttribute="leading" id="IB8-lc-8US"/>
+                            <constraint firstItem="fHc-KK-MWu" firstAttribute="trailing" secondItem="RuT-nh-AuV" secondAttribute="trailing" id="QsV-32-4Wg"/>
+                            <constraint firstItem="RuT-nh-AuV" firstAttribute="bottom" secondItem="fHc-KK-MWu" secondAttribute="bottom" id="S7c-er-gPo"/>
+                            <constraint firstItem="fHc-KK-MWu" firstAttribute="top" secondItem="E2J-FV-buj" secondAttribute="bottom" constant="10" id="b69-Dh-fVt"/>
+                            <constraint firstItem="E2J-FV-buj" firstAttribute="leading" secondItem="VCs-0E-LdK" secondAttribute="leading" id="qat-N1-JFK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="progressView" destination="E2J-FV-buj" id="Z2C-tI-v01"/>
+                        <outlet property="tableView" destination="fHc-KK-MWu" id="Me6-hI-xAS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pFQ-w2-tLM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="722" y="-577"/>
+        </scene>
         <!--Task Detail View Controller-->
         <scene sceneID="OU4-4x-WUG">
             <objects>

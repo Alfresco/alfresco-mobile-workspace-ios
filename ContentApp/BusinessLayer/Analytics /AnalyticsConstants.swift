@@ -94,6 +94,7 @@ enum Event {
         case workflowTab = "page_view_workflows"
         case startWorkflowScreen = "page_view_start_workflow"
         case workflowAttachmentsScreen = "page_view_workflow_attached_files"
+        case workflowTaskDetailScreen = "page_view_workflow_task_view"
     }
 }
 

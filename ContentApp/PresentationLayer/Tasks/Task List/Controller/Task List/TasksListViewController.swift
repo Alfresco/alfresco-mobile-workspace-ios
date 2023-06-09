@@ -305,9 +305,13 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let taskNode = viewModel.listNode(for: indexPath)
-        showTaskDetails(for: taskNode)
+        let processInstanceId = taskNode?.processInstanceId ?? ""
+        if processInstanceId.isEmpty {
+            showTaskDetails(for: taskNode)
+        } else {
+            showWorkflowTaskDetails(for: taskNode)
+        }
     }
     
     private func showTaskDetails(for taskNode: TaskNode?, isOpenAfterTaskCreation: Bool = false) {
@@ -319,6 +323,18 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             viewController.viewModel.isEditTask = isOpenAfterTaskCreation
             self.navigationViewController?.pushViewController(viewController, animated: true)
             viewController.viewModel.didRefreshTaskList = {
+                self.handlePullToRefresh()
+            }
+        }
+    }
+    
+    private func showWorkflowTaskDetails(for taskNode: TaskNode?) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.workflowTaskDetail) as? WflowTaskDetailViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.task = taskNode
+            self.navigationViewController?.pushViewController(viewController, animated: true)
+            viewController.viewModel.didRefreshWorkflowList = {
                 self.handlePullToRefresh()
             }
         }
