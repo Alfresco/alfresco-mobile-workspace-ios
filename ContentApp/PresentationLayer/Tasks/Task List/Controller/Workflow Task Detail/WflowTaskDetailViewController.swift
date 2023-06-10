@@ -223,7 +223,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
             viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.attachments.value = viewModel.attachments
+            viewController.viewModel.attachments.value = viewModel.workflowTaskAttachments
             viewController.viewModel.task = viewModel.task
             viewController.viewModel.isWorkflowTaskAttachments = true
             self.navigationController?.pushViewController(viewController, animated: true)

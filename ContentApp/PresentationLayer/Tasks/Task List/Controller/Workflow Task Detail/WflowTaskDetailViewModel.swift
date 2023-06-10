@@ -30,74 +30,35 @@ enum FormFieldsType: String {
 }
 
 // MARK: - Workflow's Task detail view model
-class WflowTaskDetailViewModel: NSObject {
-    var services: CoordinatorServices?
-    let isLoading = Observable<Bool>(true)
+class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     var viewAllAttachmentsAction: (() -> Void)?
-    var task: TaskNode?
     var didRefreshWorkflowList: (() -> Void)?
-    var didSelectTaskAttachment: ((ListNode) -> Void)?
-    
     var taskId: String {
         return task?.taskID ?? ""
     }
     var processDetails: StartFormFields?
     var formFields = [Field]()
-    var taskName: String?
-    var taskDescription: String?
-    var priority: String?
-    var taskPriority: TaskPriority? {
-        if priority == TaskPriority.low.rawValue.lowercased() {
+    var workflowTaskName: String?
+    var workflowtaskDescription: String?
+    var workflowTaskPriority: String?
+    var taskPriorityValue: TaskPriority? {
+        if workflowTaskPriority == TaskPriority.low.rawValue.lowercased() {
             return .low
-        } else if priority == TaskPriority.medium.rawValue.lowercased() {
+        } else if workflowTaskPriority == TaskPriority.medium.rawValue.lowercased() {
             return .medium
-        } else if priority == TaskPriority.high.rawValue.lowercased() {
+        } else if workflowTaskPriority == TaskPriority.high.rawValue.lowercased() {
             return .high
         } else {
             return nil
         }
     }
 
-    var dueDate: String?
+    var workflowTaskDueDate: String?
     var workflowStatus: String?
-    var assigneeUserId: Int {
-        return task?.assignee?.assigneeID ?? -1
-    }
-    
-    var userName: String? {
-        let apsUserID = UserProfile.apsUserID
-        if apsUserID == assigneeUserId {
-            return LocalizationConstants.EditTask.meTitle
-        } else {
-            return task?.assignee?.userName
-        }
-    }
-    
     var comment: String?
-    var attachments = [ListNode]()
+    var workflowTaskAttachments = [ListNode]()
     var workflowStatusOptions = [Option]()
-    var isTaskCompleted: Bool {
-        if task?.endDate == nil {
-            return false
-        }
-        return true
-    }
-    
-    var completedDate: Date? {
-        return task?.endDate
-    }
-    
-    func geCompletedDate() -> String? {
-        if isTaskCompleted {
-            if let endDate = completedDate?.dateString(format: "dd MMM yyyy") {
-                return endDate
-            } else {
-                return nil
-            }
-        }
-        return nil
-    }
     
     // MARK: - Workflow Task details
 
@@ -123,16 +84,16 @@ class WflowTaskDetailViewModel: NSObject {
     }
     
     private func processFieldsToGetData() {
-        taskName = processDetails?.taskName ?? ""
+        workflowTaskName = processDetails?.taskName ?? ""
         
         for field in formFields {
             let formId = field.id
             if formId == FormFieldsType.message.rawValue { // description
-                taskDescription = parseValueType(for: field).stringValue
+                workflowtaskDescription = parseValueType(for: field).stringValue
             } else if formId == FormFieldsType.priority.rawValue { // priority
-                priority = parseValueType(for: field).stringValue?.lowercased()
+                workflowTaskPriority = parseValueType(for: field).stringValue?.lowercased()
             } else if formId == FormFieldsType.duedate.rawValue { // due date
-                dueDate =  parseValueType(for: field).stringValue
+                workflowTaskDueDate =  parseValueType(for: field).stringValue
             } else if formId == FormFieldsType.status.rawValue { // status
                 workflowStatus = parseValueType(for: field).stringValue
                 workflowStatusOptions = field.options ?? []
@@ -140,7 +101,7 @@ class WflowTaskDetailViewModel: NSObject {
                 comment = parseValueType(for: field).stringValue
             } else if formId == FormFieldsType.items.rawValue { // attachmnets
                 if let tAttachments = parseValueType(for: field).arrayValue {
-                    attachments = TaskAttachmentOperations.processWorkflowAttachments(for: tAttachments, taskId: taskId)
+                    workflowTaskAttachments = TaskAttachmentOperations.processWorkflowAttachments(for: tAttachments, taskId: taskId)
                 }
             }
         }

@@ -90,12 +90,12 @@ class WflowTaskDetailController: NSObject {
     
     // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
-        var taskDescription = viewModel.taskDescription ?? ""
+        var taskDescription = viewModel.workflowtaskDescription ?? ""
         if taskDescription.isEmpty {
             taskDescription = LocalizationConstants.Tasks.noDescription
         }
 
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription, isEditMode: false)
+        let rowVM = TitleTableCellViewModel(title: viewModel.workflowTaskName, subTitle: taskDescription, isEditMode: false)
         rowVM.didSelectReadMoreAction = {
             self.didSelectReadMoreActionForDescription?()
         }
@@ -110,7 +110,7 @@ class WflowTaskDetailController: NSObject {
     private func dueDateCellVM() -> InfoTableCellViewModel {
         let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon",
                                            title: LocalizationConstants.Accessibility.dueDate,
-                                           value: viewModel.getDueDate(for: viewModel.dueDate),
+                                           value: viewModel.getDueDate(for: viewModel.workflowTaskDueDate),
                                            isEditMode: false,
                                            editImage: nil,
                                            accesssibilityLabel: nil)
@@ -118,7 +118,7 @@ class WflowTaskDetailController: NSObject {
     }
     
     private func priorityCellVM() -> PriorityTableCellViewModel? {
-        if let currentTheme = self.currentTheme, let taskPriority = viewModel.taskPriority {
+        if let currentTheme = self.currentTheme, let taskPriority = viewModel.taskPriorityValue {
             let textColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: taskPriority).textColor
             let backgroundColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: taskPriority).backgroundColor
             let priorityText = UIFunction.getPriorityValues(for: currentTheme, taskPriority: taskPriority).priorityText
@@ -170,7 +170,7 @@ class WflowTaskDetailController: NSObject {
     }
     
     private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel? {
-        let attachmentsCount = viewModel.attachments.count
+        let attachmentsCount = viewModel.workflowTaskAttachments.count
         let title = LocalizationConstants.Tasks.attachedFilesTitle
         var subTitle = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachmentsCount)
         if attachmentsCount < 2 {
@@ -188,7 +188,7 @@ class WflowTaskDetailController: NSObject {
     }
     
     private func attachmentsPlaceholderCellVM() -> EmptyPlaceholderTableCellViewModel? {
-        if viewModel.attachments.isEmpty {
+        if viewModel.workflowTaskAttachments.isEmpty {
             let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
             let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
             return rowVM
@@ -198,7 +198,7 @@ class WflowTaskDetailController: NSObject {
     
     private func attachmentsCellVM() -> [RowViewModel] {
         var rowVMs = [RowViewModel]()
-        var attachments = viewModel.attachments
+        var attachments = viewModel.workflowTaskAttachments
         let arraySlice = attachments.prefix(4)
         attachments = Array(arraySlice)
         
