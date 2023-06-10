@@ -26,7 +26,6 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     @IBOutlet weak var tableView: UITableView!
     var viewModel: WflowTaskDetailViewModel { return controller.viewModel }
     lazy var controller: WflowTaskDetailController = { return WflowTaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
-    private var dialogTransitionController: MDCDialogTransitionController?
     
     // MARK: - View Life cycle
     override func viewDidLoad() {
@@ -45,7 +44,6 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         setupBindings()
         getWorkflowTaskDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTaskDetailScreen)
-        self.dialogTransitionController = MDCDialogTransitionController()
         
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -244,7 +242,14 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     }
     
     private func didSelectWorkflowTasksStatus() {
-        print("did select workflow task status")
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.workflowTaskStatus) as? WorkflowTaskStatusViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.workflowStatus = viewModel.workflowStatus
+            viewController.viewModel.comment = viewModel.comment
+            viewController.viewModel.workflowStatusOptions = viewModel.workflowStatusOptions
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
 

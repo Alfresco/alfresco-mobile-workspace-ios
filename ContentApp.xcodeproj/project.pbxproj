@@ -24,6 +24,9 @@
 		476CB2D02A339A8800207C4D /* WflowTaskDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2CF2A339A8800207C4D /* WflowTaskDetailViewController.swift */; };
 		476CB2D22A339A9F00207C4D /* WflowTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2D12A339A9F00207C4D /* WflowTaskDetailViewModel.swift */; };
 		476CB2D42A339AAE00207C4D /* WflowTaskDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2D32A339AAE00207C4D /* WflowTaskDetailController.swift */; };
+		476CB2D72A34D90E00207C4D /* WorkflowTaskStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2D62A34D90E00207C4D /* WorkflowTaskStatusViewController.swift */; };
+		476CB2D92A34D92300207C4D /* WorkflowTaskStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2D82A34D92300207C4D /* WorkflowTaskStatusController.swift */; };
+		476CB2DB2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
 		4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */; };
@@ -803,6 +806,9 @@
 		476CB2CF2A339A8800207C4D /* WflowTaskDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WflowTaskDetailViewController.swift; sourceTree = "<group>"; };
 		476CB2D12A339A9F00207C4D /* WflowTaskDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WflowTaskDetailViewModel.swift; sourceTree = "<group>"; };
 		476CB2D32A339AAE00207C4D /* WflowTaskDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WflowTaskDetailController.swift; sourceTree = "<group>"; };
+		476CB2D62A34D90E00207C4D /* WorkflowTaskStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusViewController.swift; sourceTree = "<group>"; };
+		476CB2D82A34D92300207C4D /* WorkflowTaskStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusController.swift; sourceTree = "<group>"; };
+		476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusViewModel.swift; sourceTree = "<group>"; };
 		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
 		4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewModel.swift; sourceTree = "<group>"; };
@@ -1454,6 +1460,16 @@
 				476CB2D12A339A9F00207C4D /* WflowTaskDetailViewModel.swift */,
 			);
 			path = "Workflow Task Detail";
+			sourceTree = "<group>";
+		};
+		476CB2D52A34D8E300207C4D /* Workflow Task Status */ = {
+			isa = PBXGroup;
+			children = (
+				476CB2D62A34D90E00207C4D /* WorkflowTaskStatusViewController.swift */,
+				476CB2D82A34D92300207C4D /* WorkflowTaskStatusController.swift */,
+				476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */,
+			);
+			path = "Workflow Task Status";
 			sourceTree = "<group>";
 		};
 		4792042729CF01C00080BB13 /* Task Process Base */ = {
@@ -2422,6 +2438,7 @@
 				4734440029DC0CCF004A72CD /* Startable Workflows */,
 				47FBDF5F29E3FF5200EE56AC /* Start Workflow */,
 				476CB2CE2A339A6200207C4D /* Workflow Task Detail */,
+				476CB2D52A34D8E300207C4D /* Workflow Task Status */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4356,6 +4373,7 @@
 				B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */,
 				E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
+				476CB2DB2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift in Sources */,
 				C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
@@ -4451,6 +4469,7 @@
 				C9A75994289BB0FF006603E0 /* TaskDetailViewModel.swift in Sources */,
 				C97BEB6B26EB363100E05375 /* CellConfigurable.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
+				476CB2D92A34D92300207C4D /* WorkflowTaskStatusController.swift in Sources */,
 				C91F75AB290017B7008F31EF /* SpaceTableViewCell.swift in Sources */,
 				B9233FC025A708D1006EA4DA /* OfflineViewModelFactory.swift in Sources */,
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
@@ -4700,6 +4719,7 @@
 				B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */,
 				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,
 				B9A90E6F265B96B000B89766 /* ListComponentModel.swift in Sources */,
+				476CB2D72A34D90E00207C4D /* WorkflowTaskStatusViewController.swift in Sources */,
 				E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */,
 				B9A90E75265E702600B89766 /* SharedModel.swift in Sources */,
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,
