@@ -42,7 +42,6 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         registerCells()
         addBackButton()
         addAccessibility()
-        controller.buildViewModel()
         setupBindings()
         getWorkflowTaskDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTaskDetailScreen)
@@ -168,14 +167,6 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         
         /* observing rows */
         viewModel.rowViewModels.addObserver() { [weak self] (rows) in
-            guard let sSelf = self else { return }
-            DispatchQueue.main.async {
-                sSelf.tableView.reloadData()
-            }
-        }
-        
-        /* observing attachments */
-        viewModel.attachments.addObserver { [weak self] (attachments) in
             guard let sSelf = self else { return }
             DispatchQueue.main.async {
                 sSelf.tableView.reloadData()

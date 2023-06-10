@@ -52,8 +52,74 @@ class WflowTaskDetailController: NSObject {
     // MARK: - Build View Models
     func buildViewModel() {
         var rowViewModels = [RowViewModel]()
-       // rowViewModels.append(titleCellVM())
-      
+        rowViewModels.append(titleCellVM())
+        
+        if viewModel.isTaskCompleted {
+            rowViewModels.append(completedDateCellVM())
+        }
+        
+        rowViewModels.append(dueDateCellVM())
+       
+        if priorityCellVM() != nil {
+            rowViewModels.append(priorityCellVM()!)
+        }
+        
+        rowViewModels.append(assignedCellVM())
+        
         self.viewModel.rowViewModels.value = rowViewModels
+    }
+    
+    // MARK: - Title
+    private func titleCellVM() -> TitleTableCellViewModel {
+        var taskDescription = viewModel.taskDescription ?? ""
+        if taskDescription.isEmpty {
+            taskDescription = LocalizationConstants.Tasks.noDescription
+        }
+
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: taskDescription, isEditMode: false)
+        rowVM.didSelectReadMoreAction = {
+            self.didSelectReadMoreActionForDescription?()
+        }
+        return rowVM
+    }
+    
+    private func completedDateCellVM() -> InfoTableCellViewModel {
+        let rowVM = InfoTableCellViewModel(imageName: "ic-completed-task", title: LocalizationConstants.Tasks.completed, value: viewModel.geCompletedDate(), isEditMode: false, editImage: nil)
+        return rowVM
+    }
+    
+    private func dueDateCellVM() -> InfoTableCellViewModel {
+        let rowVM = InfoTableCellViewModel(imageName: "ic-calendar-icon",
+                                           title: LocalizationConstants.Accessibility.dueDate,
+                                           value: viewModel.getDueDate(for: viewModel.dueDate),
+                                           isEditMode: false,
+                                           editImage: nil,
+                                           accesssibilityLabel: nil)
+        return rowVM
+    }
+    
+    private func priorityCellVM() -> PriorityTableCellViewModel? {
+        if let currentTheme = self.currentTheme, let taskPriority = viewModel.taskPriority {
+            let textColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: taskPriority).textColor
+            let backgroundColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: taskPriority).backgroundColor
+            let priorityText = UIFunction.getPriorityValues(for: currentTheme, taskPriority: taskPriority).priorityText
+
+            let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
+                                                   priority: priorityText,
+                                                   priorityTextColor: textColor,
+                                                   priorityBackgroundColor: backgroundColor,
+                                                   isEditMode: false)
+            return rowVM
+        }
+        return nil
+    }
+    
+    private func assignedCellVM() -> InfoTableCellViewModel {
+        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon",
+                                           title: LocalizationConstants.Accessibility.assignee,
+                                           value: viewModel.userName,
+                                           isEditMode: false,
+                                           editImage: nil)
+        return rowVM
     }
 }

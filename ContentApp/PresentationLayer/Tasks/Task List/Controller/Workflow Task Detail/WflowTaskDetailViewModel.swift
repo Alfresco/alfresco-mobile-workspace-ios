@@ -29,6 +29,7 @@ enum FormFieldsType: String {
     case comment = "comment"
 }
 
+// MARK: - Workflow's Task detail view model
 class WflowTaskDetailViewModel: NSObject {
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
@@ -36,7 +37,6 @@ class WflowTaskDetailViewModel: NSObject {
     var viewAllAttachmentsAction: (() -> Void)?
     var task: TaskNode?
     var didRefreshWorkflowList: (() -> Void)?
-    var attachments = Observable<[ListNode]>([])
     var didSelectTaskAttachment: ((ListNode) -> Void)?
     
     var taskId: String {
@@ -60,7 +60,7 @@ class WflowTaskDetailViewModel: NSObject {
     }
 
     var dueDate: String?
-    var status: String?
+    var workflowStatus: String?
     var assigneeUserId: Int {
         return task?.assignee?.assigneeID ?? -1
     }
@@ -75,6 +75,29 @@ class WflowTaskDetailViewModel: NSObject {
     }
     
     var comment: String?
+    var attachments = [ListNode]()
+    var workflowStatusOptions = [Option]()
+    var isTaskCompleted: Bool {
+        if task?.endDate == nil {
+            return false
+        }
+        return true
+    }
+    
+    var completedDate: Date? {
+        return task?.endDate
+    }
+    
+    func geCompletedDate() -> String? {
+        if isTaskCompleted {
+            if let endDate = completedDate?.dateString(format: "dd MMM yyyy") {
+                return endDate
+            } else {
+                return nil
+            }
+        }
+        return nil
+    }
     
     // MARK: - Workflow Task details
 
@@ -109,14 +132,16 @@ class WflowTaskDetailViewModel: NSObject {
             } else if formId == FormFieldsType.priority.rawValue { // priority
                 priority = parseValueType(for: field).stringValue?.lowercased()
             } else if formId == FormFieldsType.duedate.rawValue { // due date
-                let dDate =  parseValueType(for: field).stringValue
-                dueDate = getDueDate(for: dDate)
+                dueDate =  parseValueType(for: field).stringValue
             } else if formId == FormFieldsType.status.rawValue { // status
-                status = parseValueType(for: field).stringValue
+                workflowStatus = parseValueType(for: field).stringValue
+                workflowStatusOptions = field.options ?? []
             } else if formId == FormFieldsType.comment.rawValue { // comment
                 comment = parseValueType(for: field).stringValue
             } else if formId == FormFieldsType.items.rawValue { // attachmnets
-                
+                if let tAttachments = parseValueType(for: field).arrayValue {
+                    attachments = TaskAttachmentOperations.processWorkflowAttachments(for: tAttachments, taskId: taskId)
+                }
             }
         }
     }
@@ -135,7 +160,7 @@ class WflowTaskDetailViewModel: NSObject {
         return (nil, nil)
     }
     
-    private func getDueDate(for dueDate: String?) -> String? {
+    func getDueDate(for dueDate: String?) -> String? {
         if let date = dueDate?.toDate(), let dueDate = date.dateString(format: "dd MMM yyyy") {
             return dueDate
         }
