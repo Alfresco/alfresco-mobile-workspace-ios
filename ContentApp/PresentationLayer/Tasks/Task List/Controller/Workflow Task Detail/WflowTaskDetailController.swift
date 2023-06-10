@@ -22,6 +22,7 @@ class WflowTaskDetailController: NSObject {
     let viewModel: WflowTaskDetailViewModel
     var currentTheme: PresentationTheme?
     var didSelectReadMoreActionForDescription: (() -> Void)?
+    var didSelectWorkflowTasksStatus: (() -> Void)?
 
     init(viewModel: WflowTaskDetailViewModel = WflowTaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
@@ -65,6 +66,24 @@ class WflowTaskDetailController: NSObject {
         }
         
         rowViewModels.append(assignedCellVM())
+        
+        if statusCellVM() != nil {
+            rowViewModels.append(statusCellVM()!)
+        }
+        
+        /* attachments */
+        rowViewModels.append(spaceCellVM())
+        
+        if attachmentsHeaderCellVM() != nil {
+            rowViewModels.append(attachmentsHeaderCellVM()!)
+        }
+        
+        if attachmentsPlaceholderCellVM() != nil {
+            rowViewModels.append(attachmentsPlaceholderCellVM()!)
+        }
+        
+        let attachments = attachmentsCellVM()
+        rowViewModels.append(contentsOf: attachments)
         
         self.viewModel.rowViewModels.value = rowViewModels
     }
@@ -121,5 +140,82 @@ class WflowTaskDetailController: NSObject {
                                            isEditMode: false,
                                            editImage: nil)
         return rowVM
+    }
+    
+    private func statusCellVM() -> InfoTableCellViewModel? {
+        let status = viewModel.workflowStatus ?? ""
+        if !status.isEmpty {
+            let rowVM = InfoTableCellViewModel(imageName: "ic-workflow-status-icon",
+                                               title: LocalizationConstants.Tasks.status,
+                                               value: viewModel.workflowStatus,
+                                               isEditMode: true,
+                                               editImage: "ic-next")
+            rowVM.didSelectEditInfo = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.didSelectWorkflowTasksStatus?()
+            }
+            rowVM.didSelectValue = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.didSelectWorkflowTasksStatus?()
+            }
+            return rowVM
+        }
+        return nil
+    }
+    
+    // MARK: - Attachments
+    private func spaceCellVM() -> SpaceTableCellViewModel {
+        let rowVM = SpaceTableCellViewModel()
+        return rowVM
+    }
+    
+    private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel? {
+        let attachmentsCount = viewModel.attachments.count
+        let title = LocalizationConstants.Tasks.attachedFilesTitle
+        var subTitle = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachmentsCount)
+        if attachmentsCount < 2 {
+            subTitle = ""
+        }
+        let isHideDetailButton = attachmentsCount > 4 ? false:true
+        let rowVM = TaskHeaderTableCellViewModel(title: title,
+                                                 subTitle: subTitle,
+                                                 buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
+                                                 isHideDetailButton: isHideDetailButton)
+        rowVM.viewAllAction = {
+            self.viewModel.viewAllAttachmentsAction?()
+        }
+        return rowVM
+    }
+    
+    private func attachmentsPlaceholderCellVM() -> EmptyPlaceholderTableCellViewModel? {
+        if viewModel.attachments.isEmpty {
+            let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+            let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
+            return rowVM
+        }
+        return nil
+    }
+    
+    private func attachmentsCellVM() -> [RowViewModel] {
+        var rowVMs = [RowViewModel]()
+        var attachments = viewModel.attachments
+        let arraySlice = attachments.prefix(4)
+        attachments = Array(arraySlice)
+        
+        if !attachments.isEmpty {
+            for attachment in attachments {
+                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
+                                                             mimeType: attachment.mimeType,
+                                                             syncStatus: .uploaded,
+                                                             isHideAllOptionsFromRight: true)
+                rowVM.didSelectTaskAttachment = { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.viewModel.didSelectTaskAttachment?(attachment)
+                }
+                
+                rowVMs.append(rowVM)
+            }
+        }
+        return rowVMs
     }
 }

@@ -189,6 +189,12 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         controller.didSelectReadMoreActionForDescription = {
             self.showTaskDescription()
         }
+        
+        /* did select workflow task status */
+        controller.didSelectWorkflowTasksStatus = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.didSelectWorkflowTasksStatus()
+        }
     }
     
     // MARK: - Workflow Task details
@@ -214,11 +220,22 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     }
     
     private func viewAllAttachments() {
-    
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.attachments.value = viewModel.attachments
+            viewController.viewModel.task = viewModel.task
+            viewController.viewModel.isWorkflowTaskAttachments = true
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     private func didSelectAttachment(attachment: ListNode) {
-        
+        print("did select attachment")
+    }
+    
+    private func didSelectWorkflowTasksStatus() {
+        print("did select workflow task status")
     }
 }
 
