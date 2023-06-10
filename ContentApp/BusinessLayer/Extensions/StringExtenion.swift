@@ -27,3 +27,16 @@ extension String {
         return CGFloat(doubleValue)
     }
 }
+
+extension String {
+
+    func toDate(withFormat format: String = "yyyy-MM-dd'T'HH:mm:ss.SSSZ") -> Date? {
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        let date = dateFormatter.date(from: self)
+        return date
+    }
+}
+
+//2023-06-28T00:00:00.000+0000

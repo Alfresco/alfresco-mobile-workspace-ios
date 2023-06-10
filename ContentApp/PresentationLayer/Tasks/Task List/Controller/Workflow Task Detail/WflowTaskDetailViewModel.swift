@@ -19,6 +19,16 @@
 import Foundation
 import AlfrescoContent
 
+// MARK: - Notification Type
+enum FormFieldsType: String {
+    case message = "message"
+    case items = "items"
+    case priority = "priority"
+    case duedate = "duedate"
+    case status = "status"
+    case comment = "comment"
+}
+
 class WflowTaskDetailViewModel: NSObject {
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
@@ -34,6 +44,37 @@ class WflowTaskDetailViewModel: NSObject {
     }
     var processDetails: StartFormFields?
     var formFields = [Field]()
+    var taskName: String?
+    var taskDescription: String?
+    var priority: String?
+    var taskPriority: TaskPriority? {
+        if priority == TaskPriority.low.rawValue.lowercased() {
+            return .low
+        } else if priority == TaskPriority.medium.rawValue.lowercased() {
+            return .medium
+        } else if priority == TaskPriority.high.rawValue.lowercased() {
+            return .high
+        } else {
+            return nil
+        }
+    }
+
+    var dueDate: String?
+    var status: String?
+    var assigneeUserId: Int {
+        return task?.assignee?.assigneeID ?? -1
+    }
+    
+    var userName: String? {
+        let apsUserID = UserProfile.apsUserID
+        if apsUserID == assigneeUserId {
+            return LocalizationConstants.EditTask.meTitle
+        } else {
+            return task?.assignee?.userName
+        }
+    }
+    
+    var comment: String?
     
     // MARK: - Workflow Task details
 
@@ -49,11 +90,55 @@ class WflowTaskDetailViewModel: NSObject {
                 if data != nil {
                     sSelf.processDetails = data
                     sSelf.formFields = fields
+                    sSelf.processFieldsToGetData()
                     completionHandler(nil)
                 } else {
                     completionHandler(error)
                 }
             }
         })
+    }
+    
+    private func processFieldsToGetData() {
+        taskName = processDetails?.taskName ?? ""
+        
+        for field in formFields {
+            let formId = field.id
+            if formId == FormFieldsType.message.rawValue { // description
+                taskDescription = parseValueType(for: field).stringValue
+            } else if formId == FormFieldsType.priority.rawValue { // priority
+                priority = parseValueType(for: field).stringValue?.lowercased()
+            } else if formId == FormFieldsType.duedate.rawValue { // due date
+                let dDate =  parseValueType(for: field).stringValue
+                dueDate = getDueDate(for: dDate)
+            } else if formId == FormFieldsType.status.rawValue { // status
+                status = parseValueType(for: field).stringValue
+            } else if formId == FormFieldsType.comment.rawValue { // comment
+                comment = parseValueType(for: field).stringValue
+            } else if formId == FormFieldsType.items.rawValue { // attachmnets
+                
+            }
+        }
+    }
+    
+    private func parseValueType(for field: Field) -> (stringValue: String?, arrayValue: [ValueElement]?) {
+        switch field.value {
+        case .string(let aString):
+            return (aString, nil)
+        case .valueElementArray(let elements):
+            return (nil, elements)
+        case .none:
+            AlfrescoLog.debug("Found none")
+        case .some(.null):
+            AlfrescoLog.debug("Found null")
+        }
+        return (nil, nil)
+    }
+    
+    private func getDueDate(for dueDate: String?) -> String? {
+        if let date = dueDate?.toDate(), let dueDate = date.dateString(format: "dd MMM yyyy") {
+            return dueDate
+        }
+        return LocalizationConstants.Tasks.noDueDate
     }
 }
