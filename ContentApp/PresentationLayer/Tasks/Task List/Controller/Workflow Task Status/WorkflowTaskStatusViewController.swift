@@ -106,20 +106,20 @@ class WorkflowTaskStatusViewController: SystemSearchViewController, MDCBottomShe
     @IBAction func selectStatusButtonAction(_ sender: Any) {
         print("select status button action")
         
-        let viewController = SearchListComponentViewController.instantiateViewController()
+        let viewController = RadioListViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
         bottomSheet.dismissOnDraggingDownSheet = false
         bottomSheet.delegate = self
         viewController.coordinatorServices = coordinatorServices
-        viewController.listViewModel.isRadioList = true
-        viewController.listViewModel.taskChip = chip
-        viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
-            if isBackButtonTapped {
-               //  self.resetChip()
-            } else if let selectedChip = selectedChip {
-               // self.updateChip(for: selectedChip, and: indexPath)
-            }
-        }
+        viewController.viewModel.isRadioList = true
+//        viewController.listViewModel.taskChip = chip
+//        viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
+//            if isBackButtonTapped {
+//               //  self.resetChip()
+//            } else if let selectedChip = selectedChip {
+//               // self.updateChip(for: selectedChip, and: indexPath)
+//            }
+//        }
         self.navigationController?.present(bottomSheet, animated: true, completion: nil)
     }
     
@@ -127,7 +127,6 @@ class WorkflowTaskStatusViewController: SystemSearchViewController, MDCBottomShe
         
     }
 }
-
 
 /*
 // Radio Component
