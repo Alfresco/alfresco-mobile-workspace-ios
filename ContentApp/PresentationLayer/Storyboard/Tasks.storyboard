@@ -939,8 +939,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eno-vW-NZZ" customClass="MDCProgressView">
+                                <rect key="frame" x="0.0" y="48" width="414" height="2"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="D6h-lQ-4Rv"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fQ5-TH-Et7" userLabel="statusView">
-                                <rect key="frame" x="0.0" y="58" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="60" width="414" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRZ-gA-6fL" userLabel="statusLabel">
                                         <rect key="frame" x="20" y="0.0" width="324" height="50"/>
@@ -981,17 +988,34 @@
                                     <constraint firstAttribute="bottom" secondItem="ZOv-uc-emE" secondAttribute="bottom" id="y3z-ti-atE"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZVx-J5-4Aw" userLabel="commentField" customClass="MDCOutlinedTextArea">
+                                <rect key="frame" x="20" y="140" width="374" height="56"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="250" constant="56" id="f3r-bR-Xq8"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="sLO-2X-QjO"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zbg-gL-aM4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="fQ5-TH-Et7" firstAttribute="top" secondItem="zbg-gL-aM4" secondAttribute="top" constant="10" id="LT7-NS-5XT"/>
+                            <constraint firstAttribute="trailing" secondItem="Eno-vW-NZZ" secondAttribute="trailing" id="3OE-gE-5T7"/>
+                            <constraint firstItem="Eno-vW-NZZ" firstAttribute="leading" secondItem="9gg-0E-yhc" secondAttribute="leading" id="7Xa-Nz-YyV"/>
+                            <constraint firstItem="ZVx-J5-4Aw" firstAttribute="leading" secondItem="zbg-gL-aM4" secondAttribute="leading" constant="20" id="95o-sN-xV2"/>
                             <constraint firstItem="zbg-gL-aM4" firstAttribute="trailing" secondItem="fQ5-TH-Et7" secondAttribute="trailing" id="O6k-oT-W7U"/>
+                            <constraint firstItem="fQ5-TH-Et7" firstAttribute="top" secondItem="Eno-vW-NZZ" secondAttribute="bottom" constant="10" id="PPQ-2D-7Me"/>
+                            <constraint firstItem="ZVx-J5-4Aw" firstAttribute="top" secondItem="fQ5-TH-Et7" secondAttribute="bottom" constant="30" id="V37-eG-hTW"/>
+                            <constraint firstItem="zbg-gL-aM4" firstAttribute="trailing" secondItem="ZVx-J5-4Aw" secondAttribute="trailing" constant="20" id="Xa6-Bt-ZZ4"/>
+                            <constraint firstItem="Eno-vW-NZZ" firstAttribute="top" secondItem="zbg-gL-aM4" secondAttribute="top" id="q63-UK-sQP"/>
                             <constraint firstItem="fQ5-TH-Et7" firstAttribute="leading" secondItem="zbg-gL-aM4" secondAttribute="leading" id="r6k-fk-8Rb"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="commentField" destination="ZVx-J5-4Aw" id="tJy-Hr-D4r"/>
                         <outlet property="dropDownImageView" destination="ZOv-uc-emE" id="LVE-za-q6n"/>
+                        <outlet property="progressView" destination="Eno-vW-NZZ" id="nNi-oK-d4w"/>
+                        <outlet property="selectStatusButton" destination="kUf-rn-04s" id="wW9-Nm-NsH"/>
                         <outlet property="statusLabel" destination="VRZ-gA-6fL" id="GIc-BE-gi1"/>
                     </connections>
                 </viewController>

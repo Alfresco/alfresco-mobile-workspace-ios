@@ -43,7 +43,6 @@ class RadioListViewController: SystemThemableViewController {
         baseView.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
         tableView.estimatedRowHeight = 1000
-        //controller.updatedSelectedValues()
         applyLocalization()
         applyComponentsThemes()
         registerCells()
@@ -145,10 +144,12 @@ class RadioListViewController: SystemThemableViewController {
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
+        viewModel.didSelectListItem?(viewModel.selectedRadioListOption)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
+        viewModel.didSelectListItem?(nil)
         self.dismiss(animated: true, completion: nil)
     }
     

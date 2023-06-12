@@ -37,6 +37,20 @@ class RadioListController: NSObject {
     
     // MARK: - Build View Models
     func buildViewModel() {
-        
+        var rows = [RowViewModel]()
+        for option in viewModel.radioListOptions {
+            var isSelected = false
+            if option.optionId == viewModel.selectedRadioListOption?.optionId {
+                isSelected = true
+            }
+            
+            let rowVM = ListItemCellViewModel(title: option.name, isRadioList: true, isSelected: isSelected)
+            rowVM.didSelectListItem = {
+                self.viewModel.selectedRadioListOption = option
+                self.buildViewModel()
+            }
+            rows.append(rowVM)
+        }
+        viewModel.rowViewModels.value = rows
     }
 }

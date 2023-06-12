@@ -20,8 +20,51 @@ import UIKit
 import AlfrescoContent
 
 class WorkflowTaskStatusViewModel: NSObject {
+    let isLoading = Observable<Bool>(false)
     var services: CoordinatorServices?
+    var taskId: String?
     var workflowStatus: String?
     var comment: String?
     var workflowStatusOptions = [Option]()
+    var selectedWorkflowStatusOption: RadioListOptions?
+    var statusTitle: String? {
+        if let name = selectedWorkflowStatusOption?.name {
+            return name
+        } else if !workflowStatusOptions.isEmpty {
+            if let index = workflowStatusOptions.firstIndex(where: {$0.id == "empty"}) {
+                return workflowStatusOptions[index].name
+            }
+        }
+        return nil
+    }
+    
+    var didSaveStatusAndComment: ((_ status: Option?, _ comment: String?) -> Void)?
+    
+    func getStatusOptions() -> [RadioListOptions] {
+        var arrayOptions = [RadioListOptions]()
+        for option in workflowStatusOptions where option.id != "empty" {
+            let listOption = RadioListOptions(optionId: option.id, name: option.name)
+            arrayOptions.append(listOption)
+        }
+        return arrayOptions
+    }
+    
+    // MARK: - Save status and comment
+
+    func saveStatusAndComment(status: Option?, comment: String?, completionHandler: @escaping (_ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true, let taskId = taskId else { return }
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let params = SaveFormParams(status: status, comment: comment)
+            TasksAPI.saveTaskForm(taskId: taskId, params: params) { data, error in
+                
+                if data != nil {
+                    completionHandler(nil)
+                } else {
+                    completionHandler(error)
+                }
+            }
+        })
+    }
 }

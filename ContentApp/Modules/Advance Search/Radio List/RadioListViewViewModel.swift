@@ -19,8 +19,23 @@
 import Foundation
 import AlfrescoContent
 
+// MARK: - View Model
 class RadioListViewViewModel: NSObject {
     let rowViewModels = Observable<[RowViewModel]>([])
     var isRadioList = false
     var title: String?
+    var radioListOptions = [RadioListOptions]()
+    var selectedRadioListOption: RadioListOptions?
+    var didSelectListItem: ((RadioListOptions?) -> Void)?
+}
+
+// MARK: - Radio List Options
+struct RadioListOptions {
+    var optionId: String?
+    var name: String?
+    
+    init(optionId: String?, name: String?) {
+        self.optionId = optionId
+        self.name = name
+    }
 }

@@ -1565,7 +1565,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3e2-Rp-tZK" userLabel="baseView">
-                                <rect key="frame" x="0.0" y="48" width="414" height="390"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="390"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DzB-mL-zrz" userLabel="headerView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="71"/>
@@ -1749,7 +1749,7 @@
                         <viewLayoutGuide key="safeArea" id="VIw-AF-lq2"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="3e2-Rp-tZK" firstAttribute="top" secondItem="VIw-AF-lq2" secondAttribute="top" id="7GY-WK-Heo"/>
+                            <constraint firstItem="3e2-Rp-tZK" firstAttribute="top" secondItem="5b9-LW-g2C" secondAttribute="top" id="8al-yD-iSN"/>
                             <constraint firstItem="3e2-Rp-tZK" firstAttribute="trailing" secondItem="VIw-AF-lq2" secondAttribute="trailing" id="J6x-My-he0"/>
                             <constraint firstItem="3e2-Rp-tZK" firstAttribute="leading" secondItem="VIw-AF-lq2" secondAttribute="leading" id="goQ-BB-vpO"/>
                             <constraint firstItem="VIw-AF-lq2" firstAttribute="bottom" secondItem="3e2-Rp-tZK" secondAttribute="bottom" priority="250" id="uTa-3m-4Ol"/>
