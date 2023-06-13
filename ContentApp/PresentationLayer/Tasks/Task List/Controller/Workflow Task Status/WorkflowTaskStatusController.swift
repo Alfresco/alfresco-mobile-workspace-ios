@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2023 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,24 +16,14 @@
 //  limitations under the License.
 //
 
-import Foundation
 import UIKit
 
-extension String {
-    func CGFloatValue() -> CGFloat? {
-        guard let doubleValue = Double(self) else {
-            return nil
-        }
-        return CGFloat(doubleValue)
-    }
-}
+class WorkflowTaskStatusController: NSObject {
+    let viewModel: WorkflowTaskStatusViewModel
+    var currentTheme: PresentationTheme?
 
-extension String {
-
-    func toDate(withFormat format: String = "yyyy-MM-dd'T'HH:mm:ss.SSSZ") -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        let date = dateFormatter.date(from: self)
-        return date
+    init(viewModel: WorkflowTaskStatusViewModel = WorkflowTaskStatusViewModel(), currentTheme: PresentationTheme?) {
+        self.viewModel = viewModel
+        self.currentTheme = currentTheme
     }
 }

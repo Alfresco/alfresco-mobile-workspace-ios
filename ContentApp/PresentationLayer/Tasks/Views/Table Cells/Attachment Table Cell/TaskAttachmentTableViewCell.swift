@@ -27,6 +27,8 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var deleteButton: MDCButton!
     @IBOutlet weak var syncStatusImageView: UIImageView!
+    @IBOutlet weak var deleteButtonWidth: NSLayoutConstraint!
+    @IBOutlet weak var syncStatusImageViewWidth: NSLayoutConstraint!
     var viewModel: TaskAttachmentTableCellViewModel?
 
     override func awakeFromNib() {
@@ -45,6 +47,7 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         title.text = viewModel.name
         iconImageView.image = viewModel.icon
         addAccessibility()
+        checkOptionsAtRight()
     }
     
     private func addAccessibility() {
@@ -55,6 +58,16 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         deleteButton.accessibilityLabel = LocalizationConstants.EditTask.deleteAttachmentAlertTitle
         deleteButton.accessibilityIdentifier = "delete-attachment"
         deleteButton.accessibilityTraits = .button
+    }
+    
+    private func checkOptionsAtRight() {
+        let isHideAllOptionsFromRight = viewModel?.isHideAllOptionsFromRight ?? false
+        if isHideAllOptionsFromRight {
+            syncStatusImageView.isHidden = true
+            deleteButton.isHidden = true
+            deleteButtonWidth.constant = 0
+            syncStatusImageViewWidth.constant = 0
+        }
     }
     
     @IBAction func didSelectButtonAction(_ sender: Any) {

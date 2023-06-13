@@ -40,4 +40,25 @@ class TaskAttachmentOperations: NSObject {
         }
         return nodes
     }
+    
+    static func processWorkflowAttachments(for taskAttachments: [ValueElement], taskId: String) -> [ListNode] {
+        var nodes: [ListNode] = []
+        for attachment in taskAttachments {
+            
+            let listNode = ListNode(guid: String(format: "%d", attachment.id),
+                                    parentGuid: taskId,
+                                    mimeType: attachment.mimeType,
+                                    title: attachment.name,
+                                    path: "",
+                                    nodeType: .file,
+                                    isFile: true,
+                                    isFolder: false,
+                                    assigneeID: attachment.createdBy.id,
+                                    firstName: attachment.createdBy.firstName,
+                                    lastName: attachment.createdBy.lastName,
+                                    email: attachment.createdBy.email)
+            nodes.append(listNode)
+        }
+        return nodes
+    }
 }

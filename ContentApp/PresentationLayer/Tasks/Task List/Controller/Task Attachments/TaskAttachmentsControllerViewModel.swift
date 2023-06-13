@@ -39,4 +39,5 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
     var tempWorkflowId: String = ""
     var processDefintionTitle: String = ""
     var workflowOperationsModel: WorkflowOperationsModel?
+    var isWorkflowTaskAttachments = false
 }
