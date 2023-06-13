@@ -60,7 +60,8 @@ class TaskAttachmentsController: NSObject {
                 }
                 let rowVM = TaskAttachmentTableCellViewModel(name: attachment.title,
                                                              mimeType: attachment.mimeType,
-                                                             syncStatus: syncStatus)
+                                                             syncStatus: syncStatus,
+                                                             isHideAllOptionsFromRight: viewModel.isWorkflowTaskAttachments)
                 rowVM.didSelectTaskAttachment = { [weak self] in
                     guard let sSelf = self else { return }
                     sSelf.viewModel.didSelectTaskAttachment?(attachment)
@@ -82,18 +83,21 @@ class TaskAttachmentsController: NSObject {
 extension TaskAttachmentsController: EventObservable {
     
     func registerEvents() {
+        if viewModel.isWorkflowTaskAttachments { return }
         viewModel.services?.eventBusService?.register(observer: self,
                                   for: SyncStatusEvent.self,
                                   nodeTypes: [.file])
     }
     
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if viewModel.isWorkflowTaskAttachments { return }
         if let publishedEvent = event as? SyncStatusEvent {
             handleSyncStatus(event: publishedEvent)
         }
     }
 
     func handleSyncStatus(event: SyncStatusEvent) {
+        if viewModel.isWorkflowTaskAttachments { return }
         if viewModel.attachmentType == .workflow {
             self.buildViewModel()
         } else {
@@ -113,6 +117,7 @@ extension TaskAttachmentsController: EventObservable {
     }
     
     func insert(uploadTransfers: [UploadTransfer]) {
+        if viewModel.isWorkflowTaskAttachments { return }
         var attachments = viewModel.attachments.value
         uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()

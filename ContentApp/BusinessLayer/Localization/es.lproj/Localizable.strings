@@ -409,3 +409,17 @@
 "individual-title" = "Personal";
 "group-title" = "Grupo";
 "warning-message-uploading-in-progress" = "La carga ya está en curso. ¿Desea continuar sin cargar?";
+"search-user" = "Buscar usuario";
+"search-group" = "Buscar grupo";
+"warning-title" = "Advertencia";
+"workflow-attachment-in-progress-warning-message" = "La carga de ficheros está en curso. Toque Confirmar para continuar sin los ficheros en curso.";
+"please-select-assignee" = "Seleccionar usuario asignado";
+"workflows_unavailable_title" = "Flujos de trabajo no disponibles";
+"workflow_unavailable_message" = "Los flujos de trabajo aparecerán aquí cuando sean creados";
+"text_approve" = "Aprobar";
+"text_reject" = "Rechazar";
+"text_send_approval_again" = "Enviar para aprobación otra vez";
+"text_stop_approval_request" = "Detener solicitud de aprobación";
+"select-assignee" = "Seleccionar usuario asignado";
+"start-date-title" = "Fecha de inicio";
+"started-by" = "Iniciado por";

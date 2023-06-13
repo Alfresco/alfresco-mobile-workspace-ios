@@ -16,7 +16,7 @@
 //  limitations under the License.
 //
 
-"copyright-format" = "© %d Hyland Software, Inc. et ses filiales. Tous droits réservés.";
+"copyright-format" = "© %d Hyland Software, Inc. et ses filiales. Tous droits réservés.";
 "product-name" = "Alfresco\nMobile Workspace";
 
 // MARK: - General
@@ -408,3 +408,17 @@
 "individual-title" = "Individuel";
 "group-title" = "Groupe";
 "warning-message-uploading-in-progress" = "L'importation est actuellement en cours. Voulez-vous continuer sans importer ?";
+"search-user" = "Rechercher des utilisateurs";
+"search-group" = "Groupe de recherche";
+"warning-title" = "Avertissement";
+"workflow-attachment-in-progress-warning-message" = "Le téléchargement des fichiers est en cours. Tapez sur Confirmer pour continuer sans fichiers en cours.";
+"please-select-assignee" = "Veuillez sélectionner la personne assignée";
+"workflows_unavailable_title" = "Workflows non disponibles";
+"workflow_unavailable_message" = "Les workflows apparaîtront ici lorsqu'ils seront créés.";
+"text_approve" = "Approuver";
+"text_reject" = "Rejeter";
+"text_send_approval_again" = "Envoyer à nouveau pour approbation";
+"text_stop_approval_request" = "Arrêter la demande d'approbation";
+"select-assignee" = "Sélectionner la personne assignée";
+"start-date-title" = "Date de début";
+"started-by" = "Démarré par";

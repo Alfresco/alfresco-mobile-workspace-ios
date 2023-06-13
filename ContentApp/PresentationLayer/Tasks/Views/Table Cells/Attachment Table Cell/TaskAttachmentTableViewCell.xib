@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -139,8 +139,10 @@
                 <outlet property="attachmentView" destination="RDg-WX-Agz" id="o5m-y5-459"/>
                 <outlet property="baseView" destination="t8q-JM-V2H" id="3L6-0m-gkc"/>
                 <outlet property="deleteButton" destination="sba-m0-6t5" id="ket-fp-8vT"/>
+                <outlet property="deleteButtonWidth" destination="KtI-oK-hxz" id="1Qr-5F-ugv"/>
                 <outlet property="iconImageView" destination="Aqw-1Y-4Nj" id="T7x-G9-5Zo"/>
                 <outlet property="syncStatusImageView" destination="ksx-g1-g3F" id="ugf-jp-jL8"/>
+                <outlet property="syncStatusImageViewWidth" destination="Sf8-7R-M4l" id="bHm-CN-UpS"/>
                 <outlet property="title" destination="nnW-be-8n6" id="c1K-fr-B7h"/>
                 <outlet property="titleView" destination="uFr-Dz-pnm" id="ZNJ-06-edD"/>
             </connections>

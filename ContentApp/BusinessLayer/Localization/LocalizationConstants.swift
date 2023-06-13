@@ -412,5 +412,6 @@ struct LocalizationConstants {
         static let selectAssignee = NSLocalizedString("select-assignee", comment: "")
         static let startDate = NSLocalizedString("start-date-title", comment: "")
         static let startedBy = NSLocalizedString("started-by", comment: "")
+        static let selectStatusMessage = NSLocalizedString("please-select-status", comment: "")
     }
 }
