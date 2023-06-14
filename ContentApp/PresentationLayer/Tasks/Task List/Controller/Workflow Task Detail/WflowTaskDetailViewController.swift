@@ -174,25 +174,20 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Button Actions
     @IBAction func outputButtonOneAction(_ sender: Any) {
-        if isValidationPassed() {
+        if viewModel.isValidationPassed() {
             viewModel.selectedOutcome = viewModel.outcomeTitleOne
             callAPIToApproveRejectTask()
+        } else {
+            Snackbar.display(with: LocalizationConstants.Workflows.selectStatusMessage, type: .error, finish: nil)
         }
     }
     
     @IBAction func outputButtonTwoAction(_ sender: Any) {
-        if isValidationPassed() {
+        if viewModel.isValidationPassed() {
             viewModel.selectedOutcome = viewModel.outcomeTitleTwo
             callAPIToApproveRejectTask()
-        }
-    }
-    
-    private func isValidationPassed() -> Bool {
-        if viewModel.selectedStatus != nil {
-            return true
         } else {
             Snackbar.display(with: LocalizationConstants.Workflows.selectStatusMessage, type: .error, finish: nil)
-            return false
         }
     }
     

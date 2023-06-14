@@ -155,6 +155,14 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
         return nil
     }
     
+    func isValidationPassed() -> Bool {
+        if selectedStatus != nil {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     // MARK: - Approve/Reject Task
     func approveRejectTask(completionHandler: @escaping (_ error: Error?) -> Void) {
         

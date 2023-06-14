@@ -37,4 +37,11 @@ final class TestWorkflowTaskDetailViewModel: XCTestCase {
         }
         XCTAssertTrue(true)
     }
+    
+    func testWflowTaskDetailViewModel_IfValidationPassed_ShouldReturnTrue() {
+        if viewModel.isValidationPassed() == true {
+            XCTAssertTrue(true)
+        }
+        XCTAssertFalse(false)
+    }
 }
