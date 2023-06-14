@@ -613,7 +613,7 @@ extension StartWorkflowViewController {
     }
     
     private func didSelectAttachment(attachment: ListNode) {
-        viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
+      //  viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
     }
     
     private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {

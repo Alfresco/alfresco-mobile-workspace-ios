@@ -46,7 +46,14 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
         addSaveButton()
         addTextView()
         setupBindings()
+        setupData()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTaskStatusScreen)
+    }
+    
+    private func setupData() {
+        saveButton.isHidden = viewModel.isTaskCompleted
+        selectStatusButton.isUserInteractionEnabled = !viewModel.isTaskCompleted
+        commentField.isUserInteractionEnabled = !viewModel.isTaskCompleted
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -27,6 +27,7 @@ class WorkflowTaskStatusViewModel: NSObject {
     var comment: String?
     var workflowStatusOptions = [Option]()
     var selectedWorkflowStatusOption: RadioListOptions?
+    var isTaskCompleted = false
     var statusTitle: String? {
         if let name = selectedWorkflowStatusOption?.name {
             return name

@@ -59,6 +59,7 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     var comment: String?
     var workflowTaskAttachments = [ListNode]()
     var workflowStatusOptions = [Option]()
+    var selectedStatus: Option?
     
     // MARK: - Workflow Task details
 

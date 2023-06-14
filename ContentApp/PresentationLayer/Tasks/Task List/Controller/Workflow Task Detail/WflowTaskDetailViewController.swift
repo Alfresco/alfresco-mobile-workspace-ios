@@ -248,11 +248,13 @@ class WflowTaskDetailViewController: SystemSearchViewController {
             viewController.viewModel.workflowStatus = viewModel.workflowStatus
             viewController.viewModel.taskId = viewModel.taskId
             viewController.viewModel.comment = viewModel.comment
+            viewController.viewModel.isTaskCompleted = viewModel.isTaskCompleted
             viewController.viewModel.workflowStatusOptions = viewModel.workflowStatusOptions
             viewController.viewModel.selectedWorkflowStatusOption = RadioListOptions(optionId: viewModel.workflowStatus, name: viewModel.workflowStatus)
             self.navigationController?.pushViewController(viewController, animated: true)
             viewController.viewModel.didSaveStatusAndComment = {[weak self] (status, comment) in
                 guard let sSelf = self else { return }
+                sSelf.viewModel.selectedStatus = status
                 sSelf.viewModel.workflowStatus = status?.name
                 sSelf.viewModel.comment = comment
                 sSelf.controller.buildViewModel()
