@@ -149,7 +149,6 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     }
     
     func getSelectedStatus() -> Option? {
-
         for option in workflowStatusOptions where option.id != "empty" && option.name == workflowStatus {
             return option
         }
