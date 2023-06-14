@@ -60,6 +60,25 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     var workflowTaskAttachments = [ListNode]()
     var workflowStatusOptions = [Option]()
     var selectedStatus: Option?
+    var outcomes: [Outcome] {
+        return processDetails?.outcomes ?? []
+    }
+    
+    var outcomeTitleOne: String? {
+        if !outcomes.isEmpty {
+            return outcomes.first?.name
+        }
+        return nil
+    }
+    
+    var outcomeTitleTwo: String? {
+        if outcomes.count > 1 {
+            return outcomes[1].name
+        }
+        return nil
+    }
+    
+    var selectedOutcome: String?
     
     // MARK: - Workflow Task details
 
@@ -127,5 +146,35 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
             return dueDate
         }
         return LocalizationConstants.Tasks.noDueDate
+    }
+    
+    func getSelectedStatus() -> Option? {
+
+        for option in workflowStatusOptions where option.id != "empty" && option.name == workflowStatus {
+            return option
+        }
+        return nil
+    }
+    
+    // MARK: - Approve/Reject Task
+    func approveRejectTask(completionHandler: @escaping (_ error: Error?) -> Void) {
+        
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            
+            let params = SaveFormParams(status: self.selectedStatus, comment: self.comment)
+            TasksAPI.approveOrRejectTaskForm(taskId: self.taskId, params: params, outcome: self.selectedOutcome) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+
+                if data != nil {
+                    completionHandler(nil)
+                } else {
+                    completionHandler(error)
+                }
+            }
+        })
     }
 }
