@@ -79,9 +79,11 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
     }
     
     private func addTextView() {
-        commentField.minimumNumberOfVisibleRows = 1
-        commentField.maximumNumberOfVisibleRows = 7
-        commentField.textView.accessibilityIdentifier = "commentTextField"
+        DispatchQueue.main.async {
+            self.commentField.minimumNumberOfVisibleRows = 1
+            self.commentField.maximumNumberOfVisibleRows = 7
+            self.commentField.textView.accessibilityIdentifier = "commentTextField"
+        }
     }
     
     // MARK: - Public Helpers
