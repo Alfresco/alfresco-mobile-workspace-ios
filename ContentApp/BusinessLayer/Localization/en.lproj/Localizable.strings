@@ -429,3 +429,5 @@
 "On Hold" = "On Hold";
 "Cancelled" = "Cancelled";
 "Completed" = "Completed";
+"claim-title" = "Claim";
+"release-title" = "Release";
