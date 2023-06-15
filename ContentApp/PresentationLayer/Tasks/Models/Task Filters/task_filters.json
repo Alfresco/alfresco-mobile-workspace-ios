@@ -39,6 +39,12 @@
                     "accessibilityIdentifier": "active"
                 },
                 {
+                    "label": "Queued",
+                    "query": "state",
+                    "value": "candidate",
+                    "accessibilityIdentifier": "queued"
+                },
+                {
                     "label": "Completed",
                     "query": "state",
                     "value": "completed",

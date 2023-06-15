@@ -31,6 +31,7 @@ class TasksListViewModel: NSObject {
     lazy var filterParams = TaskListFilterParams()
     var isTasksConfigured = false
     var workflowDetailNode: WorkflowNode?
+    var didRefreshTaskList: (() -> Void)?
 
     var isWorkflowDetail: Bool {
         if workflowDetailNode != nil {

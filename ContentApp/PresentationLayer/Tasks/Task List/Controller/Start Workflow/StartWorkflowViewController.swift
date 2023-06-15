@@ -665,6 +665,12 @@ extension StartWorkflowViewController {
             taskListViewController.viewModel.workflowDetailNode = viewModel.workflowDetailNode
             taskListViewController.navigationViewController = self.navigationController
             self.navigationController?.pushViewController(taskListViewController, animated: true)
+            taskListViewController.viewModel.didRefreshTaskList = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.viewModel.didRefreshTaskList?()
+                sSelf.getWorkflowDetails()
+                sSelf.getTaskList()
+            }
         }
     }
 }

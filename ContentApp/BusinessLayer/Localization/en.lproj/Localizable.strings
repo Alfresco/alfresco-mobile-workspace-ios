@@ -349,6 +349,7 @@
 "Task Name" = "Task Name";
 "Active" = "Active";
 "Completed" = "Completed";
+"Queued" = "Queued";
 
 // MARK: - Task Operations
 "no-description" = "No description";

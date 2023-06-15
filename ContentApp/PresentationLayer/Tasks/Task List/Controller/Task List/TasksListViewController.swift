@@ -335,8 +335,10 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.task = taskNode
             self.navigationViewController?.pushViewController(viewController, animated: true)
-            viewController.viewModel.didRefreshWorkflowList = {
-                self.handlePullToRefresh()
+            viewController.viewModel.didRefreshWorkflowList = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.viewModel.didRefreshTaskList?()
+                sSelf.handlePullToRefresh()
             }
         }
     }
