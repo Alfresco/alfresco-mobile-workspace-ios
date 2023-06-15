@@ -28,7 +28,8 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     @IBOutlet weak var outputButtonOptionOne: MDCButton!
     @IBOutlet weak var outputButtonOptionTwo: MDCButton!
     @IBOutlet weak var heightOutputView: NSLayoutConstraint!
-    
+    var claimReleaseTaskButton = UIButton(type: .custom)
+
     var viewModel: WflowTaskDetailViewModel { return controller.viewModel }
     lazy var controller: WflowTaskDetailController = { return WflowTaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
@@ -40,6 +41,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
         showOutputButtonsView(isShow: false)
+        progressView.isAccessibilityElement = false
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyLocalization()
@@ -47,7 +49,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         addBackButton()
         addAccessibility()
         setupBindings()
-        getWorkflowTaskDetails()
+        getWorkflowTaskVariables()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTaskDetailScreen)
         
         // ReSignIn Notification
@@ -120,6 +122,9 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         outputButtonOptionTwo.isUppercaseTitle = false
         outputButtonOptionTwo.setShadowColor(.clear, for: .normal)
         outputButtonOptionTwo.layer.cornerRadius = UIConstants.cornerRadiusDialog
+        
+        claimReleaseTaskButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
+        claimReleaseTaskButton.titleLabel?.font = currentTheme.buttonTextStyle.font
     }
     
     func startLoading() {
@@ -244,6 +249,18 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         }
     }
     
+    // MARK: - Workflow Task Variables
+    private func getWorkflowTaskVariables() {
+        
+        viewModel.workflowTaskVariables { [weak self] error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.addClaimReleaseTaskButton()
+                sSelf.getWorkflowTaskDetails()
+            }
+        }
+    }
+    
     // MARK: - Workflow Task details
     private func getWorkflowTaskDetails() {
         
@@ -317,11 +334,20 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     }
     
     private func showOutputButtonsView(isShow: Bool) {
-        if isShow {
+        if viewModel.isShowClaimTaskButton == true && viewModel.isShowReleaseTaskButton == false {
+            buttonsBaseView.isHidden = true
+            heightOutputView.constant = 0
+            claimReleaseTaskButton.isHidden = false
+        } else if viewModel.isShowClaimTaskButton == false && viewModel.isShowReleaseTaskButton == true {
+            buttonsBaseView.isHidden = false
+            heightOutputView.constant = 48
+            claimReleaseTaskButton.isHidden = false
+        } else if isShow {
             buttonsBaseView.isHidden = false
             heightOutputView.constant = 48
         } else {
             buttonsBaseView.isHidden = true
+            claimReleaseTaskButton.isHidden = true
             heightOutputView.constant = 0
         }
     }
@@ -370,6 +396,37 @@ extension WflowTaskDetailViewController: UITableViewDelegate, UITableViewDataSou
             return 40.0
         default:
             return UITableView.automaticDimension
+        }
+    }
+}
+
+// MARK: - Claim or Release Task Button
+extension WflowTaskDetailViewController {
+    
+    private func addClaimReleaseTaskButton() {
+        claimReleaseTaskButton.accessibilityIdentifier = "claim-release-task-button"
+        claimReleaseTaskButton.frame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 30.0)
+        claimReleaseTaskButton.addTarget(self,
+                               action: #selector(claimReleaseTaskButtonAction),
+                               for: UIControl.Event.touchUpInside)
+        claimReleaseTaskButton.setTitle(viewModel.claimReleaseTaskButtonTitle, for: .normal)
+        claimReleaseTaskButton.titleLabel?.numberOfLines = 1
+        claimReleaseTaskButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        claimReleaseTaskButton.titleLabel?.lineBreakMode = .byClipping
+    
+        let searchBarButtonItem = UIBarButtonItem(customView: claimReleaseTaskButton)
+        searchBarButtonItem.accessibilityIdentifier = "barButton"
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
+        currHeight?.isActive = true
+        self.navigationItem.rightBarButtonItem = searchBarButtonItem
+    }
+
+    @objc func claimReleaseTaskButtonAction() {
+        viewModel.claimUnclaimTask { [weak self] error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.backAndRefreshAction(isRefreshList: true)
+            }
         }
     }
 }
