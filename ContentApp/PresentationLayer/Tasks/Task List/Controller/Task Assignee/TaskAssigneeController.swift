@@ -84,13 +84,16 @@ class TaskAssigneeController: NSObject {
         var rowVMs = [RowViewModel]()
         let apsUserID = UserProfile.apsUserID ?? -1
         let searchedUsers = viewModel.users.value
-        for user in searchedUsers where user.assigneeID != apsUserID {
-            let rowVM = TaskAssigneeTableCellViewModel(userID: user.assigneeID, firstName: user.firstName, lastName: user.lastName, groupName: user.groupName)
-            rowVM.didSelectUserAction = { [weak self] in
-                guard let sSelf = self else { return }
-                sSelf.didSelectUserAction?(user)
+        for user in searchedUsers {
+            if viewModel.isSearchByName && user.assigneeID == apsUserID {
+            } else {
+                let rowVM = TaskAssigneeTableCellViewModel(userID: user.assigneeID, firstName: user.firstName, lastName: user.lastName, groupName: user.groupName)
+                rowVM.didSelectUserAction = { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.didSelectUserAction?(user)
+                }
+                rowVMs.append(rowVM)
             }
-            rowVMs.append(rowVM)
         }
         return rowVMs
     }
