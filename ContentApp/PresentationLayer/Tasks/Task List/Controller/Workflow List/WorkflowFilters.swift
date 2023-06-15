@@ -44,12 +44,12 @@ struct WorkflowFilters {
         let allFilter = WorkflowFilters(localizedName: LocalizationConstants.Workflows.allTitle,
                                         filterID: 3,
                                         state: .all)
-        return [activeFilter, completedFilter, allFilter]
+        return [allFilter, activeFilter, completedFilter]
     }
     
     static func defaultFilter() -> WorkflowFilters {
-        return WorkflowFilters(localizedName: LocalizationConstants.Tasks.active,
-                               filterID: 1,
-                               state: .running)
+        return WorkflowFilters(localizedName: LocalizationConstants.Workflows.allTitle,
+                               filterID: 3,
+                               state: .all)
     }
 }

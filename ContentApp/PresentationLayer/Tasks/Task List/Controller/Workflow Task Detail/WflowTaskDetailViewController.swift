@@ -24,6 +24,11 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var buttonsBaseView: UIView!
+    @IBOutlet weak var outputButtonOptionOne: MDCButton!
+    @IBOutlet weak var outputButtonOptionTwo: MDCButton!
+    @IBOutlet weak var heightOutputView: NSLayoutConstraint!
+    
     var viewModel: WflowTaskDetailViewModel { return controller.viewModel }
     lazy var controller: WflowTaskDetailController = { return WflowTaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
@@ -34,9 +39,9 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
+        showOutputButtonsView(isShow: false)
         progressView.progress = 0
         progressView.mode = .indeterminate
-        applyTheme()
         applyLocalization()
         registerCells()
         addBackButton()
@@ -76,6 +81,11 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.taskDetailTitle
+        
+        let titleOne = NSLocalizedString(viewModel.outcomeTitleOne ?? "", comment: "")
+        let titleTwo = NSLocalizedString(viewModel.outcomeTitleTwo ?? "", comment: "")
+        outputButtonOptionOne.setTitle(titleOne, for: .normal)
+        outputButtonOptionTwo.setTitle(titleTwo, for: .normal)
     }
     
     func registerCells() {
@@ -93,11 +103,23 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     }
     
     // MARK: - Public Helpers
-
-    func applyTheme() {
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-              let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton)
-        else { return }
+              let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton) else { return }
+        
+        view.backgroundColor = currentTheme.surfaceColor
+        buttonsBaseView.backgroundColor = currentTheme.surfaceColor
+        
+        outputButtonOptionOne.applyContainedTheme(withScheme: buttonScheme)
+        outputButtonOptionOne.isUppercaseTitle = false
+        outputButtonOptionOne.setShadowColor(.clear, for: .normal)
+        outputButtonOptionOne.layer.cornerRadius = UIConstants.cornerRadiusDialog
+
+        outputButtonOptionTwo.applyContainedTheme(withScheme: buttonScheme)
+        outputButtonOptionTwo.isUppercaseTitle = false
+        outputButtonOptionTwo.setShadowColor(.clear, for: .normal)
+        outputButtonOptionTwo.layer.cornerRadius = UIConstants.cornerRadiusDialog
     }
     
     func startLoading() {
@@ -148,6 +170,33 @@ class WflowTaskDetailViewController: SystemSearchViewController {
             self.viewModel.didRefreshWorkflowList?()
         }
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - Button Actions
+    @IBAction func outputButtonOneAction(_ sender: Any) {
+        if viewModel.isValidationPassed() {
+            viewModel.selectedOutcome = viewModel.outcomeTitleOne
+            callAPIToApproveRejectTask()
+        } else {
+            Snackbar.display(with: LocalizationConstants.Workflows.selectStatusMessage, type: .error, finish: nil)
+        }
+    }
+    
+    @IBAction func outputButtonTwoAction(_ sender: Any) {
+        if viewModel.isValidationPassed() {
+            viewModel.selectedOutcome = viewModel.outcomeTitleTwo
+            callAPIToApproveRejectTask()
+        } else {
+            Snackbar.display(with: LocalizationConstants.Workflows.selectStatusMessage, type: .error, finish: nil)
+        }
+    }
+    
+    private func callAPIToApproveRejectTask() {
+        viewModel.approveRejectTask { error in
+            if error == nil {
+                self.backAndRefreshAction(isRefreshList: true)
+            }
+        }
     }
     
     // MARK: - Set up Bindings
@@ -201,7 +250,12 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         viewModel.workflowTaskDetails { [weak self] error in
             guard let sSelf = self else { return }
             if error == nil {
+                sSelf.applyLocalization()
                 sSelf.controller.buildViewModel()
+                sSelf.viewModel.selectedStatus = sSelf.viewModel.getSelectedStatus()
+                if !sSelf.viewModel.isTaskCompleted {
+                    sSelf.showOutputButtonsView(isShow: true)
+                }
             }
         }
     }
@@ -248,15 +302,27 @@ class WflowTaskDetailViewController: SystemSearchViewController {
             viewController.viewModel.workflowStatus = viewModel.workflowStatus
             viewController.viewModel.taskId = viewModel.taskId
             viewController.viewModel.comment = viewModel.comment
+            viewController.viewModel.isTaskCompleted = viewModel.isTaskCompleted
             viewController.viewModel.workflowStatusOptions = viewModel.workflowStatusOptions
             viewController.viewModel.selectedWorkflowStatusOption = RadioListOptions(optionId: viewModel.workflowStatus, name: viewModel.workflowStatus)
             self.navigationController?.pushViewController(viewController, animated: true)
             viewController.viewModel.didSaveStatusAndComment = {[weak self] (status, comment) in
                 guard let sSelf = self else { return }
+                sSelf.viewModel.selectedStatus = status
                 sSelf.viewModel.workflowStatus = status?.name
                 sSelf.viewModel.comment = comment
                 sSelf.controller.buildViewModel()
             }
+        }
+    }
+    
+    private func showOutputButtonsView(isShow: Bool) {
+        if isShow {
+            buttonsBaseView.isHidden = false
+            heightOutputView.constant = 48
+        } else {
+            buttonsBaseView.isHidden = true
+            heightOutputView.constant = 0
         }
     }
 }

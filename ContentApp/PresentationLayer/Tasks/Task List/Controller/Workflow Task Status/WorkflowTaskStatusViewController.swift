@@ -46,7 +46,14 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
         addSaveButton()
         addTextView()
         setupBindings()
+        setupData()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTaskStatusScreen)
+    }
+    
+    private func setupData() {
+        saveButton.isHidden = viewModel.isTaskCompleted
+        selectStatusButton.isUserInteractionEnabled = !viewModel.isTaskCompleted
+        commentField.isUserInteractionEnabled = !viewModel.isTaskCompleted
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,7 +73,7 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
     
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.status
-        statusLabel.text = viewModel.statusTitle
+        statusLabel.text = NSLocalizedString(viewModel.statusTitle ?? "", comment: "")
         commentField.textView.text = viewModel.comment
         commentField.textView.delegate = self
     }

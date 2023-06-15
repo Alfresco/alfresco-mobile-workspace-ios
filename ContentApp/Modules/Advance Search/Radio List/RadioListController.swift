@@ -44,7 +44,8 @@ class RadioListController: NSObject {
                 isSelected = true
             }
             
-            let rowVM = ListItemCellViewModel(title: option.name, isRadioList: true, isSelected: isSelected)
+            let localizedName = NSLocalizedString(option.name ?? "", comment: "")
+            let rowVM = ListItemCellViewModel(title: localizedName, isRadioList: true, isSelected: isSelected)
             rowVM.didSelectListItem = {
                 self.viewModel.selectedRadioListOption = option
                 self.buildViewModel()

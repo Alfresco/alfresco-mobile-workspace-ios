@@ -27,6 +27,7 @@
 		476CB2D72A34D90E00207C4D /* WorkflowTaskStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2D62A34D90E00207C4D /* WorkflowTaskStatusViewController.swift */; };
 		476CB2D92A34D92300207C4D /* WorkflowTaskStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2D82A34D92300207C4D /* WorkflowTaskStatusController.swift */; };
 		476CB2DB2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */; };
+		47741B272A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47741B262A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
 		4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */; };
@@ -812,6 +813,7 @@
 		476CB2D62A34D90E00207C4D /* WorkflowTaskStatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusViewController.swift; sourceTree = "<group>"; };
 		476CB2D82A34D92300207C4D /* WorkflowTaskStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusController.swift; sourceTree = "<group>"; };
 		476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusViewModel.swift; sourceTree = "<group>"; };
+		47741B262A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowTaskDetailViewModel.swift; sourceTree = "<group>"; };
 		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
 		4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewModel.swift; sourceTree = "<group>"; };
@@ -3010,6 +3012,7 @@
 				C98DCD3A2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift */,
 				C92E2ED429A60BC500DAFD4B /* TestModelNotifications.swift */,
 				47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */,
+				47741B262A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -4765,6 +4768,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47741B272A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift in Sources */,
 				C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */,
 				C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */,
 				C9AEE042270D9D5D00880235 /* TestSearchViewModel.swift in Sources */,

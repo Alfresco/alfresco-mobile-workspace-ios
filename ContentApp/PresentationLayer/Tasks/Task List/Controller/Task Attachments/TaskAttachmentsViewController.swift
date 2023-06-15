@@ -234,7 +234,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
                 viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
             }
         } else {
-            viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
+           // viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
         }
     }
 }
