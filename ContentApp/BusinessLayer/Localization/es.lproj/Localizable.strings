@@ -419,3 +419,13 @@
 "select-assignee" = "Seleccionar usuario asignado";
 "start-date-title" = "Fecha de inicio";
 "started-by" = "Iniciado por";
+"Approve" = "Aprobar";
+"Reject" = "Rechazar";
+"please-select-status" = "Seleccionar estado";
+"None" = "Ninguno";
+"Choose one..." = "Seleccionar uno…";
+"Not Yet Started" = "No se inició todavía";
+"In Progress" = "En curso";
+"On Hold" = "En espera";
+"Cancelled" = "Cancelado";
+"Completed" = "Completado";

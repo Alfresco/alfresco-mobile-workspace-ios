@@ -156,7 +156,9 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     }
     
     func isValidationPassed() -> Bool {
-        if selectedStatus != nil {
+        if workflowStatusOptions.isEmpty {
+            return true
+        } else if selectedStatus != nil {
             return true
         } else {
             return false

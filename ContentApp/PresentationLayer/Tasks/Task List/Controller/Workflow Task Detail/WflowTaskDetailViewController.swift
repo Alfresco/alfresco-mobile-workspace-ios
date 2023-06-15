@@ -39,7 +39,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
-        buttonsBaseView.isHidden = true
+        showOutputButtonsView(isShow: false)
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyLocalization()
@@ -254,7 +254,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
                 sSelf.controller.buildViewModel()
                 sSelf.viewModel.selectedStatus = sSelf.viewModel.getSelectedStatus()
                 if !sSelf.viewModel.isTaskCompleted {
-                    sSelf.buttonsBaseView.isHidden = false
+                    sSelf.showOutputButtonsView(isShow: true)
                 }
             }
         }
@@ -313,6 +313,16 @@ class WflowTaskDetailViewController: SystemSearchViewController {
                 sSelf.viewModel.comment = comment
                 sSelf.controller.buildViewModel()
             }
+        }
+    }
+    
+    private func showOutputButtonsView(isShow: Bool) {
+        if isShow {
+            buttonsBaseView.isHidden = false
+            heightOutputView.constant = 48
+        } else {
+            buttonsBaseView.isHidden = true
+            heightOutputView.constant = 0
         }
     }
 }

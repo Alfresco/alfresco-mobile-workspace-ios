@@ -422,4 +422,10 @@
 "please-select-status" = "Please select status";
 "Approve" = "Approve";
 "Reject" = "Reject";
-
+"None" = "None";
+"Choose one..." = "Choose one…";
+"Not Yet Started" = "Not Yet Started";
+"In Progress" = "In Progress";
+"On Hold" = "On Hold";
+"Cancelled" = "Cancelled";
+"Completed" = "Completed";

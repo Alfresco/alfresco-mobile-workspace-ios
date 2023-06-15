@@ -73,7 +73,7 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
     
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.status
-        statusLabel.text = viewModel.statusTitle
+        statusLabel.text = NSLocalizedString(viewModel.statusTitle ?? "", comment: "")
         commentField.textView.text = viewModel.comment
         commentField.textView.delegate = self
     }
