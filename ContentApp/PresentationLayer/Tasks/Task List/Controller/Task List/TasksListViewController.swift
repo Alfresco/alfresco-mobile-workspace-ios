@@ -46,6 +46,7 @@ class TasksListViewController: SystemSearchViewController {
         filterBaseView.isHidden = true
         createTaskButton.isHidden = true
         emptyListView.isHidden = true
+        progressView.isAccessibilityElement = false
         progressView.progress = 0
         progressView.mode = .indeterminate
         addRefreshControl()
