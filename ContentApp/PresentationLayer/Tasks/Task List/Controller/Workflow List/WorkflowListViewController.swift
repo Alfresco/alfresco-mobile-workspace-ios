@@ -377,6 +377,10 @@ extension WorkflowListViewController {
             }
             viewController.viewModel.isDetailWorkflow = isDetailFlow
             self.navigationViewController?.pushViewController(viewController, animated: true)
+            viewController.viewModel.didRefreshTaskList = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.handlePullToRefresh()
+            }
         }
     }
 }

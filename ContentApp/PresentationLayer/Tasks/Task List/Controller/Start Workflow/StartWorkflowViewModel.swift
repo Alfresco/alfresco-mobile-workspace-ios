@@ -34,7 +34,8 @@ class StartWorkflowViewModel: NSObject {
     var workflowOperationsModel: WorkflowOperationsModel?
     var selectedAttachments = [ListNode]()
     var workflowDetailTasks = [TaskNode]()
-    
+    var didRefreshTaskList: (() -> Void)?
+
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
     }
