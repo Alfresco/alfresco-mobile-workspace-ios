@@ -36,7 +36,7 @@ class WorkflowListViewController: SystemSearchViewController {
     @IBOutlet weak var startWorkflowButton: MDCFloatingButton!
     var refreshControl: UIRefreshControl?
     lazy var viewModel = WorkflowListViewModel(services: coordinatorServices ?? CoordinatorServices())
-    let regularCellHeight: CGFloat = 60.0
+    let regularCellHeight: CGFloat = 70.0
     let sectionCellHeight: CGFloat = 54.0
     private var dialogTransitionController: MDCDialogTransitionController?
     lazy var dropDown = DropDown()

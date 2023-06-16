@@ -34,7 +34,7 @@ class TasksListViewController: SystemSearchViewController {
     @IBOutlet weak var heightFilterBaseView: NSLayoutConstraint!
     var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
-    let regularCellHeight: CGFloat = 60.0
+    let regularCellHeight: CGFloat = 70.0
     let sectionCellHeight: CGFloat = 54.0
     var sortFilterView: TasksSortAndFilterView?
     private var dialogTransitionController: MDCDialogTransitionController?
