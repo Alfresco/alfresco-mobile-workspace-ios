@@ -125,11 +125,19 @@ class TasksListViewController: SystemSearchViewController {
     
     // MARK: - Get Tasks List
     func getTaskList() {
-        let params = TaskListParams(dueAfter: viewModel.filterParams.dueAfter,
+        var state: String? = viewModel.filterParams.state ?? ""
+        var assignment: String?
+        if state == "candidate" {
+            assignment = state
+            state = nil
+        }
+        let params = TaskListParams(assignment: assignment,
+                                    dueAfter: viewModel.filterParams.dueAfter,
                                     dueBefore: viewModel.filterParams.dueBefore,
                                     page: viewModel.page,
                                     processInstanceId: viewModel.workflowDetailNode?.processID,
-                                    state: viewModel.filterParams.state,
+                                    sort: "created-desc",
+                                    state: state,
                                     text: viewModel.filterParams.text)
         
         viewModel.taskList(with: params) {[weak self] taskList, error in
