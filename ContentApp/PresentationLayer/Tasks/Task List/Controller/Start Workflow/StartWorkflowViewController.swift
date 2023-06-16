@@ -613,7 +613,7 @@ extension StartWorkflowViewController {
     }
     
     private func didSelectAttachment(attachment: ListNode) {
-        viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
+      //  viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
     }
     
     private func didSelectUploadTransfers(uploadTransfers: [UploadTransfer]) {
@@ -665,6 +665,12 @@ extension StartWorkflowViewController {
             taskListViewController.viewModel.workflowDetailNode = viewModel.workflowDetailNode
             taskListViewController.navigationViewController = self.navigationController
             self.navigationController?.pushViewController(taskListViewController, animated: true)
+            taskListViewController.viewModel.didRefreshTaskList = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.viewModel.didRefreshTaskList?()
+                sSelf.getWorkflowDetails()
+                sSelf.getTaskList()
+            }
         }
     }
 }

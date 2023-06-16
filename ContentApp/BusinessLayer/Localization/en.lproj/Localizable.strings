@@ -362,6 +362,7 @@
 "Task Name" = "Task Name";
 "Active" = "Active";
 "Completed" = "Completed";
+"Queued" = "Queued";
 
 // MARK: - Task Operations
 "no-description" = "No description";
@@ -433,3 +434,15 @@
 "start-date-title" = "Start date";
 "started-by" = "Started by";
 "please-select-status" = "Please select status";
+"Approve" = "Approve";
+"Reject" = "Reject";
+"None" = "None";
+"Choose one..." = "Choose one…";
+"Not Yet Started" = "Not Yet Started";
+"In Progress" = "In Progress";
+"On Hold" = "On Hold";
+"Cancelled" = "Cancelled";
+"Completed" = "Completed";
+"claim-title" = "Claim";
+"release-title" = "Release";
+"created_date" = "Created Date";

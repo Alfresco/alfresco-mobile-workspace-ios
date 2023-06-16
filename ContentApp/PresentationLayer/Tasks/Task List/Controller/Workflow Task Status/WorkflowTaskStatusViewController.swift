@@ -36,6 +36,8 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
@@ -46,7 +48,14 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
         addSaveButton()
         addTextView()
         setupBindings()
+        setupData()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTaskStatusScreen)
+    }
+    
+    private func setupData() {
+        saveButton.isHidden = viewModel.isTaskCompleted
+        selectStatusButton.isUserInteractionEnabled = !viewModel.isTaskCompleted
+        commentField.isUserInteractionEnabled = !viewModel.isTaskCompleted
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,15 +75,17 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
     
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.status
-        statusLabel.text = viewModel.statusTitle
+        statusLabel.text = NSLocalizedString(viewModel.statusTitle ?? "", comment: "")
         commentField.textView.text = viewModel.comment
         commentField.textView.delegate = self
     }
     
     private func addTextView() {
-        commentField.minimumNumberOfVisibleRows = 1
-        commentField.maximumNumberOfVisibleRows = 7
-        commentField.textView.accessibilityIdentifier = "commentTextField"
+        DispatchQueue.main.async {
+            self.commentField.minimumNumberOfVisibleRows = 1
+            self.commentField.maximumNumberOfVisibleRows = 7
+            self.commentField.textView.accessibilityIdentifier = "commentTextField"
+        }
     }
     
     // MARK: - Public Helpers

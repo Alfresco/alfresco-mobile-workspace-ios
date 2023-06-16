@@ -320,7 +320,13 @@ extension StartWorkflowController {
     
     // MARK: - Started by
     private func workflowDetail_startedByCellVM() -> InfoTableCellViewModel {
-        let startedBy = viewModel.workflowDetailNode?.startedBy?.userName ?? ""
+        var startedBy = viewModel.workflowDetailNode?.startedBy?.userName ?? ""
+        let assigneeID = viewModel.workflowDetailNode?.startedBy?.assigneeID ?? -1
+        let apsUserID = UserProfile.apsUserID
+        if assigneeID == apsUserID {
+            startedBy = LocalizationConstants.EditTask.meTitle
+        }
+
         let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Workflows.startedBy, value: startedBy, isEditMode: false, editImage: nil)
         return rowVM
     }
@@ -329,7 +335,7 @@ extension StartWorkflowController {
     private func workflowDetail_tasksCountCellVM() -> InfoTableCellViewModel? {
         if viewModel.isShowTasksCountOnWorkflowDetail {
             let count = viewModel.workflowDetailTasks.count
-            let rowVM = InfoTableCellViewModel(imageName: "ic-tasks-icon", title: LocalizationConstants.ScreenTitles.tasks, value: "\(count)", isEditMode: true, editImage: "ic-next")
+            let rowVM = InfoTableCellViewModel(imageName: "ic-tasks-icon", title: LocalizationConstants.ScreenTitles.tasks, value: "\(count)", isEditMode: true, editImage: "ic-next", accesssibilityLabel: LocalizationConstants.Tasks.nextTitle)
             rowVM.didSelectEditInfo = {[weak self] in
                 guard let sSelf = self else { return }
                 sSelf.didSelectTasksDetails?()

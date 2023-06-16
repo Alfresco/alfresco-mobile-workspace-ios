@@ -24,6 +24,7 @@ class TaskListCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var priorityView: UIView!
     @IBOutlet weak var priorityLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     var currentTheme: PresentationTheme?
     lazy var viewModel = TaskPropertiesViewModel()
     lazy var workflowViewModel = WorkflowViewModel()
@@ -37,11 +38,13 @@ class TaskListCollectionViewCell: ListSelectableCell {
     private func addAccessibility() {
         title.accessibilityLabel = LocalizationConstants.Accessibility.title
         subtitle.accessibilityLabel = LocalizationConstants.Accessibility.assignee
+        dateLabel.accessibilityLabel = LocalizationConstants.Workflows.createdDate
         priorityLabel.accessibilityLabel = LocalizationConstants.Accessibility.priority
         
         title.accessibilityIdentifier = "title"
         subtitle.accessibilityIdentifier = "sub-title"
         priorityLabel.accessibilityIdentifier = "priority"
+        dateLabel.accessibilityIdentifier = "created-date"
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -52,6 +55,8 @@ class TaskListCollectionViewCell: ListSelectableCell {
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead
+        dateLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        dateLabel.lineBreakMode = .byTruncatingHead
         priorityLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
     }
     
@@ -61,12 +66,15 @@ class TaskListCollectionViewCell: ListSelectableCell {
         
         title.text = viewModel.taskName
         subtitle.text = viewModel.userName
+        dateLabel.text = viewModel.getCreatedDate(for: viewModel.createdDate)
+        
         priorityLabel.textColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).textColor
         priorityView.backgroundColor = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).backgroundColor
         priorityLabel.text = UIFunction.getPriorityValues(for: currentTheme, taskPriority: viewModel.taskPriority).priorityText
         
         title.accessibilityValue = title.text
         subtitle.accessibilityValue = subtitle.text
+        dateLabel.accessibilityValue = dateLabel.text
         priorityLabel.accessibilityValue = priorityLabel.text
     }
     
@@ -76,6 +84,8 @@ class TaskListCollectionViewCell: ListSelectableCell {
         
         title.text = workflowViewModel.workflowName
         subtitle.text = workflowViewModel.userName
+        dateLabel.text = viewModel.getCreatedDate(for: workflowViewModel.started)
+
         priorityView.isHidden = true
         priorityLabel.text = nil
         

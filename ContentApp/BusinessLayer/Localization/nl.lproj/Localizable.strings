@@ -423,3 +423,14 @@
 "select-assignee" = "Selecteer toegewezen persoon";
 "start-date-title" = "Begindatum";
 "started-by" = "Gestart door";
+"Approve" = "Goedkeuren";
+"Reject" = "Afwijzen";
+"please-select-status" = "Selecteer status";
+"None" = "Geen";
+"Choose one..." = "Kies er een…";
+"Not Yet Started" = "Nog niet gestart";
+"In Progress" = "Wordt uitgevoerd";
+"On Hold" = "In de wacht";
+"Cancelled" = "Geannuleerd";
+"Completed" = "Voltooid";
+"created_date" = "Datum gemaakt";

@@ -147,7 +147,7 @@ class WflowTaskDetailController: NSObject {
         if !status.isEmpty {
             let rowVM = InfoTableCellViewModel(imageName: "ic-workflow-status-icon",
                                                title: LocalizationConstants.Tasks.status,
-                                               value: viewModel.workflowStatus,
+                                               value: NSLocalizedString(viewModel.workflowStatus ?? "", comment: ""),
                                                isEditMode: true,
                                                editImage: "ic-next")
             rowVM.didSelectEditInfo = {[weak self] in
