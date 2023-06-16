@@ -42,7 +42,7 @@ class WorkflowViewModel: NSObject {
     }
     
     func getCreatedDate(for date: Date?) -> String? {
-        if let createdDate = date?.dateString(format: "dd MMM yyyy HH:MM:ss") {
+        if let createdDate = date?.dateString(format: "dd MMM yyyy hh:mm:ss a") {
             return createdDate
         } else {
             return nil
