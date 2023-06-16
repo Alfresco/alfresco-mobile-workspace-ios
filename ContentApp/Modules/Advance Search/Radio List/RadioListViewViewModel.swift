@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2023 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,23 +17,25 @@
 //
 
 import Foundation
-import UIKit
+import AlfrescoContent
 
-extension String {
-    func CGFloatValue() -> CGFloat? {
-        guard let doubleValue = Double(self) else {
-            return nil
-        }
-        return CGFloat(doubleValue)
-    }
+// MARK: - View Model
+class RadioListViewViewModel: NSObject {
+    let rowViewModels = Observable<[RowViewModel]>([])
+    var isRadioList = false
+    var title: String?
+    var radioListOptions = [RadioListOptions]()
+    var selectedRadioListOption: RadioListOptions?
+    var didSelectListItem: ((RadioListOptions?) -> Void)?
 }
 
-extension String {
-
-    func toDate(withFormat format: String = "yyyy-MM-dd'T'HH:mm:ss.SSSZ") -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        let date = dateFormatter.date(from: self)
-        return date
+// MARK: - Radio List Options
+struct RadioListOptions {
+    var optionId: String?
+    var name: String?
+    
+    init(optionId: String?, name: String?) {
+        self.optionId = optionId
+        self.name = name
     }
 }

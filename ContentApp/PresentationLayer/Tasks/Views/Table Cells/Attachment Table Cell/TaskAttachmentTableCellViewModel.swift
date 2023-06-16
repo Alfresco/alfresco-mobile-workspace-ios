@@ -36,15 +36,19 @@ class TaskAttachmentTableCellViewModel: RowViewModel {
         return showSyncStatus ? UIImage(named: syncStatus?.rawValue ?? "") : nil
     }
     
+    var isHideAllOptionsFromRight = false
+    
     func cellIdentifier() -> String {
         return "TaskAttachmentTableViewCell"
     }
     
     init(name: String?,
          mimeType: String?,
-         syncStatus: ListEntrySyncStatus?) {
+         syncStatus: ListEntrySyncStatus?,
+         isHideAllOptionsFromRight: Bool = false) {
         self.name = name
         self.mimeType = mimeType
         self.syncStatus = syncStatus
+        self.isHideAllOptionsFromRight = isHideAllOptionsFromRight
     }
 }

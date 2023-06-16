@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="452" height="74"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="c1v-hT-MXB">
-                                <rect key="frame" x="24" y="19.5" width="53" height="35"/>
+                                <rect key="frame" x="24" y="-6" width="53" height="86"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sG7-eG-uAm" userLabel="Title">
                                         <rect key="frame" x="0.0" y="0.0" width="53" height="19.5"/>
@@ -40,7 +40,20 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uul-wG-lJv" userLabel="dateLabel">
+                                        <rect key="frame" x="0.0" y="36" width="53" height="50"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="nodeSubtitleLabel">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="uul-wG-lJv" firstAttribute="trailing" secondItem="ba9-hm-V9T" secondAttribute="trailing" id="jBY-HX-B3T"/>
+                                    <constraint firstItem="uul-wG-lJv" firstAttribute="leading" secondItem="ba9-hm-V9T" secondAttribute="leading" id="wCw-9V-b4Z"/>
+                                </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sIN-fX-Jy9" userLabel="priorityView">
                                 <rect key="frame" x="368.5" y="21" width="59.5" height="32"/>
@@ -84,6 +97,7 @@
             </constraints>
             <size key="customSize" width="452" height="74"/>
             <connections>
+                <outlet property="dateLabel" destination="uul-wG-lJv" id="Qg6-tD-5rp"/>
                 <outlet property="priorityLabel" destination="fdO-P5-kVF" id="INJ-Rh-R37"/>
                 <outlet property="priorityView" destination="sIN-fX-Jy9" id="nL6-5x-cJc"/>
                 <outlet property="subtitle" destination="ba9-hm-V9T" id="WlZ-UI-o1D"/>

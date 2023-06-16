@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2023 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,9 +18,12 @@
 
 import UIKit
 
-struct TaskListFilterParams {
-    var dueAfter: String?
-    var dueBefore: String?
-    var state: String? = "all"
-    var text: String?
+class WorkflowTaskStatusController: NSObject {
+    let viewModel: WorkflowTaskStatusViewModel
+    var currentTheme: PresentationTheme?
+
+    init(viewModel: WorkflowTaskStatusViewModel = WorkflowTaskStatusViewModel(), currentTheme: PresentationTheme?) {
+        self.viewModel = viewModel
+        self.currentTheme = currentTheme
+    }
 }

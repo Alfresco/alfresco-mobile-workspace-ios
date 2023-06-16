@@ -50,6 +50,9 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         getTaskAttachments()
         logScreenEvent()
         checkForAddAttachmentButton()
+        if viewModel.isWorkflowTaskAttachments {
+            viewModel.isLoading.value = false
+        }
     }
     
     private func logScreenEvent() {
@@ -62,8 +65,10 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
 
     private func checkForAddAttachmentButton() {
-        
-        if viewModel.isTaskCompleted && viewModel.attachmentType == .task {
+        if viewModel.isWorkflowTaskAttachments {
+            addAttachmentButton.isHidden = true
+            tableView.contentInset.bottom = 0
+        } else if viewModel.isTaskCompleted && viewModel.attachmentType == .task {
             addAttachmentButton.isHidden = true
             tableView.contentInset.bottom = 0
         } else {
@@ -74,6 +79,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
         updateTheme()
     }
     
@@ -94,6 +100,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
     
     func addRefreshControl() {
+        if viewModel.isWorkflowTaskAttachments { return }
         if viewModel.attachmentType == .task {
             let refreshControl = UIRefreshControl()
             tableView.addSubview(refreshControl)
@@ -197,7 +204,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
     
     private func getTaskAttachments() {
-        if viewModel.attachmentType == .workflow { return }
+        if viewModel.attachmentType == .workflow || viewModel.isWorkflowTaskAttachments { return }
         let taskID = viewModel.taskID
         viewModel.taskAttachments(with: taskID) { [weak self] taskAttachments, error in
             guard let sSelf = self else { return }
@@ -227,7 +234,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
                 viewModel.startFileCoordinator(for: attachment, presenter: self.navigationController)
             }
         } else {
-            viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
+           // viewModel.workflowOperationsModel?.startFileCoordinator(for: attachment, presenter: self.navigationController)
         }
     }
 }
