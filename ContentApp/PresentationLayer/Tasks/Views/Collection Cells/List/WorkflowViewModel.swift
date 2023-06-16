@@ -36,4 +36,16 @@ class WorkflowViewModel: NSObject {
     var assigneeUserId: Int {
         return workflow?.startedBy?.assigneeID ?? -1
     }
+    
+    var started: Date? {
+        return workflow?.started
+    }
+    
+    func getCreatedDate(for date: Date?) -> String? {
+        if let createdDate = date?.dateString(format: "dd MMM yyyy hh:mm:ss a") {
+            return createdDate
+        } else {
+            return nil
+        }
+    }
 }

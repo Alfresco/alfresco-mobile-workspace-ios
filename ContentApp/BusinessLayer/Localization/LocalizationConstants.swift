@@ -408,6 +408,6 @@ struct LocalizationConstants {
         static let selectStatusMessage = NSLocalizedString("please-select-status", comment: "")
         static let claimTitle = NSLocalizedString("claim-title", comment: "")
         static let releaseTitle = NSLocalizedString("release-title", comment: "")
-
+        static let createdDate = NSLocalizedString("created_date", comment: "")
     }
 }

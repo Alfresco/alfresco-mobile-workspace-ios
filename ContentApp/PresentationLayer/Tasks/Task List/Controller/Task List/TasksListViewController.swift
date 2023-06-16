@@ -34,7 +34,7 @@ class TasksListViewController: SystemSearchViewController {
     @IBOutlet weak var heightFilterBaseView: NSLayoutConstraint!
     var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
-    let regularCellHeight: CGFloat = 60.0
+    let regularCellHeight: CGFloat = 70.0
     let sectionCellHeight: CGFloat = 54.0
     var sortFilterView: TasksSortAndFilterView?
     private var dialogTransitionController: MDCDialogTransitionController?
@@ -125,11 +125,19 @@ class TasksListViewController: SystemSearchViewController {
     
     // MARK: - Get Tasks List
     func getTaskList() {
-        let params = TaskListParams(dueAfter: viewModel.filterParams.dueAfter,
+        var state: String? = viewModel.filterParams.state ?? ""
+        var assignment: String?
+        if state == "candidate" {
+            assignment = state
+            state = nil
+        }
+        let params = TaskListParams(assignment: assignment,
+                                    dueAfter: viewModel.filterParams.dueAfter,
                                     dueBefore: viewModel.filterParams.dueBefore,
                                     page: viewModel.page,
                                     processInstanceId: viewModel.workflowDetailNode?.processID,
-                                    state: viewModel.filterParams.state,
+                                    sort: "created-desc",
+                                    state: state,
                                     text: viewModel.filterParams.text)
         
         viewModel.taskList(with: params) {[weak self] taskList, error in

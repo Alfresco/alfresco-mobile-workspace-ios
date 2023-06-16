@@ -28,8 +28,9 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     @IBOutlet weak var outputButtonOptionOne: MDCButton!
     @IBOutlet weak var outputButtonOptionTwo: MDCButton!
     @IBOutlet weak var heightOutputView: NSLayoutConstraint!
-    var claimReleaseTaskButton = UIButton(type: .custom)
-
+    @IBOutlet weak var claimTaskView: UIView!
+    @IBOutlet weak var claimTaskButton: MDCButton!
+    var releaseTaskButton = UIButton(type: .custom)
     var viewModel: WflowTaskDetailViewModel { return controller.viewModel }
     lazy var controller: WflowTaskDetailController = { return WflowTaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
@@ -88,6 +89,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         let titleTwo = NSLocalizedString(viewModel.outcomeTitleTwo ?? "", comment: "")
         outputButtonOptionOne.setTitle(titleOne, for: .normal)
         outputButtonOptionTwo.setTitle(titleTwo, for: .normal)
+        claimTaskButton.setTitle(viewModel.claimReleaseTaskButtonTitle, for: .normal)
     }
     
     func registerCells() {
@@ -112,6 +114,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         
         view.backgroundColor = currentTheme.surfaceColor
         buttonsBaseView.backgroundColor = currentTheme.surfaceColor
+        claimTaskView.backgroundColor = currentTheme.surfaceColor
         
         outputButtonOptionOne.applyContainedTheme(withScheme: buttonScheme)
         outputButtonOptionOne.isUppercaseTitle = false
@@ -119,12 +122,19 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         outputButtonOptionOne.layer.cornerRadius = UIConstants.cornerRadiusDialog
 
         outputButtonOptionTwo.applyContainedTheme(withScheme: buttonScheme)
+        outputButtonOptionTwo.setBackgroundColor(currentTheme.onSurface5Color, for: .normal)
         outputButtonOptionTwo.isUppercaseTitle = false
         outputButtonOptionTwo.setShadowColor(.clear, for: .normal)
+        outputButtonOptionTwo.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         outputButtonOptionTwo.layer.cornerRadius = UIConstants.cornerRadiusDialog
         
-        claimReleaseTaskButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
-        claimReleaseTaskButton.titleLabel?.font = currentTheme.buttonTextStyle.font
+        releaseTaskButton.setTitleColor(currentTheme.primaryT1Color, for: .normal)
+        releaseTaskButton.titleLabel?.font = currentTheme.buttonTextStyle.font
+        
+        claimTaskButton.applyContainedTheme(withScheme: buttonScheme)
+        claimTaskButton.isUppercaseTitle = false
+        claimTaskButton.setShadowColor(.clear, for: .normal)
+        claimTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
     }
     
     func startLoading() {
@@ -337,17 +347,21 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         if viewModel.isShowClaimTaskButton == true && viewModel.isShowReleaseTaskButton == false {
             buttonsBaseView.isHidden = true
             heightOutputView.constant = 0
-            claimReleaseTaskButton.isHidden = false
+            claimTaskView.isHidden = false
+            releaseTaskButton.isHidden = true
         } else if viewModel.isShowClaimTaskButton == false && viewModel.isShowReleaseTaskButton == true {
             buttonsBaseView.isHidden = false
             heightOutputView.constant = 48
-            claimReleaseTaskButton.isHidden = false
+            releaseTaskButton.isHidden = false
+            claimTaskView.isHidden = true
         } else if isShow {
             buttonsBaseView.isHidden = false
             heightOutputView.constant = 48
+            claimTaskView.isHidden = true
         } else {
             buttonsBaseView.isHidden = true
-            claimReleaseTaskButton.isHidden = true
+            releaseTaskButton.isHidden = true
+            claimTaskView.isHidden = true
             heightOutputView.constant = 0
         }
     }
@@ -404,29 +418,33 @@ extension WflowTaskDetailViewController: UITableViewDelegate, UITableViewDataSou
 extension WflowTaskDetailViewController {
     
     private func addClaimReleaseTaskButton() {
-        claimReleaseTaskButton.accessibilityIdentifier = "claim-release-task-button"
-        claimReleaseTaskButton.frame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 30.0)
-        claimReleaseTaskButton.addTarget(self,
-                               action: #selector(claimReleaseTaskButtonAction),
+        releaseTaskButton.accessibilityIdentifier = "release-task-button"
+        releaseTaskButton.frame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 30.0)
+        releaseTaskButton.addTarget(self,
+                               action: #selector(releaseTaskButtonAction),
                                for: UIControl.Event.touchUpInside)
-        claimReleaseTaskButton.setTitle(viewModel.claimReleaseTaskButtonTitle, for: .normal)
-        claimReleaseTaskButton.titleLabel?.numberOfLines = 1
-        claimReleaseTaskButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        claimReleaseTaskButton.titleLabel?.lineBreakMode = .byClipping
+        releaseTaskButton.setTitle(viewModel.claimReleaseTaskButtonTitle, for: .normal)
+        releaseTaskButton.titleLabel?.numberOfLines = 1
+        releaseTaskButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        releaseTaskButton.titleLabel?.lineBreakMode = .byClipping
     
-        let searchBarButtonItem = UIBarButtonItem(customView: claimReleaseTaskButton)
+        let searchBarButtonItem = UIBarButtonItem(customView: releaseTaskButton)
         searchBarButtonItem.accessibilityIdentifier = "barButton"
         let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
         currHeight?.isActive = true
         self.navigationItem.rightBarButtonItem = searchBarButtonItem
     }
 
-    @objc func claimReleaseTaskButtonAction() {
+    @objc func releaseTaskButtonAction() {
         viewModel.claimUnclaimTask { [weak self] error in
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.backAndRefreshAction(isRefreshList: true)
             }
         }
+    }
+    
+    @IBAction func claimTaskButtonAction(_ sender: Any) {
+        releaseTaskButtonAction()
     }
 }

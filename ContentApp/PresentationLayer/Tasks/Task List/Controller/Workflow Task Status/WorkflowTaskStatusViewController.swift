@@ -36,6 +36,8 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
