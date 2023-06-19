@@ -263,11 +263,6 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Workflow Task Variables
     private func getWorkflowTaskVariables() {
-//        refreshGroup.enter()
-//        viewModel.workflowTaskVariables { [weak self] error in
-//            guard let sSelf = self else { return }
-//            sSelf.refreshGroup.leave()
-//        }
         
         refreshGroup.enter()
         getTaskDetails()
