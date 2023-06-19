@@ -430,6 +430,6 @@
 "On Hold" = "In attesa";
 "Cancelled" = "Annullato";
 "Completed" = "Completato";
-"claim-title" = "Attestazione";
-"release-title" = "Rilasciare";
+"claim-title" = "Richiedi";
+"release-title" = "Rilascia";
 "created_date" = "Data di creazione";
