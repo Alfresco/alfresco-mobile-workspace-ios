@@ -349,6 +349,7 @@
 "Task Name" = "Taaknaam";
 "Active" = "Actief";
 "Completed" = "Voltooid";
+"Queued" = "In wachtrij";
 
 // MARK: - Task Operations
 "no-description" = "Geen beschrijving";
@@ -419,9 +420,9 @@
 "select-assignee" = "Selecteer toegewezen persoon";
 "start-date-title" = "Begindatum";
 "started-by" = "Gestart door";
+"please-select-status" = "Selecteer status";
 "Approve" = "Goedkeuren";
 "Reject" = "Afwijzen";
-"please-select-status" = "Selecteer status";
 "None" = "Geen";
 "Choose one..." = "Kies er een…";
 "Not Yet Started" = "Nog niet gestart";
@@ -429,4 +430,6 @@
 "On Hold" = "In de wacht";
 "Cancelled" = "Geannuleerd";
 "Completed" = "Voltooid";
+"claim-title" = "Claimen";
+"release-title" = "Vrijgeven";
 "created_date" = "Datum gemaakt";
