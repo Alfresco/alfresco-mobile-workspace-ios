@@ -79,50 +79,14 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     }
     
     var selectedOutcome: String?
-    var taskVariables = [TasksVariable]()
-    var isShowClaimTaskButton = false
-    var isShowReleaseTaskButton = false
-    var claimReleaseTaskButtonTitle: String? {
-        if isShowClaimTaskButton {
-            return LocalizationConstants.Workflows.claimTitle
-        } else if isShowReleaseTaskButton {
-            return LocalizationConstants.Workflows.releaseTitle
-        }
-        return nil
-    }
+    var taskNode: TaskNode?
     
-    // MARK: - Workflow Task Variables
-
-    func workflowTaskVariables(completionHandler: @escaping (_ error: Error?) -> Void) {
-        guard services?.connectivityService?.hasInternetConnection() == true else { return }
-        self.isLoading.value = true
-        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            TasksAPI.getTasksVariables(taskId: self.taskId) {[weak self] data, error in
-                guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
-                if data != nil {
-                    sSelf.taskVariables = data ?? []
-                    sSelf.checkForClaimOrReleaseTaskButton()
-                    completionHandler(nil)
-                } else {
-                    completionHandler(error)
-                }
-            }
-        })
-    }
-
-    func checkForClaimOrReleaseTaskButton() {
-        for variable in taskVariables {
-            let variableId = variable.id
-            if variableId == "reviewgroups" && assigneeUserId < 0 {
-                isShowClaimTaskButton = true
-                break
-            } else if variableId == "reviewgroups" && assigneeUserId > 0 {
-                isShowReleaseTaskButton = true
-                break
-            }
+    var isAllowedToEditStatus: Bool {
+        let apsUserID = UserProfile.apsUserID
+        if assigneeUserId == apsUserID {
+            return true
         }
+        return false
     }
     
     // MARK: - Workflow Task details
@@ -234,18 +198,12 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     
     // MARK: - Claim / Unclaim Task
 
-    func claimUnclaimTask(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func claimUnclaimTask(isClaim: Bool, completionHandler: @escaping (_ error: Error?) -> Void) {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            var isClaimTask = true
-            if self.isShowClaimTaskButton {
-                isClaimTask = true
-            } else if self.isShowReleaseTaskButton {
-                isClaimTask = false
-            }
-            TasksAPI.claimOrUnclaimTask(taskId: self.taskId, isClaimTask: isClaimTask) {[weak self] data, error in
+            TasksAPI.claimOrUnclaimTask(taskId: self.taskId, isClaimTask: isClaim) {[weak self] data, error in
                 guard let sSelf = self else { return }
                 sSelf.isLoading.value = false
                 if data != nil {
