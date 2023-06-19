@@ -353,6 +353,7 @@
 "Task Name" = "Nome compito";
 "Active" = "Attivo";
 "Completed" = "Completato";
+"Queued" = "In coda";
 
 // MARK: - Task Operations
 "no-description" = "Nessuna descrizione";
@@ -423,14 +424,16 @@
 "select-assignee" = "Selezionare assegnatario";
 "start-date-title" = "Data di inizio";
 "started-by" = "Avviato da";
+"please-select-status" = "Seleziona uno stato";
 "Approve" = "Approva";
 "Reject" = "Respingi";
-"please-select-status" = "Seleziona uno stato";
 "None" = "Nessuno";
-"Choose one..." = "Scegli";
+"Choose one..." = "Scegli…";
 "Not Yet Started" = "Non ancora avviato";
-"In Progress" = "In corso";
+"In Progress" = "In corso";
 "On Hold" = "In attesa";
 "Cancelled" = "Annullato";
 "Completed" = "Completato";
+"claim-title" = "Attestazione";
+"release-title" = "Rilasciare";
 "created_date" = "Data di creazione";
