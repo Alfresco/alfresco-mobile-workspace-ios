@@ -33,7 +33,8 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     var releaseTaskButton = UIButton(type: .custom)
     var viewModel: WflowTaskDetailViewModel { return controller.viewModel }
     lazy var controller: WflowTaskDetailController = { return WflowTaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
-    
+    let refreshGroup = DispatchGroup()
+
     // MARK: - View Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +42,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
-        showOutputButtonsView(isShow: false)
+        hideAllButtons()
         progressView.isAccessibilityElement = false
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -51,6 +52,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         addAccessibility()
         setupBindings()
         getWorkflowTaskVariables()
+        addReleaseTaskButton()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowTaskDetailScreen)
         
         // ReSignIn Notification
@@ -89,7 +91,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         let titleTwo = NSLocalizedString(viewModel.outcomeTitleTwo ?? "", comment: "")
         outputButtonOptionOne.setTitle(titleOne, for: .normal)
         outputButtonOptionTwo.setTitle(titleTwo, for: .normal)
-        claimTaskButton.setTitle(viewModel.claimReleaseTaskButtonTitle, for: .normal)
+        claimTaskButton.setTitle(LocalizationConstants.Workflows.claimTitle, for: .normal)
     }
     
     func registerCells() {
@@ -261,13 +263,33 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Workflow Task Variables
     private func getWorkflowTaskVariables() {
+//        refreshGroup.enter()
+//        viewModel.workflowTaskVariables { [weak self] error in
+//            guard let sSelf = self else { return }
+//            sSelf.refreshGroup.leave()
+//        }
         
-        viewModel.workflowTaskVariables { [weak self] error in
+        refreshGroup.enter()
+        getTaskDetails()
+
+        refreshGroup.enter()
+        getWorkflowTaskDetails()
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.updateUIComponents()
+        }
+    }
+    
+    // MARK: - Task details
+    private func getTaskDetails() {
+        let taskID = viewModel.taskID
+        viewModel.taskDetails(with: taskID) { [weak self] taskNodes, error in
             guard let sSelf = self else { return }
             if error == nil {
-                sSelf.addClaimReleaseTaskButton()
-                sSelf.getWorkflowTaskDetails()
+                sSelf.viewModel.taskNode = taskNodes
             }
+            sSelf.refreshGroup.leave()
         }
     }
     
@@ -276,17 +298,66 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         
         viewModel.workflowTaskDetails { [weak self] error in
             guard let sSelf = self else { return }
-            if error == nil {
-                sSelf.applyLocalization()
-                sSelf.controller.buildViewModel()
-                sSelf.viewModel.selectedStatus = sSelf.viewModel.getSelectedStatus()
-                if !sSelf.viewModel.isTaskCompleted {
-                    sSelf.showOutputButtonsView(isShow: true)
-                }
+            sSelf.refreshGroup.leave()
+        }
+    }
+    
+    // MARK: - Update UI components
+    private func updateUIComponents() {
+        DispatchQueue.main.async {
+            self.applyLocalization()
+            self.controller.buildViewModel()
+            self.viewModel.selectedStatus = self.viewModel.getSelectedStatus()
+            self.showOutputButtonsView()
+        }
+    }
+    
+    private func hideAllButtons() {
+        buttonsBaseView.isHidden = true
+        heightOutputView.constant = 0
+        claimTaskView.isHidden = true
+        releaseTaskButton.isHidden = true
+    }
+    
+    private func showOutputButtonsView() {
+        if viewModel.isTaskCompleted {
+            hideAllButtons()
+            return
+        }
+        
+        let processInstanceStartUserId = Int(viewModel.taskNode?.processInstanceStartUserId ?? "") ?? 0
+        let assigneeUserId = viewModel.assigneeUserId
+        let apsUserID = UserProfile.apsUserID
+        let memberOfCandidateGroup = viewModel.taskNode?.memberOfCandidateGroup ?? false
+
+        if !memberOfCandidateGroup { // single reviewer task
+            if assigneeUserId == apsUserID || processInstanceStartUserId == apsUserID {
+                claimTaskView.isHidden = true
+                releaseTaskButton.isHidden = true
+                buttonsBaseView.isHidden = false
+                heightOutputView.constant = 48
+            } else {
+                hideAllButtons()
+            }
+        } else {
+            
+            if assigneeUserId < 0 { // task not claimed
+                claimTaskView.isHidden = false
+                releaseTaskButton.isHidden = true
+                buttonsBaseView.isHidden = true
+                heightOutputView.constant = 0
+            } else if assigneeUserId == apsUserID { // task is claimed by me. show release button
+                releaseTaskButton.isHidden = false
+                claimTaskView.isHidden = true
+                buttonsBaseView.isHidden = false
+                heightOutputView.constant = 48
+            } else {
+                hideAllButtons()
             }
         }
     }
     
+    // MARK: - task description
     private func showTaskDescription() {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDescription) as? TaskDescriptionDetailViewController {
@@ -298,6 +369,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         }
     }
     
+    // MARK: - view all attachments
     private func viewAllAttachments() {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
@@ -329,7 +401,7 @@ class WflowTaskDetailViewController: SystemSearchViewController {
             viewController.viewModel.workflowStatus = viewModel.workflowStatus
             viewController.viewModel.taskId = viewModel.taskId
             viewController.viewModel.comment = viewModel.comment
-            viewController.viewModel.isTaskCompleted = viewModel.isTaskCompleted
+            viewController.viewModel.isAllowedToEditStatus = viewModel.isAllowedToEditStatus
             viewController.viewModel.workflowStatusOptions = viewModel.workflowStatusOptions
             viewController.viewModel.selectedWorkflowStatusOption = RadioListOptions(optionId: viewModel.workflowStatus, name: viewModel.workflowStatus)
             self.navigationController?.pushViewController(viewController, animated: true)
@@ -340,29 +412,6 @@ class WflowTaskDetailViewController: SystemSearchViewController {
                 sSelf.viewModel.comment = comment
                 sSelf.controller.buildViewModel()
             }
-        }
-    }
-    
-    private func showOutputButtonsView(isShow: Bool) {
-        if viewModel.isShowClaimTaskButton == true && viewModel.isShowReleaseTaskButton == false {
-            buttonsBaseView.isHidden = true
-            heightOutputView.constant = 0
-            claimTaskView.isHidden = false
-            releaseTaskButton.isHidden = true
-        } else if viewModel.isShowClaimTaskButton == false && viewModel.isShowReleaseTaskButton == true {
-            buttonsBaseView.isHidden = false
-            heightOutputView.constant = 48
-            releaseTaskButton.isHidden = false
-            claimTaskView.isHidden = true
-        } else if isShow {
-            buttonsBaseView.isHidden = false
-            heightOutputView.constant = 48
-            claimTaskView.isHidden = true
-        } else {
-            buttonsBaseView.isHidden = true
-            releaseTaskButton.isHidden = true
-            claimTaskView.isHidden = true
-            heightOutputView.constant = 0
         }
     }
 }
@@ -417,16 +466,17 @@ extension WflowTaskDetailViewController: UITableViewDelegate, UITableViewDataSou
 // MARK: - Claim or Release Task Button
 extension WflowTaskDetailViewController {
     
-    private func addClaimReleaseTaskButton() {
+    private func addReleaseTaskButton() {
         releaseTaskButton.accessibilityIdentifier = "release-task-button"
         releaseTaskButton.frame = CGRect(x: 0.0, y: 0.0, width: 100.0, height: 30.0)
         releaseTaskButton.addTarget(self,
                                action: #selector(releaseTaskButtonAction),
                                for: UIControl.Event.touchUpInside)
-        releaseTaskButton.setTitle(viewModel.claimReleaseTaskButtonTitle, for: .normal)
+        releaseTaskButton.setTitle(LocalizationConstants.Workflows.releaseTitle, for: .normal)
         releaseTaskButton.titleLabel?.numberOfLines = 1
         releaseTaskButton.titleLabel?.adjustsFontSizeToFitWidth = true
         releaseTaskButton.titleLabel?.lineBreakMode = .byClipping
+        releaseTaskButton.isHidden = true
     
         let searchBarButtonItem = UIBarButtonItem(customView: releaseTaskButton)
         searchBarButtonItem.accessibilityIdentifier = "barButton"
@@ -436,7 +486,7 @@ extension WflowTaskDetailViewController {
     }
 
     @objc func releaseTaskButtonAction() {
-        viewModel.claimUnclaimTask { [weak self] error in
+        viewModel.claimUnclaimTask(isClaim: false) { [weak self] error in
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.backAndRefreshAction(isRefreshList: true)
@@ -445,6 +495,11 @@ extension WflowTaskDetailViewController {
     }
     
     @IBAction func claimTaskButtonAction(_ sender: Any) {
-        releaseTaskButtonAction()
+        viewModel.claimUnclaimTask(isClaim: true) { [weak self] error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.backAndRefreshAction(isRefreshList: true)
+            }
+        }
     }
 }

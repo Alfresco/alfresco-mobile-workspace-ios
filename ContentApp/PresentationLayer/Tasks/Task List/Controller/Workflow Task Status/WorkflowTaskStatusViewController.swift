@@ -53,9 +53,15 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
     }
     
     private func setupData() {
-        saveButton.isHidden = viewModel.isTaskCompleted
-        selectStatusButton.isUserInteractionEnabled = !viewModel.isTaskCompleted
-        commentField.isUserInteractionEnabled = !viewModel.isTaskCompleted
+        if viewModel.isAllowedToEditStatus {
+            saveButton.isHidden = false
+            selectStatusButton.isUserInteractionEnabled = true
+            commentField.isUserInteractionEnabled = true
+        } else {
+            saveButton.isHidden = true
+            selectStatusButton.isUserInteractionEnabled = false
+            commentField.isUserInteractionEnabled = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
