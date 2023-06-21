@@ -26,8 +26,10 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var priorityLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var editImageView: UIImageView!
+    @IBOutlet weak var leadingPriorityLabel: NSLayoutConstraint!
     var viewModel: PriorityTableCellViewModel?
 
+    // MARK: - Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
         priorityView.layer.cornerRadius = priorityView.frame.size.height / 2.0
@@ -55,6 +57,9 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
         titleLabel.text = viewModel.title
         editImageView.isHidden = viewModel.isHideEditImage
         addAccessibility()
+        if viewModel.isEmptyValue {
+            leadingPriorityLabel.constant = 0
+        }
     }
     
     private func addAccessibility() {

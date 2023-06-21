@@ -329,8 +329,10 @@ class WflowTaskDetailViewController: SystemSearchViewController {
             if assigneeUserId == apsUserID || processInstanceStartUserId == apsUserID {
                 claimTaskView.isHidden = true
                 releaseTaskButton.isHidden = true
-                buttonsBaseView.isHidden = false
-                heightOutputView.constant = 48
+                if !viewModel.outcomes.isEmpty {
+                    buttonsBaseView.isHidden = false
+                    heightOutputView.constant = 48
+                }
             } else {
                 hideAllButtons()
             }
@@ -344,8 +346,10 @@ class WflowTaskDetailViewController: SystemSearchViewController {
             } else if assigneeUserId == apsUserID { // task is claimed by me. show release button
                 releaseTaskButton.isHidden = false
                 claimTaskView.isHidden = true
-                buttonsBaseView.isHidden = false
-                heightOutputView.constant = 48
+                if !viewModel.outcomes.isEmpty {
+                    buttonsBaseView.isHidden = false
+                    heightOutputView.constant = 48
+                }
             } else {
                 hideAllButtons()
             }

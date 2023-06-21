@@ -129,6 +129,17 @@ class WflowTaskDetailController: NSObject {
                                                    priorityBackgroundColor: backgroundColor,
                                                    isEditMode: false)
             return rowVM
+        } else  if let currentTheme = self.currentTheme {
+            let textColor = currentTheme.onSurfaceColor
+            let backgroundColor = currentTheme.surfaceColor
+            
+            let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
+                                                   priority: LocalizationConstants.Workflows.noneTitle,
+                                                   priorityTextColor: textColor,
+                                                   priorityBackgroundColor: backgroundColor,
+                                                   isEditMode: false,
+                                                   isEmptyValue: true)
+            return rowVM
         }
         return nil
     }
