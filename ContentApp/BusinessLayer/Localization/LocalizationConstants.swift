@@ -416,5 +416,6 @@ struct LocalizationConstants {
         static let claimTitle = NSLocalizedString("claim-title", comment: "")
         static let releaseTitle = NSLocalizedString("release-title", comment: "")
         static let createdDate = NSLocalizedString("created_date", comment: "")
+        static let noneTitle = NSLocalizedString("None", comment: "")
     }
 }
