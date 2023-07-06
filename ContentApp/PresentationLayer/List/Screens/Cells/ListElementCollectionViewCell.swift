@@ -21,6 +21,9 @@ import UIKit
 protocol ListElementCollectionViewCellDelegate: AnyObject {
     func moreButtonTapped(for element: ListNode?,
                           in cell: ListElementCollectionViewCell)
+    
+    func longTapGestureActivated(for element: ListNode?,
+                                 in cell: ListElementCollectionViewCell)
 }
 
 class ListElementCollectionViewCell: ListSelectableCell {
@@ -36,6 +39,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         disableView.isAccessibilityElement = false
+        addLongTapGesture()
     }
 
     var node: ListNode? {
@@ -191,6 +195,23 @@ class ListElementCollectionViewCell: ListSelectableCell {
         
         if syncStatusImageView != nil && !syncStatusImageView.isHidden {
             self.accessibilityElements?.append(syncStatusImageView!)
+        }
+    }
+}
+
+// MARK: - Tap Gesture and Long Tap Gesture
+extension ListElementCollectionViewCell {
+    
+    private func addLongTapGesture() {
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+        longPressRecognizer.minimumPressDuration = 0.5
+        longPressRecognizer.delaysTouchesBegan = true
+        self.addGestureRecognizer(longPressRecognizer)
+    }
+    
+    @objc func longPressed(gestureReconizer: UILongPressGestureRecognizer) {
+        if gestureReconizer.state == UIGestureRecognizer.State.began {
+            delegate?.longTapGestureActivated(for: node, in: self)
         }
     }
 }
