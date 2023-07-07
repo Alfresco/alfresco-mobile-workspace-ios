@@ -56,6 +56,7 @@ class ListComponentViewController: SystemThemableViewController {
     var destinationNodeToMove: ListNode?
     var sourceNodeToMove: ListNode?
     var navigationViewController: UINavigationController?
+    var selectedMultipleItems = [ListNode]()
 
     // MARK: - View Life Cycle
     
@@ -299,6 +300,12 @@ class ListComponentViewController: SystemThemableViewController {
                     }.onSelect { [weak self] context in
                         guard let sSelf = self else { return }
                         if let node = model.listNode(for: context.indexPath) {
+                            
+                            if !sSelf.selectedMultipleItems.isEmpty {
+                                sSelf.handleAddRemoveNodeList(node: node)
+                                return
+                            }
+                            
                             if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
                             if node.trashed == false {
                                 if sSelf.isNavigationAllowed(for: node) {
@@ -397,6 +404,15 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
                                                            from: model,
                                                            delegate: self)
     }
+    
+    func longTapGestureActivated(for element: ListNode?, in cell: ListElementCollectionViewCell) {
+        if selectedMultipleItems.isEmpty {
+            guard let node = element else { return }
+            handleAddRemoveNodeList(node: node)
+            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
+            createButton.isHidden = true
+        }
+    }    
 }
 
 // MARK: - PageFetchableDelegate
@@ -540,6 +556,34 @@ extension ListComponentViewController {
         if let listItemActionDelegate = listItemActionDelegate {
             listItemActionDelegate.showUploadingFiles()
         }
+    }
+}
+
+// MARK: - Multi selection of files and folders
+
+extension ListComponentViewController {
+    private func handleAddRemoveNodeList(node: ListNode) {
+        if selectedMultipleItems.contains(node) {
+            if let index = selectedMultipleItems.firstIndex(where: {$0 == node}) {
+                selectedMultipleItems.remove(at: index)
+            }
+        } else {
+            selectedMultipleItems.append(node)
+        }
+        
+        showElementsCount()
+        if selectedMultipleItems.isEmpty {
+            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: true)
+            createButton.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
+        }
+    }
+    
+    func showElementsCount() {
+        Snackbar.display(with: "Selected Items: \(selectedMultipleItems.count)",
+                         type: .error,
+                         automaticallyDismisses: true,
+                         presentationHostViewOverride: appDelegate()?.window,
+                         finish: nil)
     }
 }
 

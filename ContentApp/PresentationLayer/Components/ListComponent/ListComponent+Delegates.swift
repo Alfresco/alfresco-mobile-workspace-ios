@@ -38,6 +38,9 @@ protocol ListItemActionDelegate: AnyObject {
                         actionMenu: ActionMenu)
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?)
+    func showActionSheetForMultiSelectListItem(for node: ListNode,
+                                               from model: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate)
 }
 
 protocol ListComponentActionDelegate: AnyObject {
@@ -48,6 +51,7 @@ protocol ListComponentActionDelegate: AnyObject {
                        source: Node?)
 
     func performListAction()
+    func enabledLongTapGestureForMultiSelection(isShowTabbar: Bool)
 }
 
 extension ListItemActionDelegate {

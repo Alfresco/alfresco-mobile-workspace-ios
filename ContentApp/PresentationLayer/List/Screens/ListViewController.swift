@@ -130,6 +130,11 @@ extension ListViewController: ListComponentActionDelegate {
     func performListAction() {
         viewModel?.performListAction()
     }
+    
+    func enabledLongTapGestureForMultiSelection(isShowTabbar: Bool) {
+        guard let navigationController = self.navigationController else { return }
+        self.tabBarController?.setTabBarHidden(!isShowTabbar, navigationController: navigationController)
+    }
 }
 
 extension ListViewController: OpenNodeDelegate {

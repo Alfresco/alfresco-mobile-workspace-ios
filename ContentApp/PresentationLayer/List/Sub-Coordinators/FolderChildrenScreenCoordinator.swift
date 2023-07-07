@@ -104,6 +104,12 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
 
+    func showActionSheetForMultiSelectListItem(for node: ListNode,
+                                               from model: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
+        print("showActionSheetForMultiSelectListItem")
+    }
+    
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
         let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,

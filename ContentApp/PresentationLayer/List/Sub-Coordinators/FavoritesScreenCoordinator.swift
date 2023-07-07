@@ -112,6 +112,12 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         }
     }
     
+    func showActionSheetForMultiSelectListItem(for node: ListNode,
+                                               from model: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
+        print("showActionSheetForMultiSelectListItem")
+    }
+    
     func moveNodeTapped(for sourceNode: ListNode,
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,

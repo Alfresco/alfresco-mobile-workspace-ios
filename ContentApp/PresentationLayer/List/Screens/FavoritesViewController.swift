@@ -37,6 +37,8 @@ class FavoritesViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
+    // MARK: - View Life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -295,6 +297,11 @@ extension FavoritesViewController: ListComponentActionDelegate {
         } else if listComponentViewController == librariesViewController {
             librariesViewController?.stopLoading()
         }
+    }
+    
+    func enabledLongTapGestureForMultiSelection(isShowTabbar: Bool) {
+        guard let navigationController = self.navigationController else { return }
+        self.tabBarController?.setTabBarHidden(!isShowTabbar, navigationController: navigationController)
     }
 }
 

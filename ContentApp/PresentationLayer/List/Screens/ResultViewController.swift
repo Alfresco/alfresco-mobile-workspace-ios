@@ -566,6 +566,11 @@ extension ResultViewController: ListComponentActionDelegate {
     func performListAction() {
         // Do nothing
     }
+    
+    func enabledLongTapGestureForMultiSelection(isShowTabbar: Bool) {
+        guard let navigationController = self.navigationController else { return }
+        self.tabBarController?.setTabBarHidden(!isShowTabbar, navigationController: navigationController)
+    }
 }
 
 // MARK: - Advance Search Components
