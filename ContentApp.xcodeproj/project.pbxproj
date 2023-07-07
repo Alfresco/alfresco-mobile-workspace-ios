@@ -32,6 +32,7 @@
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
 		4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */; };
 		47B61B9E29DAB64400EA0598 /* WorkflowAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */; };
+		47CA839F2A57D8990081A000 /* UITabBarController+HideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA839E2A57D8990081A000 /* UITabBarController+HideShow.swift */; };
 		47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */; };
 		47DB20B52A35AB9F00B13586 /* RadioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */; };
 		47DB20B72A35ABAF00B13586 /* RadioListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B62A35ABAF00B13586 /* RadioListController.swift */; };
@@ -818,6 +819,7 @@
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
 		4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewModel.swift; sourceTree = "<group>"; };
 		47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowAttachmentOperations.swift; sourceTree = "<group>"; };
+		47CA839E2A57D8990081A000 /* UITabBarController+HideShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+HideShow.swift"; sourceTree = "<group>"; };
 		47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowModel.swift; sourceTree = "<group>"; };
 		47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListViewController.swift; sourceTree = "<group>"; };
 		47DB20B62A35ABAF00B13586 /* RadioListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListController.swift; sourceTree = "<group>"; };
@@ -3341,6 +3343,7 @@
 				B97D373825545FF900CD1523 /* UIView */,
 				B97D373C2554603100CD1523 /* UITextView */,
 				E3436F86250B8C4A00634C62 /* AVPlayer+Playing.swift */,
+				47CA839E2A57D8990081A000 /* UITabBarController+HideShow.swift */,
 				E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */,
 				B99E1C46247FA77300116F05 /* CALayer+Animations.swift */,
 				B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */,
@@ -4689,6 +4692,7 @@
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				E3E2BDA824CC2B3D00D8A7EC /* DeleteNodeMapper.swift in Sources */,
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,
+				47CA839F2A57D8990081A000 /* UITabBarController+HideShow.swift in Sources */,
 				B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */,
 				47F5A6E329DE7FED00073D7F /* WorkflowListCollectionViewCell.swift in Sources */,
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,

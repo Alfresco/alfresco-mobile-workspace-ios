@@ -410,6 +410,7 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
             guard let node = element else { return }
             handleAddRemoveNodeList(node: node)
             listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
+            createButton.isHidden = true
         }
     }    
 }
@@ -570,17 +571,17 @@ extension ListComponentViewController {
             selectedMultipleItems.append(node)
         }
         
-        print("List: \(selectedMultipleItems)")
         showElementsCount()
         if selectedMultipleItems.isEmpty {
             listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: true)
+            createButton.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
         }
     }
     
     func showElementsCount() {
         Snackbar.display(with: "Selected Items: \(selectedMultipleItems.count)",
                          type: .error,
-                         automaticallyDismisses: false,
+                         automaticallyDismisses: true,
                          presentationHostViewOverride: appDelegate()?.window,
                          finish: nil)
     }

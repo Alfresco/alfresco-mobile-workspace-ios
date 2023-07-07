@@ -301,29 +301,7 @@ extension FavoritesViewController: ListComponentActionDelegate {
     
     func enabledLongTapGestureForMultiSelection(isShowTabbar: Bool) {
         guard let navigationController = self.navigationController else { return }
-
-        if isShowTabbar {
-            self.tabBarController?.tabBar.isHidden = false
-            self.tabBarController?.view.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight)
-
-            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut) {
-                if let tabBarFrame = self.tabBarController?.tabBar.frame {
-                    self.tabBarController?.tabBar.frame.origin.y = navigationController.view.frame.maxY - tabBarFrame.height
-                }
-                navigationController.view.layoutIfNeeded()
-            }
-        } else {
-            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut) {
-                if let tabBarFrame = self.tabBarController?.tabBar.frame {
-                    self.tabBarController?.tabBar.frame.origin.y = navigationController.view.frame.maxY + tabBarFrame.height
-                }
-                navigationController.view.layoutIfNeeded()
-            } completion: { _ in
-                self.tabBarController?.tabBar.isHidden = true
-                let tabbarHeight = self.tabBarController?.tabBar.frame.size.height ?? 0.0
-                self.tabBarController?.view.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight + tabbarHeight)
-            }
-        }
+        self.tabBarController?.setTabBarHidden(!isShowTabbar, navigationController: navigationController)
     }
 }
 
