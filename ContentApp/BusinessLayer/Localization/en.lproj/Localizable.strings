@@ -435,4 +435,4 @@
 "created_date" = "Created Date";
 
 // MARK: - Multiple selections
-"multiple-selected-items-count" = "%d Item(s)";
+"multiple-selected-items-count" = "%d Selected";
