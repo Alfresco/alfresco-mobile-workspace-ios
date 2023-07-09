@@ -79,9 +79,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.dataSource = dataSource
         collectionView.delegate = dataSource
         collectionView.pageDelegate = self
-        
-        
-        
+                
         emptyListView.isHidden = true
         createButton.isHidden = !viewModel.shouldDisplayCreateButton()
         listActionButton.isHidden = !viewModel.shouldDisplayListActionButton()
@@ -565,7 +563,7 @@ extension ListComponentViewController {
 // MARK: - Multi selection of files and folders
 
 extension ListComponentViewController {
-    private func handleAddRemoveNodeList(node: ListNode) {
+    func handleAddRemoveNodeList(node: ListNode) {
         if selectedMultipleItems.contains(node) {
             if let index = selectedMultipleItems.firstIndex(where: {$0 == node}) {
                 selectedMultipleItems.remove(at: index)
@@ -611,7 +609,7 @@ extension ListComponentViewController {
     
     private func resetMultipleSelectionView() {
         listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: true)
-        createButton.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
+        createButton?.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
         hideMultipleSelectionHeader()
     }
 }

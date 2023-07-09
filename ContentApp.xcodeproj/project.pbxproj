@@ -35,6 +35,7 @@
 		47CA839F2A57D8990081A000 /* UITabBarController+HideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA839E2A57D8990081A000 /* UITabBarController+HideShow.swift */; };
 		47CA83A22A57F15C0081A000 /* MultipleSelectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47CA83A12A57F15C0081A000 /* MultipleSelectionHeaderView.xib */; };
 		47CA83A42A57F16A0081A000 /* MultipleSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA83A32A57F16A0081A000 /* MultipleSelectionHeaderView.swift */; };
+		47CA83A62A5AAD020081A000 /* TestMultipleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA83A52A5AAD020081A000 /* TestMultipleSelectionView.swift */; };
 		47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */; };
 		47DB20B52A35AB9F00B13586 /* RadioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */; };
 		47DB20B72A35ABAF00B13586 /* RadioListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B62A35ABAF00B13586 /* RadioListController.swift */; };
@@ -824,6 +825,7 @@
 		47CA839E2A57D8990081A000 /* UITabBarController+HideShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+HideShow.swift"; sourceTree = "<group>"; };
 		47CA83A12A57F15C0081A000 /* MultipleSelectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultipleSelectionHeaderView.xib; sourceTree = "<group>"; };
 		47CA83A32A57F16A0081A000 /* MultipleSelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionHeaderView.swift; sourceTree = "<group>"; };
+		47CA83A52A5AAD020081A000 /* TestMultipleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMultipleSelectionView.swift; sourceTree = "<group>"; };
 		47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowModel.swift; sourceTree = "<group>"; };
 		47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListViewController.swift; sourceTree = "<group>"; };
 		47DB20B62A35ABAF00B13586 /* RadioListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListController.swift; sourceTree = "<group>"; };
@@ -3028,6 +3030,7 @@
 				C92E2ED429A60BC500DAFD4B /* TestModelNotifications.swift */,
 				47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */,
 				47741B262A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift */,
+				47CA83A52A5AAD020081A000 /* TestMultipleSelectionView.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -4789,6 +4792,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47741B272A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift in Sources */,
+				47CA83A62A5AAD020081A000 /* TestMultipleSelectionView.swift in Sources */,
 				C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */,
 				C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */,
 				C9AEE042270D9D5D00880235 /* TestSearchViewModel.swift in Sources */,
