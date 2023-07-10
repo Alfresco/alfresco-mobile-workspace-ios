@@ -69,4 +69,5 @@ struct DefaultTheme: PresentationTheme {
     var taskSuccessTextColor = UIColor(hex: "#003A02")
     var neutral95Color = UIColor(hex: "#EFF1F1")
     var onSurface12TextColor = UIColor(hex: "#262626")
+    var primary24T1Color = UIColor(hex: "#1F74DB", alpha: 0.24)
 }

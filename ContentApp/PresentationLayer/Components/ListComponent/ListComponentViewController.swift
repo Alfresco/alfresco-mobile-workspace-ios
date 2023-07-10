@@ -413,6 +413,7 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
             handleAddRemoveNodeList(node: node)
             listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
             createButton.isHidden = true
+            listActionButton.isHidden = true
             showMultiSelectionHeader()
             collectionView.reloadData()
         }
@@ -442,7 +443,12 @@ extension ListComponentViewController: ListPageControllerDelegate {
             return
         }
         
-        listActionButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
+        let isMultipleFileSelectionEnabled = viewModel?.isMultipleFileSelectionEnabled ?? false
+        if isMultipleFileSelectionEnabled {
+            listActionButton.isHidden = true
+        } else {
+            listActionButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
+        }
         moveFilesBottomView.isHidden = (viewModel?.shouldHideMoveItemView() ?? true)
 
         let isListEmpty = model.isEmpty()
@@ -616,6 +622,7 @@ extension ListComponentViewController {
     private func resetMultipleSelectionView() {
         listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: true)
         createButton?.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
+        listActionButton?.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? true)
         hideMultipleSelectionHeader()
         viewModel?.isMultipleFileSelectionEnabled = false
         collectionView.reloadData()

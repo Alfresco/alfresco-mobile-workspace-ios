@@ -80,7 +80,6 @@ class ListElementCollectionViewCell: ListSelectableCell {
         subtitle.lineBreakMode = .byTruncatingHead
         iconImageView.tintColor = currentTheme.onSurface70Color
         moreButton.tintColor = currentTheme.onSurface70Color
-        checkBoxImageView.backgroundColor = backgroundColor
         checkBoxImageView.image = UIImage(named: "ic-checkbox-unchecked")
         syncStatusImageView.tintColor = currentTheme.onSurface70Color
         disableFiles(isDisable: isDisable)
@@ -209,7 +208,7 @@ extension ListElementCollectionViewCell {
     
     private func addLongTapGesture() {
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
-        longPressRecognizer.minimumPressDuration = 0.5
+        longPressRecognizer.minimumPressDuration = 0.3
         longPressRecognizer.delaysTouchesBegan = true
         self.addGestureRecognizer(longPressRecognizer)
     }
@@ -230,6 +229,7 @@ extension ListElementCollectionViewCell {
             moreButton.isHidden = true
             checkBoxImageView.isHidden = false
         } else {
+            backgroundColor = self.currentTheme?.surfaceColor
             moreButton.isHidden = false
             checkBoxImageView.isHidden = true
         }
@@ -238,8 +238,10 @@ extension ListElementCollectionViewCell {
     func setMultipleSelectedItem(for nodes: [ListNode], tappedNode: ListNode?) {
         guard let tappedNode = tappedNode else { return }
         if nodes.contains(tappedNode) {
+            backgroundColor = self.currentTheme?.primary24T1Color
             checkBoxImageView.image = UIImage(named: "ic-checkbox-checked")
         } else {
+            backgroundColor = self.currentTheme?.surfaceColor
             checkBoxImageView.image = UIImage(named: "ic-checkbox-unchecked")
         }
     }

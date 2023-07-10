@@ -33,7 +33,7 @@ extension UITabBarController {
                 navigationController.view.layoutIfNeeded()
             }
         } else {
-            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut) {
+            UIView.animate(withDuration: 0.0, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut) {
                 let tabBarFrame = self.tabBar.frame
                 self.tabBar.frame.origin.y = navigationController.view.frame.maxY + tabBarFrame.height
                 navigationController.view.layoutIfNeeded()

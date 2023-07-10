@@ -28,6 +28,7 @@ protocol ResultViewControllerDelegate: AnyObject {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
+    func enabledLongTapGesture(isShowTabbar: Bool)
 }
 
 class ResultViewController: SystemThemableViewController {
@@ -48,7 +49,7 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var categoryNameButton: UIButton!
     
     lazy var dropDown = DropDown()
-    private var presenter: UINavigationController?
+    var presenter: UINavigationController?
     var resultsListController: ListComponentViewController?
     var pageController: ListPageController?
     var resultsViewModel: SearchViewModel?
@@ -568,8 +569,7 @@ extension ResultViewController: ListComponentActionDelegate {
     }
     
     func enabledLongTapGestureForMultiSelection(isShowTabbar: Bool) {
-        guard let navigationController = self.navigationController else { return }
-        self.tabBarController?.setTabBarHidden(!isShowTabbar, navigationController: navigationController)
+        resultScreenDelegate?.enabledLongTapGesture(isShowTabbar: isShowTabbar)
     }
 }
 
