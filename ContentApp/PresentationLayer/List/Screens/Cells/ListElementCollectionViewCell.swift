@@ -33,9 +33,10 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var syncStatusImageView: UIImageView!
     @IBOutlet weak var disableView: UIView!
+    @IBOutlet weak var checkBoxImageView: UIImageView!
     weak var delegate: ListElementCollectionViewCellDelegate?
     var currentTheme: PresentationTheme?
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         disableView.isAccessibilityElement = false
@@ -79,6 +80,8 @@ class ListElementCollectionViewCell: ListSelectableCell {
         subtitle.lineBreakMode = .byTruncatingHead
         iconImageView.tintColor = currentTheme.onSurface70Color
         moreButton.tintColor = currentTheme.onSurface70Color
+        checkBoxImageView.backgroundColor = backgroundColor
+        checkBoxImageView.image = UIImage(named: "ic-checkbox-unchecked")
         syncStatusImageView.tintColor = currentTheme.onSurface70Color
         disableFiles(isDisable: isDisable)
     }
@@ -93,11 +96,13 @@ class ListElementCollectionViewCell: ListSelectableCell {
             self.isUserInteractionEnabled = false
             disableView.backgroundColor = currentTheme.surface60Color
             disableView.alpha = 1
+            checkBoxImageView.isHidden = true
         }
     }
     
     func disableFilesToMove(_ currentTheme: PresentationTheme?, node: ListNode?) {
         guard let currentTheme = currentTheme else { return }
+        checkBoxImageView.isHidden = true
         if node?.nodeType != .folder {
             self.isUserInteractionEnabled = false
             disableView.backgroundColor = currentTheme.surface60Color
@@ -212,6 +217,30 @@ extension ListElementCollectionViewCell {
     @objc func longPressed(gestureReconizer: UILongPressGestureRecognizer) {
         if gestureReconizer.state == UIGestureRecognizer.State.began {
             delegate?.longTapGestureActivated(for: node, in: self)
+        }
+    }
+}
+
+// MARK: - Multiple file selection
+extension ListElementCollectionViewCell {
+    
+    func setMultipleFileSelection(isMultipleFileSelectionEnabled: Bool) {
+        let isMoveFilesAndFolderFlow = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+        if isMultipleFileSelectionEnabled && !isMoveFilesAndFolderFlow {
+            moreButton.isHidden = true
+            checkBoxImageView.isHidden = false
+        } else {
+            moreButton.isHidden = false
+            checkBoxImageView.isHidden = true
+        }
+    }
+    
+    func setMultipleSelectedItem(for nodes: [ListNode], tappedNode: ListNode?) {
+        guard let tappedNode = tappedNode else { return }
+        if nodes.contains(tappedNode) {
+            checkBoxImageView.image = UIImage(named: "ic-checkbox-checked")
+        } else {
+            checkBoxImageView.image = UIImage(named: "ic-checkbox-unchecked")
         }
     }
 }
