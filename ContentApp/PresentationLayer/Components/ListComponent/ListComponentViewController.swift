@@ -600,7 +600,7 @@ extension ListComponentViewController {
         }
     }
     
-    private func showElementsCount() {
+    func showElementsCount() {
         if let navBar = self.navigationViewController?.navigationBar, let multipleSelectionHeader = navBar.viewWithTag(4949) {
             let itemsCount = String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, selectedMultipleItems.count)
             (multipleSelectionHeader as? MultipleSelectionHeaderView)?.updateTitle(text: itemsCount)

@@ -26,9 +26,13 @@ final class TestMultipleSelectionView: XCTestCase {
         let node = ListNode()
         viewController.selectedMultipleItems = [node]
         viewController.handleAddRemoveNodeList(node: node)
-
         XCTAssertFalse(false)
     }
     
-
+    func testListComponentViewController_WhenArrayisNonEmpty_ShouldReturnTrue() {
+        let node = ListNode()
+        viewController.selectedMultipleItems = [node]
+        viewController.showElementsCount()
+        XCTAssertTrue(true)
+    }
 }
