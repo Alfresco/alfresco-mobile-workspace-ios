@@ -79,7 +79,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.dataSource = dataSource
         collectionView.delegate = dataSource
         collectionView.pageDelegate = self
-        
+                
         emptyListView.isHidden = true
         createButton.isHidden = !viewModel.shouldDisplayCreateButton()
         listActionButton.isHidden = !viewModel.shouldDisplayListActionButton()
@@ -411,6 +411,7 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
             handleAddRemoveNodeList(node: node)
             listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
             createButton.isHidden = true
+            showMultiSelectionHeader()
         }
     }    
 }
@@ -562,7 +563,7 @@ extension ListComponentViewController {
 // MARK: - Multi selection of files and folders
 
 extension ListComponentViewController {
-    private func handleAddRemoveNodeList(node: ListNode) {
+    func handleAddRemoveNodeList(node: ListNode) {
         if selectedMultipleItems.contains(node) {
             if let index = selectedMultipleItems.firstIndex(where: {$0 == node}) {
                 selectedMultipleItems.remove(at: index)
@@ -573,17 +574,43 @@ extension ListComponentViewController {
         
         showElementsCount()
         if selectedMultipleItems.isEmpty {
-            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: true)
-            createButton.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
+            resetMultipleSelectionView()
+        }
+    }
+    
+    private func showMultiSelectionHeader() {
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        if let multipleSelectionHeader: MultipleSelectionHeaderView = .fromNib(), let navBar = self.navigationViewController?.navigationBar {
+            multipleSelectionHeader.frame = CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height)
+            multipleSelectionHeader.tag = 4949
+            multipleSelectionHeader.applyComponentsThemes(currentTheme)
+            navBar.addSubview(multipleSelectionHeader)
+            showElementsCount()
+            multipleSelectionHeader.didSelectResetButtonAction = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.selectedMultipleItems.removeAll()
+                sSelf.resetMultipleSelectionView()
+            }
+        }
+    }
+    
+    private func hideMultipleSelectionHeader() {
+        if let navBar = self.navigationViewController?.navigationBar, let multipleSelectionHeader = navBar.viewWithTag(4949) {
+            multipleSelectionHeader.removeFromSuperview()
         }
     }
     
     func showElementsCount() {
-        Snackbar.display(with: "Selected Items: \(selectedMultipleItems.count)",
-                         type: .error,
-                         automaticallyDismisses: true,
-                         presentationHostViewOverride: appDelegate()?.window,
-                         finish: nil)
+        if let navBar = self.navigationViewController?.navigationBar, let multipleSelectionHeader = navBar.viewWithTag(4949) {
+            let itemsCount = String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, selectedMultipleItems.count)
+            (multipleSelectionHeader as? MultipleSelectionHeaderView)?.updateTitle(text: itemsCount)
+        }
+    }
+    
+    private func resetMultipleSelectionView() {
+        listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: true)
+        createButton?.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
+        hideMultipleSelectionHeader()
     }
 }
 
