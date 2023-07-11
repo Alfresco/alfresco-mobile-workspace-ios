@@ -411,8 +411,8 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
             guard let node = element else { return }
             viewModel?.isMultipleFileSelectionEnabled = true
             handleAddRemoveNodeList(node: node)
-            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
             createButton.isHidden = true
+            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
             listActionButton.isHidden = true
             showMultiSelectionHeader()
             collectionView.reloadData()
