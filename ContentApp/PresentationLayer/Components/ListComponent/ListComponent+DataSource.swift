@@ -109,6 +109,8 @@ class ListComponentDataSource: DataSource {
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
+            cell.setMultipleFileSelection(isMultipleFileSelectionEnabled: configuration.viewModel.isMultipleFileSelectionEnabled)
+            cell.setMultipleSelectedItem(for: configuration.viewModel.selectedMultipleItems, tappedNode: node)
 
             if node?.nodeType == .fileLink || node?.nodeType == .folderLink {
                 cell.moreButton.isHidden = true

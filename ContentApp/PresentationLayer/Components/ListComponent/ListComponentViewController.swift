@@ -56,7 +56,6 @@ class ListComponentViewController: SystemThemableViewController {
     var destinationNodeToMove: ListNode?
     var sourceNodeToMove: ListNode?
     var navigationViewController: UINavigationController?
-    var selectedMultipleItems = [ListNode]()
 
     // MARK: - View Life Cycle
     
@@ -301,7 +300,7 @@ class ListComponentViewController: SystemThemableViewController {
                         guard let sSelf = self else { return }
                         if let node = model.listNode(for: context.indexPath) {
                             
-                            if !sSelf.selectedMultipleItems.isEmpty {
+                            if !viewModel.selectedMultipleItems.isEmpty {
                                 sSelf.handleAddRemoveNodeList(node: node)
                                 return
                             }
@@ -406,14 +405,19 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     }
     
     func longTapGestureActivated(for element: ListNode?, in cell: ListElementCollectionViewCell) {
-        if selectedMultipleItems.isEmpty {
+        let isMoveFilesAndFolderFlow = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+        let isSelectedItemsArrayEmpty = viewModel?.selectedMultipleItems.isEmpty ?? true
+        if isSelectedItemsArrayEmpty && !isMoveFilesAndFolderFlow {
             guard let node = element else { return }
+            viewModel?.isMultipleFileSelectionEnabled = true
             handleAddRemoveNodeList(node: node)
-            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
             createButton.isHidden = true
+            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
+            listActionButton.isHidden = true
             showMultiSelectionHeader()
+            collectionView.reloadData()
         }
-    }    
+    }
 }
 
 // MARK: - PageFetchableDelegate
@@ -439,7 +443,12 @@ extension ListComponentViewController: ListPageControllerDelegate {
             return
         }
         
-        listActionButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
+        let isMultipleFileSelectionEnabled = viewModel?.isMultipleFileSelectionEnabled ?? false
+        if isMultipleFileSelectionEnabled {
+            listActionButton.isHidden = true
+        } else {
+            listActionButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
+        }
         moveFilesBottomView.isHidden = (viewModel?.shouldHideMoveItemView() ?? true)
 
         let isListEmpty = model.isEmpty()
@@ -564,6 +573,7 @@ extension ListComponentViewController {
 
 extension ListComponentViewController {
     func handleAddRemoveNodeList(node: ListNode) {
+        var selectedMultipleItems = viewModel?.selectedMultipleItems ?? []
         if selectedMultipleItems.contains(node) {
             if let index = selectedMultipleItems.firstIndex(where: {$0 == node}) {
                 selectedMultipleItems.remove(at: index)
@@ -572,10 +582,12 @@ extension ListComponentViewController {
             selectedMultipleItems.append(node)
         }
         
+        viewModel?.selectedMultipleItems = selectedMultipleItems
         showElementsCount()
         if selectedMultipleItems.isEmpty {
             resetMultipleSelectionView()
         }
+        collectionView.reloadData()
     }
     
     private func showMultiSelectionHeader() {
@@ -588,7 +600,7 @@ extension ListComponentViewController {
             showElementsCount()
             multipleSelectionHeader.didSelectResetButtonAction = {[weak self] in
                 guard let sSelf = self else { return }
-                sSelf.selectedMultipleItems.removeAll()
+                sSelf.viewModel?.selectedMultipleItems.removeAll()
                 sSelf.resetMultipleSelectionView()
             }
         }
@@ -602,7 +614,7 @@ extension ListComponentViewController {
     
     func showElementsCount() {
         if let navBar = self.navigationViewController?.navigationBar, let multipleSelectionHeader = navBar.viewWithTag(4949) {
-            let itemsCount = String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, selectedMultipleItems.count)
+            let itemsCount = String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, viewModel?.selectedMultipleItems.count ?? 0)
             (multipleSelectionHeader as? MultipleSelectionHeaderView)?.updateTitle(text: itemsCount)
         }
     }
@@ -610,7 +622,10 @@ extension ListComponentViewController {
     private func resetMultipleSelectionView() {
         listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: true)
         createButton?.isHidden = !(viewModel?.shouldDisplayCreateButton() ?? true)
+        listActionButton?.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? true)
         hideMultipleSelectionHeader()
+        viewModel?.isMultipleFileSelectionEnabled = false
+        collectionView.reloadData()
     }
 }
 

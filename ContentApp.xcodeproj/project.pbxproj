@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -559,7 +559,7 @@
 		C9E1BF262729213300900C42 /* SearchNumberRangeComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF252729213300900C42 /* SearchNumberRangeComponentViewController.swift */; };
 		C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */; };
 		C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E79E7827A3E653002BC5A0 /* MainInterface.storyboard */; };
-		C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C9E79E7427A3E653002BC5A0 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C9E79E7427A3E653002BC5A0 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C9EA38F7281E416C008AC8C8 /* FilesandFolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EA38F6281E416C008AC8C8 /* FilesandFolderListViewController.swift */; };
 		C9F11DBE28954DF000DA4BA6 /* TaskChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9D2891507800C55F67 /* TaskChipItem.swift */; };
 		C9F11DBF28954E3A00DA4BA6 /* TaskFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDD928905B9800819F86 /* TaskFilters.swift */; };
@@ -783,15 +783,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C9E79E7F27A3E653002BC5A0 /* Embed App Extensions */ = {
+		C9E79E7F27A3E653002BC5A0 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed App Extensions */,
+				C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -3722,7 +3722,7 @@
 				B959CCC92476698900811F15 /* Linter */,
 				B95605062502721200D955BA /* Upload Symbols */,
 				B394FB23C9A2B438D96191FC /* [CP] Embed Pods Frameworks */,
-				C9E79E7F27A3E653002BC5A0 /* Embed App Extensions */,
+				C9E79E7F27A3E653002BC5A0 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -3783,8 +3783,9 @@
 		E334C03424755D8E00F74880 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = Alfresco;
 				TargetAttributes = {
 					C9E79E7327A3E653002BC5A0 = {
