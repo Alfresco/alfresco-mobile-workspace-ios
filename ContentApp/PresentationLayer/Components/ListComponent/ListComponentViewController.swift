@@ -604,6 +604,12 @@ extension ListComponentViewController {
                 sSelf.viewModel?.selectedMultipleItems.removeAll()
                 sSelf.resetMultipleSelectionView()
             }
+            
+            multipleSelectionHeader.didSelectMoreButtonAction = {[weak self] in
+                guard let sSelf = self else { return }
+                let nodes = sSelf.viewModel?.selectedMultipleItems ?? []
+                sSelf.listItemActionDelegate?.showActionSheetForMultiSelectListItem(for: nodes)
+            }
         }
     }
     

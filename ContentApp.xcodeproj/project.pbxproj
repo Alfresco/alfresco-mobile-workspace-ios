@@ -32,6 +32,11 @@
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
 		4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */; };
 		47B61B9E29DAB64400EA0598 /* WorkflowAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */; };
+		47B782442A5D53270075BE39 /* MultipleFilesActionMenuGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B782432A5D53270075BE39 /* MultipleFilesActionMenuGeneric.swift */; };
+		47B782462A5D6FC30075BE39 /* MultipleFileActionsMenuTrashMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B782452A5D6FC30075BE39 /* MultipleFileActionsMenuTrashMoreButton.swift */; };
+		47B782492A5E83360075BE39 /* MultipleFileActionMenuScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B782482A5E83360075BE39 /* MultipleFileActionMenuScreenCoordinator.swift */; };
+		47B7824B2A5E84BB0075BE39 /* MultipleSelectionActionMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B7824A2A5E84BB0075BE39 /* MultipleSelectionActionMenuViewController.swift */; };
+		47B7824D2A5E852F0075BE39 /* MultipleSelectionActionMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B7824C2A5E852F0075BE39 /* MultipleSelectionActionMenuViewModel.swift */; };
 		47CA839F2A57D8990081A000 /* UITabBarController+HideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA839E2A57D8990081A000 /* UITabBarController+HideShow.swift */; };
 		47CA83A22A57F15C0081A000 /* MultipleSelectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47CA83A12A57F15C0081A000 /* MultipleSelectionHeaderView.xib */; };
 		47CA83A42A57F16A0081A000 /* MultipleSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA83A32A57F16A0081A000 /* MultipleSelectionHeaderView.swift */; };
@@ -822,6 +827,11 @@
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
 		4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewModel.swift; sourceTree = "<group>"; };
 		47B61B9D29DAB64400EA0598 /* WorkflowAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowAttachmentOperations.swift; sourceTree = "<group>"; };
+		47B782432A5D53270075BE39 /* MultipleFilesActionMenuGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleFilesActionMenuGeneric.swift; sourceTree = "<group>"; };
+		47B782452A5D6FC30075BE39 /* MultipleFileActionsMenuTrashMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleFileActionsMenuTrashMoreButton.swift; sourceTree = "<group>"; };
+		47B782482A5E83360075BE39 /* MultipleFileActionMenuScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleFileActionMenuScreenCoordinator.swift; sourceTree = "<group>"; };
+		47B7824A2A5E84BB0075BE39 /* MultipleSelectionActionMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionActionMenuViewController.swift; sourceTree = "<group>"; };
+		47B7824C2A5E852F0075BE39 /* MultipleSelectionActionMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionActionMenuViewModel.swift; sourceTree = "<group>"; };
 		47CA839E2A57D8990081A000 /* UITabBarController+HideShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBarController+HideShow.swift"; sourceTree = "<group>"; };
 		47CA83A12A57F15C0081A000 /* MultipleSelectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultipleSelectionHeaderView.xib; sourceTree = "<group>"; };
 		47CA83A32A57F16A0081A000 /* MultipleSelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionHeaderView.swift; sourceTree = "<group>"; };
@@ -3104,6 +3114,7 @@
 			children = (
 				E335E705253864CD0036E090 /* ActionMenuScreenCoordinator.swift */,
 				E3A433A12566CAA7000DD886 /* CreateNodeSheetCoordinator.swift */,
+				47B782482A5E83360075BE39 /* MultipleFileActionMenuScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -3113,6 +3124,7 @@
 			children = (
 				E3FADB9B2538701100BA6F9B /* Cells */,
 				E335E72B2538653A0036E090 /* ActionMenuViewController.swift */,
+				47B7824A2A5E84BB0075BE39 /* MultipleSelectionActionMenuViewController.swift */,
 				E3A4339C2566C1E6000DD886 /* CreateNodeSheetViewControler.swift */,
 			);
 			path = Screens;
@@ -3131,6 +3143,7 @@
 			isa = PBXGroup;
 			children = (
 				E335E730253865CF0036E090 /* ActionMenuViewModel.swift */,
+				47B7824C2A5E852F0075BE39 /* MultipleSelectionActionMenuViewModel.swift */,
 				E3EB8EA2253ED44C005CA0D9 /* NodeActionsViewModel.swift */,
 				E3A433A62566CBF0000DD886 /* CreateNodeViewModel.swift */,
 			);
@@ -3144,6 +3157,8 @@
 				E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */,
 				B9A21CC12555255100F93383 /* ActionsMenuTrashMoreButton.swift */,
 				E308A4292566961B00A1D01E /* ActionsMenuCreateFAB.swift */,
+				47B782432A5D53270075BE39 /* MultipleFilesActionMenuGeneric.swift */,
+				47B782452A5D6FC30075BE39 /* MultipleFileActionsMenuTrashMoreButton.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4449,8 +4464,10 @@
 				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				B9318AAE254893090023689D /* FavouriteEvent.swift in Sources */,
 				4734440429DC0D1E004A72CD /* StartableWorkflowsViewModel.swift in Sources */,
+				47B7824D2A5E852F0075BE39 /* MultipleSelectionActionMenuViewModel.swift in Sources */,
 				B99D9BC224867D7C00FBFC9B /* BasicAuthenticationProvider.swift in Sources */,
 				E3E9ED4324CB24E100F1A2C2 /* BrowseStaticNodeCollectionViewCell.swift in Sources */,
+				47B7824B2A5E84BB0075BE39 /* MultipleSelectionActionMenuViewController.swift in Sources */,
 				C93A246428A628C4005F46C2 /* TaskAttachmentOperations.swift in Sources */,
 				E3ADD05E24927A8E006DF519 /* SettingsItem.swift in Sources */,
 				476CB2D22A339A9F00207C4D /* WflowTaskDetailViewModel.swift in Sources */,
@@ -4525,6 +4542,7 @@
 				E31184D8247BFAFA0044BE0D /* UITextField+Replacement.swift in Sources */,
 				B9ECECFF254302EF0097DB3F /* EventBusService.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
+				47B782442A5D53270075BE39 /* MultipleFilesActionMenuGeneric.swift in Sources */,
 				C9D4FAB127830B480008C4AA /* FileManagerViewController.swift in Sources */,
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				C9D4FAAF278305D10008C4AA /* FileManagerDataSource.swift in Sources */,
@@ -4716,6 +4734,7 @@
 				B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */,
 				47F5A6E329DE7FED00073D7F /* WorkflowListCollectionViewCell.swift in Sources */,
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
+				47B782462A5D6FC30075BE39 /* MultipleFileActionsMenuTrashMoreButton.swift in Sources */,
 				C9D3B48028D878C200C919D8 /* DatePickerViewModel.swift in Sources */,
 				E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* UIConstants.swift in Sources */,
@@ -4735,6 +4754,7 @@
 				B9A90E6B2657DB2100B89766 /* ListPageController.swift in Sources */,
 				4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */,
 				F1B020B7261AF83B007799B2 /* PreviewViewController.swift in Sources */,
+				47B782492A5E83360075BE39 /* MultipleFileActionMenuScreenCoordinator.swift in Sources */,
 				B9A8E26924CEAC2F00ED9C3B /* ListComponentViewController.swift in Sources */,
 				B9E7D60924911F190056292B /* AccountService.swift in Sources */,
 				E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */,

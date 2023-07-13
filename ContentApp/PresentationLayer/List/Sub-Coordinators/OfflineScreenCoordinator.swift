@@ -27,6 +27,7 @@ class OfflineScreenCoordinator: PresentingCoordinator, ListCoordinatorProtocol {
     private var offlineDataSource: OfflineDataSource?
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -118,10 +119,17 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
         }
     }
     
-    func showActionSheetForMultiSelectListItem(for node: ListNode,
-                                               from model: ListComponentModelProtocol,
-                                               delegate: NodeActionsViewModelDelegate) {
-        print("showActionSheetForMultiSelectListItem")
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+        if let navigationViewController = self.navigationViewController {
+            let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
+                                                          coordinatorServices: coordinatorServices)
+            
+            let coordinator = MultipleFileActionMenuScreenCoordinator(with: navigationViewController,
+                                                                      actionMenuViewModel: actionMenuViewModel,
+                                                                      listNodes: nodes)
+            coordinator.start()
+            multipleSelectionActionMenuCoordinator = coordinator
+        }
     }
     
     func moveNodeTapped(for sourceNode: ListNode,
