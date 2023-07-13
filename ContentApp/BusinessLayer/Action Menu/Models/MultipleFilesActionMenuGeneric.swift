@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct MultipleFilesActionMenuGeneric {
     static func actions(for nodes: [ListNode]) -> [[ActionMenu]] {
@@ -24,7 +25,7 @@ struct MultipleFilesActionMenuGeneric {
 
         let infoAction = ActionMenu(title: String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, nodes.count),
                                     type: .node,
-                                    icon: nil)
+                                    icon: UIImage(named: "ic-action-multi-select"))
 
         var actions2: [ActionMenu] = []
 
