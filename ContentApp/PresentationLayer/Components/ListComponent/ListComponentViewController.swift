@@ -128,6 +128,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                object: nil)
         observeConnectivity()
         setAccessibility()
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
     }
     
     // MARK: - Move files
@@ -587,7 +588,7 @@ extension ListComponentViewController {
         if selectedMultipleItems.isEmpty {
             resetMultipleSelectionView()
         }
-        collectionView.reloadData()
+        collectionView?.reloadData()
     }
     
     private func showMultiSelectionHeader() {
@@ -602,6 +603,12 @@ extension ListComponentViewController {
                 guard let sSelf = self else { return }
                 sSelf.viewModel?.selectedMultipleItems.removeAll()
                 sSelf.resetMultipleSelectionView()
+            }
+            
+            multipleSelectionHeader.didSelectMoreButtonAction = {[weak self] in
+                guard let sSelf = self else { return }
+                let nodes = sSelf.viewModel?.selectedMultipleItems ?? []
+                sSelf.listItemActionDelegate?.showActionSheetForMultiSelectListItem(for: nodes)
             }
         }
     }
