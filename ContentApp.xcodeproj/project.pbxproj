@@ -42,6 +42,9 @@
 		47CA83A42A57F16A0081A000 /* MultipleSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA83A32A57F16A0081A000 /* MultipleSelectionHeaderView.swift */; };
 		47CA83A62A5AAD020081A000 /* TestMultipleSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CA83A52A5AAD020081A000 /* TestMultipleSelectionView.swift */; };
 		47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */; };
+		47D285BA2A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D285B92A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift */; };
+		47D285BC2A6108B20003DF98 /* mockNodeList.json in Resources */ = {isa = PBXBuildFile; fileRef = 47D285BB2A6108B20003DF98 /* mockNodeList.json */; };
+		47D285BE2A6110D10003DF98 /* mockNodeList.json in Resources */ = {isa = PBXBuildFile; fileRef = 47D285BB2A6108B20003DF98 /* mockNodeList.json */; };
 		47DB20B52A35AB9F00B13586 /* RadioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */; };
 		47DB20B72A35ABAF00B13586 /* RadioListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B62A35ABAF00B13586 /* RadioListController.swift */; };
 		47DB20B92A35ABBF00B13586 /* RadioListViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B82A35ABBF00B13586 /* RadioListViewViewModel.swift */; };
@@ -837,6 +840,8 @@
 		47CA83A32A57F16A0081A000 /* MultipleSelectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionHeaderView.swift; sourceTree = "<group>"; };
 		47CA83A52A5AAD020081A000 /* TestMultipleSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMultipleSelectionView.swift; sourceTree = "<group>"; };
 		47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowModel.swift; sourceTree = "<group>"; };
+		47D285B92A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMultipleFilesActionMenuGeneric.swift; sourceTree = "<group>"; };
+		47D285BB2A6108B20003DF98 /* mockNodeList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mockNodeList.json; sourceTree = "<group>"; };
 		47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListViewController.swift; sourceTree = "<group>"; };
 		47DB20B62A35ABAF00B13586 /* RadioListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListController.swift; sourceTree = "<group>"; };
 		47DB20B82A35ABBF00B13586 /* RadioListViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListViewViewModel.swift; sourceTree = "<group>"; };
@@ -2308,6 +2313,7 @@
 				C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */,
 				C95B2A3128BE153E007841F4 /* TestTaskCommentsViewModel.swift */,
 				C95B2A2B28BE01CD007841F4 /* mockTasks.json */,
+				47D285BB2A6108B20003DF98 /* mockNodeList.json */,
 				C95B2A3328BE1650007841F4 /* mockComments.json */,
 			);
 			path = Tasks;
@@ -3041,6 +3047,7 @@
 				47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */,
 				47741B262A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift */,
 				47CA83A52A5AAD020081A000 /* TestMultipleSelectionView.swift */,
+				47D285B92A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -3887,6 +3894,7 @@
 				E3436F8B250B8C4A00634C62 /* MediaPreview.xib in Resources */,
 				C911EFA028926C6800C55F67 /* task_filters.json in Resources */,
 				C9A759A1289BBAA1006603E0 /* TaskListCollectionViewCell.xib in Resources */,
+				47D285BE2A6110D10003DF98 /* mockNodeList.json in Resources */,
 				E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */,
 				C91F75AC290017B7008F31EF /* SpaceTableViewCell.xib in Resources */,
 				C9AEE04A270D9D9E00880235 /* advance-search-config.json in Resources */,
@@ -3936,6 +3944,7 @@
 			files = (
 				C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */,
 				C95B2A3428BE1650007841F4 /* mockComments.json in Resources */,
+				47D285BC2A6108B20003DF98 /* mockNodeList.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4813,6 +4822,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				47741B272A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift in Sources */,
+				47D285BA2A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift in Sources */,
 				47CA83A62A5AAD020081A000 /* TestMultipleSelectionView.swift in Sources */,
 				C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */,
 				C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */,

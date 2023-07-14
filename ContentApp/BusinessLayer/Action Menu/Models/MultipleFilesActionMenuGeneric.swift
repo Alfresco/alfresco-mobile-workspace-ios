@@ -62,7 +62,7 @@ struct MultipleFilesActionMenuGeneric {
         return filteredNodes
     }
 
-    static private func moveToFolderAction(for nodes: [ListNode]) -> ActionMenu? {
+    static func moveToFolderAction(for nodes: [ListNode]) -> ActionMenu? {
         
         let filteredNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
         if !filteredNodes.isEmpty {
@@ -80,7 +80,7 @@ struct MultipleFilesActionMenuGeneric {
         return nil
     }
     
-    static private func favoriteAction(for nodes: [ListNode]) -> ActionMenu? {
+    static func favoriteAction(for nodes: [ListNode]) -> ActionMenu? {
         
         let filteredNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
         if !filteredNodes.isEmpty {
@@ -99,7 +99,7 @@ struct MultipleFilesActionMenuGeneric {
         return nil
     }
 
-    static private func offlineAction(for nodes: [ListNode]) -> ActionMenu? {
+    static func offlineAction(for nodes: [ListNode]) -> ActionMenu? {
         
         let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && (($0.syncStatus == .synced || $0.syncStatus == .undefined) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
         if !filteredNodes.isEmpty {
@@ -119,7 +119,7 @@ struct MultipleFilesActionMenuGeneric {
         return nil
     }
 
-    static private func deleteAction(for nodes: [ListNode]) -> ActionMenu? {
+    static func deleteAction(for nodes: [ListNode]) -> ActionMenu? {
         
         let filteredNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
         if !filteredNodes.isEmpty {
@@ -145,7 +145,7 @@ struct MultipleFilesActionMenuGeneric {
         return nil
     }
     
-    static private func startWorkflowAction(for nodes: [ListNode]) -> ActionMenu? {
+    static func startWorkflowAction(for nodes: [ListNode]) -> ActionMenu? {
         let isAPSEnable = APSService.isAPSServiceEnable ?? false
         if isAPSEnable {
             let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined) && $0.isAFileType()}

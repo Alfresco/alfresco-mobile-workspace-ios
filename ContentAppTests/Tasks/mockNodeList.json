@@ -1,0 +1,200 @@
+{
+  "list": {
+    "entries": [
+      {
+        "entry": {
+          "isFile": true,
+          "createdByUser": {
+            "id": "demo",
+            "displayName": "demo"
+          },
+          "modifiedAt": 0,
+          "nodeType": "cm:content",
+          "content": {
+            "mimeType": "image/jpeg",
+            "mimeTypeName": "JPEG Image",
+            "sizeInBytes": 4395292,
+            "encoding": "UTF-8"
+          },
+          "parentId": "e88cf285-aa32-4742-acec-a0d79793e9dd",
+          "createdAt": 0,
+          "path": {
+            "name": "/Company Home/User Homes/demo/ankit",
+            "isComplete": true,
+            "elements": [
+              {
+                "id": "79fd55b6-e7aa-4806-b46f-1037fba7a778",
+                "name": "Company Home",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:titled",
+                  "cm:auditable",
+                  "app:uifacets"
+                ]
+              },
+              {
+                "id": "c71f7456-91aa-4465-82f9-11efa8de4e15",
+                "name": "User Homes",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:titled",
+                  "cm:auditable",
+                  "app:uifacets"
+                ]
+              },
+              {
+                "id": "c0f622d8-fac1-416a-880b-6b951f9e2477",
+                "name": "demo",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:ownable",
+                  "cm:auditable"
+                ]
+              },
+              {
+                "id": "e88cf285-aa32-4742-acec-a0d79793e9dd",
+                "name": "ankit",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:titled",
+                  "cm:auditable"
+                ]
+              }
+            ]
+          },
+          "isFolder": false,
+          "modifiedByUser": {
+            "id": "demo",
+            "displayName": "demo"
+          },
+          "name": "IMG_0003.JPG",
+          "id": "d5276be3-0c55-4e9e-96ef-158c5caa8267",
+          "properties": {
+            "exif:pixelYDimension": 2002,
+            "exif:orientation": 1,
+            "cm:versionType": "MAJOR",
+            "cm:versionLabel": "1.0",
+            "exif:pixelXDimension": 3000
+          },
+          "allowableOperations": [
+            "delete",
+            "update",
+            "updatePermissions"
+          ],
+          "isFavorite": true
+        }
+      },
+      {
+        "entry": {
+          "isFile": true,
+          "createdByUser": {
+            "id": "demo",
+            "displayName": "demo"
+          },
+          "modifiedAt": 0,
+          "nodeType": "cm:content",
+          "content": {
+            "mimeType": "image/jpeg",
+            "mimeTypeName": "JPEG Image",
+            "sizeInBytes": 9604841,
+            "encoding": "UTF-8"
+          },
+          "parentId": "e88cf285-aa32-4742-acec-a0d79793e9dd",
+          "createdAt": 0,
+          "path": {
+            "name": "/Company Home/User Homes/demo/ankit",
+            "isComplete": true,
+            "elements": [
+              {
+                "id": "79fd55b6-e7aa-4806-b46f-1037fba7a778",
+                "name": "Company Home",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:titled",
+                  "cm:auditable",
+                  "app:uifacets"
+                ]
+              },
+              {
+                "id": "c71f7456-91aa-4465-82f9-11efa8de4e15",
+                "name": "User Homes",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:titled",
+                  "cm:auditable",
+                  "app:uifacets"
+                ]
+              },
+              {
+                "id": "c0f622d8-fac1-416a-880b-6b951f9e2477",
+                "name": "demo",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:ownable",
+                  "cm:auditable"
+                ]
+              },
+              {
+                "id": "e88cf285-aa32-4742-acec-a0d79793e9dd",
+                "name": "ankit",
+                "nodeType": "cm:folder",
+                "aspectNames": [
+                  "cm:titled",
+                  "cm:auditable"
+                ]
+              }
+            ]
+          },
+          "isFolder": false,
+          "modifiedByUser": {
+            "id": "demo",
+            "displayName": "demo"
+          },
+          "name": "IMG_0111.JPG",
+          "id": "49eeabf0-1960-4ea2-a671-2f568bcbe707",
+          "properties": {
+            "exif:orientation": 3,
+            "cm:versionType": "MAJOR",
+            "exif:xResolution": 72.0,
+            "cm:versionLabel": "1.0",
+            "exif:yResolution": 72.0,
+            "exif:pixelYDimension": 3024,
+            "exif:resolutionUnit": "Inch",
+            "exif:pixelXDimension": 4032
+          },
+          "allowableOperations": [
+            "delete",
+            "update",
+            "updatePermissions"
+          ],
+          "isFavorite": true
+        }
+      }
+    ],
+    "source": {
+      "name": "ankit",
+      "createdAt": 0,
+      "modifiedAt": 0,
+      "createdByUser": {
+        "id": "demo",
+        "displayName": "demo"
+      },
+      "modifiedByUser": {
+        "id": "demo",
+        "displayName": "demo"
+      },
+      "isFolder": true,
+      "isFile": false,
+      "aspectNames": [
+        "cm:titled",
+        "cm:auditable"
+      ],
+      "properties": {
+        "cm:title": "ankit"
+      },
+      "parentId": "c0f622d8-fac1-416a-880b-6b951f9e2477",
+      "nodeType": "cm:folder",
+      "id": "e88cf285-aa32-4742-acec-a0d79793e9dd"
+    }
+  }
+}

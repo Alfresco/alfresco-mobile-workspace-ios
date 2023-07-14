@@ -588,7 +588,7 @@ extension ListComponentViewController {
         if selectedMultipleItems.isEmpty {
             resetMultipleSelectionView()
         }
-        collectionView.reloadData()
+        collectionView?.reloadData()
     }
     
     private func showMultiSelectionHeader() {
