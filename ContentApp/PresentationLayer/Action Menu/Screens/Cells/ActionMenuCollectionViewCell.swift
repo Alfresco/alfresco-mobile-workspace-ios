@@ -23,6 +23,9 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separator: UIView!
     @IBOutlet weak var sectionSeparator: UIView!
+    @IBOutlet weak var widthImageView: NSLayoutConstraint!
+    @IBOutlet weak var leadingTitleLabel: NSLayoutConstraint!
+    var currentTheme: PresentationTheme?
 
     var action: ActionMenu? {
         didSet {
@@ -41,6 +44,8 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
+        self.currentTheme = currentTheme
+        
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         titleLabel.lineBreakMode = .byTruncatingTail
         imageView.tintColor = currentTheme.onSurface70Color
@@ -56,5 +61,12 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
         } else {
             titleLabel.accessibilityTraits = .header
         }
+    }
+    
+    func setHeaderForMultiSelectionActionMenuCell() {
+        guard let theme = currentTheme else { return }
+        titleLabel.textColor = theme.primaryVariantT1Color
+        widthImageView.constant = 0
+        leadingTitleLabel.constant = 0
     }
 }
