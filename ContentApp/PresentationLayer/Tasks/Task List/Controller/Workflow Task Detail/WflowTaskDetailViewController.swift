@@ -150,7 +150,9 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     }
 
     @objc private func handleReSignIn(notification: Notification) {
+        refreshGroup.enter()
         getWorkflowTaskDetails()
+        updateDispatchGroup()
     }
     
     private func addBackButton() {
@@ -270,6 +272,10 @@ class WflowTaskDetailViewController: SystemSearchViewController {
         refreshGroup.enter()
         getWorkflowTaskDetails()
         
+        updateDispatchGroup()
+    }
+    
+    private func updateDispatchGroup() {
         refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
             guard let sSelf = self else { return }
             sSelf.updateUIComponents()
