@@ -83,7 +83,7 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
     
     var isAllowedToEditStatus: Bool {
         let apsUserID = UserProfile.apsUserID
-        if assigneeUserId == apsUserID {
+        if assigneeUserId == apsUserID && !isTaskCompleted {
             return true
         }
         return false
