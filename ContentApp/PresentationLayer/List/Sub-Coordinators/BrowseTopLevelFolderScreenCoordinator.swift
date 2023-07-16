@@ -26,7 +26,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
-    var sourceNodeToMove: ListNode?
+    var sourceNodeToMove: [ListNode]?
     var nodeActionsModel: NodeActionsViewModel?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
 
@@ -167,15 +167,17 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         fileManagerCoordinator = coordinator
     }
     
-    func moveNodeTapped(for sourceNode: ListNode,
+    func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
-        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
-                                                    delegate: delegate,
-                                                    coordinatorServices: coordinatorServices)
-        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
-        self.nodeActionsModel = nodeActionsModel
+        for node in sourceNode {
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
+            self.nodeActionsModel = nodeActionsModel
+        }
     }
     
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
@@ -193,7 +195,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
 }
 
 extension BrowseTopLevelFolderScreenCoordinator: NodeActionMoveDelegate {
-    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+    func didSelectMoveFile(node: [ListNode], action: ActionMenu) {
         let navigationViewController = self.presenter
         let controller = FilesandFolderListViewController.instantiateViewController()
         controller.sourceNodeToMove = node

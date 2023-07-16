@@ -130,8 +130,8 @@ extension MultipleSelectionActionMenuViewController: UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         guard let action = actionMenuModel?.actions()[indexPath.section][indexPath.row] else { return }
-        self.didSelectAction?(action)
         self.dismiss(animated: true)
+        self.didSelectAction?(action)
     }
 }
 
@@ -148,4 +148,3 @@ extension MultipleSelectionActionMenuViewController: ActionMenuViewModelDelegate
 // MARK: - Storyboard Instantiable
 
 extension MultipleSelectionActionMenuViewController: StoryboardInstantiable { }
-

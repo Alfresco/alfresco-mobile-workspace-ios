@@ -132,15 +132,17 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
         }
     }
     
-    func moveNodeTapped(for sourceNode: ListNode,
+    func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
-        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
-                                                    delegate: delegate,
-                                                    coordinatorServices: coordinatorServices)
-        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
-        self.nodeActionsModel = nodeActionsModel
+        for node in sourceNode {
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
+            self.nodeActionsModel = nodeActionsModel
+        }
     }
     
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
@@ -158,7 +160,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
 }
 
 extension OfflineScreenCoordinator: NodeActionMoveDelegate {
-    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+    func didSelectMoveFile(node: [ListNode], action: ActionMenu) {
         if let navigationViewController = self.navigationViewController {
             let controller = FilesandFolderListViewController.instantiateViewController()
             controller.sourceNodeToMove = node

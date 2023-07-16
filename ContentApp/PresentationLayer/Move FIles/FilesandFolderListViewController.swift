@@ -21,7 +21,7 @@ import UIKit
 class FilesandFolderListViewController: SystemThemableViewController {
     private let searchButtonAspectRatio: CGFloat = 30.0
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
-    var sourceNodeToMove: ListNode?
+    var sourceNodeToMove: [ListNode]?
     
     // MARK: - View did load
     override func viewDidLoad() {

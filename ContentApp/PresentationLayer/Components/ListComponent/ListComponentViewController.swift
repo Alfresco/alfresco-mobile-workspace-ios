@@ -54,7 +54,7 @@ class ListComponentViewController: SystemThemableViewController {
     private let bannerHeight: CGFloat = 60.0
     
     var destinationNodeToMove: ListNode?
-    var sourceNodeToMove: ListNode?
+    var sourceNodeToMove: [ListNode]?
     var navigationViewController: UINavigationController?
 
     // MARK: - View Life Cycle
@@ -329,7 +329,13 @@ class ListComponentViewController: SystemThemableViewController {
     func isNavigationAllowed(for node: ListNode?) -> Bool {
         if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles, let source = self.sourceNodeToMove {
             let destinationElementIds = node?.elementIds?.components(separatedBy: ",") ?? []
-            if destinationElementIds.contains(source.guid) {
+            var isShowSnackbar = false
+            for listNode in source where destinationElementIds.contains(listNode.guid) {
+                isShowSnackbar = true
+                break
+            }
+            
+            if isShowSnackbar {
                 Snackbar.display(with: LocalizationConstants.Alert.searchMoveWarning,
                                  type: .approve,
                                  finish: nil)

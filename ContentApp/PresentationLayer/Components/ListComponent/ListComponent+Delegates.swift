@@ -32,7 +32,7 @@ protocol ListItemActionDelegate: AnyObject {
     func showPhotoLibrary()
     func showFiles()
     func showUploadingFiles()
-    func moveNodeTapped(for sourceNode: ListNode,
+    func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu)
