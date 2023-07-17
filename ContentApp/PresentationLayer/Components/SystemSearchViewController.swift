@@ -170,6 +170,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
     private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
+        rvc.presenter = self.navigationController
         rvc.pageController = searchPageController
         rvc.pageController?.sourceNodeToMove = self.sourceNodeToMove
         rvc.coordinatorServices = coordinatorServices
@@ -261,6 +262,11 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
     func elementListTapped(elementList: ListNode) {
         guard let searchBar = navigationItem.searchController?.searchBar else { return }
         resultsViewController?.recentSearchesViewModel.save(recentSearch: searchBar.text)
+    }
+    
+    func enabledLongTapGesture(isShowTabbar: Bool) {
+        guard let navigationController = self.navigationController else { return }
+        self.tabBarController?.setTabBarHidden(!isShowTabbar, navigationController: navigationController)
     }
 }
 

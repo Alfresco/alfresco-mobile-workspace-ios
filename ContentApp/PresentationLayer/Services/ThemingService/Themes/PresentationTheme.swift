@@ -70,4 +70,5 @@ protocol PresentationTheme {
     var taskSuccessTextColor: UIColor { get }
     var neutral95Color: UIColor { get }
     var onSurface12TextColor: UIColor { get }
+    var primary24T1Color: UIColor { get }
 }

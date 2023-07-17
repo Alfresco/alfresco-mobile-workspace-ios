@@ -118,6 +118,10 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
         }
     }
     
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+        // do nothing
+    }
+    
     func moveNodeTapped(for sourceNode: ListNode,
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
