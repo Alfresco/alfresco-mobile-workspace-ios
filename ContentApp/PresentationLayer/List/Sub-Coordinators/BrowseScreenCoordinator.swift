@@ -118,7 +118,9 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
         }
     }
     
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
         // do nothing
     }
     

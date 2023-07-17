@@ -612,9 +612,13 @@ extension ListComponentViewController {
             }
             
             multipleSelectionHeader.didSelectMoreButtonAction = {[weak self] in
-                guard let sSelf = self else { return }
+                guard let sSelf = self,
+                      let model = sSelf.pageController?.dataSource else { return }
+                
                 let nodes = sSelf.viewModel?.selectedMultipleItems ?? []
-                sSelf.listItemActionDelegate?.showActionSheetForMultiSelectListItem(for: nodes)
+                sSelf.listItemActionDelegate?.showActionSheetForMultiSelectListItem(for: nodes,
+                                                                                    from: model,
+                                                                                    delegate: sSelf)
             }
         }
     }

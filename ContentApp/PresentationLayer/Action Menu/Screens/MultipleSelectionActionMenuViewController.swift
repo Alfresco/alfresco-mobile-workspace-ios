@@ -23,6 +23,7 @@ class MultipleSelectionActionMenuViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewContraintHeight: NSLayoutConstraint!
     var actionMenuModel: MultipleSelectionActionMenuViewModel?
+    var nodeActionsModel: NodeActionsViewModel?
     let actionMenuCellHeight: CGFloat = 55.0
     var didSelectAction: ((ActionMenu) -> Void)?
 
@@ -130,8 +131,15 @@ extension MultipleSelectionActionMenuViewController: UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         guard let action = actionMenuModel?.actions()[indexPath.section][indexPath.row] else { return }
-        self.dismiss(animated: true)
-        self.didSelectAction?(action)
+        if nodeActionsModel != nil {
+            nodeActionsModel?.tapped(on: action, finished: { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.dismiss(animated: true)
+            })
+        } else {
+            self.dismiss(animated: true)
+            self.didSelectAction?(action)
+        }
     }
 }
 

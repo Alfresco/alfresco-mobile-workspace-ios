@@ -38,7 +38,9 @@ protocol ListItemActionDelegate: AnyObject {
                         actionMenu: ActionMenu)
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?)
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode])
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate)
 }
 
 protocol ListComponentActionDelegate: AnyObject {

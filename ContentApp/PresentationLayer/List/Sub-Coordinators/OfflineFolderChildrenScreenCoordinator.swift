@@ -102,12 +102,21 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
     
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
                                                       coordinatorServices: coordinatorServices)
         
+        let nodeActionsModel = NodeActionsViewModel(node: nodes.first,
+                                                    delegate: delegate,
+                                                    coordinatorServices: coordinatorServices,
+                                                    multipleNodes: nodes)
+        nodeActionsModel.moveDelegate = self
+        
         let coordinator = MultipleFileActionMenuScreenCoordinator(with: self.presenter,
                                                                   actionMenuViewModel: actionMenuViewModel,
+                                                                  nodeActionViewModel: nodeActionsModel,
                                                                   listNodes: nodes)
         coordinator.start()
         multipleSelectionActionMenuCoordinator = coordinator

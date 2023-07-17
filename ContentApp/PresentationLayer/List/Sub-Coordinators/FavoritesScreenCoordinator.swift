@@ -113,13 +113,22 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         }
     }
     
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
                                                           coordinatorServices: coordinatorServices)
             
+            let nodeActionsModel = NodeActionsViewModel(node: nodes.first,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: nodes)
+            nodeActionsModel.moveDelegate = self
+            
             let coordinator = MultipleFileActionMenuScreenCoordinator(with: navigationViewController,
                                                                       actionMenuViewModel: actionMenuViewModel,
+                                                                      nodeActionViewModel: nodeActionsModel,
                                                                       listNodes: nodes)
             coordinator.start()
             multipleSelectionActionMenuCoordinator = coordinator
