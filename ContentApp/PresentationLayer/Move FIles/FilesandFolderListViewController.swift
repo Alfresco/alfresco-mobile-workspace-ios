@@ -21,8 +21,9 @@ import UIKit
 class FilesandFolderListViewController: SystemThemableViewController {
     private let searchButtonAspectRatio: CGFloat = 30.0
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
-    var sourceNodeToMove: ListNode?
-    
+    var sourceNodeToMove: [ListNode]?
+    var didSelectDismissAction: (() -> Void)?
+
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +57,7 @@ class FilesandFolderListViewController: SystemThemableViewController {
     
     @objc private func handleFilesFolderMoveFinishedNotification(notification: Notification) {
         resetMoveFilesAndFolderFlow()
+        self.didSelectDismissAction?()
         self.dismiss(animated: true, completion: nil)
     }
 }

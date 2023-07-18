@@ -36,7 +36,7 @@ extension URL {
         do {
             return try FileManager.default.attributesOfItem(atPath: path)
         } catch let error as NSError {
-            print("FileAttribute error: \(error)")
+            AlfrescoLog.debug("FileAttribute error: \(error)")
         }
         return [FileAttributeKey: Any]()
     }

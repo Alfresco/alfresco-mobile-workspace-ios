@@ -29,7 +29,7 @@ class SystemSearchViewController: SystemThemableViewController {
     var isChildFolder = false
     var openNodeDelegate: OpenNodeDelegate?
     var destinationNodeToMove: ListNode?
-    var sourceNodeToMove: ListNode?
+    var sourceNodeToMove: [ListNode]?
 
     // MARK: - View Life Cycle
 

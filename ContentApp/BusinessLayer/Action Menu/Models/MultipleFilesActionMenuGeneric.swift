@@ -25,7 +25,7 @@ struct MultipleFilesActionMenuGeneric {
 
         let infoAction = ActionMenu(title: String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, nodes.count),
                                     type: .node,
-                                    icon: UIImage(named: "ic-action-multi-select"))
+                                    icon: nil)
 
         var actions2: [ActionMenu] = []
 
