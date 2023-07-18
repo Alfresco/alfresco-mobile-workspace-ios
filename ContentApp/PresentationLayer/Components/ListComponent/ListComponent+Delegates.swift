@@ -32,13 +32,15 @@ protocol ListItemActionDelegate: AnyObject {
     func showPhotoLibrary()
     func showFiles()
     func showUploadingFiles()
-    func moveNodeTapped(for sourceNode: ListNode,
+    func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu)
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?)
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode])
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate)
 }
 
 protocol ListComponentActionDelegate: AnyObject {

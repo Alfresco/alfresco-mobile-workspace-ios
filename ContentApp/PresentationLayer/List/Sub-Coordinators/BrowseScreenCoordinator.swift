@@ -31,6 +31,7 @@ class BrowseScreenCoordinator: PresentingCoordinator,
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -118,19 +119,24 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
         }
     }
     
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
         // do nothing
     }
     
-    func moveNodeTapped(for sourceNode: ListNode,
+    func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
-        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
-                                                    delegate: delegate,
-                                                    coordinatorServices: coordinatorServices)
-        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
-        self.nodeActionsModel = nodeActionsModel
+        
+        for node in sourceNode {
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
+            self.nodeActionsModel = nodeActionsModel
+        }
     }
     
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
@@ -148,12 +154,13 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
 }
 
 extension BrowseScreenCoordinator: NodeActionMoveDelegate {
-    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+    func didSelectMoveFile(node: [ListNode], action: ActionMenu) {
         if let navigationViewController = self.navigationViewController {
             let controller = FilesandFolderListViewController.instantiateViewController()
             controller.sourceNodeToMove = node
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
+            filesAndFolderViewController = controller
         }
     }
 }

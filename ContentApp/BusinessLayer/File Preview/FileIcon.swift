@@ -225,7 +225,6 @@ class FileIcon {
             if listNode.isFolder {
                 return UIImage(named: IconType.folder.rawValue)
             }
-            print(mimetype)
             return UIImage(named: IconType.generic.rawValue)
         }
     }

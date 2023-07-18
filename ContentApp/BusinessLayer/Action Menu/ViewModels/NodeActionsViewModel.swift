@@ -31,7 +31,7 @@ protocol NodeActionsViewModelDelegate: AnyObject {
 }
 
 protocol NodeActionMoveDelegate: AnyObject {
-    func didSelectMoveFile(node: ListNode?, action: ActionMenu)
+    func didSelectMoveFile(node: [ListNode], action: ActionMenu)
 }
 
 class NodeActionsViewModel {
@@ -42,15 +42,17 @@ class NodeActionsViewModel {
     private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
     weak var moveDelegate: NodeActionMoveDelegate?
-
+    private var multipleNodes: [ListNode]?
     private let sheetDismissDelay = 0.5
 
     // MARK: Init
 
     init(node: ListNode? = nil,
          delegate: NodeActionsViewModelDelegate?,
-         coordinatorServices: CoordinatorServices?) {
+         coordinatorServices: CoordinatorServices?,
+         multipleNodes: [ListNode]? = nil) {
         self.node = node
+        self.multipleNodes = multipleNodes
         self.delegate = delegate
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
@@ -262,9 +264,15 @@ class NodeActionsViewModel {
     }
     
     private func requestMoveToFolder(action: ActionMenu) {
-        guard let node = self.node else { return }
-        DispatchQueue.main.async {
-            self.moveDelegate?.didSelectMoveFile(node: node, action: action)
+        if let nodes = multipleNodes, !nodes.isEmpty {
+            DispatchQueue.main.async {
+                self.moveDelegate?.didSelectMoveFile(node: nodes, action: action)
+            }
+        } else {
+            guard let node = self.node else { return }
+            DispatchQueue.main.async {
+                self.moveDelegate?.didSelectMoveFile(node: [node], action: action)
+            }
         }
     }
     
@@ -491,7 +499,7 @@ class NodeActionsViewModel {
 // MARK: - Workflow
 extension NodeActionsViewModel {
     private func linkContentToAPS(action: ActionMenu) {
-        guard let node = self.node else { return }
+        guard self.node != nil else { return }
         self.handleResponse(error: nil, action: action)
     }
 }
