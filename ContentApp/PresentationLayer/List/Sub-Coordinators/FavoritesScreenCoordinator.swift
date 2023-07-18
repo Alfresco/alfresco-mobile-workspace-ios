@@ -27,6 +27,7 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -169,6 +170,11 @@ extension FavoritesScreenCoordinator: NodeActionMoveDelegate {
             controller.sourceNodeToMove = node
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
+            filesAndFolderViewController = controller
+            filesAndFolderViewController?.didSelectDismissAction = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.favoritesViewController?.folderAndFilesViewController?.resetMultipleSelectionView()
+            }
         }
     }
 }

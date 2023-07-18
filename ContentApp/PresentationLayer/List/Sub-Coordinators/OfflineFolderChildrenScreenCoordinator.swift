@@ -27,6 +27,8 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
+    private var offlineFolderChildrenViewController: ListViewController?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -49,7 +51,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
         
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-
+        offlineFolderChildrenViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 }
@@ -156,5 +158,10 @@ extension OfflineFolderChildrenScreenCoordinator: NodeActionMoveDelegate {
         controller.sourceNodeToMove = node
         let navController = UINavigationController(rootViewController: controller)
         navigationViewController.present(navController, animated: true)
+        filesAndFolderViewController = controller
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.offlineFolderChildrenViewController?.listController?.resetMultipleSelectionView()
+        }
     }
 }

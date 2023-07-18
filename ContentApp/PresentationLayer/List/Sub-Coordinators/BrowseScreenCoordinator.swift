@@ -31,6 +31,7 @@ class BrowseScreenCoordinator: PresentingCoordinator,
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -159,6 +160,7 @@ extension BrowseScreenCoordinator: NodeActionMoveDelegate {
             controller.sourceNodeToMove = node
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
+            filesAndFolderViewController = controller
         }
     }
 }

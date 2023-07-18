@@ -24,6 +24,7 @@ protocol FolderChildrenScreenCoordinatorDelegate: AnyObject {
 
 class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
+    private var folderChildrenViewController: ListViewController?
     private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
@@ -34,6 +35,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     var sourceNodeToMove: [ListNode]?
     var nodeActionsModel: NodeActionsViewModel?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -68,7 +70,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-
+        folderChildrenViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 }
@@ -214,5 +216,10 @@ extension FolderChildrenScreenCoordinator: NodeActionMoveDelegate {
         controller.sourceNodeToMove = node
         let navController = UINavigationController(rootViewController: controller)
         navigationViewController.present(navController, animated: true)
+        filesAndFolderViewController = controller
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.folderChildrenViewController?.listController?.resetMultipleSelectionView()
+        }
     }
 }

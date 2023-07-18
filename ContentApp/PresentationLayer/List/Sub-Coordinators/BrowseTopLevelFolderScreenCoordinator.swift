@@ -20,6 +20,7 @@ import UIKit
 
 class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
+    private var browseTopLevelController: ListViewController?
     private var browseNode: BrowseNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
@@ -29,6 +30,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     var sourceNodeToMove: [ListNode]?
     var nodeActionsModel: NodeActionsViewModel?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -58,6 +60,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
+        browseTopLevelController = viewController
         if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles {
             presenter.pushViewController(viewController, animated: false)
         } else {
@@ -210,5 +213,10 @@ extension BrowseTopLevelFolderScreenCoordinator: NodeActionMoveDelegate {
         controller.sourceNodeToMove = node
         let navController = UINavigationController(rootViewController: controller)
         navigationViewController.present(navController, animated: true)
+        filesAndFolderViewController = controller
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.browseTopLevelController?.listController?.resetMultipleSelectionView()
+        }
     }
 }
