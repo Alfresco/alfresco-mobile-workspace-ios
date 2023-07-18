@@ -140,7 +140,7 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
 }
 
 extension FilePreviewScreenCoordinator: NodeActionMoveDelegate {
-    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+    func didSelectMoveFile(node: [ListNode], action: ActionMenu) {
         let navigationViewController = self.presenter
         let controller = FilesandFolderListViewController.instantiateViewController()
         controller.sourceNodeToMove = node

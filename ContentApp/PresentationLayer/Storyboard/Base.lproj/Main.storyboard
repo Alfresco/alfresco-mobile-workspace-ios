@@ -2788,9 +2788,11 @@
                                         <size key="customSize" width="414" height="63"/>
                                         <connections>
                                             <outlet property="imageView" destination="qXB-yw-32L" id="p0W-VS-3Gb"/>
+                                            <outlet property="leadingTitleLabel" destination="pNO-ch-86J" id="1bE-U9-Aaf"/>
                                             <outlet property="sectionSeparator" destination="KuZ-Dn-LhA" id="au8-Xi-sNZ"/>
                                             <outlet property="separator" destination="RhQ-Mc-Pef" id="Hpq-Lz-xGr"/>
                                             <outlet property="titleLabel" destination="yjp-iP-sjf" id="JqI-FW-0dm"/>
+                                            <outlet property="widthImageView" destination="dIo-lx-Nr2" id="QLr-Yh-tr9"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

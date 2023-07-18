@@ -54,7 +54,7 @@ class PresentingCoordinator: Coordinator {
 
     func startFolderCoordinator(for node: ListNode,
                                 presenter: UINavigationController,
-                                sourceNodeToMove: ListNode?) {
+                                sourceNodeToMove: [ListNode]?) {
         let isNodeOffline = isNodeOffline(node: node)
         if isNodeOffline {
             let coordinator = OfflineFolderChildrenScreenCoordinator(with: presenter,

@@ -23,15 +23,18 @@ class MultipleFileActionMenuScreenCoordinator: NSObject, Coordinator {
     private let presenter: UINavigationController
     private var actionMenuViewController: MultipleSelectionActionMenuViewController?
     private let actionMenuViewModel: MultipleSelectionActionMenuViewModel
+    let nodeActionViewModel: NodeActionsViewModel
     private let dismissHandler: () -> Void
     private var listNodes: [ListNode]
 
     init(with presenter: UINavigationController,
          actionMenuViewModel: MultipleSelectionActionMenuViewModel,
+         nodeActionViewModel: NodeActionsViewModel,
          listNodes: [ListNode],
          dismissHandler: @escaping () -> Void = {}) {
         self.presenter = presenter
         self.actionMenuViewModel = actionMenuViewModel
+        self.nodeActionViewModel = nodeActionViewModel
         self.listNodes = listNodes
         self.dismissHandler = dismissHandler
     }
@@ -43,6 +46,7 @@ class MultipleFileActionMenuScreenCoordinator: NSObject, Coordinator {
         bottomSheet.delegate = self
         viewController.coordinatorServices = coordinatorServices
         viewController.actionMenuModel = actionMenuViewModel
+        viewController.nodeActionsModel = nodeActionViewModel
         presenter.present(bottomSheet, animated: true, completion: nil)
         actionMenuViewController = viewController
     }

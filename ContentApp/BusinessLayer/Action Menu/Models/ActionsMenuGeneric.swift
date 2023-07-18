@@ -120,6 +120,9 @@ struct ActionsMenuGeneric {
     }
     
     static private func moveToFolderAction(for node: ListNode) -> ActionMenu? {
+        let enableAction = node.isAFileType() || node.isAFolderType()
+        if !enableAction { return nil }
+        
         if node.markedFor == .upload &&
             node.syncStatus != .synced {
             return nil
@@ -135,6 +138,9 @@ struct ActionsMenuGeneric {
     }
     
     static func renameNodeAction(for node: ListNode) -> ActionMenu? {
+        let enableAction = node.isAFileType() || node.isAFolderType()
+        if !enableAction { return nil }
+
         if node.markedFor == .upload &&
             node.syncStatus != .synced {
             return nil

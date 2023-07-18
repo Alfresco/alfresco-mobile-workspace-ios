@@ -27,6 +27,7 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -113,28 +114,39 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         }
     }
     
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
                                                           coordinatorServices: coordinatorServices)
             
+            let nodeActionsModel = NodeActionsViewModel(node: nodes.first,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: nodes)
+            nodeActionsModel.moveDelegate = self
+            
             let coordinator = MultipleFileActionMenuScreenCoordinator(with: navigationViewController,
                                                                       actionMenuViewModel: actionMenuViewModel,
+                                                                      nodeActionViewModel: nodeActionsModel,
                                                                       listNodes: nodes)
             coordinator.start()
             multipleSelectionActionMenuCoordinator = coordinator
         }
     }
     
-    func moveNodeTapped(for sourceNode: ListNode,
+    func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
-        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
-                                                    delegate: delegate,
-                                                    coordinatorServices: coordinatorServices)
-        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
-        self.nodeActionsModel = nodeActionsModel
+        for node in sourceNode {
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
+            self.nodeActionsModel = nodeActionsModel
+        }
     }
     
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
@@ -152,12 +164,17 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
 }
 
 extension FavoritesScreenCoordinator: NodeActionMoveDelegate {
-    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+    func didSelectMoveFile(node: [ListNode], action: ActionMenu) {
         if let navigationViewController = self.navigationViewController {
             let controller = FilesandFolderListViewController.instantiateViewController()
             controller.sourceNodeToMove = node
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
+            filesAndFolderViewController = controller
+            filesAndFolderViewController?.didSelectDismissAction = {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.favoritesViewController?.folderAndFilesViewController?.resetMultipleSelectionView()
+            }
         }
     }
 }

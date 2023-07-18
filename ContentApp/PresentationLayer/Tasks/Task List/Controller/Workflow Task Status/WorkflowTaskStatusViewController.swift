@@ -57,10 +57,15 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
             saveButton.isHidden = false
             selectStatusButton.isUserInteractionEnabled = true
             commentField.isUserInteractionEnabled = true
+            
+            statusLabel.isEnabled = true
+            commentField.isEnabled = true
         } else {
             saveButton.isHidden = true
             selectStatusButton.isUserInteractionEnabled = false
             commentField.isUserInteractionEnabled = false
+            statusLabel.isEnabled = false
+            commentField.isEnabled = false
         }
     }
     

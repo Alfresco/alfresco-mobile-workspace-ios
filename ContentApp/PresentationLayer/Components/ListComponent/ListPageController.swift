@@ -66,7 +66,7 @@ class ListPageController: ListPageControllerProtocol {
 
     private var shouldRefreshList = true
     private var requestInProgress = false
-    var sourceNodeToMove: ListNode?
+    var sourceNodeToMove: [ListNode]?
 
     init(dataSource: ListComponentModelProtocol, services: CoordinatorServices) {
         self.dataSource = dataSource
@@ -165,9 +165,12 @@ class ListPageController: ListPageControllerProtocol {
         
         var listNodes = results
         let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
-        if isMove, let node = sourceNodeToMove {
-            if let index = listNodes.firstIndex(where: {$0.guid == node.guid}) {
-                listNodes.remove(at: index)
+        if isMove {
+            let nodes = sourceNodeToMove ?? []
+            for node in nodes {
+                if let index = listNodes.firstIndex(where: {$0.guid == node.guid}) {
+                    listNodes.remove(at: index)
+                }
             }
         }
         

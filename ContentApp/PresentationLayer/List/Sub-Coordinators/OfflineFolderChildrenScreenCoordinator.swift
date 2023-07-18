@@ -27,6 +27,8 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
+    private var offlineFolderChildrenViewController: ListViewController?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -49,7 +51,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
         
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-
+        offlineFolderChildrenViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 }
@@ -102,26 +104,37 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
     
-    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
+                                               from dataSource: ListComponentModelProtocol,
+                                               delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
                                                       coordinatorServices: coordinatorServices)
         
+        let nodeActionsModel = NodeActionsViewModel(node: nodes.first,
+                                                    delegate: delegate,
+                                                    coordinatorServices: coordinatorServices,
+                                                    multipleNodes: nodes)
+        nodeActionsModel.moveDelegate = self
+        
         let coordinator = MultipleFileActionMenuScreenCoordinator(with: self.presenter,
                                                                   actionMenuViewModel: actionMenuViewModel,
+                                                                  nodeActionViewModel: nodeActionsModel,
                                                                   listNodes: nodes)
         coordinator.start()
         multipleSelectionActionMenuCoordinator = coordinator
     }
     
-    func moveNodeTapped(for sourceNode: ListNode,
+    func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
-        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
-                                                    delegate: delegate,
-                                                    coordinatorServices: coordinatorServices)
-        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
-        self.nodeActionsModel = nodeActionsModel
+        for node in sourceNode {
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
+            self.nodeActionsModel = nodeActionsModel
+        }
     }
 
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
@@ -139,11 +152,16 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
 }
 
 extension OfflineFolderChildrenScreenCoordinator: NodeActionMoveDelegate {
-    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+    func didSelectMoveFile(node: [ListNode], action: ActionMenu) {
         let navigationViewController = self.presenter
         let controller = FilesandFolderListViewController.instantiateViewController()
         controller.sourceNodeToMove = node
         let navController = UINavigationController(rootViewController: controller)
         navigationViewController.present(navController, animated: true)
+        filesAndFolderViewController = controller
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.offlineFolderChildrenViewController?.listController?.resetMultipleSelectionView()
+        }
     }
 }
