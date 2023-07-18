@@ -26,6 +26,8 @@ class ListComponentViewModel {
     weak var delegate: ListComponentViewModelDelegate?
     var model: ListComponentModelProtocol
     var pageViewName: String?
+    var isMultipleFileSelectionEnabled = false
+    var selectedMultipleItems = [ListNode]()
 
     init(model: ListComponentModelProtocol) {
         self.model = model

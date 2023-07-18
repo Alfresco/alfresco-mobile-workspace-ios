@@ -78,6 +78,7 @@ struct KeyConstants {
         static let configFileExtension = "json"
         static let mockTask = "mockTasks"
         static let mockComments = "mockComments"
+        static let mockNodeList = "mockNodeList"
     }
     
     struct FileSize {

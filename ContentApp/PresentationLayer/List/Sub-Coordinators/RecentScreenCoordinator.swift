@@ -28,7 +28,8 @@ class RecentScreenCoordinator: PresentingCoordinator,
     private var uploadFilesScreenCoordinator: UploadFilesScreenCoordinator?
     private var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
-
+    private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
+    
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
     }
@@ -108,6 +109,19 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
             coordinator.start()
             actionMenuCoordinator = coordinator
             self.nodeActionsModel = nodeActionsModel
+        }
+    }
+    
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+        if let navigationViewController = self.navigationViewController {
+            let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
+                                                          coordinatorServices: coordinatorServices)
+            
+            let coordinator = MultipleFileActionMenuScreenCoordinator(with: navigationViewController,
+                                                                      actionMenuViewModel: actionMenuViewModel,
+                                                                      listNodes: nodes)
+            coordinator.start()
+            multipleSelectionActionMenuCoordinator = coordinator
         }
     }
     

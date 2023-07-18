@@ -26,6 +26,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     var nodeActionsModel: NodeActionsViewModel?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -99,6 +100,17 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                       listNode: node)
         coordinator.start()
         actionMenuCoordinator = coordinator
+    }
+    
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+        let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
+                                                      coordinatorServices: coordinatorServices)
+        
+        let coordinator = MultipleFileActionMenuScreenCoordinator(with: self.presenter,
+                                                                  actionMenuViewModel: actionMenuViewModel,
+                                                                  listNodes: nodes)
+        coordinator.start()
+        multipleSelectionActionMenuCoordinator = coordinator
     }
     
     func moveNodeTapped(for sourceNode: ListNode,

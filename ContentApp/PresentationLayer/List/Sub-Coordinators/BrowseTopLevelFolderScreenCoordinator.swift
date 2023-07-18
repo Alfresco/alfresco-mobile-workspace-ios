@@ -30,6 +30,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var scanDocumentsCoordinator: ScanDocumentsScreenCoordinator?
     var sourceNodeToMove: ListNode?
     var nodeActionsModel: NodeActionsViewModel?
+    private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -106,6 +107,17 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                       listNode: node)
         coordinator.start()
         actionMenuCoordinator = coordinator
+    }
+    
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+        let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
+                                                      coordinatorServices: coordinatorServices)
+        
+        let coordinator = MultipleFileActionMenuScreenCoordinator(with: self.presenter,
+                                                                  actionMenuViewModel: actionMenuViewModel,
+                                                                  listNodes: nodes)
+        coordinator.start()
+        multipleSelectionActionMenuCoordinator = coordinator
     }
     
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {

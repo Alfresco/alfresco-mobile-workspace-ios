@@ -37,6 +37,8 @@ class FavoritesViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
+    // MARK: - View Life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -240,6 +242,15 @@ class FavoritesViewController: SystemSearchViewController {
 // MARK: - MDCTabBar Delegate
 
 extension FavoritesViewController: MDCTabBarViewDelegate {
+    func tabBarView(_ tabBarView: MDCTabBarView, shouldSelect item: UITabBarItem) -> Bool {
+        let isFavMultipleSelected = folderAndFilesListViewModel?.isMultipleFileSelectionEnabled ?? false
+        let isLibMultipleSelected = librariesListViewModel?.isMultipleFileSelectionEnabled ?? false
+        if isFavMultipleSelected || isLibMultipleSelected {
+            return false
+        }
+        return true
+    }
+    
     func tabBarView(_ tabBarView: MDCTabBarView, didSelect item: UITabBarItem) {
         selectTabItem(item: item)
     }
@@ -295,6 +306,12 @@ extension FavoritesViewController: ListComponentActionDelegate {
         } else if listComponentViewController == librariesViewController {
             librariesViewController?.stopLoading()
         }
+    }
+    
+    func enabledLongTapGestureForMultiSelection(isShowTabbar: Bool) {
+        guard let navigationController = self.navigationController else { return }
+        self.tabBarController?.setTabBarHidden(!isShowTabbar, navigationController: navigationController)
+        scrollView.isScrollEnabled = isShowTabbar
     }
 }
 

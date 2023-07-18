@@ -35,6 +35,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var scanDocumentsCoordinator: ScanDocumentsScreenCoordinator?
     var sourceNodeToMove: ListNode?
     var nodeActionsModel: NodeActionsViewModel?
+    private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -106,6 +107,17 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
 
+    func showActionSheetForMultiSelectListItem(for nodes: [ListNode]) {
+        let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
+                                                      coordinatorServices: coordinatorServices)
+        
+        let coordinator = MultipleFileActionMenuScreenCoordinator(with: self.presenter,
+                                                                  actionMenuViewModel: actionMenuViewModel,
+                                                                  listNodes: nodes)
+        coordinator.start()
+        multipleSelectionActionMenuCoordinator = coordinator
+    }
+    
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
         let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,

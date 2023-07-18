@@ -48,8 +48,8 @@ struct WorkflowFilters {
     }
     
     static func defaultFilter() -> WorkflowFilters {
-        return WorkflowFilters(localizedName: LocalizationConstants.Workflows.allTitle,
-                               filterID: 3,
-                               state: .all)
+        return WorkflowFilters(localizedName: LocalizationConstants.Tasks.active,
+                               filterID: 1,
+                               state: .running)
     }
 }
