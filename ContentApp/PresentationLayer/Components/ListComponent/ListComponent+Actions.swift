@@ -44,7 +44,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
 
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
-                              error: Error?) {
+                              error: Error?,
+                              multipleNodes: [ListNode]?) {
         if let error = error {
             self.display(error: error)
         } else {
@@ -58,10 +59,16 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
             } else if action.type.isWorkflowActions {
-                handleStartWorkflow(action: action, node: node)
+                let nodes = multipleNodes ?? []
+                if  nodes.isEmpty {
+                    handleStartWorkflow(action: action, node: [node!])
+                } else {
+                    handleStartWorkflow(action: action, node: nodes)
+                }
             }
             logEvent(with: action, node: node)
         }
+        resetMultipleSelectionView()
     }
 
     func handleFavorite(action: ActionMenu) {
@@ -171,7 +178,7 @@ extension ListComponentViewController {
 // MARK: - Workflow
 extension ListComponentViewController {
     
-    func handleStartWorkflow(action: ActionMenu, node: ListNode?) {
+    func handleStartWorkflow(action: ActionMenu, node: [ListNode]) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startableWorkflowList) as? StartableWorkflowsViewController {
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
@@ -184,13 +191,13 @@ extension ListComponentViewController {
         }
     }
     
-    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: ListNode?) {
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: [ListNode]) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController, let attachment = node {
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.appDefinition = appDefinition
             viewController.viewModel.isEditMode = true
-            viewController.viewModel.selectedAttachments = [attachment]
+            viewController.viewModel.selectedAttachments = node
             viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
             self.navigationViewController?.pushViewController(viewController, animated: true)
         }

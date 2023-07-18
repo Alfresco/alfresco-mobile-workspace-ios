@@ -168,13 +168,13 @@ class StartWorkflowViewModel: NSObject {
 // MARK: - Link content to APS
 extension StartWorkflowViewModel {
     
-    func linkContentToAPS(completionHandler: @escaping (_ node: ListNode?, _ error: Error?) -> Void) {
+    func linkContentToAPS(node: ListNode?, completionHandler: @escaping (_ node: ListNode?, _ error: Error?) -> Void) {
         
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             
-            if let params = linkContentParams() {
+            if let params = linkContentParams(node: node) {
                 ProcessAPI.linkContentToProcess(params: params) {[weak self] data, error in
                     guard let sSelf = self else { return }
                     sSelf.isLoading.value = false
@@ -191,12 +191,12 @@ extension StartWorkflowViewModel {
         })
     }
     
-    private func linkContentParams() -> ProcessRequestLinkContent? {
-        if let node = selectedAttachments.first {
+    private func linkContentParams(node: ListNode?) -> ProcessRequestLinkContent? {
+        if let listNode = node {
             let params = ProcessRequestLinkContent(source: "alfresco-1-adw-contentAlfresco",
-                                                   mimeType: node.mimeType,
-                                                   sourceId: node.guid,
-                                                   name: node.title)
+                                                   mimeType: listNode.mimeType,
+                                                   sourceId: listNode.guid,
+                                                   name: listNode.title)
             return params
         }
         return nil
