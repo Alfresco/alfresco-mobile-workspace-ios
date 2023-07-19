@@ -586,7 +586,7 @@ extension ListComponentViewController {
             if let index = selectedMultipleItems.firstIndex(where: {$0 == node}) {
                 selectedMultipleItems.remove(at: index)
             }
-        } else {
+        } else if selectedMultipleItems.count < APIConstants.multipleActionMaxSize {
             selectedMultipleItems.append(node)
         }
         
@@ -621,6 +621,10 @@ extension ListComponentViewController {
                 sSelf.listItemActionDelegate?.showActionSheetForMultiSelectListItem(for: nodes,
                                                                                     from: model,
                                                                                     delegate: sSelf)
+            }
+            
+            multipleSelectionHeader.didSelectMoveButtonAction = {[weak self] in
+                guard let sSelf = self else { return }
             }
         }
     }
