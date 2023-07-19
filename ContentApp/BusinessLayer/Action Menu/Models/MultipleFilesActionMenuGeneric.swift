@@ -29,11 +29,15 @@ struct MultipleFilesActionMenuGeneric {
 
         var actions2: [ActionMenu] = []
 
-        if let action = moveToFolderAction(for: nodes) {
+        if let action = favoriteAction(for: nodes) {
             actions2.append(action)
         }
         
-        if let action = favoriteAction(for: nodes) {
+        if let action = startWorkflowAction(for: nodes) {
+            actions2.append(action)
+        }
+        
+        if let action = moveToFolderAction(for: nodes) {
             actions2.append(action)
         }
         
@@ -44,11 +48,7 @@ struct MultipleFilesActionMenuGeneric {
         if let action = deleteAction(for: nodes) {
             actions2.append(action)
         }
-                
-        if let action = startWorkflowAction(for: nodes) {
-            actions2.append(action)
-        }
-
+        
         actions.append([infoAction])
         actions.append(actions2)
 
@@ -100,8 +100,8 @@ struct MultipleFilesActionMenuGeneric {
     }
 
     static func offlineAction(for nodes: [ListNode]) -> ActionMenu? {
-        
-        let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && (($0.syncStatus == .synced || $0.syncStatus == .undefined) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
+
+        let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && (($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
         if !filteredNodes.isEmpty {
             var isMarkOfflineAllowed = false
             for node in filteredNodes where !node.isMarkedOffline() {
