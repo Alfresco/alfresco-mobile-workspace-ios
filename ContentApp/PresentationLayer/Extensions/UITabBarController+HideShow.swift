@@ -25,7 +25,8 @@ extension UITabBarController {
 
         if !hidden {
             self.tabBar.isHidden = false
-            self.view.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight)
+            let tabbarHeight = self.tabBar.frame.size.height
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - tabbarHeight)
 
             UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut) {
                 let tabBarFrame = self.tabBar.frame
@@ -40,7 +41,7 @@ extension UITabBarController {
             } completion: { _ in
                 self.tabBar.isHidden = true
                 let tabbarHeight = self.tabBar.frame.size.height
-                self.view.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight + tabbarHeight)
+                self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height + tabbarHeight)
             }
         }
     }
