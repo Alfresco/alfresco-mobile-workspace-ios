@@ -413,17 +413,20 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     }
     
     func longTapGestureActivated(for element: ListNode?, in cell: ListElementCollectionViewCell) {
-        let isMoveFilesAndFolderFlow = appDelegate()?.isMoveFilesAndFolderFlow ?? false
-        let isSelectedItemsArrayEmpty = viewModel?.selectedMultipleItems.isEmpty ?? true
-        if isSelectedItemsArrayEmpty && !isMoveFilesAndFolderFlow {
-            guard let node = element else { return }
-            viewModel?.isMultipleFileSelectionEnabled = true
-            handleAddRemoveNodeList(node: node)
-            createButton.isHidden = true
-            listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
-            listActionButton.isHidden = true
-            showMultiSelectionHeader()
-            collectionView.reloadData()
+        let guid = element?.guid ?? "0"
+        if guid != "0" {
+            let isMoveFilesAndFolderFlow = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+            let isSelectedItemsArrayEmpty = viewModel?.selectedMultipleItems.isEmpty ?? true
+            if isSelectedItemsArrayEmpty && !isMoveFilesAndFolderFlow {
+                guard let node = element else { return }
+                viewModel?.isMultipleFileSelectionEnabled = true
+                handleAddRemoveNodeList(node: node)
+                createButton.isHidden = true
+                listActionDelegate?.enabledLongTapGestureForMultiSelection(isShowTabbar: false)
+                listActionButton.isHidden = true
+                showMultiSelectionHeader()
+                collectionView.reloadData()
+            }
         }
     }
 }
@@ -581,21 +584,23 @@ extension ListComponentViewController {
 
 extension ListComponentViewController {
     func handleAddRemoveNodeList(node: ListNode) {
-        var selectedMultipleItems = viewModel?.selectedMultipleItems ?? []
-        if selectedMultipleItems.contains(node) {
-            if let index = selectedMultipleItems.firstIndex(where: {$0 == node}) {
-                selectedMultipleItems.remove(at: index)
+        if node.guid != "0" {
+            var selectedMultipleItems = viewModel?.selectedMultipleItems ?? []
+            if selectedMultipleItems.contains(node) {
+                if let index = selectedMultipleItems.firstIndex(where: {$0 == node}) {
+                    selectedMultipleItems.remove(at: index)
+                }
+            } else if selectedMultipleItems.count < APIConstants.multipleActionMaxSize {
+                selectedMultipleItems.append(node)
             }
-        } else if selectedMultipleItems.count < APIConstants.multipleActionMaxSize {
-            selectedMultipleItems.append(node)
+            
+            viewModel?.selectedMultipleItems = selectedMultipleItems
+            showElementsCount()
+            if selectedMultipleItems.isEmpty {
+                resetMultipleSelectionView()
+            }
+            collectionView?.reloadData()
         }
-        
-        viewModel?.selectedMultipleItems = selectedMultipleItems
-        showElementsCount()
-        if selectedMultipleItems.isEmpty {
-            resetMultipleSelectionView()
-        }
-        collectionView?.reloadData()
     }
     
     private func showMultiSelectionHeader() {

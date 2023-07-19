@@ -297,6 +297,7 @@ class SyncOperationFactory {
                                                             SyncSharedNodes.store(uploadedNode: transfer)
                                                             transfer.syncStatus = .synced
                                                             let listNode = transfer.updateListNode(with: node)
+                                                            listNode.allowableOperations = [.delete, .update, .create, .updatePermissions]
                                                             sSelf.publishSyncStatusEvent(for: listNode)
                                                             transferDataAccessor.updateNode(node: transfer)
                                                             // transferDataAccessor.remove(transfer: transfer)
@@ -455,6 +456,7 @@ class SyncOperationFactory {
                             
                             if let attachement = TaskAttachmentOperations.processAttachments(for: [node], taskId: transfer.parentNodeId).first {
                                 let listNode = transfer.updateListNode(with: attachement)
+                                listNode.allowableOperations = [.delete, .update, .create, .updatePermissions]
                                 sSelf.publishSyncStatusEvent(for: listNode)
                                 transferDataAccessor.updateNode(node: transfer)
                             }

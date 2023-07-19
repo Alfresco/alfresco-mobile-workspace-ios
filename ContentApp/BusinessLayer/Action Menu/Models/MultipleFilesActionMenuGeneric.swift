@@ -58,7 +58,7 @@ struct MultipleFilesActionMenuGeneric {
     // MARK: Private Helpers
     
     static func getFilteredNodes(for nodes: [ListNode]) -> [ListNode] {
-        let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined)}
+        let filteredNodes = nodes.filter { (($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined)) || ($0.markedFor == .upload && $0.syncStatus == .synced)}
         return filteredNodes
     }
 
@@ -101,7 +101,8 @@ struct MultipleFilesActionMenuGeneric {
 
     static func offlineAction(for nodes: [ListNode]) -> ActionMenu? {
 
-        let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && (($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
+        let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
+        let filteredNodes = tempNodes.filter { (($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
         if !filteredNodes.isEmpty {
             var isMarkOfflineAllowed = false
             for node in filteredNodes where !node.isMarkedOffline() {
@@ -148,7 +149,8 @@ struct MultipleFilesActionMenuGeneric {
     static func startWorkflowAction(for nodes: [ListNode]) -> ActionMenu? {
         let isAPSEnable = APSService.isAPSServiceEnable ?? false
         if isAPSEnable {
-            let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined) && $0.isAFileType()}
+            let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
+            let filteredNodes = tempNodes.filter {$0.isAFileType()}
             if !filteredNodes.isEmpty {
                 let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
                                               type: .startWorkflow)
