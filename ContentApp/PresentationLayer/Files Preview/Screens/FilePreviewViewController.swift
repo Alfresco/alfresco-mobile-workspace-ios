@@ -419,7 +419,8 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
 
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
-                              error: Error?) {
+                              error: Error?,
+                              multipleNodes: [ListNode]?) {
         if let error = error {
             self.display(error: error)
         } else {

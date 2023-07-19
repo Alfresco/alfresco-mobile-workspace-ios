@@ -27,7 +27,8 @@ typealias ActionFinishedCompletionHandler = (() -> Void)
 protocol NodeActionsViewModelDelegate: AnyObject {
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
-                              error: Error?)
+                              error: Error?,
+                              multipleNodes: [ListNode]?)
 }
 
 protocol NodeActionMoveDelegate: AnyObject {
@@ -92,7 +93,8 @@ class NodeActionsViewModel {
                 guard let sSelf = self else { return }
                 sSelf.delegate?.handleFinishedAction(with: action,
                                                      node: sSelf.node,
-                                                     error: nil)
+                                                     error: nil,
+                                                     multipleNodes: sSelf.multipleNodes)
             })
         }
     }
@@ -416,7 +418,8 @@ class NodeActionsViewModel {
             guard let sSelf = self else { return }
             sSelf.delegate?.handleFinishedAction(with: action,
                                                  node: sSelf.node,
-                                                 error: error)
+                                                 error: error,
+                                                 multipleNodes: sSelf.multipleNodes)
         }
     }
 

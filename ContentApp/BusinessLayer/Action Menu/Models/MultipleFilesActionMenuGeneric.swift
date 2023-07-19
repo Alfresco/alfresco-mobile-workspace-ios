@@ -27,30 +27,30 @@ struct MultipleFilesActionMenuGeneric {
                                     type: .node,
                                     icon: nil)
 
-        var actions2: [ActionMenu] = []
+        var multipleActions: [ActionMenu] = []
 
-        if let action = moveToFolderAction(for: nodes) {
-            actions2.append(action)
+        if let action = favoriteAction(for: nodes) {
+            multipleActions.append(action)
         }
         
-        if let action = favoriteAction(for: nodes) {
-            actions2.append(action)
+        if let action = startWorkflowAction(for: nodes) {
+            multipleActions.append(action)
+        }
+        
+        if let action = moveToFolderAction(for: nodes) {
+            multipleActions.append(action)
         }
         
         if let action = offlineAction(for: nodes) {
-            actions2.append(action)
+            multipleActions.append(action)
         }
         
         if let action = deleteAction(for: nodes) {
-            actions2.append(action)
+            multipleActions.append(action)
         }
-                
-        if let action = startWorkflowAction(for: nodes) {
-            actions2.append(action)
-        }
-
+        
         actions.append([infoAction])
-        actions.append(actions2)
+        actions.append(multipleActions)
 
         return actions
     }
@@ -58,7 +58,7 @@ struct MultipleFilesActionMenuGeneric {
     // MARK: Private Helpers
     
     static func getFilteredNodes(for nodes: [ListNode]) -> [ListNode] {
-        let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined)}
+        let filteredNodes = nodes.filter { (($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined)) || ($0.markedFor == .upload && $0.syncStatus == .synced)}
         return filteredNodes
     }
 
@@ -100,8 +100,9 @@ struct MultipleFilesActionMenuGeneric {
     }
 
     static func offlineAction(for nodes: [ListNode]) -> ActionMenu? {
-        
-        let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && (($0.syncStatus == .synced || $0.syncStatus == .undefined) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
+
+        let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
+        let filteredNodes = tempNodes.filter { (($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
         if !filteredNodes.isEmpty {
             var isMarkOfflineAllowed = false
             for node in filteredNodes where !node.isMarkedOffline() {
@@ -148,7 +149,8 @@ struct MultipleFilesActionMenuGeneric {
     static func startWorkflowAction(for nodes: [ListNode]) -> ActionMenu? {
         let isAPSEnable = APSService.isAPSServiceEnable ?? false
         if isAPSEnable {
-            let filteredNodes = nodes.filter { ($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined) && $0.isAFileType()}
+            let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
+            let filteredNodes = tempNodes.filter {$0.isAFileType()}
             if !filteredNodes.isEmpty {
                 let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
                                               type: .startWorkflow)
