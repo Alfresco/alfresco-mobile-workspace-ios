@@ -24,6 +24,7 @@ struct APIConstants {
     static let my = "-my-" // swiftlint:disable:this identifier_name
     static let daysModifiedInterval = 30
     static let pageSize = 25
+    static let multipleActionMaxSize = 25
 
     struct Path {
         static let version = "alfresco/versions/1"
