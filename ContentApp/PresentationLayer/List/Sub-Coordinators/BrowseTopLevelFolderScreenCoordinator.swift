@@ -130,6 +130,14 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         multipleSelectionActionMenuCoordinator = coordinator
     }
     
+    func didSelectMoveMultipleListItems(for nodes: [ListNode],
+                                        from dataSource: ListComponentModelProtocol,
+                                        delegate: NodeActionsViewModelDelegate) {
+       
+        let actionMenu = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder, type: .moveToFolder)
+        didSelectMoveFile(node: nodes, action: actionMenu)
+    }
+    
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
         let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
