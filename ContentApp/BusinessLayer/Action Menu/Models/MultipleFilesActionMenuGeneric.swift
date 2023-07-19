@@ -27,30 +27,30 @@ struct MultipleFilesActionMenuGeneric {
                                     type: .node,
                                     icon: nil)
 
-        var actions2: [ActionMenu] = []
+        var multipleActions: [ActionMenu] = []
 
         if let action = favoriteAction(for: nodes) {
-            actions2.append(action)
+            multipleActions.append(action)
         }
         
         if let action = startWorkflowAction(for: nodes) {
-            actions2.append(action)
+            multipleActions.append(action)
         }
         
         if let action = moveToFolderAction(for: nodes) {
-            actions2.append(action)
+            multipleActions.append(action)
         }
         
         if let action = offlineAction(for: nodes) {
-            actions2.append(action)
+            multipleActions.append(action)
         }
         
         if let action = deleteAction(for: nodes) {
-            actions2.append(action)
+            multipleActions.append(action)
         }
         
         actions.append([infoAction])
-        actions.append(actions2)
+        actions.append(multipleActions)
 
         return actions
     }
