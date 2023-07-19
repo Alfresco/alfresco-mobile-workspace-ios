@@ -1,7 +1,11 @@
 name: Veracode Static Analysis Demo
 # TODO - currently only runs manually, when you run this depends on on your workflow
 #.       see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows for possibilities
-on: workflow_dispatch
+on: 
+    push:
+        branches:
+          - main
+    workflow_dispatch:
     
 jobs:
   static_analysis:
@@ -52,7 +56,6 @@ jobs:
           mkdir veracode
           zip veracode/ContentApp-Podfile.zip Podfile.lock
           zip -r veracode/ContentApp.xcarchive.zip ContentApp.xcarchive
-      
       # Can't use Veracode GitHub Action because container actions not supported on MacOS runners
       - name: Upload & Scan
         run: |
@@ -67,7 +70,7 @@ jobs:
             -appname "iOS AMW" \
             -createprofile true \
             -criticality VeryHigh \
-            -sandboxname github \
+            -sandboxname iOS_AMW-${{ github.run_number }} \
             -createsandbox true \
             -version "commit:${{ github.sha }},run_id:${{ github.run_id }},attempt_nr:${{ github.run_attempt }}" \
             -filepath veracode
