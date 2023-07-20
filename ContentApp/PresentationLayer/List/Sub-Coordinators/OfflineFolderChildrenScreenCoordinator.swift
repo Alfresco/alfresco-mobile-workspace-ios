@@ -29,6 +29,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
     private var filesAndFolderViewController: FilesandFolderListViewController?
     private var offlineFolderChildrenViewController: ListViewController?
+    let refreshGroup = DispatchGroup()
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -137,11 +138,19 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
         for node in sourceNode {
+            refreshGroup.enter()
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: sourceNode)
             nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
             self.nodeActionsModel = nodeActionsModel
+            self.refreshGroup.leave()
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.nodeActionsModel?.updateResponseForMove(with: actionMenu)
         }
     }
 

@@ -23,25 +23,23 @@ extension UITabBarController {
     func setTabBarHidden(_ hidden: Bool, navigationController: UINavigationController?) {
         guard let navigationController = navigationController else { return }
 
+        let tabBarFrame = self.tabBar.frame
         if !hidden {
+            if !self.tabBar.isHidden { return }
             self.tabBar.isHidden = false
-            let tabbarHeight = self.tabBar.frame.size.height
-            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - tabbarHeight)
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - tabBarFrame.size.height)
 
             UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut) {
-                let tabBarFrame = self.tabBar.frame
                 self.tabBar.frame.origin.y = navigationController.view.frame.maxY - tabBarFrame.height
                 navigationController.view.layoutIfNeeded()
             }
         } else {
             UIView.animate(withDuration: 0.0, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.7, options: .curveEaseOut) {
-                let tabBarFrame = self.tabBar.frame
                 self.tabBar.frame.origin.y = navigationController.view.frame.maxY + tabBarFrame.height
                 navigationController.view.layoutIfNeeded()
             } completion: { _ in
                 self.tabBar.isHidden = true
-                let tabbarHeight = self.tabBar.frame.size.height
-                self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height + tabbarHeight)
+                self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height + tabBarFrame.size.height)
             }
         }
     }

@@ -120,6 +120,9 @@
 "approved-upload-media" = "Media scheduled for upload.";
 "approved-moved-folder" = "%@ moved successfully.";
 "approved-update" = "%@ was updated";
+"approved-moved-multiple-files-to-folder" = "%d nodes moved successfully.";
+"approved-multiple-remove-offline" = "%d nodes will no longer be available offline.";
+"approved-multiple-mark-offline" = "%d nodes will be made available offline.";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";

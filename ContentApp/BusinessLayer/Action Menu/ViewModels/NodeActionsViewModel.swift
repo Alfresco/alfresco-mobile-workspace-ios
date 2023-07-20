@@ -28,7 +28,7 @@ protocol NodeActionsViewModelDelegate: AnyObject {
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
                               error: Error?,
-                              multipleNodes: [ListNode]?)
+                              multipleNodes: [ListNode])
 }
 
 protocol NodeActionMoveDelegate: AnyObject {
@@ -43,8 +43,9 @@ class NodeActionsViewModel {
     private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
     weak var moveDelegate: NodeActionMoveDelegate?
-    private var multipleNodes: [ListNode]?
+    private var multipleNodes = [ListNode]()
     private let sheetDismissDelay = 0.5
+    let refreshGroup = DispatchGroup()
 
     // MARK: Init
 
@@ -53,7 +54,7 @@ class NodeActionsViewModel {
          coordinatorServices: CoordinatorServices?,
          multipleNodes: [ListNode]? = nil) {
         self.node = node
-        self.multipleNodes = multipleNodes
+        self.multipleNodes = multipleNodes ?? []
         self.delegate = delegate
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
@@ -143,23 +144,38 @@ class NodeActionsViewModel {
     }
 
     private func requestMarkOffline(action: ActionMenu) {
-        if let node = self.node {
-            node.id = 0
-            node.syncStatus = .pending
-            node.markedAsOffline = true
-            listNodeDataAccessor.store(node: node)
-
-            action.type = .removeOffline
-            action.title = LocalizationConstants.ActionMenu.removeOffline
-            action.analyticEventName = "\(ActionMenuType.markOffline)"
-
-            let offlineEvent = OfflineEvent(node: node, eventType: .marked)
-            let eventBusService = coordinatorServices?.eventBusService
-            eventBusService?.publish(event: offlineEvent, on: .mainQueue)
-
-            coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeMarkedOffline)
+        
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                print(multipleNode.title)
+                refreshGroup.enter()
+                updateNodeForOffline(node: multipleNode, action: action)
+                refreshGroup.leave()
+            }
+        } else if let node = self.node {
+            updateNodeForOffline(node: node, action: action)
         }
-        handleResponse(error: nil, action: action)
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func updateNodeForOffline(node: ListNode, action: ActionMenu) {
+        node.id = 0
+        node.syncStatus = .pending
+        node.markedAsOffline = true
+        listNodeDataAccessor.store(node: node)
+
+        action.type = .removeOffline
+        action.title = LocalizationConstants.ActionMenu.removeOffline
+        action.analyticEventName = "\(ActionMenuType.markOffline)"
+
+        let offlineEvent = OfflineEvent(node: node, eventType: .marked)
+        let eventBusService = coordinatorServices?.eventBusService
+        eventBusService?.publish(event: offlineEvent, on: .mainQueue)
+        coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeMarkedOffline)
     }
 
     private func requestRemoveOffline(action: ActionMenu) {
@@ -266,9 +282,9 @@ class NodeActionsViewModel {
     }
     
     private func requestMoveToFolder(action: ActionMenu) {
-        if let nodes = multipleNodes, !nodes.isEmpty {
+        if !multipleNodes.isEmpty {
             DispatchQueue.main.async {
-                self.moveDelegate?.didSelectMoveFile(node: nodes, action: action)
+                self.moveDelegate?.didSelectMoveFile(node: self.multipleNodes, action: action)
             }
         } else {
             guard let node = self.node else { return }
@@ -279,7 +295,9 @@ class NodeActionsViewModel {
     }
     
     func moveFilesAndFolder(with sourceNode: ListNode, and destinationNode: ListNode, action: ActionMenu) {
+        
         sessionForCurrentAccount { [weak self] (_) in
+            guard let sSelf = self else { return }
             let nodeBodyMove = NodeBodyMove(targetParentId: destinationNode.guid, name: nil)
             NodesAPI.moveNode(nodeId: sourceNode.guid, nodeBodyMove: nodeBodyMove) { [weak self] (data, error) in
                 guard let sSelf = self else { return }
@@ -288,9 +306,12 @@ class NodeActionsViewModel {
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
-                sSelf.handleResponse(error: error, action: action)
             }
         }
+    }
+    
+    func updateResponseForMove(with action: ActionMenu) {
+        handleResponse(error: nil, action: action)
     }
 
     private func requestRestoreFromTrash(action: ActionMenu) {
@@ -405,7 +426,6 @@ class NodeActionsViewModel {
         let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-
             completionHandler(authenticationProvider)
         })
     }
