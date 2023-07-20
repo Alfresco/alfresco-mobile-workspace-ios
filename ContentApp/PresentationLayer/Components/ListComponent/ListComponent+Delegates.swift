@@ -42,6 +42,9 @@ protocol ListItemActionDelegate: AnyObject {
     func showActionSheetForMultiSelectListItem(for nodes: [ListNode],
                                                from dataSource: ListComponentModelProtocol,
                                                delegate: NodeActionsViewModelDelegate)
+    func didSelectMoveMultipleListItems(for nodes: [ListNode],
+                                        from dataSource: ListComponentModelProtocol,
+                                        delegate: NodeActionsViewModelDelegate)
 }
 
 protocol ListComponentActionDelegate: AnyObject {

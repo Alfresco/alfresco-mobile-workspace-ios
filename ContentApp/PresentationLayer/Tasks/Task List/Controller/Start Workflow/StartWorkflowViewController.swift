@@ -315,10 +315,12 @@ class StartWorkflowViewController: SystemSearchViewController {
     // MARK: - Link content
     private func linkContent() {
         if viewModel.isDetailWorkflow { return }
-        viewModel.linkContentToAPS { [weak self] node, error in
-            guard let sSelf = self else { return }
-            if let node = node {
-                sSelf.updateListNodeForLinkContent(node: node)
+        for node in viewModel.selectedAttachments {
+            viewModel.linkContentToAPS(node: node) { [weak self] node, error in
+                guard let sSelf = self else { return }
+                if let node = node {
+                    sSelf.updateListNodeForLinkContent(node: node)
+                }
             }
         }
     }

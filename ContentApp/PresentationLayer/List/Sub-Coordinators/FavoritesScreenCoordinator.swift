@@ -136,6 +136,14 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         }
     }
     
+    func didSelectMoveMultipleListItems(for nodes: [ListNode],
+                                        from dataSource: ListComponentModelProtocol,
+                                        delegate: NodeActionsViewModelDelegate) {
+       
+        let actionMenu = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder, type: .moveToFolder)
+        didSelectMoveFile(node: nodes, action: actionMenu)
+    }
+    
     func moveNodeTapped(for sourceNode: [ListNode],
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
