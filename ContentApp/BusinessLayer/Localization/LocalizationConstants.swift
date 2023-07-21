@@ -137,6 +137,9 @@ struct LocalizationConstants {
         static let movedFileFolderSuccess = NSLocalizedString("approved-moved-folder", comment: "")
         static let updated = NSLocalizedString("approved-update", comment: "")
         static let uploadDocument = NSLocalizedString("approved-upload-scanned-document", comment: "")
+        static let movedMultipleFileFolderSuccess = NSLocalizedString("approved-moved-multiple-files-to-folder", comment: "")
+        static let markOfflineMultipleNodes = NSLocalizedString("approved-multiple-mark-offline", comment: "")
+        static let removeOfflineMultipleNodes = NSLocalizedString("approved-multiple-remove-offline", comment: "")
     }
 
     struct Theme {

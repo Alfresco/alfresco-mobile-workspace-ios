@@ -45,7 +45,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
                               error: Error?,
-                              multipleNodes: [ListNode]?) {
+                              multipleNodes: [ListNode]) {
         if let error = error {
             self.display(error: error)
         } else {
@@ -53,14 +53,14 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             if action.type.isFavoriteActions {
                 handleFavorite(action: action)
             } else if action.type.isMoveActions {
-                handleMove(action: action, node: node)
+                handleMove(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isCreateActions {
                 handleSheetCreate(action: action, node: node)
             } else if action.type.isDownloadActions {
-                handleDownload(action: action, node: node)
+                handleDownload(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isWorkflowActions {
-                let nodes = multipleNodes ?? []
-                if  nodes.isEmpty {
+                let nodes = multipleNodes
+                if nodes.isEmpty {
                     handleStartWorkflow(action: action, node: [node!])
                 } else {
                     handleStartWorkflow(action: action, node: nodes)
@@ -83,7 +83,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         displaySnackbar(with: snackBarMessage, type: .approve)
     }
 
-    func handleMove(action: ActionMenu, node: ListNode?) {
+    func handleMove(action: ActionMenu, node: ListNode?, multipleNodes: [ListNode]) {
         var snackBarMessage: String?
         guard let node = node else { return }
         switch action.type {
@@ -97,8 +97,13 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
                                      node.truncateTailTitle())
         case .moveToFolder:
-            snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedMultipleFileFolderSuccess,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess,
+                                         node.truncateTailTitle())
+            }
             self.perform(#selector(triggerMoveNotifyService), with: nil, afterDelay: 1.0)
         default: break
         }
@@ -131,16 +136,28 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         }
     }
 
-    func handleDownload(action: ActionMenu, node: ListNode?) {
+    func handleDownload(action: ActionMenu, node: ListNode?, multipleNodes: [ListNode]) {
         var snackBarMessage: String?
         guard let node = node else { return }
         switch action.type {
         case .markOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.removeOfflineMultipleNodes,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+                                         node.truncateTailTitle())
+            }
+            
         case .removeOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.markOfflineMultipleNodes,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+                                         node.truncateTailTitle())
+            }
+            
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)

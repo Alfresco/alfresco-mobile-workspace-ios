@@ -43,7 +43,7 @@ extension SystemSearchViewController: NodeActionsViewModelDelegate,
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
                               error: Error?,
-                              multipleNodes: [ListNode]?) {
+                              multipleNodes: [ListNode]) {
         if let error = error {
             self.display(error: error)
         } else {

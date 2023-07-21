@@ -103,7 +103,8 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
                                                           coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: [])
             nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
@@ -151,7 +152,8 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         for node in sourceNode {
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: sourceNode)
             nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
             self.nodeActionsModel = nodeActionsModel
         }

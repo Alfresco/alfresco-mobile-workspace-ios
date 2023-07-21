@@ -30,7 +30,7 @@ class RecentScreenCoordinator: PresentingCoordinator,
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
     private var filesAndFolderViewController: FilesandFolderListViewController?
-    
+
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
     }
@@ -101,7 +101,8 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
                                                           coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: [])
             nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
@@ -125,7 +126,6 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
                                                         coordinatorServices: coordinatorServices,
                                                         multipleNodes: nodes)
             nodeActionsModel.moveDelegate = self
-
             let coordinator = MultipleFileActionMenuScreenCoordinator(with: navigationViewController,
                                                                       actionMenuViewModel: actionMenuViewModel,
                                                                       nodeActionViewModel: nodeActionsModel,
@@ -158,7 +158,8 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
         for node in sourceNode {
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: sourceNode)
             nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
             self.nodeActionsModel = nodeActionsModel
         }

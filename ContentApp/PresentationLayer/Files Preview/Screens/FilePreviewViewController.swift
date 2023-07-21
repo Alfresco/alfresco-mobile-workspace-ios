@@ -486,7 +486,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
                               error: Error?,
-                              multipleNodes: [ListNode]?) {
+                              multipleNodes: [ListNode]) {
         if let error = error {
             self.display(error: error)
         } else {
@@ -499,7 +499,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             } else if action.type.isMoveActions {
                 handleMove(action: action, node: node)
             } else if action.type.isDownloadActions {
-                handleDownload(action: action, node: node)
+                handleDownload(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isCreateActions {
                 handleSheetCreate(action: action, node: node)
             } else if action.type.isWorkflowActions {
@@ -545,16 +545,28 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         }
     }
 
-    func handleDownload(action: ActionMenu, node: ListNode?) {
-        guard let node = node else { return }
+    func handleDownload(action: ActionMenu, node: ListNode?, multipleNodes: [ListNode]) {
         var snackBarMessage: String?
+        guard let node = node else { return }
         switch action.type {
         case .markOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.removeOfflineMultipleNodes,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+                                         node.truncateTailTitle())
+            }
+            
         case .removeOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.markOfflineMultipleNodes,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+                                         node.truncateTailTitle())
+            }
+            
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
