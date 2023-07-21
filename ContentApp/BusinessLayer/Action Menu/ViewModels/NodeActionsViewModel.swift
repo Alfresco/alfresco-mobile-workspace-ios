@@ -52,9 +52,9 @@ class NodeActionsViewModel {
     init(node: ListNode? = nil,
          delegate: NodeActionsViewModelDelegate?,
          coordinatorServices: CoordinatorServices?,
-         multipleNodes: [ListNode]? = nil) {
+         multipleNodes: [ListNode]) {
         self.node = node
-        self.multipleNodes = multipleNodes ?? []
+        self.multipleNodes = multipleNodes
         self.delegate = delegate
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
@@ -147,13 +147,12 @@ class NodeActionsViewModel {
         
         if !multipleNodes.isEmpty {
             for multipleNode in multipleNodes {
-                print(multipleNode.title)
                 refreshGroup.enter()
-                updateNodeForOffline(node: multipleNode, action: action)
+                updateNodeForAddOffline(node: multipleNode, action: action)
                 refreshGroup.leave()
             }
         } else if let node = self.node {
-            updateNodeForOffline(node: node, action: action)
+            updateNodeForAddOffline(node: node, action: action)
         }
         
         refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
@@ -162,7 +161,7 @@ class NodeActionsViewModel {
         }
     }
     
-    private func updateNodeForOffline(node: ListNode, action: ActionMenu) {
+    private func updateNodeForAddOffline(node: ListNode, action: ActionMenu) {
         node.id = 0
         node.syncStatus = .pending
         node.markedAsOffline = true
@@ -179,25 +178,42 @@ class NodeActionsViewModel {
     }
 
     private func requestRemoveOffline(action: ActionMenu) {
-        if let node = self.node {
-            if let queriedNode = listNodeDataAccessor.query(node: node) {
-                queriedNode.markedAsOffline = false
-                queriedNode.markedFor = .removal
-                queriedNode.syncStatus = .undefined
-                listNodeDataAccessor.store(node: queriedNode)
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                updateNodeForRemoveOffline(node: multipleNode, action: action)
+                refreshGroup.leave()
             }
-
-            action.type = .markOffline
-            action.title = LocalizationConstants.ActionMenu.markOffline
-            action.analyticEventName = "\(ActionMenuType.removeOffline)"
-
-            let offlineEvent = OfflineEvent(node: node, eventType: .removed)
-            let eventBusService = coordinatorServices?.eventBusService
-            eventBusService?.publish(event: offlineEvent, on: .mainQueue)
-
-            coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeRemovedFromOffline)
+        } else if let node = self.node {
+            updateNodeForRemoveOffline(node: node, action: action)
         }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+        
         handleResponse(error: nil, action: action)
+    }
+    
+    private func updateNodeForRemoveOffline(node: ListNode, action: ActionMenu) {
+       
+        if let queriedNode = listNodeDataAccessor.query(node: node) {
+            queriedNode.markedAsOffline = false
+            queriedNode.markedFor = .removal
+            queriedNode.syncStatus = .undefined
+            listNodeDataAccessor.store(node: queriedNode)
+        }
+        
+        action.type = .markOffline
+        action.title = LocalizationConstants.ActionMenu.markOffline
+        action.analyticEventName = "\(ActionMenuType.removeOffline)"
+
+        let offlineEvent = OfflineEvent(node: node, eventType: .removed)
+        let eventBusService = coordinatorServices?.eventBusService
+        eventBusService?.publish(event: offlineEvent, on: .mainQueue)
+
+        coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeRemovedFromOffline)
     }
 
     private func requestAddToFavorites(action: ActionMenu) {

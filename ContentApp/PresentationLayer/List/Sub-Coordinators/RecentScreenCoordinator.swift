@@ -102,7 +102,8 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
                                                           coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: [])
             nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,

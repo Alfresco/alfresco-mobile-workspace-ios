@@ -660,9 +660,10 @@ extension ListComponentViewController {
         listActionButton?.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? true)
         hideMultipleSelectionHeader()
         viewModel?.isMultipleFileSelectionEnabled = false
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.collectionView.reloadData()
+        })
     }
 }
 
