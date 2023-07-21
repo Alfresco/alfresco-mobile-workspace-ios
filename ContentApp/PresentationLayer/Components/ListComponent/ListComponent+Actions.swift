@@ -51,7 +51,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         } else {
             guard let action = action else { return }
             if action.type.isFavoriteActions {
-                handleFavorite(action: action)
+                handleFavorite(action: action, multipleNodes: multipleNodes)
             } else if action.type.isMoveActions {
                 handleMove(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isCreateActions {
@@ -71,13 +71,23 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         resetMultipleSelectionView()
     }
 
-    func handleFavorite(action: ActionMenu) {
+    func handleFavorite(action: ActionMenu, multipleNodes: [ListNode]) {
         var snackBarMessage: String?
         switch action.type {
         case .addFavorite:
-            snackBarMessage = LocalizationConstants.Approved.removedFavorites
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsRemovedFavorites,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = LocalizationConstants.Approved.removedFavorites
+            }
         case .removeFavorite:
-            snackBarMessage = LocalizationConstants.Approved.addedFavorites
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsAdddedFavorites,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = LocalizationConstants.Approved.addedFavorites
+            }
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
@@ -96,11 +106,21 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
                                          node.truncateTailTitle())
             }
         case .restore:
-            snackBarMessage = String(format: LocalizationConstants.Approved.restored,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleRestored,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.restored,
+                                         node.truncateTailTitle())
+            }
         case .permanentlyDelete:
-            snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleDeleted,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
+                                         node.truncateTailTitle())
+            }
         case .moveToFolder:
             if multipleNodes.count > 1 {
                 snackBarMessage = String(format: LocalizationConstants.Approved.movedMultipleFileFolderSuccess,

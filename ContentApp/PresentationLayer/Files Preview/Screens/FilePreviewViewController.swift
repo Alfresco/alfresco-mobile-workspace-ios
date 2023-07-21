@@ -429,7 +429,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             if action.type.isGenericActions {
                 handleGeneric(action: action, node: node)
             } else if action.type.isFavoriteActions {
-                handleFavorite(action: action)
+                handleFavorite(action: action, multipleNodes: multipleNodes)
             } else if action.type.isMoveActions {
                 handleMove(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isDownloadActions {
@@ -453,13 +453,23 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         }
     }
 
-    func handleFavorite(action: ActionMenu) {
+    func handleFavorite(action: ActionMenu, multipleNodes: [ListNode]) {
         var snackBarMessage: String?
         switch action.type {
         case .addFavorite:
-            snackBarMessage = LocalizationConstants.Approved.removedFavorites
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsRemovedFavorites,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = LocalizationConstants.Approved.removedFavorites
+            }
         case .removeFavorite:
-            snackBarMessage = LocalizationConstants.Approved.addedFavorites
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsAdddedFavorites,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = LocalizationConstants.Approved.addedFavorites
+            }
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
