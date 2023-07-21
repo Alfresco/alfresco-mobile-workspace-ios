@@ -128,6 +128,7 @@ struct LocalizationConstants {
         static let addedFavorites = NSLocalizedString("approved-added-favorites", comment: "")
         static let removedFavorites = NSLocalizedString("approved-removed-favorites", comment: "")
         static let movedTrash = NSLocalizedString("approved-moved-trash", comment: "")
+        static let movedMultipleItemsToTrash = NSLocalizedString("approved-multiple-moved-to-trash", comment: "")
         static let restored = NSLocalizedString("approved-restored", comment: "")
         static let deleted = NSLocalizedString("approved-deleted", comment: "")
         static let created = NSLocalizedString("approved-created", comment: "")

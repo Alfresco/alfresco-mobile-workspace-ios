@@ -88,8 +88,13 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         guard let node = node else { return }
         switch action.type {
         case .moveTrash:
-            snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
-                                     node.truncateTailTitle())
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedMultipleItemsToTrash,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
+                                         node.truncateTailTitle())
+            }
         case .restore:
             snackBarMessage = String(format: LocalizationConstants.Approved.restored,
                                      node.truncateTailTitle())

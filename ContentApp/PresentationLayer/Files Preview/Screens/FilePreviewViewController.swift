@@ -431,7 +431,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             } else if action.type.isFavoriteActions {
                 handleFavorite(action: action)
             } else if action.type.isMoveActions {
-                handleMove(action: action, node: node)
+                handleMove(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isCreateActions {
@@ -465,15 +465,22 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         displaySnackbar(with: snackBarMessage, type: .approve)
     }
 
-    func handleMove(action: ActionMenu, node: ListNode?) {
+    func handleMove(action: ActionMenu, node: ListNode?, multipleNodes: [ListNode]) {
         guard let node = node else { return }
         switch action.type {
         case .moveTrash:
             filePreviewCoordinatorDelegate?.navigateBack()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
-                                              node.truncateTailTitle()),
-                                 type: .approve, finish: nil)
+                
+                if multipleNodes.count > 1 {
+                    Snackbar.display(with: String(format: LocalizationConstants.Approved.movedMultipleItemsToTrash,
+                                                  multipleNodes.count),
+                                     type: .approve, finish: nil)
+                } else {
+                    Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
+                                                  node.truncateTailTitle()),
+                                     type: .approve, finish: nil)
+                }
             })
         default: break
         }

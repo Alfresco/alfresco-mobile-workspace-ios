@@ -123,6 +123,7 @@
 "approved-moved-multiple-files-to-folder" = "%d items moved successfully.";
 "approved-multiple-remove-offline" = "%d items will no longer be available offline.";
 "approved-multiple-mark-offline" = "%d items will be made available offline.";
+"approved-multiple-moved-to-trash" = "%d items moved to trash";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
