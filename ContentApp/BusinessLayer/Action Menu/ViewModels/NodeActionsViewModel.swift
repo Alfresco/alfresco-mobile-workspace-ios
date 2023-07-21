@@ -28,7 +28,7 @@ protocol NodeActionsViewModelDelegate: AnyObject {
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
                               error: Error?,
-                              multipleNodes: [ListNode]?)
+                              multipleNodes: [ListNode])
 }
 
 protocol NodeActionMoveDelegate: AnyObject {
@@ -43,15 +43,16 @@ class NodeActionsViewModel {
     private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
     weak var moveDelegate: NodeActionMoveDelegate?
-    private var multipleNodes: [ListNode]?
+    private var multipleNodes = [ListNode]()
     private let sheetDismissDelay = 0.5
+    let refreshGroup = DispatchGroup()
 
     // MARK: Init
 
     init(node: ListNode? = nil,
          delegate: NodeActionsViewModelDelegate?,
          coordinatorServices: CoordinatorServices?,
-         multipleNodes: [ListNode]? = nil) {
+         multipleNodes: [ListNode]) {
         self.node = node
         self.multipleNodes = multipleNodes
         self.delegate = delegate
@@ -99,6 +100,7 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Favorite
     private func handleFavorite(action: ActionMenu) {
         sessionForCurrentAccount { [weak self] (_) in
             guard let sSelf = self else { return }
@@ -112,6 +114,7 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Move
     private func handleMove(action: ActionMenu) {
         sessionForCurrentAccount { [weak self] (_) in
             guard let sSelf = self else { return }
@@ -130,6 +133,7 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Download
     private func handleDownload(action: ActionMenu) {
         switch action.type {
         case .download:
@@ -142,48 +146,80 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Add Offline
     private func requestMarkOffline(action: ActionMenu) {
-        if let node = self.node {
-            node.id = 0
-            node.syncStatus = .pending
-            node.markedAsOffline = true
-            listNodeDataAccessor.store(node: node)
-
-            action.type = .removeOffline
-            action.title = LocalizationConstants.ActionMenu.removeOffline
-            action.analyticEventName = "\(ActionMenuType.markOffline)"
-
-            let offlineEvent = OfflineEvent(node: node, eventType: .marked)
-            let eventBusService = coordinatorServices?.eventBusService
-            eventBusService?.publish(event: offlineEvent, on: .mainQueue)
-
-            coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeMarkedOffline)
-        }
-        handleResponse(error: nil, action: action)
-    }
-
-    private func requestRemoveOffline(action: ActionMenu) {
-        if let node = self.node {
-            if let queriedNode = listNodeDataAccessor.query(node: node) {
-                queriedNode.markedAsOffline = false
-                queriedNode.markedFor = .removal
-                queriedNode.syncStatus = .undefined
-                listNodeDataAccessor.store(node: queriedNode)
+        
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                updateNodeForAddOffline(node: multipleNode, action: action)
+                refreshGroup.leave()
             }
-
-            action.type = .markOffline
-            action.title = LocalizationConstants.ActionMenu.markOffline
-            action.analyticEventName = "\(ActionMenuType.removeOffline)"
-
-            let offlineEvent = OfflineEvent(node: node, eventType: .removed)
-            let eventBusService = coordinatorServices?.eventBusService
-            eventBusService?.publish(event: offlineEvent, on: .mainQueue)
-
-            coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeRemovedFromOffline)
+        } else if let node = self.node {
+            updateNodeForAddOffline(node: node, action: action)
         }
-        handleResponse(error: nil, action: action)
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func updateNodeForAddOffline(node: ListNode, action: ActionMenu) {
+        node.id = 0
+        node.syncStatus = .pending
+        node.markedAsOffline = true
+        listNodeDataAccessor.store(node: node)
+
+        action.type = .removeOffline
+        action.title = LocalizationConstants.ActionMenu.removeOffline
+        action.analyticEventName = "\(ActionMenuType.markOffline)"
+
+        let offlineEvent = OfflineEvent(node: node, eventType: .marked)
+        let eventBusService = coordinatorServices?.eventBusService
+        eventBusService?.publish(event: offlineEvent, on: .mainQueue)
+        coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeMarkedOffline)
     }
 
+    // MARK: - Remove Offline
+    private func requestRemoveOffline(action: ActionMenu) {
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                updateNodeForRemoveOffline(node: multipleNode, action: action)
+                refreshGroup.leave()
+            }
+        } else if let node = self.node {
+            updateNodeForRemoveOffline(node: node, action: action)
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func updateNodeForRemoveOffline(node: ListNode, action: ActionMenu) {
+       
+        if let queriedNode = listNodeDataAccessor.query(node: node) {
+            queriedNode.markedAsOffline = false
+            queriedNode.markedFor = .removal
+            queriedNode.syncStatus = .undefined
+            listNodeDataAccessor.store(node: queriedNode)
+        }
+        
+        action.type = .markOffline
+        action.title = LocalizationConstants.ActionMenu.markOffline
+        action.analyticEventName = "\(ActionMenuType.removeOffline)"
+
+        let offlineEvent = OfflineEvent(node: node, eventType: .removed)
+        let eventBusService = coordinatorServices?.eventBusService
+        eventBusService?.publish(event: offlineEvent, on: .mainQueue)
+
+        coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeRemovedFromOffline)
+    }
+
+    // MARK: - Add to Favorite
     private func requestAddToFavorites(action: ActionMenu) {
         guard let node = self.node else { return }
         let jsonGuid = JSONValue(dictionaryLiteral: ("guid", JSONValue(stringLiteral: node.guid)))
@@ -212,6 +248,7 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Remove from Favorite
     private func requestRemoveFromFavorites(action: ActionMenu) {
         guard let node = self.node else { return }
         FavoritesAPI.deleteFavorite(personId: APIConstants.me,
@@ -231,6 +268,7 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Move to Trash / Delete
     private func requestMoveToTrash(action: ActionMenu) {
         guard let node = self.node else { return }
         if node.nodeType == .site {
@@ -265,10 +303,11 @@ class NodeActionsViewModel {
         }
     }
     
+    // MARK: - Move to Folder
     private func requestMoveToFolder(action: ActionMenu) {
-        if let nodes = multipleNodes, !nodes.isEmpty {
+        if !multipleNodes.isEmpty {
             DispatchQueue.main.async {
-                self.moveDelegate?.didSelectMoveFile(node: nodes, action: action)
+                self.moveDelegate?.didSelectMoveFile(node: self.multipleNodes, action: action)
             }
         } else {
             guard let node = self.node else { return }
@@ -279,7 +318,28 @@ class NodeActionsViewModel {
     }
     
     func moveFilesAndFolder(with sourceNode: ListNode, and destinationNode: ListNode, action: ActionMenu) {
+        
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                moveNode(sourceNode: multipleNode, destinationNode: destinationNode, action: action)
+                refreshGroup.leave()
+            }
+        } else {
+            refreshGroup.enter()
+            moveNode(sourceNode: sourceNode, destinationNode: destinationNode, action: action)
+            refreshGroup.leave()
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func moveNode(sourceNode: ListNode, destinationNode: ListNode, action: ActionMenu) {
         sessionForCurrentAccount { [weak self] (_) in
+            guard let sSelf = self else { return }
             let nodeBodyMove = NodeBodyMove(targetParentId: destinationNode.guid, name: nil)
             NodesAPI.moveNode(nodeId: sourceNode.guid, nodeBodyMove: nodeBodyMove) { [weak self] (data, error) in
                 guard let sSelf = self else { return }
@@ -288,11 +348,11 @@ class NodeActionsViewModel {
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
-                sSelf.handleResponse(error: error, action: action)
             }
         }
     }
 
+    // MARK: - Restore from Trash
     private func requestRestoreFromTrash(action: ActionMenu) {
         guard let node = self.node else { return }
         TrashcanAPI.restoreDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
@@ -313,6 +373,7 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Permanently delete
     private func requestPermanentlyDelete(action: ActionMenu) {
         guard let node = self.node else { return }
         let title = LocalizationConstants.Dialog.deleteTitle
@@ -349,6 +410,7 @@ class NodeActionsViewModel {
         }
     }
 
+    // MARK: - Download
     private func requestDownload(action: ActionMenu) {
         var downloadDialog: MDCAlertController?
         var downloadRequest: DownloadRequest?
@@ -405,7 +467,6 @@ class NodeActionsViewModel {
         let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-
             completionHandler(authenticationProvider)
         })
     }

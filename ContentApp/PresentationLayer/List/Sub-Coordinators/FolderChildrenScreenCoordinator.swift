@@ -99,7 +99,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                       coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
-                                                    coordinatorServices: coordinatorServices)
+                                                    coordinatorServices: coordinatorServices,
+                                                    multipleNodes: [])
         nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
@@ -137,13 +138,13 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         didSelectMoveFile(node: nodes, action: actionMenu)
     }
     
-    
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
         let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
                                                       coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(delegate: delegate,
-                                                    coordinatorServices: coordinatorServices)
+                                                    coordinatorServices: coordinatorServices,
+                                                    multipleNodes: [])
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel,
@@ -223,7 +224,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         for node in sourceNode {
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: sourceNode)
             nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
             self.nodeActionsModel = nodeActionsModel
         }
