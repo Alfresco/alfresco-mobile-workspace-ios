@@ -104,7 +104,8 @@ class FilePreviewViewModel {
                 sSelf.nodeActionsViewModel =
                     NodeActionsViewModel(node: listNode,
                                          delegate: nil,
-                                         coordinatorServices: sSelf.coordinatorServices)
+                                         coordinatorServices: sSelf.coordinatorServices,
+                                         multipleNodes: [])
                 sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
             }
         }
@@ -121,7 +122,8 @@ class FilePreviewViewModel {
             self.nodeActionsViewModel =
                 NodeActionsViewModel(node: listNode,
                                      delegate: nil,
-                                     coordinatorServices: self.coordinatorServices)
+                                     coordinatorServices: self.coordinatorServices,
+                                     multipleNodes: [])
             self.viewModelDelegate?.didFinishNodeDetails(error: nil)
         }
     }
@@ -219,7 +221,8 @@ class FilePreviewViewModel {
                                                       excludedActionTypes: excludedActionsTypes)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         delegate: nil,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        multipleNodes: [])
             viewModelDelegate?.didFinishNodeDetails(error: nil)
             return false
         }
