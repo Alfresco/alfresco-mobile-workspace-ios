@@ -197,8 +197,6 @@ class NodeActionsViewModel {
             guard let sSelf = self else { return }
             sSelf.handleResponse(error: nil, action: action)
         }
-        
-        handleResponse(error: nil, action: action)
     }
     
     private func updateNodeForRemoveOffline(node: ListNode, action: ActionMenu) {
@@ -320,6 +318,26 @@ class NodeActionsViewModel {
     }
     
     func moveFilesAndFolder(with sourceNode: ListNode, and destinationNode: ListNode, action: ActionMenu) {
+        
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                moveNode(sourceNode: multipleNode, destinationNode: destinationNode, action: action)
+                refreshGroup.leave()
+            }
+        } else {
+            refreshGroup.enter()
+            moveNode(sourceNode: sourceNode, destinationNode: destinationNode, action: action)
+            refreshGroup.leave()
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func moveNode(sourceNode: ListNode, destinationNode: ListNode, action: ActionMenu) {
         sessionForCurrentAccount { [weak self] (_) in
             guard let sSelf = self else { return }
             let nodeBodyMove = NodeBodyMove(targetParentId: destinationNode.guid, name: nil)
@@ -332,10 +350,6 @@ class NodeActionsViewModel {
                 }
             }
         }
-    }
-    
-    func updateResponseForMove(with action: ActionMenu) {
-        handleResponse(error: nil, action: action)
     }
 
     // MARK: - Restore from Trash

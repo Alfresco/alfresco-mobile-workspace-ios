@@ -29,7 +29,6 @@ class OfflineScreenCoordinator: PresentingCoordinator, ListCoordinatorProtocol {
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
     private var filesAndFolderViewController: FilesandFolderListViewController?
-    let refreshGroup = DispatchGroup()
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -157,19 +156,12 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
         for node in sourceNode {
-            refreshGroup.enter()
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices,
                                                         multipleNodes: sourceNode)
             nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
             self.nodeActionsModel = nodeActionsModel
-            self.refreshGroup.leave()
-        }
-        
-        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
-            guard let sSelf = self else { return }
-            sSelf.nodeActionsModel?.updateResponseForMove(with: actionMenu)
         }
     }
     

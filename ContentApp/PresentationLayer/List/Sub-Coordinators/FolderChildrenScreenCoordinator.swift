@@ -36,7 +36,6 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     var nodeActionsModel: NodeActionsViewModel?
     private var multipleSelectionActionMenuCoordinator: MultipleFileActionMenuScreenCoordinator?
     private var filesAndFolderViewController: FilesandFolderListViewController?
-    let refreshGroup = DispatchGroup()
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -192,19 +191,12 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu) {
         for node in sourceNode {
-            refreshGroup.enter()
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices,
                                                         multipleNodes: sourceNode)
             nodeActionsModel.moveFilesAndFolder(with: node, and: destinationNode, action: actionMenu)
             self.nodeActionsModel = nodeActionsModel
-            self.refreshGroup.leave()
-        }
-        
-        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
-            guard let sSelf = self else { return }
-            sSelf.nodeActionsModel?.updateResponseForMove(with: actionMenu)
         }
     }
     
