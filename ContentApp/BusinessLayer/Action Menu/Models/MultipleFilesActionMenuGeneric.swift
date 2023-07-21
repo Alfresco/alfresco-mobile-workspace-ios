@@ -150,8 +150,10 @@ struct MultipleFilesActionMenuGeneric {
         let isAPSEnable = APSService.isAPSServiceEnable ?? false
         if isAPSEnable {
             let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
-            let filteredNodes = tempNodes.filter {$0.isAFileType()}
+            let filteredNodes = tempNodes.filter {$0.isAFolderType()}
             if !filteredNodes.isEmpty {
+                return nil
+            } else {
                 let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
                                               type: .startWorkflow)
                 return workflowAction
