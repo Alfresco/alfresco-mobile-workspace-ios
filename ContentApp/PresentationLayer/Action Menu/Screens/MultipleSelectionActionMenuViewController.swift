@@ -115,8 +115,10 @@ extension MultipleSelectionActionMenuViewController: UICollectionViewDataSource,
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.sectionSeparator.isHidden = !(actionMenuModel.shouldShowSectionSeparator(for: indexPath))
         
-        if action.type == .node {
-            cell?.setHeaderForMultiSelectionActionMenuCell()
+        if indexPath.section == 0 {
+            cell?.setCellHeader(isMultiSelectionHeader: true)
+        } else {
+            cell?.setCellHeader(isMultiSelectionHeader: false)
         }
         return cell ?? UICollectionViewCell()
     }

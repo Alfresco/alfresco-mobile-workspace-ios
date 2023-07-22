@@ -66,10 +66,16 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
         }
     }
     
-    func setHeaderForMultiSelectionActionMenuCell() {
+    func setCellHeader(isMultiSelectionHeader: Bool) {
         guard let theme = currentTheme else { return }
-        titleLabel.textColor = theme.primaryVariantT1Color
-        widthImageView.constant = 0
-        leadingTitleLabel.constant = 0
+        if isMultiSelectionHeader {
+            titleLabel.textColor = theme.primaryVariantT1Color
+            widthImageView.constant = 0
+            leadingTitleLabel.constant = 0
+        } else {
+            titleLabel.textColor = theme.onSurfaceColor
+            widthImageView.constant = 24.0
+            leadingTitleLabel.constant = 26.0
+        }
     }
 }
