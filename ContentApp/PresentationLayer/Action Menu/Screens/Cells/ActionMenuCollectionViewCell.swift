@@ -29,11 +29,14 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
 
     var action: ActionMenu? {
         didSet {
-            imageView.image = action?.icon
-            titleLabel.text = action?.title
-            isUserInteractionEnabled = !(action?.type == .node)
-            separator.isHidden = !(action?.type == .node)
-            applyAccessibility(action: action)
+            DispatchQueue.main.async {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.imageView.image = sSelf.action?.icon
+                sSelf.titleLabel.text = sSelf.action?.title
+                sSelf.isUserInteractionEnabled = !(sSelf.action?.type == .node)
+                sSelf.separator.isHidden = !(sSelf.action?.type == .node)
+                sSelf.applyAccessibility(action: sSelf.action)
+            }
         }
     }
 
