@@ -614,6 +614,10 @@ extension ListComponentViewController {
             navBar.addSubview(multipleSelectionHeader)
             showElementsCount()
             toggleInteractivePopGestureRecognizer(isEnabled: false)
+            
+            if viewModel is TrashViewModel {
+                multipleSelectionHeader.moveButton.isHidden = true
+            }
 
             multipleSelectionHeader.didSelectResetButtonAction = {[weak self] in
                 guard let sSelf = self else { return }

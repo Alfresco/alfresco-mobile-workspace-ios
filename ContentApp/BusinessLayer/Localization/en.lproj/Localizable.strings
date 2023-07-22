@@ -260,7 +260,7 @@
 "dialog-session-unavailable-message" = "Tap to launch Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet unavailable";
 "dialog-internet-unavailable-message" = "Please check your internet connection and Try again";
-
+"dialog-multi-delete-message" = "%d items will be permanently deleted.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";

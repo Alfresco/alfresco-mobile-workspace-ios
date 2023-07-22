@@ -251,6 +251,7 @@ struct LocalizationConstants {
         static let completeTaskMessage =  NSLocalizedString("complete-task-dialog-message", comment: "")
         static let confirmTitle =  NSLocalizedString("confirm-title", comment: "")
         static let completeTaskWhileAttachmentsInProgress =  NSLocalizedString("complete-task-dialog-message-attachments-in-progress", comment: "")
+        static let multiDeleteMessage = NSLocalizedString("dialog-multi-delete-message", comment: "")
     }
 
     struct EmptyLists {
