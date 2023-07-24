@@ -231,6 +231,7 @@ extension ListElementCollectionViewCell {
         } else {
             backgroundColor = self.currentTheme?.surfaceColor
             moreButton.isHidden = false
+            moreButton.isEnabled = true
             checkBoxImageView.isHidden = true
         }
     }

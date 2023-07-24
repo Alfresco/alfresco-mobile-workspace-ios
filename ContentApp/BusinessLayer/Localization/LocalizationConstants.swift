@@ -127,7 +127,10 @@ struct LocalizationConstants {
         static let saveSettings = NSLocalizedString("approved-login-save-settings", comment: "")
         static let addedFavorites = NSLocalizedString("approved-added-favorites", comment: "")
         static let removedFavorites = NSLocalizedString("approved-removed-favorites", comment: "")
+        static let multipleItemsRemovedFavorites = NSLocalizedString("multiple-items-removed-favorites", comment: "")
+        static let multipleItemsAdddedFavorites = NSLocalizedString("multiple-items-added-favorites", comment: "")
         static let movedTrash = NSLocalizedString("approved-moved-trash", comment: "")
+        static let movedMultipleItemsToTrash = NSLocalizedString("approved-multiple-moved-to-trash", comment: "")
         static let restored = NSLocalizedString("approved-restored", comment: "")
         static let deleted = NSLocalizedString("approved-deleted", comment: "")
         static let created = NSLocalizedString("approved-created", comment: "")
@@ -140,8 +143,10 @@ struct LocalizationConstants {
         static let movedMultipleFileFolderSuccess = NSLocalizedString("approved-moved-multiple-files-to-folder", comment: "")
         static let markOfflineMultipleNodes = NSLocalizedString("approved-multiple-mark-offline", comment: "")
         static let removeOfflineMultipleNodes = NSLocalizedString("approved-multiple-remove-offline", comment: "")
+        static let multipleRestored = NSLocalizedString("multiple-items-restored", comment: "")
+        static let multipleDeleted = NSLocalizedString("multiple-items-deleted", comment: "")
     }
-
+    
     struct Theme {
         static let theme = NSLocalizedString("theme", comment: "")
         static let auto = NSLocalizedString("auto", comment: "")
@@ -254,6 +259,7 @@ struct LocalizationConstants {
         static let completeTaskMessage =  NSLocalizedString("complete-task-dialog-message", comment: "")
         static let confirmTitle =  NSLocalizedString("confirm-title", comment: "")
         static let completeTaskWhileAttachmentsInProgress =  NSLocalizedString("complete-task-dialog-message-attachments-in-progress", comment: "")
+        static let multiDeleteMessage = NSLocalizedString("dialog-multi-delete-message", comment: "")
     }
 
     struct EmptyLists {
