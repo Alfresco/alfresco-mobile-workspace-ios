@@ -100,9 +100,8 @@ struct MultipleFilesActionMenuGeneric {
     }
 
     static func offlineAction(for nodes: [ListNode]) -> ActionMenu? {
-
-        let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
-        let filteredNodes = tempNodes.filter { (($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
+        
+        let filteredNodes = nodes.filter { (($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
         if !filteredNodes.isEmpty {
             var isMarkOfflineAllowed = false
             for node in filteredNodes where !node.isMarkedOffline() {
@@ -147,16 +146,18 @@ struct MultipleFilesActionMenuGeneric {
     }
     
     static func startWorkflowAction(for nodes: [ListNode]) -> ActionMenu? {
-        let isAPSEnable = APSService.isAPSServiceEnable ?? false
-        if isAPSEnable {
-            let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
-            let filteredNodes = tempNodes.filter {$0.isAFolderType()}
-            if !filteredNodes.isEmpty {
-                return nil
-            } else {
-                let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
-                                              type: .startWorkflow)
-                return workflowAction
+        let filteredNodes = nodes.filter {$0.isAFolderType()}
+        if !filteredNodes.isEmpty {
+            return nil
+        } else {
+            let isAPSEnable = APSService.isAPSServiceEnable ?? false
+            if isAPSEnable {
+                let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
+                if !tempNodes.isEmpty {
+                    let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
+                                                  type: .startWorkflow)
+                    return workflowAction
+                }
             }
         }
         return nil

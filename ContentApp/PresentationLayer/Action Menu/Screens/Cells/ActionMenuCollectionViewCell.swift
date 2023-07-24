@@ -29,11 +29,14 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
 
     var action: ActionMenu? {
         didSet {
-            imageView.image = action?.icon
-            titleLabel.text = action?.title
-            isUserInteractionEnabled = !(action?.type == .node)
-            separator.isHidden = !(action?.type == .node)
-            applyAccessibility(action: action)
+            DispatchQueue.main.async {[weak self] in
+                guard let sSelf = self else { return }
+                sSelf.imageView.image = sSelf.action?.icon
+                sSelf.titleLabel.text = sSelf.action?.title
+                sSelf.isUserInteractionEnabled = !(sSelf.action?.type == .node)
+                sSelf.separator.isHidden = !(sSelf.action?.type == .node)
+                sSelf.applyAccessibility(action: sSelf.action)
+            }
         }
     }
 
@@ -63,10 +66,16 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
         }
     }
     
-    func setHeaderForMultiSelectionActionMenuCell() {
+    func setCellHeader(isMultiSelectionHeader: Bool) {
         guard let theme = currentTheme else { return }
-        titleLabel.textColor = theme.primaryVariantT1Color
-        widthImageView.constant = 0
-        leadingTitleLabel.constant = 0
+        if isMultiSelectionHeader {
+            titleLabel.textColor = theme.primaryVariantT1Color
+            widthImageView.constant = 0
+            leadingTitleLabel.constant = 0
+        } else {
+            titleLabel.textColor = theme.onSurfaceColor
+            widthImageView.constant = 24.0
+            leadingTitleLabel.constant = 26.0
+        }
     }
 }

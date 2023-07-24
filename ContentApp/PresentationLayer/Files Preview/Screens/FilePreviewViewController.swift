@@ -495,9 +495,9 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             if action.type.isGenericActions {
                 handleGeneric(action: action, node: node)
             } else if action.type.isFavoriteActions {
-                handleFavorite(action: action)
+                handleFavorite(action: action, multipleNodes: multipleNodes)
             } else if action.type.isMoveActions {
-                handleMove(action: action, node: node)
+                handleMove(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node, multipleNodes: multipleNodes)
             } else if action.type.isCreateActions {
@@ -519,27 +519,44 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         }
     }
 
-    func handleFavorite(action: ActionMenu) {
+    func handleFavorite(action: ActionMenu, multipleNodes: [ListNode]) {
         var snackBarMessage: String?
         switch action.type {
         case .addFavorite:
-            snackBarMessage = LocalizationConstants.Approved.removedFavorites
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsRemovedFavorites,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = LocalizationConstants.Approved.removedFavorites
+            }
         case .removeFavorite:
-            snackBarMessage = LocalizationConstants.Approved.addedFavorites
+            if multipleNodes.count > 1 {
+                snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsAdddedFavorites,
+                                         multipleNodes.count)
+            } else {
+                snackBarMessage = LocalizationConstants.Approved.addedFavorites
+            }
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
     }
 
-    func handleMove(action: ActionMenu, node: ListNode?) {
+    func handleMove(action: ActionMenu, node: ListNode?, multipleNodes: [ListNode]) {
         guard let node = node else { return }
         switch action.type {
         case .moveTrash:
             filePreviewCoordinatorDelegate?.navigateBack()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
-                                              node.truncateTailTitle()),
-                                 type: .approve, finish: nil)
+                
+                if multipleNodes.count > 1 {
+                    Snackbar.display(with: String(format: LocalizationConstants.Approved.movedMultipleItemsToTrash,
+                                                  multipleNodes.count),
+                                     type: .approve, finish: nil)
+                } else {
+                    Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
+                                                  node.truncateTailTitle()),
+                                     type: .approve, finish: nil)
+                }
             })
         default: break
         }

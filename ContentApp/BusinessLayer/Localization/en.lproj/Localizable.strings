@@ -111,6 +111,8 @@
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
 "approved-added-favorites" = "Added to favorites";
 "approved-removed-favorites" = "Removed from favorites";
+"multiple-items-added-favorites" = "%d added to favorites";
+"multiple-items-removed-favorites" = "%d removed from favorites";
 "approved-moved-trash" = "%@ moved to trash";
 "approved-restored" = "%@ restored";
 "approved-deleted" = "%@ deleted";
@@ -124,6 +126,9 @@
 "approved-moved-multiple-files-to-folder" = "%d items moved successfully.";
 "approved-multiple-remove-offline" = "%d items will no longer be available offline.";
 "approved-multiple-mark-offline" = "%d items will be made available offline.";
+"approved-multiple-moved-to-trash" = "%d items moved to trash";
+"multiple-items-restored" = "%d items restored";
+"multiple-items-deleted" = "%d items deleted";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
@@ -260,6 +265,7 @@
 "dialog-session-unavailable-message" = "Tap to launch Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet unavailable";
 "dialog-internet-unavailable-message" = "Please check your internet connection and Try again";
+"dialog-multi-delete-message" = "%d items will be permanently deleted.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";
