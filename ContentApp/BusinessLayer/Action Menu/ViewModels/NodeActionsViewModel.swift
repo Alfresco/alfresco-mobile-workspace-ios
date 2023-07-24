@@ -270,35 +270,64 @@ class NodeActionsViewModel {
 
     // MARK: - Move to Trash / Delete
     private func requestMoveToTrash(action: ActionMenu) {
-        guard let node = self.node else { return }
-        if node.nodeType == .site {
-            SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
-                guard let sSelf = self else { return }
-                if error == nil {
-                    sSelf.node?.trashed = true
-
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
-                    let eventBusService = sSelf.coordinatorServices?.eventBusService
-                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
+       
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                if multipleNode.nodeType == .site {
+                    refreshGroup.enter()
+                    deleteSite(node: multipleNode, action: action)
+                    refreshGroup.leave()
+                } else {
+                    refreshGroup.enter()
+                    deleteNode(node: multipleNode, action: action)
+                    refreshGroup.leave()
                 }
-                sSelf.handleResponse(error: error, action: action)
             }
-        } else {
-            NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
-                guard let sSelf = self else { return }
-                if error == nil {
-                    sSelf.node?.trashed = true
+        } else if let node = self.node {
+            if node.nodeType == .site {
+                refreshGroup.enter()
+                deleteSite(node: node, action: action)
+                refreshGroup.leave()
+            } else {
+                refreshGroup.enter()
+                deleteNode(node: node, action: action)
+                refreshGroup.leave()
+            }
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func deleteSite(node: ListNode, action: ActionMenu) {
+        SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
+            guard let sSelf = self else { return }
+            if error == nil {
+                node.trashed = true
 
-                    if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
-                        queriedNode.markedFor = .removal
-                        sSelf.listNodeDataAccessor.store(node: queriedNode)
-                    }
+                let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
+                let eventBusService = sSelf.coordinatorServices?.eventBusService
+                eventBusService?.publish(event: moveEvent, on: .mainQueue)
+            }
+        }
+    }
+    
+    private func deleteNode(node: ListNode, action: ActionMenu) {
+        NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
+            guard let sSelf = self else { return }
+            if error == nil {
+                node.trashed = true
 
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
-                    let eventBusService = sSelf.coordinatorServices?.eventBusService
-                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
+                    queriedNode.markedFor = .removal
+                    sSelf.listNodeDataAccessor.store(node: queriedNode)
                 }
-                sSelf.handleResponse(error: error, action: action)
+
+                let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
+                let eventBusService = sSelf.coordinatorServices?.eventBusService
+                eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
         }
     }
@@ -354,11 +383,30 @@ class NodeActionsViewModel {
 
     // MARK: - Restore from Trash
     private func requestRestoreFromTrash(action: ActionMenu) {
-        guard let node = self.node else { return }
+        
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                restore(node: multipleNode, action: action)
+                refreshGroup.leave()
+            }
+        } else if let node = self.node {
+            refreshGroup.enter()
+            restore(node: node, action: action)
+            refreshGroup.leave()
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func restore(node: ListNode, action: ActionMenu) {
         TrashcanAPI.restoreDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
-                sSelf.node?.trashed = false
+                node.trashed = false
 
                 if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
                     queriedNode.markedFor = .undefined
@@ -369,35 +417,29 @@ class NodeActionsViewModel {
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
-            self?.handleResponse(error: error, action: action)
         }
     }
 
     // MARK: - Permanently delete
     private func requestPermanentlyDelete(action: ActionMenu) {
-        guard let node = self.node else { return }
+        
         let title = LocalizationConstants.Dialog.deleteTitle
-        let message = String(format: LocalizationConstants.Dialog.deleteMessage,
-                             node.title)
+        var message: String?
+        if multipleNodes.count > 1 {
+            message = String(format: LocalizationConstants.Dialog.multiDeleteMessage,
+                             multipleNodes.count)
+        } else if let node = self.node {
+            message = String(format: LocalizationConstants.Dialog.deleteMessage,
+                                 node.title)
+        }
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel)
         cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        let deleteAction = MDCAlertAction(title: LocalizationConstants.General.delete) { _ in
-            TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
-                guard let sSelf = self else { return }
-                if error == nil {
-                    if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
-                        sSelf.listNodeDataAccessor.remove(node: queriedNode)
-                    }
-
-                    let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
-                    let eventBusService = sSelf.coordinatorServices?.eventBusService
-                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
-                }
-                sSelf.handleResponse(error: error, action: action)
-            }
+        
+        let deleteAction = MDCAlertAction(title: LocalizationConstants.General.delete) {_ in
+            self.permanentlyDeleteAction(action: action)
         }
+        
         deleteAction.accessibilityIdentifier = "deleteActionButton"
 
         DispatchQueue.main.async {
@@ -406,6 +448,40 @@ class NodeActionsViewModel {
                                                    message: message,
                                                    actions: [cancelAction, deleteAction],
                                                    completionHandler: {})
+            }
+        }
+    }
+    
+    func permanentlyDeleteAction(action: ActionMenu) {
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                permanentDelete(node: multipleNode, action: action)
+                refreshGroup.leave()
+            }
+        } else if let node = self.node {
+            refreshGroup.enter()
+            permanentDelete(node: node, action: action)
+            refreshGroup.leave()
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    func permanentDelete(node: ListNode, action: ActionMenu) {
+        TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
+            guard let sSelf = self else { return }
+            if error == nil {
+                if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
+                    sSelf.listNodeDataAccessor.remove(node: queriedNode)
+                }
+
+                let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
+                let eventBusService = sSelf.coordinatorServices?.eventBusService
+                eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
         }
     }

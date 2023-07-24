@@ -613,6 +613,12 @@ extension ListComponentViewController {
             multipleSelectionHeader.applyComponentsThemes(currentTheme)
             navBar.addSubview(multipleSelectionHeader)
             showElementsCount()
+            toggleInteractivePopGestureRecognizer(isEnabled: false)
+            
+            if viewModel is TrashViewModel {
+                multipleSelectionHeader.moveButton.isHidden = true
+            }
+
             multipleSelectionHeader.didSelectResetButtonAction = {[weak self] in
                 guard let sSelf = self else { return }
                 sSelf.resetMultipleSelectionView()
@@ -660,10 +666,17 @@ extension ListComponentViewController {
         listActionButton?.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? true)
         hideMultipleSelectionHeader()
         viewModel?.isMultipleFileSelectionEnabled = false
+        toggleInteractivePopGestureRecognizer(isEnabled: true)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {[weak self] in
             guard let sSelf = self else { return }
             sSelf.collectionView.reloadData()
         })
+    }
+    
+    private func toggleInteractivePopGestureRecognizer(isEnabled: Bool) {
+        if let navigationViewController = self.navigationViewController {
+            navigationViewController.interactivePopGestureRecognizer?.isEnabled = isEnabled
+        }
     }
 }
 
