@@ -522,14 +522,14 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func handleFavorite(action: ActionMenu, multipleNodes: [ListNode]) {
         var snackBarMessage: String?
         switch action.type {
-        case .addFavorite:
+        case .removeFavorite:
             if multipleNodes.count > 1 {
                 snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsRemovedFavorites,
                                          multipleNodes.count)
             } else {
                 snackBarMessage = LocalizationConstants.Approved.removedFavorites
             }
-        case .removeFavorite:
+        case .addFavorite:
             if multipleNodes.count > 1 {
                 snackBarMessage = String(format: LocalizationConstants.Approved.multipleItemsAdddedFavorites,
                                          multipleNodes.count)

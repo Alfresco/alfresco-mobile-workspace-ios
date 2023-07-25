@@ -206,16 +206,20 @@ class ListPageController: ListPageControllerProtocol {
         if !results.isEmpty {
             let olderElementsSet = Set(self.dataSource.rawListNodes)
             let newElementsSet = Set(results)
+            var rawListNodesCount = self.dataSource.rawListNodes.count
 
             if !newElementsSet.isSubset(of: olderElementsSet) {
                 self.dataSource.rawListNodes.append(contentsOf: results)
+                rawListNodesCount = self.dataSource.rawListNodes.count
+            } else {
+                rawListNodesCount = self.dataSource.rawListNodes.count + results.count
             }
 
             if let totalItems = pagination?.totalItems {
                 // Because the list node collection could mutate in certain situations: upload,
                 // consider counts past the raw collection size
                 shouldDisplayNextPageLoadingIndicator =
-                    (Int64(self.dataSource.rawListNodes.count) >= totalItems) ? false : true
+                    (rawListNodesCount >= totalItems) ? false : true
                 
                 let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
                 if isMove && Int64(results.count) == totalItems - 1 {
