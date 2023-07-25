@@ -100,20 +100,6 @@ class NodeActionsViewModel {
         }
     }
 
-    // MARK: - Favorite
-    private func handleFavorite(action: ActionMenu) {
-        sessionForCurrentAccount { [weak self] (_) in
-            guard let sSelf = self else { return }
-            switch action.type {
-            case .addFavorite:
-                sSelf.requestAddToFavorites(action: action)
-            case .removeFavorite:
-                sSelf.requestRemoveFromFavorites(action: action)
-            default: break
-            }
-        }
-    }
-
     // MARK: - Move
     private func handleMove(action: ActionMenu) {
         sessionForCurrentAccount { [weak self] (_) in
@@ -218,10 +204,62 @@ class NodeActionsViewModel {
 
         coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeRemovedFromOffline)
     }
+    
+    // MARK: - Favorite
+    private func handleFavorite(action: ActionMenu) {
+        sessionForCurrentAccount { [weak self] (_) in
+            guard let sSelf = self else { return }
+            switch action.type {
+            case .addFavorite:
+                sSelf.addFavoritesMultipleNodes(action: action)
+            case .removeFavorite:
+                sSelf.removeFavoritesMultipleNodes(action: action)
+            default: break
+            }
+        }
+    }
+    
+    private func addFavoritesMultipleNodes(action: ActionMenu) {
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                requestAddToFavorites(node: multipleNode, action: action)
+                refreshGroup.leave()
+            }
+        } else if let node = self.node {
+            refreshGroup.enter()
+            requestAddToFavorites(node: node, action: action)
+            refreshGroup.leave()
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
+    
+    private func removeFavoritesMultipleNodes(action: ActionMenu) {
+        if !multipleNodes.isEmpty {
+            for multipleNode in multipleNodes {
+                refreshGroup.enter()
+                requestRemoveFromFavorites(node: multipleNode, action: action)
+                refreshGroup.leave()
+            }
+        } else if let node = self.node {
+            refreshGroup.enter()
+            requestRemoveFromFavorites(node: node, action: action)
+            refreshGroup.leave()
+        }
+        
+        refreshGroup.notify(queue: CameraKit.cameraWorkerQueue) {[weak self] in
+            guard let sSelf = self else { return }
+            sSelf.handleResponse(error: nil, action: action)
+        }
+    }
 
     // MARK: - Add to Favorite
-    private func requestAddToFavorites(action: ActionMenu) {
-        guard let node = self.node else { return }
+    private func requestAddToFavorites(node: ListNode, action: ActionMenu) {
+   
         let jsonGuid = JSONValue(dictionaryLiteral: ("guid", JSONValue(stringLiteral: node.guid)))
         var jsonFolder: JSONValue
         if node.nodeType == .unknown {
@@ -235,7 +273,7 @@ class NodeActionsViewModel {
                                     favoriteBodyCreate: jsonBody) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
-                sSelf.node?.favorite = true
+                node.favorite = true
                 action.type = .removeFavorite
                 action.title = LocalizationConstants.ActionMenu.removeFavorite
                 action.analyticEventName = "\(ActionMenuType.addFavorite)"
@@ -244,18 +282,17 @@ class NodeActionsViewModel {
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
-            sSelf.handleResponse(error: error, action: action)
         }
     }
 
     // MARK: - Remove from Favorite
-    private func requestRemoveFromFavorites(action: ActionMenu) {
-        guard let node = self.node else { return }
+    private func requestRemoveFromFavorites(node: ListNode, action: ActionMenu) {
+
         FavoritesAPI.deleteFavorite(personId: APIConstants.me,
                                     favoriteId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
-                sSelf.node?.favorite = false
+                node.favorite = false
                 action.type = .addFavorite
                 action.title = LocalizationConstants.ActionMenu.addFavorite
                 action.analyticEventName = "\(ActionMenuType.removeFavorite)"
@@ -264,7 +301,6 @@ class NodeActionsViewModel {
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
-            sSelf.handleResponse(error: error, action: action)
         }
     }
 
