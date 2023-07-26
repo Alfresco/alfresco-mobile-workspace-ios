@@ -111,8 +111,8 @@
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
 "approved-added-favorites" = "Added to favorites";
 "approved-removed-favorites" = "Removed from favorites";
-"multiple-items-added-favorites" = "%d added to favorites";
-"multiple-items-removed-favorites" = "%d removed from favorites";
+"multiple-items-added-favorites" = "%d items added to favorites";
+"multiple-items-removed-favorites" = "%d items removed from favorites";
 "approved-moved-trash" = "%@ moved to trash";
 "approved-restored" = "%@ restored";
 "approved-deleted" = "%@ deleted";
