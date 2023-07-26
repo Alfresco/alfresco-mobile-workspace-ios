@@ -445,3 +445,4 @@
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";
+"check-box-multi-select" = "Check box";

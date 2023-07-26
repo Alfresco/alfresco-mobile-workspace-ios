@@ -40,6 +40,8 @@ class ListElementCollectionViewCell: ListSelectableCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         disableView.isAccessibilityElement = false
+        checkBoxImageView.isAccessibilityElement = true
+        checkBoxImageView.accessibilityTraits = .button
         addLongTapGesture()
     }
 
@@ -163,6 +165,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
         subtitle.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.path
         subtitle.accessibilityValue = node.path
         moreButton.accessibilityLabel = LocalizationConstants.Accessibility.more
+        checkBoxImageView.accessibilityLabel = LocalizationConstants.Accessibility.checkBox
     }
     
     private func addAccessibilityForSyncStatusImageView() {
@@ -200,6 +203,10 @@ class ListElementCollectionViewCell: ListSelectableCell {
         if syncStatusImageView != nil && !syncStatusImageView.isHidden {
             self.accessibilityElements?.append(syncStatusImageView!)
         }
+        
+        if checkBoxImageView != nil {
+            self.accessibilityElements?.append(checkBoxImageView!)
+        }
     }
 }
 
@@ -211,6 +218,7 @@ extension ListElementCollectionViewCell {
         longPressRecognizer.minimumPressDuration = 0.3
         longPressRecognizer.delaysTouchesBegan = true
         self.addGestureRecognizer(longPressRecognizer)
+        setAccessibilitySequence()
     }
     
     @objc func longPressed(gestureReconizer: UILongPressGestureRecognizer) {
@@ -241,9 +249,13 @@ extension ListElementCollectionViewCell {
         if nodes.contains(tappedNode) {
             backgroundColor = self.currentTheme?.primary24T1Color
             checkBoxImageView.image = UIImage(named: "ic-checkbox-checked")
+            checkBoxImageView.accessibilityLabel = LocalizationConstants.Accessibility.checkBox
+            checkBoxImageView.accessibilityValue = LocalizationConstants.Accessibility.selected
         } else {
             backgroundColor = self.currentTheme?.surfaceColor
             checkBoxImageView.image = UIImage(named: "ic-checkbox-unchecked")
+            checkBoxImageView.accessibilityLabel = LocalizationConstants.Accessibility.checkBox
+            checkBoxImageView.accessibilityValue = ""
         }
     }
 }

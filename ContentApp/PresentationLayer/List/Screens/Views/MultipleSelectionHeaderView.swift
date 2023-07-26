@@ -33,6 +33,24 @@ class MultipleSelectionHeaderView: UIView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        addAccessibility()
+    }
+    
+    private func addAccessibility() {
+        moreButton.accessibilityIdentifier = "more-button"
+        moveButton.accessibilityIdentifier = "move-button"
+        crossButton.accessibilityIdentifier = "cross-button"
+        titleHeader.accessibilityIdentifier = "title-label"
+        
+        moreButton.accessibilityLabel = LocalizationConstants.Accessibility.more
+        moveButton.accessibilityLabel = LocalizationConstants.Buttons.moveHere
+        crossButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        titleHeader.accessibilityLabel = LocalizationConstants.Accessibility.title
+        titleHeader.accessibilityValue = titleHeader.text
+        
+        if let titleHeader = titleHeader, let crossButton = crossButton, let moveButton = moveButton, let moreButton = moreButton {
+            self.accessibilityElements = [crossButton, titleHeader, moveButton, moreButton]
+        }
     }
     
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
@@ -57,6 +75,7 @@ class MultipleSelectionHeaderView: UIView {
     
     func updateTitle(text: String?) {
         titleHeader.text = text
+        titleHeader.accessibilityValue = titleHeader.text
     }
     
     // MARK: - Button Actions
