@@ -606,9 +606,8 @@ extension ListComponentViewController {
     private func showMultiSelectionHeader() {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         if let multipleSelectionHeader = self.multipleSelectionHeader, let navBar = self.navigationViewController?.navigationBar {
-            if multipleSelectionHeader.isDescendant(of: navBar) {
-                return
-            }
+            if multipleSelectionHeader.isDescendant(of: navBar) { return }
+           
             multipleSelectionHeader.frame = CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height)
             multipleSelectionHeader.applyComponentsThemes(currentTheme)
             navBar.addSubview(multipleSelectionHeader)
