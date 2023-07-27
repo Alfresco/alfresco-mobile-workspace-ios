@@ -65,23 +65,9 @@ class NodeActionsViewModel {
     func tapped(on action: ActionMenu,
                 finished: @escaping ActionFinishedCompletionHandler) {
         self.actionFinishedHandler = finished
-        if hasInternetConnection() {
-            request(action: action)
-        } else {
-            showToastForInternetConnectivity()
-        }
+        request(action: action)
     }
     
-    private func hasInternetConnection() -> Bool {
-        return coordinatorServices?.connectivityService?.hasInternetConnection() ?? false
-    }
-    
-    private func showToastForInternetConnectivity() {
-        Snackbar.display(with: LocalizationConstants.Dialog.internetUnavailableMessage,
-                         type: .approve,
-                         finish: nil)
-    }
-
     // MARK: - Actions Request Helpers
 
     private func request(action: ActionMenu) {
@@ -95,13 +81,25 @@ class NodeActionsViewModel {
     
     private func handle(action: ActionMenu) {
         if action.type.isFavoriteActions {
-            handleFavorite(action: action)
+            if hasInternetConnection() {
+                handleFavorite(action: action)
+            } else {
+                showToastForInternetConnectivity()
+            }
         } else if action.type.isMoveActions {
-            handleMove(action: action)
+            if hasInternetConnection() {
+                handleMove(action: action)
+            } else {
+                showToastForInternetConnectivity()
+            }
         } else if action.type.isDownloadActions {
             handleDownload(action: action)
         } else if action.type.isWorkflowActions {
-            linkContentToAPS(action: action)
+            if hasInternetConnection() {
+                linkContentToAPS(action: action)
+            } else {
+                showToastForInternetConnectivity()
+            }
         } else {
             let delay = action.type.isMoreAction ? 0.0 : 1.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in
@@ -112,6 +110,16 @@ class NodeActionsViewModel {
                                                      multipleNodes: sSelf.multipleNodes)
             })
         }
+    }
+    
+    private func hasInternetConnection() -> Bool {
+        return coordinatorServices?.connectivityService?.hasInternetConnection() ?? false
+    }
+    
+    private func showToastForInternetConnectivity() {
+        Snackbar.display(with: LocalizationConstants.Dialog.internetUnavailableMessage,
+                         type: .approve,
+                         finish: nil)
     }
 
     // MARK: - Move
