@@ -65,7 +65,21 @@ class NodeActionsViewModel {
     func tapped(on action: ActionMenu,
                 finished: @escaping ActionFinishedCompletionHandler) {
         self.actionFinishedHandler = finished
-        request(action: action)
+        if hasInternetConnection() {
+            request(action: action)
+        } else {
+            showToastForInternetConnectivity()
+        }
+    }
+    
+    private func hasInternetConnection() -> Bool {
+        return coordinatorServices?.connectivityService?.hasInternetConnection() ?? false
+    }
+    
+    private func showToastForInternetConnectivity() {
+        Snackbar.display(with: LocalizationConstants.Dialog.internetUnavailableMessage,
+                         type: .approve,
+                         finish: nil)
     }
 
     // MARK: - Actions Request Helpers
@@ -78,7 +92,7 @@ class NodeActionsViewModel {
         }
         handle(action: action)
     }
-
+    
     private func handle(action: ActionMenu) {
         if action.type.isFavoriteActions {
             handleFavorite(action: action)
