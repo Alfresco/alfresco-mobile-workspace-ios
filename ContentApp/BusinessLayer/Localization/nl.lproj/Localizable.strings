@@ -435,13 +435,14 @@
 "created_date" = "Datum gemaakt";
 
 // MARK: - Multi select localization
-"multiple-items-added-favorites" = "";
-"multiple-items-removed-favorites" = "";
-"approved-moved-multiple-files-to-folder" = "";
-"approved-multiple-remove-offline" = "";
-"approved-multiple-mark-offline" = "";
-"approved-multiple-moved-to-trash" = "";
-"multiple-items-restored" = "";
-"multiple-items-deleted" = "";
-"dialog-multi-delete-message" = "";
-"multiple-selected-items-count" = "";
+"multiple-items-added-favorites" = "%d items toegevoegd aan favorieten";
+"multiple-items-removed-favorites" = "%d items verwijderd uit favorieten";
+"approved-moved-multiple-files-to-folder" = "%d items succesvol verplaatst";
+"approved-multiple-remove-offline" = "%d items zullen niet langer offline beschikbaar zijn.";
+"approved-multiple-mark-offline" = "%d items zullen offline beschikbaar worden gemaakt.";
+"approved-multiple-moved-to-trash" = "%d items verplaatst naar de prullenbak";
+"multiple-items-restored" = "%d items hersteld";
+"multiple-items-deleted" = "%d items verwijderd";
+"dialog-multi-delete-message" = "%d items worden permanent verwijderd.";
+"multiple-selected-items-count" = "%d Geselecteerd";
+"check-box-multi-select" = "Selectievakje";

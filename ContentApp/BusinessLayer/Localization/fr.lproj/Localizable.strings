@@ -435,13 +435,14 @@
 "created_date" = "Date de création";
 
 // MARK: - Multi select localization
-"multiple-items-added-favorites" = "";
-"multiple-items-removed-favorites" = "";
-"approved-moved-multiple-files-to-folder" = "";
-"approved-multiple-remove-offline" = "";
-"approved-multiple-mark-offline" = "";
-"approved-multiple-moved-to-trash" = "";
-"multiple-items-restored" = "";
-"multiple-items-deleted" = "";
-"dialog-multi-delete-message" = "";
-"multiple-selected-items-count" = "";
+"multiple-items-added-favorites" = "%d éléments ajoutés aux favoris";
+"multiple-items-removed-favorites" = "%d éléments supprimés des favoris";
+"approved-moved-multiple-files-to-folder" = "%d éléments déplacés avec succès.";
+"approved-multiple-remove-offline" = "%d éléments ne seront plus disponibles hors ligne.";
+"approved-multiple-mark-offline" = "%d éléments seront rendus disponibles hors ligne.";
+"approved-multiple-moved-to-trash" = "%d éléments déplacés vers la corbeille";
+"multiple-items-restored" = "%d éléments restaurés";
+"multiple-items-deleted" = "%d éléments supprimés";
+"dialog-multi-delete-message" = "%d éléments seront définitivement supprimés.";
+"multiple-selected-items-count" = "%d Sélectionné";
+"check-box-multi-select" = "Case à cocher";
