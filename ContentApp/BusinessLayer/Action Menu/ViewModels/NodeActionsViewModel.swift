@@ -119,6 +119,7 @@ class NodeActionsViewModel {
     private func showToastForInternetConnectivity() {
         Snackbar.display(with: LocalizationConstants.Dialog.internetUnavailableMessage,
                          type: .approve,
+                         presentationHostViewOverride: appDelegate()?.window,
                          finish: nil)
     }
 
