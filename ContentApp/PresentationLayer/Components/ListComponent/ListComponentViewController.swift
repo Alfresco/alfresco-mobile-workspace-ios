@@ -606,14 +606,15 @@ extension ListComponentViewController {
     private func showMultiSelectionHeader() {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         if let multipleSelectionHeader = self.multipleSelectionHeader, let navBar = self.navigationViewController?.navigationBar {
-            if multipleSelectionHeader.isDescendant(of: navBar) {
-                return
-            }
+            if multipleSelectionHeader.isDescendant(of: navBar) { return }
+           
             multipleSelectionHeader.frame = CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height)
             multipleSelectionHeader.applyComponentsThemes(currentTheme)
             navBar.addSubview(multipleSelectionHeader)
             showElementsCount()
             toggleInteractivePopGestureRecognizer(isEnabled: false)
+            navBar.isAccessibilityElement = true
+            multipleSelectionHeader.isAccessibilityElement = false
             
             if viewModel is TrashViewModel {
                 multipleSelectionHeader.moveButton.isHidden = true
@@ -637,6 +638,11 @@ extension ListComponentViewController {
             multipleSelectionHeader.didSelectMoveButtonAction = {[weak self] in
                 guard let sSelf = self,
                       let model = sSelf.pageController?.dataSource else { return }
+                let connectivityService = sSelf.coordinatorServices?.connectivityService
+                if connectivityService?.hasInternetConnection() == false {
+                    sSelf.showToastForInternetConnectivity()
+                    return
+                }
               
                 let nodes = sSelf.viewModel?.selectedMultipleItems ?? []
                 sSelf.listItemActionDelegate?.didSelectMoveMultipleListItems(for: nodes,
@@ -646,6 +652,13 @@ extension ListComponentViewController {
         }
     }
     
+    private func showToastForInternetConnectivity() {
+        Snackbar.display(with: LocalizationConstants.Dialog.internetUnavailableMessage,
+                         type: .approve,
+                         presentationHostViewOverride: appDelegate()?.window,
+                         finish: nil)
+    }
+
     private func hideMultipleSelectionHeader() {
         if let multipleSelectionHeader = self.multipleSelectionHeader {
             multipleSelectionHeader.removeFromSuperview()
