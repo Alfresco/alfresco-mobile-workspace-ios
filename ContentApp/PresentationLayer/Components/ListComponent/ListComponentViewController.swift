@@ -606,14 +606,21 @@ extension ListComponentViewController {
     }
     
     private func showMultiSelectionHeader() {
+        var tempView = UIView()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         if let multipleSelectionHeader = self.multipleSelectionHeader, let navBar = self.navigationViewController?.navigationBar {
             if multipleSelectionHeader.isDescendant(of: navBar) {
                 return
             }
-            multipleSelectionHeader.frame = CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height)
+            tempView = UIView(frame: CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height))
+            tempView.backgroundColor = .blue
+//            multipleSelectionHeader.frame = CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height)
+            
             multipleSelectionHeader.applyComponentsThemes(currentTheme)
-            navBar.addSubview(multipleSelectionHeader)
+            navBar.isHidden = true
+            self.view.addSubview(tempView)
+            tempView.addSubview(multipleSelectionHeader)
+//            navBar.addSubview(multipleSelectionHeader)
             showElementsCount()
             toggleInteractivePopGestureRecognizer(isEnabled: false)
             
