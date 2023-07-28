@@ -435,13 +435,14 @@
 "created_date" = "Fecha de creación";
 
 // MARK: - Multi select localization
-"multiple-items-added-favorites" = "";
-"multiple-items-removed-favorites" = "";
-"approved-moved-multiple-files-to-folder" = "";
-"approved-multiple-remove-offline" = "";
-"approved-multiple-mark-offline" = "";
-"approved-multiple-moved-to-trash" = "";
-"multiple-items-restored" = "";
-"multiple-items-deleted" = "";
-"dialog-multi-delete-message" = "";
-"multiple-selected-items-count" = "";
+"multiple-items-added-favorites" = "%d elementos agregados a favoritos";
+"multiple-items-removed-favorites" = "%d elementos removidos de favoritos";
+"approved-moved-multiple-files-to-folder" = "%d elementos movidos con éxito.";
+"approved-multiple-remove-offline" = "%d elementos ya no estarán disponibles sin conexión.";
+"approved-multiple-mark-offline" = "%d elementos estarán disponibles sin conexión.";
+"approved-multiple-moved-to-trash" = "%d elementos movidos a la papelera";
+"multiple-items-restored" = "%d elementos restaurados";
+"multiple-items-deleted" = "%d elementos eliminados";
+"dialog-multi-delete-message" = "%d elementos serán eliminados permanentemente.";
+"multiple-selected-items-count" = "%d Seleccionado";
+"check-box-multi-select" = "Casilla de verificación";

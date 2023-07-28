@@ -613,8 +613,6 @@ extension ListComponentViewController {
             navBar.addSubview(multipleSelectionHeader)
             showElementsCount()
             toggleInteractivePopGestureRecognizer(isEnabled: false)
-            navBar.isAccessibilityElement = true
-            multipleSelectionHeader.isAccessibilityElement = false
             
             if viewModel is TrashViewModel {
                 multipleSelectionHeader.moveButton.isHidden = true
