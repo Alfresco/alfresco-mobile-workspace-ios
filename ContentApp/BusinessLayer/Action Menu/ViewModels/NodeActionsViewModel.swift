@@ -67,7 +67,7 @@ class NodeActionsViewModel {
         self.actionFinishedHandler = finished
         request(action: action)
     }
-
+    
     // MARK: - Actions Request Helpers
 
     private func request(action: ActionMenu) {
@@ -78,16 +78,28 @@ class NodeActionsViewModel {
         }
         handle(action: action)
     }
-
+    
     private func handle(action: ActionMenu) {
         if action.type.isFavoriteActions {
-            handleFavorite(action: action)
+            if hasInternetConnection() {
+                handleFavorite(action: action)
+            } else {
+                showToastForInternetConnectivity()
+            }
         } else if action.type.isMoveActions {
-            handleMove(action: action)
+            if hasInternetConnection() {
+                handleMove(action: action)
+            } else {
+                showToastForInternetConnectivity()
+            }
         } else if action.type.isDownloadActions {
             handleDownload(action: action)
         } else if action.type.isWorkflowActions {
-            linkContentToAPS(action: action)
+            if hasInternetConnection() {
+                linkContentToAPS(action: action)
+            } else {
+                showToastForInternetConnectivity()
+            }
         } else {
             let delay = action.type.isMoreAction ? 0.0 : 1.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in
@@ -98,6 +110,17 @@ class NodeActionsViewModel {
                                                      multipleNodes: sSelf.multipleNodes)
             })
         }
+    }
+    
+    private func hasInternetConnection() -> Bool {
+        return coordinatorServices?.connectivityService?.hasInternetConnection() ?? false
+    }
+    
+    private func showToastForInternetConnectivity() {
+        Snackbar.display(with: LocalizationConstants.Dialog.internetUnavailableMessage,
+                         type: .approve,
+                         presentationHostViewOverride: appDelegate()?.window,
+                         finish: nil)
     }
 
     // MARK: - Move

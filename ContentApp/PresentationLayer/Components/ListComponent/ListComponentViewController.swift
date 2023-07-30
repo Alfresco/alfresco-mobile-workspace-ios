@@ -141,8 +141,6 @@ class ListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func cancelMoveButtonAction(_ sender: Any) {
-        appDelegate()?.isMoveFilesAndFolderFlow = false
-        moveFilesBottomView.isHidden = true
         triggerMoveNotifyService()
     }
     
@@ -606,21 +604,13 @@ extension ListComponentViewController {
     }
     
     private func showMultiSelectionHeader() {
-        var tempView = UIView()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         if let multipleSelectionHeader = self.multipleSelectionHeader, let navBar = self.navigationViewController?.navigationBar {
-            if multipleSelectionHeader.isDescendant(of: navBar) {
-                return
-            }
-            tempView = UIView(frame: CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height))
-            tempView.backgroundColor = .blue
-//            multipleSelectionHeader.frame = CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height)
-            
+            if multipleSelectionHeader.isDescendant(of: navBar) { return }
+           
+            multipleSelectionHeader.frame = CGRect(x: 0, y: 0, width: navBar.frame.size.width, height: navBar.frame.size.height)
             multipleSelectionHeader.applyComponentsThemes(currentTheme)
-            navBar.isHidden = true
-            self.view.addSubview(tempView)
-            tempView.addSubview(multipleSelectionHeader)
-//            navBar.addSubview(multipleSelectionHeader)
+            navBar.addSubview(multipleSelectionHeader)
             showElementsCount()
             toggleInteractivePopGestureRecognizer(isEnabled: false)
             
@@ -646,6 +636,11 @@ extension ListComponentViewController {
             multipleSelectionHeader.didSelectMoveButtonAction = {[weak self] in
                 guard let sSelf = self,
                       let model = sSelf.pageController?.dataSource else { return }
+                let connectivityService = sSelf.coordinatorServices?.connectivityService
+                if connectivityService?.hasInternetConnection() == false {
+                    sSelf.showToastForInternetConnectivity()
+                    return
+                }
               
                 let nodes = sSelf.viewModel?.selectedMultipleItems ?? []
                 sSelf.listItemActionDelegate?.didSelectMoveMultipleListItems(for: nodes,
@@ -655,6 +650,13 @@ extension ListComponentViewController {
         }
     }
     
+    private func showToastForInternetConnectivity() {
+        Snackbar.display(with: LocalizationConstants.Dialog.internetUnavailableMessage,
+                         type: .approve,
+                         presentationHostViewOverride: appDelegate()?.window,
+                         finish: nil)
+    }
+
     private func hideMultipleSelectionHeader() {
         if let multipleSelectionHeader = self.multipleSelectionHeader {
             multipleSelectionHeader.removeFromSuperview()

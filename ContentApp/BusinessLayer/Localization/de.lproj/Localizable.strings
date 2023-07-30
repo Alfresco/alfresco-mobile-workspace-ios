@@ -437,3 +437,16 @@
 "claim-title" = "Beanspruchen";
 "release-title" = "Anspruch aufheben";
 "created_date" = "Datum der Erstellung";
+
+// MARK: - Multi select localization
+"multiple-items-added-favorites" = "%d Elemente zu Favoriten hinzugefügt";
+"multiple-items-removed-favorites" = "%d Elemente aus den Favoriten entfernt";
+"approved-moved-multiple-files-to-folder" = "%d Elemente wurden erfolgreich verschoben";
+"approved-multiple-remove-offline" = "%d Elemente werden offline nicht mehr verfügbar sein.";
+"approved-multiple-mark-offline" = "%d Elemente werden offline verfügbar gemacht.";
+"approved-multiple-moved-to-trash" = "%d Elemente in den Papierkorb verschoben";
+"multiple-items-restored" = "%d Elemente wiederhergestellt";
+"multiple-items-deleted" = "%d Elemente gelöscht";
+"dialog-multi-delete-message" = "%d Elemente werden permanent gelöscht.";
+"multiple-selected-items-count" = "%d Ausgewählt";
+"check-box-multi-select" = "Kontrollkästchen";

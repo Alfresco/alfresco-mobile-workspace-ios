@@ -437,3 +437,16 @@
 "claim-title" = "Attestazione";
 "release-title" = "Rilasciare";
 "created_date" = "Data di creazione";
+
+// MARK: - Multi select localization
+"multiple-items-added-favorites" = "%d elementi aggiunti ai preferiti";
+"multiple-items-removed-favorites" = "%d elementi rimossi dai preferiti";
+"approved-moved-multiple-files-to-folder" = "%d elementi spostati con successo.";
+"approved-multiple-remove-offline" = "%d elementi non saranno più disponibili offline.";
+"approved-multiple-mark-offline" = "%d elementi saranno resi disponibili offline.";
+"approved-multiple-moved-to-trash" = "%d elementi spostati nel cestino";
+"multiple-items-restored" = "%d elementi ripristinati";
+"multiple-items-deleted" = "%d elementi eliminati";
+"dialog-multi-delete-message" = "%d elementi verranno eliminati definitivamente.";
+"multiple-selected-items-count" = "%d Selezionato";
+"check-box-multi-select" = "Casella di controllo";
