@@ -3,7 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,86 +12,95 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MultipleSelectionHeaderView" customModule="ContentApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="382" height="96"/>
+            <rect key="frame" x="0.0" y="0.0" width="382" height="65"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rcb-Mo-14l" userLabel="baseView">
-                    <rect key="frame" x="0.0" y="0.0" width="382" height="96"/>
+                    <rect key="frame" x="0.0" y="0.0" width="382" height="65"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="88" translatesAutoresizingMaskIntoConstraints="NO" id="Llh-99-FOk">
-                            <rect key="frame" x="0.0" y="52" width="382" height="24"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JaF-sB-0PW" userLabel="crossButton" customClass="MDCButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="14" height="24"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" image="ic-cross-multi-select">
-                                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="crossButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="KjY-Dv-8hJ"/>
-                                    </connections>
-                                </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGZ-4U-O6v" userLabel="titleHeader">
-                                    <rect key="frame" x="102" y="0.0" width="75" height="24"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <accessibility key="accessibilityConfiguration" identifier="title-header">
-                                        <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                                    </accessibility>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CVm-DN-2w2" userLabel="moveButton" customClass="MDCButton">
-                                    <rect key="frame" x="265" y="0.0" width="24" height="24"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" image="ic-action-move-multi-select">
-                                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="moveButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="nZO-u7-xa3"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twQ-FL-C1A" userLabel="moreButton" customClass="MDCButton">
-                                    <rect key="frame" x="377" y="0.0" width="5" height="24"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                    <state key="normal" image="ic-action-more-multi-select 1">
-                                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="moreButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="vVy-gT-Sn1"/>
-                                    </connections>
-                                </button>
-                            </subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="twQ-FL-C1A" userLabel="moreButton" customClass="MDCButton">
+                            <rect key="frame" x="322" y="2.6666666666666643" width="60" height="60"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="24" id="Av2-7W-A2I"/>
+                                <constraint firstAttribute="width" constant="60" id="Dqj-Cw-en1"/>
+                                <constraint firstAttribute="width" secondItem="twQ-FL-C1A" secondAttribute="height" id="OUs-zi-jXS"/>
                             </constraints>
-                        </stackView>
-                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DdH-bl-vpM" userLabel="divider">
-                            <rect key="frame" x="0.0" y="91" width="382" height="1"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="ic-action-more-multi-select 1">
+                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="moreButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="vVy-gT-Sn1"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CVm-DN-2w2" userLabel="moveButton" customClass="MDCButton">
+                            <rect key="frame" x="262" y="2.6666666666666643" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="SyT-sJ-VIu"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="ic-action-move-multi-select">
+                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="moveButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="nZO-u7-xa3"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JaF-sB-0PW" userLabel="crossButton" customClass="MDCButton">
+                            <rect key="frame" x="0.0" y="2.6666666666666643" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="JaF-sB-0PW" secondAttribute="height" id="Rky-4Q-f21"/>
+                                <constraint firstAttribute="width" constant="60" id="vV8-zF-Vnc"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="ic-cross-multi-select">
+                                <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="crossButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="KjY-Dv-8hJ"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGZ-4U-O6v" userLabel="titleHeader">
+                            <rect key="frame" x="70" y="22.333333333333336" width="182" height="20.333333333333336"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <accessibility key="accessibilityConfiguration" identifier="title-header">
+                                <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                            </accessibility>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DdH-bl-vpM" userLabel="divider">
+                            <rect key="frame" x="0.0" y="64" width="382" height="1"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="1" id="ueU-aW-KT4"/>
+                                <constraint firstAttribute="height" constant="1" id="jGi-HU-Trg"/>
                             </constraints>
                         </view>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="96" id="1zX-6E-DW1"/>
-                        <constraint firstItem="DdH-bl-vpM" firstAttribute="top" secondItem="Llh-99-FOk" secondAttribute="bottom" constant="16" id="JJb-Zk-rgo"/>
-                        <constraint firstAttribute="trailing" secondItem="DdH-bl-vpM" secondAttribute="trailing" id="RSL-N1-awN"/>
-                        <constraint firstItem="Llh-99-FOk" firstAttribute="leading" secondItem="rcb-Mo-14l" secondAttribute="leading" id="YBi-Mf-Po3"/>
-                        <constraint firstItem="DdH-bl-vpM" firstAttribute="leading" secondItem="rcb-Mo-14l" secondAttribute="leading" id="mkz-Q9-EOQ"/>
-                        <constraint firstItem="Llh-99-FOk" firstAttribute="top" secondItem="rcb-Mo-14l" secondAttribute="top" constant="52" id="xsA-EM-Twg"/>
-                        <constraint firstAttribute="trailing" secondItem="Llh-99-FOk" secondAttribute="trailing" id="zOy-rX-Wro"/>
+                        <constraint firstItem="DdH-bl-vpM" firstAttribute="leading" secondItem="rcb-Mo-14l" secondAttribute="leading" id="18U-qs-msh"/>
+                        <constraint firstItem="aGZ-4U-O6v" firstAttribute="leading" secondItem="JaF-sB-0PW" secondAttribute="trailing" constant="10" id="3YN-jE-P0k"/>
+                        <constraint firstItem="twQ-FL-C1A" firstAttribute="centerY" secondItem="rcb-Mo-14l" secondAttribute="centerY" id="5iz-UU-ZeJ"/>
+                        <constraint firstAttribute="bottom" secondItem="DdH-bl-vpM" secondAttribute="bottom" id="BQn-0h-3iR"/>
+                        <constraint firstItem="CVm-DN-2w2" firstAttribute="leading" secondItem="aGZ-4U-O6v" secondAttribute="trailing" constant="10" id="MgV-Gk-sw2"/>
+                        <constraint firstItem="CVm-DN-2w2" firstAttribute="width" secondItem="CVm-DN-2w2" secondAttribute="height" id="TBM-MK-Feb"/>
+                        <constraint firstAttribute="trailing" secondItem="DdH-bl-vpM" secondAttribute="trailing" id="czJ-Ye-ALr"/>
+                        <constraint firstItem="CVm-DN-2w2" firstAttribute="centerY" secondItem="rcb-Mo-14l" secondAttribute="centerY" id="dig-p0-TAT"/>
+                        <constraint firstItem="JaF-sB-0PW" firstAttribute="leading" secondItem="rcb-Mo-14l" secondAttribute="leading" id="f5u-Qp-ITv"/>
+                        <constraint firstAttribute="trailing" secondItem="twQ-FL-C1A" secondAttribute="trailing" id="fOK-dN-eUW"/>
+                        <constraint firstItem="aGZ-4U-O6v" firstAttribute="centerY" secondItem="rcb-Mo-14l" secondAttribute="centerY" id="ow3-U1-aC5"/>
+                        <constraint firstItem="twQ-FL-C1A" firstAttribute="leading" secondItem="CVm-DN-2w2" secondAttribute="trailing" id="rIX-uI-nlf"/>
+                        <constraint firstItem="JaF-sB-0PW" firstAttribute="centerY" secondItem="rcb-Mo-14l" secondAttribute="centerY" id="vqS-eS-sDr"/>
                     </constraints>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="rcb-Mo-14l" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="WcM-eG-B9y"/>
-                <constraint firstItem="rcb-Mo-14l" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ZRW-Te-43h"/>
-                <constraint firstItem="DdH-bl-vpM" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="sx3-5H-kso"/>
-                <constraint firstAttribute="trailing" secondItem="rcb-Mo-14l" secondAttribute="trailing" id="xSL-Vp-637"/>
+                <constraint firstItem="rcb-Mo-14l" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Q1f-lJ-tQw"/>
+                <constraint firstAttribute="bottom" secondItem="rcb-Mo-14l" secondAttribute="bottom" id="j8w-cp-djk"/>
+                <constraint firstItem="rcb-Mo-14l" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="rA0-m5-bpp"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rcb-Mo-14l" secondAttribute="trailing" id="w0e-gh-OUn"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -102,7 +111,7 @@
                 <outlet property="moveButton" destination="CVm-DN-2w2" id="KZp-gU-ePX"/>
                 <outlet property="titleHeader" destination="aGZ-4U-O6v" id="4vH-Nv-syc"/>
             </connections>
-            <point key="canvasLocation" x="-1.5267175572519083" y="-246.47887323943664"/>
+            <point key="canvasLocation" x="-1.5267175572519083" y="-257.3943661971831"/>
         </view>
     </objects>
     <resources>
