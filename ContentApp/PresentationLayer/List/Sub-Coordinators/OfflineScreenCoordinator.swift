@@ -126,7 +126,13 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                                                delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
-                                                          coordinatorServices: coordinatorServices)
+                                                                           excludedActions: [.addFavorite,
+                                                                            .removeFavorite,
+                                                                            .markOffline,
+                                                                            .startWorkflow,
+                                                                            .moveTrash,
+                                                                            .moveToFolder],
+                                                                           coordinatorServices: coordinatorServices)
             
             let nodeActionsModel = NodeActionsViewModel(node: nodes.first,
                                                         delegate: delegate,

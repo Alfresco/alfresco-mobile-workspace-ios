@@ -339,6 +339,7 @@ class ListComponentViewController: SystemThemableViewController {
             if isShowSnackbar {
                 Snackbar.display(with: LocalizationConstants.Alert.searchMoveWarning,
                                  type: .approve,
+                                 presentationHostViewOverride: appDelegate()?.window,
                                  finish: nil)
                 return false
             }
@@ -592,6 +593,12 @@ extension ListComponentViewController {
                 }
             } else if selectedMultipleItems.count < APIConstants.multipleActionMaxSize {
                 selectedMultipleItems.append(node)
+            } else {
+                let message = String(format: LocalizationConstants.MultipleFilesSelection.maximumFileSelectionMessage, APIConstants.multipleActionMaxSize)
+                Snackbar.display(with: message,
+                                 type: .approve,
+                                 presentationHostViewOverride: appDelegate()?.window,
+                                 finish: nil)
             }
             
             viewModel?.selectedMultipleItems = selectedMultipleItems
