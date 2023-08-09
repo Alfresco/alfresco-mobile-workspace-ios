@@ -49,6 +49,17 @@ class FilePreviewViewController: SystemThemableViewController {
         
         progressView.isAccessibilityElement = false
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        addDownloadContentButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+        loadUIElements()
+        allowInterfaceRotation()
+    }
+
+    private func loadUIElements() {
         let isLocalFilePreview = filePreviewViewModel?.isLocalFilePreview ?? false
         if isLocalFilePreview {
             startPreviewingLocalFiles()
@@ -58,17 +69,8 @@ class FilePreviewViewController: SystemThemableViewController {
         } else {
             startPreviewingNode()
         }
-
-        addDownloadContentButton()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
-
-        allowInterfaceRotation()
-    }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -437,7 +439,12 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             } else if action.type.isCreateActions {
                 handleSheetCreate(action: action, node: node)
             } else if action.type.isWorkflowActions {
-                AlfrescoLog.debug("---- WORKFLOW ACTION ---- FilePreviewViewController ------")
+                let nodes = multipleNodes
+                if nodes.isEmpty {
+                    handleStartWorkflow(action: action, node: [node!])
+                } else {
+                    handleStartWorkflow(action: action, node: nodes)
+                }
             }
             logEvent(with: action, node: node)
         }
@@ -592,6 +599,35 @@ extension FilePreviewViewController {
     func logEvent(with action: ActionMenu?, node: ListNode?) {
         guard let action = action else { return }
         AnalyticsManager.shared.fileActionEvent(for: node, action: action)
+    }
+}
+
+// MARK: - Workflow
+extension FilePreviewViewController {
+    
+    func handleStartWorkflow(action: ActionMenu, node: [ListNode]) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startableWorkflowList) as? StartableWorkflowsViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            viewController.coordinatorServices = coordinatorServices
+            self.present(bottomSheet, animated: true)
+            viewController.didSelectAction = { [weak self] (appDefinition) in
+                guard let sSelf = self else { return }
+                sSelf.startWorkflowAction(appDefinition: appDefinition, node: node)
+            }
+        }
+    }
+    
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: [ListNode]) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = appDefinition
+            viewController.viewModel.isEditMode = true
+            viewController.viewModel.selectedAttachments = node
+            viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
 
