@@ -446,3 +446,4 @@
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";
 "check-box-multi-select" = "Check box";
+"maximum-items-selection-message" = "Maximum %d items can be selected";
