@@ -621,7 +621,7 @@ extension ListComponentViewController {
             showElementsCount()
             toggleInteractivePopGestureRecognizer(isEnabled: false)
             
-            if viewModel is TrashViewModel {
+            if viewModel is TrashViewModel || viewModel is OfflineViewModel {
                 multipleSelectionHeader.moveButton.isHidden = true
             }
 
