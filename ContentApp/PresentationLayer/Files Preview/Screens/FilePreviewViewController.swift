@@ -440,11 +440,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                 handleSheetCreate(action: action, node: node)
             } else if action.type.isWorkflowActions {
                 let nodes = multipleNodes
-                if nodes.isEmpty {
-                    handleStartWorkflow(action: action, node: [node!])
-                } else {
-                    handleStartWorkflow(action: action, node: nodes)
-                }
+                handleStartWorkflow(action: action, node: nodes.isEmpty ? [node!] : nodes)
             }
             logEvent(with: action, node: node)
         }
