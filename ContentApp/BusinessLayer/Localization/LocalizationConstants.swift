@@ -431,5 +431,6 @@ struct LocalizationConstants {
     
     struct MultipleFilesSelection {
         static let multipleItemsCount = NSLocalizedString("multiple-selected-items-count", comment: "")
+        static let maximumFileSelectionMessage = NSLocalizedString("maximum-items-selection-message", comment: "")
     }
 }

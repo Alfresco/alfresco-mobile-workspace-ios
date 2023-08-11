@@ -46,10 +46,20 @@ class FilePreviewViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        configureNavigationBar()
+        
         progressView.isAccessibilityElement = false
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        addDownloadContentButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+        loadUIElements()
+        allowInterfaceRotation()
+    }
+
+    private func loadUIElements() {
         let isLocalFilePreview = filePreviewViewModel?.isLocalFilePreview ?? false
         if isLocalFilePreview {
             startPreviewingLocalFiles()
@@ -59,82 +69,8 @@ class FilePreviewViewController: SystemThemableViewController {
         } else {
             startPreviewingNode()
         }
-
-        addDownloadContentButton()
     }
     
-    func configureNavigationBar() {
-        let isScannedDocument = filePreviewViewModel?.isScannedDocument ?? false
-        if isScannedDocument {
-            definesPresentationContext = true
-            navigationController?.navigationBar.prefersLargeTitles = false
-            navigationController?.navigationBar.isTranslucent = true
-            navigationItem.largeTitleDisplayMode = .automatic
-            navigationItem.hidesSearchBarWhenScrolling = false
-
-            addSaveBarButton()
-            addBackButton()
-            saveButtonTapped()
-        }
-    }
-    
-    // MARK: - Create Header and Button Actions
-    private func addSaveBarButton() {
-        guard  let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        let saveButton = UIBarButtonItem(title: LocalizationConstants.General.save, style: .plain, target: self, action: #selector(saveButtonTapped))
-        saveButton.tintColor = currentTheme.primaryT1Color
-        self.navigationItem.rightBarButtonItems = [saveButton]
-    }
-    
-    private func addBackButton() {
-        let searchButtonAspectRatio: CGFloat = 30.0
-        let backButton = UIButton(type: .custom)
-        backButton.accessibilityIdentifier = "backButton"
-        backButton.frame = CGRect(x: 0.0, y: 0.0,
-                                    width: searchButtonAspectRatio,
-                                    height: searchButtonAspectRatio)
-        backButton.imageView?.contentMode = .scaleAspectFill
-        backButton.layer.masksToBounds = true
-        backButton.addTarget(self,
-                               action: #selector(backButtonTapped),
-                               for: UIControl.Event.touchUpInside)
-        backButton.setImage(UIImage(named: "ic-back"),
-                              for: .normal)
-
-        let searchBarButtonItem = UIBarButtonItem(customView: backButton)
-        searchBarButtonItem.accessibilityIdentifier = "backBarButton"
-        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
-        currWidth?.isActive = true
-        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
-        currHeight?.isActive = true
-        self.navigationItem.leftBarButtonItem = searchBarButtonItem
-    }
-
-    @objc func backButtonTapped() {
-        ScanDocumentsKit.shouldDiscard(in: self) { [weak self] discarded in
-            guard let sSelf = self else { return }
-            if discarded {
-                sSelf.dismissController()
-            }
-        }
-    }
-    
-    private func dismissController() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @objc func saveButtonTapped() {
-        AlfrescoLog.debug("save button tapped")
-        filePreviewCoordinatorDelegate?.saveScannedDocument(for: filePreviewViewModel?.listNode, delegate: self)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
-
-        allowInterfaceRotation()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -503,7 +439,8 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             } else if action.type.isCreateActions {
                 handleSheetCreate(action: action, node: node)
             } else if action.type.isWorkflowActions {
-                AlfrescoLog.debug("---- WORKFLOW ACTION ---- FilePreviewViewController ------")
+                let nodes = multipleNodes
+                handleStartWorkflow(action: action, node: nodes.isEmpty ? [node!] : nodes)
             }
             logEvent(with: action, node: node)
         }
@@ -636,7 +573,6 @@ extension FilePreviewViewController: FilePreviewDelegate {
     }
 }
 
-// MARK: - Create Node Delegate
 extension FilePreviewViewController: CreateNodeViewModelDelegate {
 
     func handleCreatedNode(node: ListNode?, error: Error?, isUpdate: Bool) {
@@ -659,6 +595,35 @@ extension FilePreviewViewController {
     func logEvent(with action: ActionMenu?, node: ListNode?) {
         guard let action = action else { return }
         AnalyticsManager.shared.fileActionEvent(for: node, action: action)
+    }
+}
+
+// MARK: - Workflow
+extension FilePreviewViewController {
+    
+    func handleStartWorkflow(action: ActionMenu, node: [ListNode]) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startableWorkflowList) as? StartableWorkflowsViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            viewController.coordinatorServices = coordinatorServices
+            self.present(bottomSheet, animated: true)
+            viewController.didSelectAction = { [weak self] (appDefinition) in
+                guard let sSelf = self else { return }
+                sSelf.startWorkflowAction(appDefinition: appDefinition, node: node)
+            }
+        }
+    }
+    
+    private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: [ListNode]) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = appDefinition
+            viewController.viewModel.isEditMode = true
+            viewController.viewModel.selectedAttachments = node
+            viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }
 
