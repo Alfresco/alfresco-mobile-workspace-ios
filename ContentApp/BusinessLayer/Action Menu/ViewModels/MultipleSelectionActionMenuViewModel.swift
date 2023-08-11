@@ -22,6 +22,7 @@ import AlfrescoContent
 class MultipleSelectionActionMenuViewModel {
     private var nodes: [ListNode]
     private var menuActions: [[ActionMenu]]
+    private let excludedActions: [ActionMenuType]
     private var coordinatorServices: CoordinatorServices?
     weak var delegate: ActionMenuViewModelDelegate?
 
@@ -29,10 +30,12 @@ class MultipleSelectionActionMenuViewModel {
 
     init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
          nodes: [ListNode],
+         excludedActions: [ActionMenuType] = [],
          coordinatorServices: CoordinatorServices?) {
 
         self.nodes = nodes
         self.menuActions = menuActions
+        self.excludedActions = excludedActions
         self.coordinatorServices = coordinatorServices
         self.createMenuActions()
     }
@@ -70,6 +73,16 @@ class MultipleSelectionActionMenuViewModel {
         } else {
             menuActions = MultipleFilesActionMenuGeneric.actions(for: nodes)
         }
+        
+        if !excludedActions.isEmpty {
+            for (index, var actionMenuGroup) in menuActions.enumerated() {
+                actionMenuGroup.removeAll { actionMenu -> Bool in
+                    return excludedActions.contains(actionMenu.type)
+                }
+                menuActions[index] = actionMenuGroup
+            }
+        }
+        
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.delegate?.finishedLoadingActions()
