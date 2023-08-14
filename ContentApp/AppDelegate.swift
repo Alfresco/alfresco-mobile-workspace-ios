@@ -68,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        assignJailBreakCheckType(type: .readAndWriteFiles)
         let repository = applicationCoordinator?.repository
 
         let themingService = repository?.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
@@ -160,6 +161,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         return true
+    }
+}
+
+// MARK: - Jail broken detection
+extension AppDelegate: Check_Method_Of_JailBreak {
+    func sendTheStatusOfJailBreak(value: Bool) {
+        if value {
+            UIControl().sendAction(#selector(URLSessionTask.suspend), to: UIApplication.shared, for: nil)
+        }
     }
 }
 
