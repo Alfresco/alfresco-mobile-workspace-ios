@@ -108,12 +108,6 @@ class PreviewViewController: UIViewController {
         descriptionField.label.text = localization.descriptionTextField
         descriptionField.applyTheme(withScheme: theme.textFieldScheme)
     }
-    
-    private func updateTextViewLocalization() {
-        guard let localization = CameraKit.localization, let theme = CameraKit.theme else { return }
-        descriptionField.label.text = localization.descriptionTextField
-        descriptionField.applyTheme(withScheme: theme.textFieldScheme)
-    }
 
     // MARK: - IBActions
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
