@@ -35,13 +35,12 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     var isRenameNode = false
     let maxLengthOfTextField = 255
     let maxLengthOfTextView = 500
-
     var enableUploadButton = false {
         didSet {
             uploadButton.isEnabled = enableUploadButton
         }
     }
-    
+    weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
     typealias TaskOperationCallBack = (_ task: TaskNode?, _ title: String?, _ description: String?) -> Void
     var callBack: TaskOperationCallBack?
 
@@ -99,6 +98,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
                         }
                         sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                     }
+                } else if createNodeViewType == .scanDocument {
+                    sSelf.createNodeCoordinatorDelegate?.saveScannedDocument(with: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                 } else {
                     sSelf.createNodeViewModel?.createNode(with: nodeName,
                                                           description: (descriptionNode.isEmpty) ? nil : descriptionNode)
@@ -165,16 +166,28 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     private func addLocalizationForNodes() {
         let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if createNodeViewType == .rename {
-            uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
+            titleCreate.text = createNodeViewModel?.createAction()
             nameTextField.text = getTitleAndExtensionForRenameNode().name
+            uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
+            enableUploadButton(for: nameTextField.text)
+        } else if createNodeViewType == .scanDocument {
+            titleCreate.text = LocalizationConstants.General.create
+            nameTextField.text = getTitleForScannedDocument()
+            uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
             enableUploadButton(for: nameTextField.text)
         } else {
+            titleCreate.text = createNodeViewModel?.createAction()
             uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
         }
         cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
         descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
-        titleCreate.text = createNodeViewModel?.createAction()
+    }
+    
+    private func getTitleForScannedDocument() -> String {
+        let title = self.createNodeViewModel?.parentListNode.title ?? ""
+        let titleArray = title.components(separatedBy: ".")
+        return titleArray.first ?? ""
     }
     
     private func addLocalizationForTasks() {

@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoCore
+import AlfrescoContent
 
 struct GetContentServicesServerInformation: APIRequest {
     typealias Response = VersionContentService
@@ -42,15 +43,17 @@ struct GetContentServicesServerInformation: APIRequest {
 public struct VersionContentService: Codable {
     private var version: String?
     private let data: [String: String]
-
+    private var edition: String?
     enum CodingKeys: String, CodingKey {
         case data
         case version
+        case edition
     }
 
     public init(version: String, data: [String: String]) {
         self.version = version
         self.data = data
+        self.edition = data[CodingKeys.edition.rawValue]
     }
 
     public init(from decoder: Decoder) throws {
@@ -60,6 +63,11 @@ public struct VersionContentService: Codable {
         if let version = data[CodingKeys.version.rawValue] {
             self.version = version
         }
+        self.version = ""
+        if let version = data[CodingKeys.version.rawValue] {
+            self.version = version
+        }
+        self.edition = data[CodingKeys.edition.rawValue]
     }
 
     func isVersionOverMinium() -> Bool {
@@ -72,4 +80,10 @@ public struct VersionContentService: Codable {
         }
         return false
     }
+
+    func serverEdition() -> String? {
+        return edition
+    }
+    
 }
+

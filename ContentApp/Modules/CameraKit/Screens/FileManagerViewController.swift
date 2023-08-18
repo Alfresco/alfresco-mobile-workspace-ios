@@ -20,7 +20,6 @@ import UIKit
 import UniformTypeIdentifiers
 
 class FileManagerViewController: UIViewController {
-
     weak var fileManagerDelegate: FileManagerAssetDelegate?
     var fileManagerDataSource: FileManagerDataSource?
     var attachmentType: AttachmentType = .content

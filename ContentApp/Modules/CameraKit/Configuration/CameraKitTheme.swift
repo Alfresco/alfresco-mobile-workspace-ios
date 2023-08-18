@@ -31,6 +31,7 @@ struct CameraKitTheme {
     var surface60Color: UIColor
     var photoShutterColor: UIColor
     var videoShutterColor: UIColor
+    var badgeBackGroundColor: UIColor
 
     // MDC Themes
     var textFieldScheme: MDCContainerScheming

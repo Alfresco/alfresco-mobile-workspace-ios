@@ -287,6 +287,7 @@ class SyncOperationFactory {
                                                     nodeExtension: fileURL.path.fileExtension(),
                                                     fileData: fileData,
                                                     autoRename: true,
+                                                    relativePath: nil,
                                                     completionHandler: { (entry, error) in
                                                         if operation.isCancelled {
                                                             completion()

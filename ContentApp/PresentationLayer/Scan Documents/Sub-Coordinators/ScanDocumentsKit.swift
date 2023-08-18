@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -20,29 +20,15 @@ import Foundation
 import UIKit
 import MaterialComponents.MaterialDialogs
 
-public typealias CameraKitDismissHandler = (_ option: Bool) -> Void
+public typealias ScanDocumentsKitDismissHandler = (_ option: Bool) -> Void
 
-class CameraKit {
-    static var theme: CameraKitTheme?
-    static var localization: CameraKitLocalization?
-    static var location: GPSLocation?
+class ScanDocumentsKit {
 
-    static let cameraWorkerQueue = DispatchQueue(label: "CameraWorkerQueue")
-
-    static func applyTheme(theme: CameraKitTheme) {
-        self.theme = theme
-    }
-
-    static func applyLocalization(localization: CameraKitLocalization) {
-        self.localization = localization
-    }
-
-    static func shouldDiscard(numberOfCapturedAssets: Int,
-                              in viewController: UIViewController,
-                              handler: @escaping CameraKitDismissHandler) {
+    static func shouldDiscard(in viewController: UIViewController,
+                              handler: @escaping ScanDocumentsKitDismissHandler) {
         
-        let title = LocalizationConstants.Dialog.discardCapturedAssetsTitle
-        let message = String(format: LocalizationConstants.Dialog.discardCapturedAssetsMessage, numberOfCapturedAssets)
+        let title = LocalizationConstants.Dialog.discardScanFilesTitle
+        let message = LocalizationConstants.Dialog.discardScanFilesMessage
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
             handler(false)

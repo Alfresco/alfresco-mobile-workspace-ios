@@ -20,6 +20,12 @@ import UIKit
 
 class UIFunction: NSObject {
 
+    class func defaultFileName(with prefix: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmssSS"
+        return "\(prefix)_\(dateFormatter.string(from: Date()))"
+    }
+    
     class func getKeyboardAnimationOptions(notification: Notification) -> (height: CGFloat?,
                                                                            duration: Double?,
                                                                            curve: UIView.AnimationOptions) {

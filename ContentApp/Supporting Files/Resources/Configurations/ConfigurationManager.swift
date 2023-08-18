@@ -21,6 +21,13 @@ import AlfrescoContent
 
 class ConfigurationManager: NSObject {
     public static let shared = ConfigurationManager()
+    
+    func isPaidUser() -> Bool {
+        if let accountService = ApplicationBootstrap.shared().repository.service(of: AccountService.identifier) as? AccountService, let serverEdition = accountService.serverEdition {
+            return serverEdition == PersonNetwork.SubscriptionLevel.enterprise.rawValue
+        }
+        return false
+    }
 
     private func loadConfigurations() -> NSDictionary? {
         if let configFile = Bundle.main.path(forResource: "Configurations", ofType: "plist") {

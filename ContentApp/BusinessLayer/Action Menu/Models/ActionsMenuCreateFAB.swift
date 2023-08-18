@@ -21,22 +21,35 @@ import Foundation
 struct ActionsMenuCreateFAB {
     static func actions() -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
-
-        let actions1 = [ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
-                                   type: .createFolder),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
-                                                   type: .uploadMedia),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
-                                                   type: .createMedia),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
-                                                   type: .uploadFiles)] /*,
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
-                                   type: .createMSWord),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
-                                   type: .createMSPowerPoint),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSexcel,
-                                   type: .createMSExcel)] */
-        actions.append(actions1)
+        
+        let actionCreateFolder = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
+                                            type: .createFolder)
+        let actionScanDocuments = ActionMenu(title: LocalizationConstants.ActionMenu.scanDocuments,
+                                            type: .scanDocuments)
+        var actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
+                                           type: .createMedia)
+        var actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
+                                           type: .uploadMedia)
+        let actionUploadFiles = ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
+                                            type: .uploadFiles)
+       
+        if !ConfigurationManager.shared.isPaidUser() {
+            actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
+                                           type: .uploadMedia)
+            actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createSingleMedia,
+                                           type: .createMedia)
+        }
+        
+        var actionMenus = [actionCreateFolder,
+                        actionCreateMedia,
+                        actionUploadMedia,
+                        actionUploadFiles
+                        ]
+        
+        if ConfigurationManager.shared.isPaidUser() {
+            actionMenus.insert(actionScanDocuments, at: 1)
+        }
+        actions.append(actionMenus)
         return actions
     }
 }

@@ -122,13 +122,13 @@
 "approved-upload-media" = "Media scheduled for upload.";
 "approved-moved-folder" = "%@ moved successfully.";
 "approved-update" = "%@ was updated";
+"approved-upload-scanned-document" = "Document scheduled for upload.";
 "approved-moved-multiple-files-to-folder" = "%d items moved successfully.";
 "approved-multiple-remove-offline" = "%d items will no longer be available offline.";
 "approved-multiple-mark-offline" = "%d items will be made available offline.";
 "approved-multiple-moved-to-trash" = "%d items moved to trash";
 "multiple-items-restored" = "%d items restored";
 "multiple-items-deleted" = "%d items deleted";
-
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
@@ -241,11 +241,14 @@
 "action-menu-create-folder" = "New folder";
 "action-menu-mark-offline" = "Make available offline";
 "action-menu-remove-offline" = "Remove offline";
-"action-menu-create-media" = "Take a photo or video";
+"action-menu-create-media" = "Take photos or videos";
 "action-menu-upload-media" = "Upload photos or videos";
+"action-menu-create-single-media" = "Take a photo or video";
+"action-menu-upload-single-media" = "Upload a photo or video";
 "action-menu-upload-files" = "Upload files";
 "action-menu-move-folder" = "Move";
 "action-menu-rename-node" = "Rename";
+"action-menu-scan-documents" = "Scan documents";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";
@@ -256,6 +259,8 @@
 "dialog-session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
 "dialog-override-sync-cellular-data-title" = "Use cellular data?";
 "dialog-override-sync-cellular-data-message" = "This will override your settings and download over cellular data this time. Otherwise download will begin later after connecting to Wi-Fi.";
+"dialog-discard-captures-title" = "Discard captures?";
+"dialog-discard-captures-message" = "%d media files will be discarded if you exit.";
 "dialog-session-unavailable-title" = "Session unavailable";
 "dialog-session-unavailable-message" = "Tap to launch Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet unavailable";
@@ -293,6 +298,10 @@
 "on-flash" = "On";
 "off-flash" = "Off";
 
+// MARK: - Alert
+"alert-title" = "Alert";
+"camera-unavailable" = "Device does not support camera";
+
 // MARK: - Extension
 "save-to-alfresco" = "Save to Alfresco";
 "upload" = "Upload";
@@ -303,6 +312,10 @@
 "dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";
 "unsupported-file-format" = "Unsupported File Format";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "Discard scan Files?";
+"dialog-discard-scanner-message" = "Scan files will be discarded if you exit.";
 "search_move_warning" = "You cannot move to your own folder and subfolders.";
 
 // MARK: - Tasks

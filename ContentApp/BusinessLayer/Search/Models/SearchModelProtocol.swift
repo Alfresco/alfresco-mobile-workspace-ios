@@ -50,6 +50,5 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
                            facetIntervals: FacetIntervals?,
                            paginationRequest: RequestPagination?,
                            completionHandler: SearchCompletionHandler)
-    
     func getAdvanceSearchConfigurationFromServer(callback completion: ((_ configuration: SearchConfigModel?, _ data: Data?) -> Void)?)
 }

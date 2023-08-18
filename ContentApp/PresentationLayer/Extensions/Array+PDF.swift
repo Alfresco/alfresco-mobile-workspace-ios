@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,11 +16,20 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
+import PDFKit
 
-struct ConfigurationKeys {
-    static let isPaidUser = "isPaidUser"
-    static let advanceSearchAPIIntervalInHours = "advanceSearchAPIIntervalInHours"
-    static let urlSchema    = "iosamw"
-    static let fullURLSchema    = "iosamw://"
+extension Array where Element: UIImage {
+    
+      func makePDF() -> PDFDocument? {
+        let pdfDocument = PDFDocument()
+        for (index, image) in self.enumerated() {
+            if let data = image.jpegData(compressionQuality: 0.6), let image = UIImage(data: data) {
+                if let pdfPage = PDFPage(image: image) {
+                    pdfDocument.insert(pdfPage, at: index)
+                }
+            }
+        }
+        return pdfDocument
+    }
 }

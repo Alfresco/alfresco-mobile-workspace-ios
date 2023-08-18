@@ -18,9 +18,17 @@
 
 import Foundation
 
-struct ConfigurationKeys {
-    static let isPaidUser = "isPaidUser"
-    static let advanceSearchAPIIntervalInHours = "advanceSearchAPIIntervalInHours"
-    static let urlSchema    = "iosamw"
-    static let fullURLSchema    = "iosamw://"
+class ServerEdition: NSObject {
+    static let shared = ServerEdition()
+    var viewModel: ConnectViewModel?
+
+    func checkVersion() {
+        let loginService = ApplicationBootstrap.shared().repository.service(of: AuthenticationService.identifier) as? AuthenticationService
+        self.viewModel = ConnectViewModel(with: loginService)
+        
+        if let activeAccountIdentifier = UserDefaults.standard.value(forKey: KeyConstants.Save.activeAccountIdentifier) as? String {
+            let hostname = AuthenticationParameters.parameters(for: activeAccountIdentifier).hostname
+            self.viewModel?.availableAuthType(for: hostname, in: nil, isCheckForServerEditionOnly: true)
+        }
+    }
 }

@@ -17,52 +17,77 @@
 //
 
 import UIKit
-import MobileCoreServices
+import AVFoundation
 
-class FileManagerScreenCoordinator: Coordinator {
+class ScanDocumentsScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private let parentListNode: ListNode
     private var fileManagerDataSource: FileManagerDataSource?
-    var attachmentType: AttachmentType
-    var didSelectAttachment: (([UploadTransfer]) -> Void)?
+    private var mediaFilesFolderPath: String?
 
     init(with presenter: UINavigationController,
-         parentListNode: ListNode,
-         attachmentType: AttachmentType) {
+         parentListNode: ListNode) {
         self.parentListNode = parentListNode
         self.presenter = presenter
-        self.attachmentType = attachmentType
     }
     
-    func start() {
-        let viewController = FileManagerViewController.instantiateViewController()
+    override func start() {
+        let viewController = ScanDocumentsViewController.instantiateViewController()
         viewController.fileManagerDelegate = self
         viewController.modalPresentationStyle = .fullScreen
-        viewController.attachmentType = self.attachmentType
         
         let accountIdentifier = self.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
         let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
         self.fileManagerDataSource = FileManagerDataSource(folderToSavePath: uploadFilePath)
         viewController.fileManagerDataSource = self.fileManagerDataSource
-        self.presenter.present(viewController, animated: true)
+       
+        requestAuthorizationForCameraUsage { [weak self] (granted) in
+            if granted {
+                DispatchQueue.main.async {
+                    guard let sSelf = self else { return }
+                    sSelf.presenter.present(viewController,
+                                            animated: true)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    guard let sSelf = self else { return }
+                    sSelf.presentCameraPrivacyNotice()
+                }
+            }
+        }
+    }
+    
+    // MARK: - Private Methods
+        
+    private func requestAuthorizationForCameraUsage(completion: @escaping ((_ granted: Bool) -> Void)) {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            completion(true)
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                completion(granted)
+            }
+        default:
+            completion(false)
+        }
+    }
+    
+    private func presentCameraPrivacyNotice() {
+        let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+        privacyVC.viewModel = PrivacyNoticeCameraModel()
+        privacyVC.coordinatorServices = coordinatorServices
+        presenter.present(privacyVC,
+                          animated: true,
+                          completion: nil)
     }
 }
 
-extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
+// MARK: - File manager Delegate
+extension ScanDocumentsScreenCoordinator: FileManagerAssetDelegate {
     func didEndFileManager(for selectedAssets: [FileAsset], isScannedDocument: Bool) {
         
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
         else { return }
-
-        if !selectedAssets.isEmpty {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
-                guard let sSelf = self else { return }
-                Snackbar.display(with: LocalizationConstants.Approved.uploadMedia,
-                                 type: .approve,
-                                 presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
-                                 finish: nil)
-            })
-        }
         
         var uploadTransfers: [UploadTransfer] = []
         for fileAsset in selectedAssets {
@@ -75,29 +100,21 @@ extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
                                                 extensionType: fileAsset.fileExtension ?? "",
                                                 mimetype: assetURL.mimeType(),
                                                 nodeDescription: fileAsset.description,
-                                                localFilenamePath: assetURL.lastPathComponent,
-                                                attachmentType: self.attachmentType)
+                                                localFilenamePath: assetURL.lastPathComponent)
             uploadTransfers.append(uploadTransfer)
         }
 
-        let uploadTransferDataAccessor = UploadTransferDataAccessor()
-        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
-
-        if attachmentType != .workflow {
-            triggerUpload()
-        } else {
-            didSelectAttachment?(uploadTransfers)
+        if let listNode = uploadTransfers.first?.listNode() {
+            DispatchQueue.main.async {
+                self.showPreview(for: listNode)
+            }
         }
     }
-    
-    func triggerUpload() {
-        let connectivityService = coordinatorServices.connectivityService
-        let syncTriggersService = coordinatorServices.syncTriggersService
-        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+}
 
-        if connectivityService?.status == .cellular &&
-            UserProfile.allowSyncOverCellularData == false {
-            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
-        }
+// MARK: - List Item Action Delegate
+extension ScanDocumentsScreenCoordinator {
+    func showPreview(for node: ListNode) {
+        startFileCoordinator(for: node, presenter: self.presenter, isScannedDocument: true)
     }
 }

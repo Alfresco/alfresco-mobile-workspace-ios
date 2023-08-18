@@ -151,6 +151,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             listItemActionDelegate?.showFiles()
         case .renameNode:
             listItemActionDelegate?.renameNodeForListItem(for: node, actionMenu: action, delegate: self)
+        case .scanDocuments:
+            listItemActionDelegate?.scanDocumentsAction()
         default: break
         }
     }

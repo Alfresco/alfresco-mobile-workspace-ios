@@ -22,7 +22,6 @@ target 'ContentApp' do
   pod 'AlfrescoAuth'
   pod 'AlfrescoContent'
 
-  
   target 'ContentAppTests' do
     inherit! :search_paths
   end

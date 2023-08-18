@@ -17,13 +17,15 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 protocol AccountServiceProtocol {
     /// Array of registered accounts.
     var accounts: [AccountProtocol] { get }
     /// Account on which requests will be executed.
     var activeAccount: AccountProtocol? { get set }
-
+    /// Server eedition
+    var serverEdition: String? { get set }
     /// Registers an account and persists authentication related parameters.
     /// - Parameter account: Account to be registered
     func register(account: AccountProtocol)
@@ -59,11 +61,19 @@ protocol AccountServiceProtocol {
 }
 
 class AccountService: AccountServiceProtocol, Service {
-
     private var connectivityService: ConnectivityService?
     private var kvoConnectivity: NSKeyValueObservation?
     private (set) var accounts: [AccountProtocol] = []
-
+    var serverEdition: String? {
+        get {
+            return Keychain.string(forKey: KeyConstants.Save.edition)
+        }
+        set {
+            if let value = newValue {
+                _ = Keychain.set(value: value, forKey: KeyConstants.Save.edition)
+            }
+        }
+    }
     var activeAccount: AccountProtocol? {
         didSet {
             if let activeAccountIdentifier = activeAccount?.identifier {

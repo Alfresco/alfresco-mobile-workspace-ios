@@ -60,6 +60,7 @@ struct DefaultTheme: PresentationTheme {
     var primary15T1Color = UIColor(hex: "#1F74DB", alpha: 0.15)
     var dividerColor = UIColor(hex: "#DEDEDF")
     var videoShutterColor = UIColor(hex: "#F34139")
+    var badgeBackGroundColor = UIColor(hex: "#1F74DB")
     var photoShutterColor = UIColor(hex: "#1F74DB")
     var taskErrorContainer = UIColor(hex: "#BA1B1B", alpha: 0.24)
     var taskWarningContainer = UIColor(hex: "#C95100", alpha: 0.24)

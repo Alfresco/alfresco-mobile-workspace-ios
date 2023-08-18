@@ -234,6 +234,8 @@
 "action-menu-remove-offline" = "Offline verwijderen";
 "action-menu-create-media" = "Een foto maken of een video opnemen";
 "action-menu-upload-media" = "Foto's of video's uploaden";
+"action-menu-create-single-media" = "Een foto maken of een video opnemen";
+"action-menu-upload-single-media" = "Een foto of video uploaden";
 "action-menu-upload-files" = "Bestanden uploaden";
 "action-menu-move-folder" = "Verplaatsen";
 "action-menu-rename-node" = "Naam wijzigen";
@@ -245,9 +247,11 @@
 "dialog-download-message" = "'%@' wordt gedownload";
 "dialog-upload-message" = "'%@' wordt geüpload";
 "dialog-session-expired-title" = "Sessie verlopen.";
-"dialog-session-expired-message" = "U bent niet meer aangemeld. Meld u opnieuw aan om door te gaan.";
-"dialog-override-sync-cellular-data-title" = "Mobiele dataverbinding gebruiken?";
-"dialog-override-sync-cellular-data-message" = "Hiermee worden uw instellingen overschreven en vindt het downloaden deze keer plaats via een mobiele dataverbinding. Anders begint het downloaden later nadat verbinding is gemaakt met Wi-Fi.";
+"dialog-session-expired-message" = "U bent niet meer ingelogd. Log opnieuw in om door te gaan.";
+"dialog-override-sync-cellular-data-title" = "Mobiele gegevens gebruiken?";
+"dialog-override-sync-cellular-data-message" = "Hiermee worden uw instellingen overschreven en vindt het downloaden deze keer plaats via mobiele gegevens. Anders begint het downloaden later nadat verbinding is gemaakt met Wi-Fi.";
+"dialog-discard-captures-title" = "Opnamen verwijderen?";
+"dialog-discard-captures-message" = "%d mediabestanden worden verwijderd als u afsluit.";
 "dialog-session-unavailable-title" = "Sessie niet beschikbaar";
 "dialog-session-unavailable-message" = "Tik om Alfresco Mobile Workspace te starten";
 "dialog-internet-unavailable-title" = "Internet niet beschikbaar";

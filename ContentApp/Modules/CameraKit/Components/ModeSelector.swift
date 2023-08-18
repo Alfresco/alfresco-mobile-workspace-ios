@@ -37,7 +37,7 @@ class ModeSelectorControl: UIControl {
     var entryPadding = 45
     weak var delegate: ModeSelectorControlDelegate?
 
-    private(set) var currentSelection: Int = 0
+    var currentSelection: Int = 0
 
     private let scrollView = UIScrollView()
     private var sliderLabelEntries: [UILabel] = []
@@ -182,9 +182,16 @@ class ModeSelectorControl: UIControl {
         scrollToCurrentSelection(animated: true)
     }
 
-    @objc private func handleTap(_ sender: UIButton) {
+    @objc public func handleTap(_ sender: UIButton) {
         if sender.tag != currentSelection {
             currentSelection = sender.tag
+            scrollToCurrentSelection(animated: true)
+        }
+    }
+
+    @objc public func scrollTo(index: Int) {
+        if index != currentSelection {
+            currentSelection = index
             scrollToCurrentSelection(animated: true)
         }
     }

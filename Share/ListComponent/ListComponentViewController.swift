@@ -128,7 +128,7 @@ class ListComponentViewController: SystemThemableViewController {
     @IBAction func uploadButtonAction(_ sender: Any) {
         if let decoded = UserDefaultsModel.value(for: KeyConstants.AppGroup.sharedFiles) as? Data {
             if let decodedURLs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(decoded) as? [URL] {
-                fileManagerDataSource?.fetchSelectedAssets(for: decodedURLs, and: fileManagerDelegate)
+                fileManagerDataSource?.fetchSelectedAssets(for: decodedURLs, and: fileManagerDelegate, isScannedDocument: false)
             }
         }
     }

@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         connectivityService?.startNetworkReachabilityObserver()
+        ServerEdition.shared.checkVersion()
         UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         migrateDatabaseIfNecessary()
         AnalyticsManager.shared.appLaunched()

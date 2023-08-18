@@ -232,8 +232,10 @@
 "action-menu-create-folder" = "Neuer Ordner";
 "action-menu-mark-offline" = "Offline zur Verfügung stellen";
 "action-menu-remove-offline" = "Offline entfernen";
-"action-menu-create-media" = "Bilder oder Videos aufnehmen";
+"action-menu-create-media" = "Fotos oder Videos aufnehmen";
 "action-menu-upload-media" = "Fotos oder Videos hochladen";
+"action-menu-create-single-media" = "Bilder oder Videos aufnehmen";
+"action-menu-upload-single-media" = "Foto oder Video hochladen";
 "action-menu-upload-files" = "Dateien hochladen";
 "action-menu-move-folder" = "Verschieben";
 "action-menu-rename-node" = "Umbenennen";
@@ -248,11 +250,12 @@
 "dialog-session-expired-message" = "Sie wurden abgemeldet. Melden Sie sich zum Fortfahren wieder an.";
 "dialog-override-sync-cellular-data-title" = "Mobilfunkdaten verwenden?";
 "dialog-override-sync-cellular-data-message" = "Dadurch werden Ihre Einstellungen überschrieben und der Download erfolgt in diesem Fall über Mobilfunkdaten. Andernfalls beginnt der Download später nach dem Herstellen einer WLAN-Verbindung.";
+"dialog-discard-captures-title" = "Aufnahmen verwerfen?";
+"dialog-discard-captures-message" = "%d Mediendateien werden verworfen, wenn Sie beenden.";
 "dialog-session-unavailable-title" = "Sitzung nicht auffindbar";
 "dialog-session-unavailable-message" = "Tippen zum Starten von Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Keine Internetverbindung";
 "dialog-internet-unavailable-message" = "Bitte überprüfen Sie Ihre Internetverbindung und starten anschließend den Vorgang erneut.";
-
 
 // MARK: - Empty List
 "empty-recent-title" = "Keine aktuellen Dateien";

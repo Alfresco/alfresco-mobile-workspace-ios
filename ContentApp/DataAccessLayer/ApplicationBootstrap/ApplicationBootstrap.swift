@@ -137,6 +137,7 @@ class ApplicationBootstrap {
                                    surface60Color: currentTheme.surface60Color,
                                    photoShutterColor: currentTheme.photoShutterColor,
                                    videoShutterColor: currentTheme.videoShutterColor,
+                                   badgeBackGroundColor: currentTheme.badgeBackGroundColor,
                                    textFieldScheme: textFieldScheme,
                                    buttonScheme: buttonScheme,
                                    subtitle2Font: currentTheme.subtitle2TextStyle.font,

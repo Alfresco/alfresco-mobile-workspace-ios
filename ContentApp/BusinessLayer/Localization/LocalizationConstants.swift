@@ -31,6 +31,7 @@ struct LocalizationConstants {
         static let delete = NSLocalizedString("delete", comment: "")
         static let create = NSLocalizedString("create", comment: "")
         static let save = NSLocalizedString("save", comment: "")
+        static let discard = NSLocalizedString("discard", comment: "")
         static let done = NSLocalizedString("done", comment: "")
         static let rename = NSLocalizedString("rename", comment: "")
         static let update = NSLocalizedString("update", comment: "")
@@ -138,6 +139,7 @@ struct LocalizationConstants {
         static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
         static let movedFileFolderSuccess = NSLocalizedString("approved-moved-folder", comment: "")
         static let updated = NSLocalizedString("approved-update", comment: "")
+        static let uploadDocument = NSLocalizedString("approved-upload-scanned-document", comment: "")
         static let movedMultipleFileFolderSuccess = NSLocalizedString("approved-moved-multiple-files-to-folder", comment: "")
         static let markOfflineMultipleNodes = NSLocalizedString("approved-multiple-mark-offline", comment: "")
         static let removeOfflineMultipleNodes = NSLocalizedString("approved-multiple-remove-offline", comment: "")
@@ -227,9 +229,12 @@ struct LocalizationConstants {
         static let removeOffline = NSLocalizedString("action-menu-remove-offline", comment: "")
         static let createMedia = NSLocalizedString("action-menu-create-media", comment: "")
         static let uploadMedia = NSLocalizedString("action-menu-upload-media", comment: "")
+        static let createSingleMedia = NSLocalizedString("action-menu-create-single-media", comment: "")
+        static let uploadSingleMedia = NSLocalizedString("action-menu-upload-single-media", comment: "")
         static let uploadFiles = NSLocalizedString("action-menu-upload-files", comment: "")
         static let moveToFolder = NSLocalizedString("action-menu-move-folder", comment: "")
         static let renameNode = NSLocalizedString("action-menu-rename-node", comment: "")
+        static let scanDocuments = NSLocalizedString("action-menu-scan-documents", comment: "")
     }
 
     struct Dialog {
@@ -240,12 +245,16 @@ struct LocalizationConstants {
         static let sessionExpiredTitle =  NSLocalizedString("dialog-session-expired-title", comment: "")
         static let sessionExpiredMessage =  NSLocalizedString("dialog-session-expired-message", comment: "")
         static let overrideSyncCellularDataTitle =  NSLocalizedString("dialog-override-sync-cellular-data-title", comment: "")
-
+        
         static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-sync-cellular-data-message", comment: "")
+        static let discardCapturedAssetsTitle = NSLocalizedString("dialog-discard-captures-title", comment: "")
+        static let discardCapturedAssetsMessage = NSLocalizedString("dialog-discard-captures-message", comment: "")
         static let sessionUnavailableTitle =  NSLocalizedString("dialog-session-unavailable-title", comment: "")
         static let sessionUnavailableMessage =  NSLocalizedString("dialog-session-unavailable-message", comment: "")
         static let internetUnavailableTitle =  NSLocalizedString("dialog-internet-unavailable-title", comment: "")
         static let internetUnavailableMessage =  NSLocalizedString("dialog-internet-unavailable-message", comment: "")
+        static let discardScanFilesTitle = NSLocalizedString("dialog-discard-scanner-title", comment: "")
+        static let discardScanFilesMessage = NSLocalizedString("dialog-discard-scanner-message", comment: "")
         static let completeTaskTitle =  NSLocalizedString("complete-task-dialog-title", comment: "")
         static let completeTaskMessage =  NSLocalizedString("complete-task-dialog-message", comment: "")
         static let confirmTitle =  NSLocalizedString("confirm-title", comment: "")

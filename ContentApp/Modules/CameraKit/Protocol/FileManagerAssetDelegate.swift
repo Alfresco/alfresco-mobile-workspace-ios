@@ -23,5 +23,5 @@ protocol FileManagerAssetDelegate: AnyObject {
     /// - Note: It is expected that the receiver copies over any desired disk data as the default capture location should be
     /// cleared out after this call.
     /// - Parameter selectedAssets: selected asset information containing metadata and path information
-    func didEndFileManager(for selectedAssets: [FileAsset])
+    func didEndFileManager(for selectedAssets: [FileAsset], isScannedDocument: Bool)
 }

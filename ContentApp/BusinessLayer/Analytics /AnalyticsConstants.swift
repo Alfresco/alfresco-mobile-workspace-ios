@@ -22,7 +22,6 @@ enum Event {
 
     enum Action: String, CaseIterable {
         case discardCaptures = "event_discard_capture"
-        case searchScreen = "Search"
         case filePreview = "event_file_preview"
         case download = "event_download"
         case addFavorite = "event_add_to_favorites"
@@ -41,7 +40,7 @@ enum Event {
         case searchFacets = "event_search_facets"
         case permanentlyDelete = "event_permanently_delete"
         case restore = "event_restore"
-        case openWith = "event_open_with"        
+        case scanDocuments = "event_scan_documents"
         case createdDateRange = "event_due_date"
         case radio = "event_status"
         case text = "event_task_name"
@@ -63,7 +62,7 @@ enum Event {
         case workflowUploadFile = "event_workflow_upload_files"
         case deleteWorkflowAttachment = "event_delete_workflow_attachment"
     }
-    
+
     enum API: String {
         case apiNewFolder = "event_api_new_folder"
         case apiUploadMedia = "event_api_upload_files"

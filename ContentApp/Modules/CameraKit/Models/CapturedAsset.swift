@@ -25,6 +25,7 @@ let extPhoto = "JPG"
 let extVideo = "MOV"
 let mimetypePhoto = "image/jpeg"
 let mimetypeVideo = "video/quicktime"
+let prefixScannedFileName = "Scan"
 
 enum CapturedAssetType {
     case image
@@ -49,6 +50,7 @@ class CapturedAsset {
     let type: CapturedAssetType
     var description: String?
     var fileName: String
+    var thumbnailPath: String?
 
     private(set) var path = ""
     
@@ -81,6 +83,10 @@ class CapturedAsset {
         self.type = type
         self.fileName = fileName
         self.path = path
+        if let thumbnail = self.videoThumbnail() {
+            let filename = defaultFileName(with: prefixImageFileName)
+            self.thumbnailPath = DiskService.saveVideoThumbnail(thumbnail, fileName: filename)
+        }
     }
     
     // MARK: - Public Helpers
@@ -92,21 +98,29 @@ class CapturedAsset {
                 return UIImage(contentsOfFile: path)
             }
         case .video:
-            let asset = AVAsset(url: URL(fileURLWithPath: path))
-            let imageGenerator = AVAssetImageGenerator(asset: asset)
-            do {
-                let cgimage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 30),
-                                                             actualTime: nil)
-                let assetOrientation = orientation(for: asset)
-                return UIImage(cgImage: cgimage, scale: 1.0, orientation: assetOrientation)
-            } catch {
-                return nil
+            if let thumbnailPath = thumbnailPath {
+                if FileManager.default.fileExists(atPath: thumbnailPath) {
+                    return UIImage(contentsOfFile: thumbnailPath)
+                }
             }
         }
         
         return nil
     }
     
+    func videoThumbnail() -> UIImage? {
+        let asset = AVAsset(url: URL(fileURLWithPath: path))
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        do {
+            let cgimage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 30),
+                                                         actualTime: nil)
+            let assetOrientation = orientation(for: asset)
+            return UIImage(cgImage: cgimage, scale: 1.0, orientation: assetOrientation)
+        } catch {
+            return nil
+        }
+    }
+        
     func deleteAsset() {
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: path) {
@@ -114,6 +128,20 @@ class CapturedAsset {
                 try fileManager.removeItem(atPath: path)
             } catch {
                 AlfrescoLog.error("Failed to delete item at path: \(path).")
+            }
+        }
+        deleteVideoThumbnail()
+    }
+    
+    private func deleteVideoThumbnail() {
+        let fileManager = FileManager.default
+        if let thumbnailPath = thumbnailPath {
+            if fileManager.fileExists(atPath: thumbnailPath) {
+                do {
+                    try fileManager.removeItem(atPath: thumbnailPath)
+                } catch {
+                    AlfrescoLog.error("Failed to delete item at path: \(thumbnailPath).")
+                }
             }
         }
     }
@@ -137,7 +165,7 @@ class CapturedAsset {
     }
 
     private func uniqueIdentifier() -> String {
-        return String(Date().timeIntervalSince1970)
+        return UUID().uuidString
     }
     
     private func orientation(for asset: AVAsset) -> UIImage.Orientation {
@@ -157,5 +185,11 @@ class CapturedAsset {
         default:
             return .right
         }
+    }
+    
+    private func defaultFileName(with prefix: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmssSS"
+        return "\(prefix)_\(dateFormatter.string(from: Date()))"
     }
 }

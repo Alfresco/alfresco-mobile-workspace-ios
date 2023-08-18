@@ -163,6 +163,19 @@ class DiskService {
         return md5Hex
     }
     
+    static func saveVideoThumbnail(_ image: UIImage, fileName: String) -> String? {
+        let fileManager = FileManager.default
+        let path = documentsDirectoryPath()
+        if create(directoryPath: path) {
+            let filePath = "\(path)/\(fileName).\(extPhoto)"
+            let data = image.jpegData(compressionQuality: 1)
+            fileManager.createFile(atPath: filePath,
+                                   contents: data, attributes: nil)
+            return filePath
+        }
+        return nil
+    }
+
     // MARK: - Advance Search
     static func advanceSearchConfigFilePath(for accountIdentifier: String) -> String {
         let folderPath = documentsDirectoryPath()

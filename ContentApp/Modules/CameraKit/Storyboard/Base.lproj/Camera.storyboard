@@ -10,138 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Camera View Controller-->
-        <scene sceneID="Msq-1g-wIq">
-            <objects>
-                <viewController storyboardIdentifier="CameraViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nj7-Z3-jPD" customClass="CameraViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="7oH-hL-pld">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sex-j9-UbZ" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="428" height="570.66666666666663"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mpj-Nv-eD8" customClass="SessionPreview" customModule="ContentApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="570.66666666666663"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dfX-xY-wpU">
-                                <rect key="frame" x="0.0" y="44" width="428" height="56"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z0X-Ts-kZm">
-                                        <rect key="frame" x="16" y="0.0" width="46" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="closeButton"/>
-                                        <state key="normal" image="ic-close"/>
-                                        <connections>
-                                            <action selector="closeButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="uQR-yk-Rsg"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXa-57-gSk">
-                                        <rect key="frame" x="366" y="0.0" width="46" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="flashButton"/>
-                                        <state key="normal" image="ic-camera-flash-auto"/>
-                                        <connections>
-                                            <action selector="flashModeButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="FOB-RL-AKW"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xqV-8o-SxU" userLabel="Zoom View" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="658.66666666666663" width="428" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1x" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2s-So-wmT">
-                                        <rect key="frame" x="194" y="2" width="40" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6tR-lY-uHu" customClass="RangeSlider" customModule="ContentApp" customModuleProvider="target">
-                                        <rect key="frame" x="62" y="12" width="232" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="zoomSlider"/>
-                                    </slider>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zuw-61-Yy5" customClass="FlashMenu" customModule="ContentApp" customModuleProvider="target">
-                                <rect key="frame" x="134" y="383" width="160" height="160"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ULu-2x-pmc" userLabel="Shutter View" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="702.66666666666663" width="428" height="96"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ci-e2-bho">
-                                        <rect key="frame" x="368" y="38" width="44" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="switchCameraButton"/>
-                                        <state key="normal" image="ic-camera-switch"/>
-                                        <connections>
-                                            <action selector="switchCamerasButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="6jw-ID-Fi4"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XfX-as-TQa" customClass="ShutterButton" customModule="ContentApp" customModuleProvider="target">
-                                        <rect key="frame" x="178" y="24" width="72" height="72"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="captureButton"/>
-                                        <connections>
-                                            <action selector="captureButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="KDl-Fq-juG"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fvq-fy-4iC" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="822.66666666666663" width="428" height="64"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4bR-ue-MhG" customClass="ModeSelectorControl" customModule="ContentApp" customModuleProvider="target">
-                                        <rect key="frame" x="114" y="0.0" width="200" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="aD4-lP-4o8"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <connections>
-                        <outlet property="closeButton" destination="Z0X-Ts-kZm" id="czF-h9-962"/>
-                        <outlet property="finderView" destination="Sex-j9-UbZ" id="d7i-5a-wCl"/>
-                        <outlet property="flashMenuView" destination="zuw-61-Yy5" id="7ZH-Qp-rQn"/>
-                        <outlet property="flashModeButton" destination="yXa-57-gSk" id="SiS-rI-Uwu"/>
-                        <outlet property="modeSelector" destination="4bR-ue-MhG" id="lLk-GO-i18"/>
-                        <outlet property="modeView" destination="fvq-fy-4iC" id="HRs-74-qq4"/>
-                        <outlet property="sessionPreview" destination="Mpj-Nv-eD8" id="8t8-l6-fSS"/>
-                        <outlet property="shutterButton" destination="XfX-as-TQa" id="oke-4n-5ei"/>
-                        <outlet property="shutterView" destination="ULu-2x-pmc" id="1wk-ju-RDg"/>
-                        <outlet property="switchCameraButton" destination="7ci-e2-bho" id="whO-0t-Wkd"/>
-                        <outlet property="topBarView" destination="dfX-xY-wpU" id="PAX-eL-Wqf"/>
-                        <outlet property="zoomLabel" destination="Z2s-So-wmT" id="dQE-ap-MjN"/>
-                        <outlet property="zoomSlider" destination="6tR-lY-uHu" id="Ud6-C0-fOp"/>
-                        <outlet property="zoomView" destination="xqV-8o-SxU" id="Zp6-ie-i6s"/>
-                        <segue destination="aGd-Xu-cBR" kind="show" identifier="showPreviewVCfromCameraVC" id="xR3-tt-icf"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6Z9-B2-aCa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-11.214953271028037" y="62.203023758099356"/>
-        </scene>
         <!--Photo Gallery View Controller-->
         <scene sceneID="yEk-Ex-lqz">
             <objects>
@@ -549,6 +417,21 @@
             </objects>
             <point key="canvasLocation" x="2797" y="-290"/>
         </scene>
+        <!--Scan Documents View Controller-->
+        <scene sceneID="ZKw-5E-bSP">
+            <objects>
+                <viewController storyboardIdentifier="ScanDocumentsViewController" id="YVM-iW-Rbz" customClass="ScanDocumentsViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5be-L2-9Ed">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Fh9-54-Xgz"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3vK-h0-Nxn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3484" y="-290"/>
+        </scene>
         <!--Full Screen Video View Controller-->
         <scene sceneID="CnT-4v-hC6">
             <objects>
@@ -584,6 +467,176 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5OI-W5-mJ0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1821" y="433"/>
+        </scene>
+        <!--Camera View Controller-->
+        <scene sceneID="dBB-Z9-cLc">
+            <objects>
+                <viewController storyboardIdentifier="CameraViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ksD-C0-99D" customClass="CameraViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="N8M-4e-nGD">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9KG-7z-NVj" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="88" width="428" height="570.66666666666663"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uH5-we-xPw" customClass="SessionPreview" customModule="ContentApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="570.66666666666663"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8xL-8f-u9p">
+                                <rect key="frame" x="0.0" y="44" width="428" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uc6-0Z-Rdk">
+                                        <rect key="frame" x="16" y="0.0" width="46" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="closeButton"/>
+                                        <state key="normal" image="ic-close"/>
+                                        <connections>
+                                            <action selector="closeButtonTapped:" destination="ksD-C0-99D" eventType="touchUpInside" id="Pjz-2k-EuG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kQ1-He-kAd">
+                                        <rect key="frame" x="366" y="0.0" width="46" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="flashButton"/>
+                                        <state key="normal" image="ic-camera-flash-auto"/>
+                                        <connections>
+                                            <action selector="flashModeButtonTapped:" destination="ksD-C0-99D" eventType="touchUpInside" id="V4V-3w-fYW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ive-Ey-67g" userLabel="Zoom View" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="658.66666666666663" width="428" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1x" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y9r-au-yhE">
+                                        <rect key="frame" x="194" y="2" width="40" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="wkD-WO-YHB" customClass="RangeSlider" customModule="ContentApp" customModuleProvider="target">
+                                        <rect key="frame" x="62" y="12" width="232" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="zoomSlider"/>
+                                    </slider>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TME-PK-bJk" customClass="FlashMenu" customModule="ContentApp" customModuleProvider="target">
+                                <rect key="frame" x="134" y="383" width="160" height="160"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="18w-Jh-u58" userLabel="Shutter View" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="702.66666666666663" width="428" height="96"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3uS-mv-GyQ">
+                                        <rect key="frame" x="368" y="38" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="switchCameraButton"/>
+                                        <state key="normal" image="ic-camera-switch"/>
+                                        <connections>
+                                            <action selector="switchCamerasButtonTapped:" destination="ksD-C0-99D" eventType="touchUpInside" id="wdR-mW-Uho"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rjg-zj-zs8" customClass="ShutterButton" customModule="ContentApp" customModuleProvider="target">
+                                        <rect key="frame" x="178" y="24" width="72" height="72"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="captureButton"/>
+                                        <connections>
+                                            <action selector="captureButtonTapped:" destination="ksD-C0-99D" eventType="touchUpInside" id="84V-xm-amS"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dLW-iX-QPm">
+                                        <rect key="frame" x="20" y="19.333333333333371" width="40" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oAI-eA-IS1">
+                                                <rect key="frame" x="4" y="4" width="32" height="32"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <gestureRecognizers/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kQc-mC-bYB" userLabel="badgeCounterView">
+                                        <rect key="frame" x="55" y="19" width="16" height="16"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJp-3a-q6I">
+                                                <rect key="frame" x="0.0" y="-0.66666666666662877" width="16" height="16"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                <nil key="textColor"/>
+                                                <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="brQ-mO-mBX">
+                                        <rect key="frame" x="10" y="10" width="60" height="60"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <action selector="multiPhotosButtonTapped:" destination="ksD-C0-99D" eventType="touchUpInside" id="mYI-se-2sf"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KsU-Hz-DZT" customClass="PassthroughView" customModule="ContentApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="822.66666666666663" width="428" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9BF-ri-DLe" customClass="ModeSelectorControl" customModule="ContentApp" customModuleProvider="target">
+                                        <rect key="frame" x="114" y="0.0" width="200" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="aGX-X9-1N7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <outlet property="badgeCounterView" destination="kQc-mC-bYB" id="3cY-ap-uyb"/>
+                        <outlet property="closeButton" destination="Uc6-0Z-Rdk" id="CiJ-xa-8Ge"/>
+                        <outlet property="finderView" destination="9KG-7z-NVj" id="Dsn-rT-c0s"/>
+                        <outlet property="flashMenuView" destination="TME-PK-bJk" id="6tf-Yg-CH2"/>
+                        <outlet property="flashModeButton" destination="kQ1-He-kAd" id="WKt-DH-1ol"/>
+                        <outlet property="modeSelector" destination="9BF-ri-DLe" id="slV-Vl-ok8"/>
+                        <outlet property="modeView" destination="KsU-Hz-DZT" id="WYo-lY-lTs"/>
+                        <outlet property="multiPhotosButton" destination="brQ-mO-mBX" id="IXv-Vb-RNp"/>
+                        <outlet property="multiPhotosImageView" destination="oAI-eA-IS1" id="Tb1-ST-cSY"/>
+                        <outlet property="multiPhotosNumberLabel" destination="JJp-3a-q6I" id="2Tu-vI-NJ4"/>
+                        <outlet property="multiPhotosView" destination="dLW-iX-QPm" id="fR6-nJ-Q08"/>
+                        <outlet property="sessionPreview" destination="uH5-we-xPw" id="Ol8-jR-NJW"/>
+                        <outlet property="shutterButton" destination="Rjg-zj-zs8" id="N0p-x8-1B6"/>
+                        <outlet property="shutterView" destination="18w-Jh-u58" id="7Iq-6k-ZXy"/>
+                        <outlet property="switchCameraButton" destination="3uS-mv-GyQ" id="wbT-jc-Hmh"/>
+                        <outlet property="topBarView" destination="8xL-8f-u9p" id="bZG-T2-wcR"/>
+                        <outlet property="zoomLabel" destination="y9r-au-yhE" id="0ov-Rq-nqh"/>
+                        <outlet property="zoomSlider" destination="wkD-WO-YHB" id="jft-Ph-OoI"/>
+                        <outlet property="zoomView" destination="ive-Ey-67g" id="Ty2-r9-R6K"/>
+                        <segue destination="aGd-Xu-cBR" kind="show" identifier="showPreviewVCfromCameraVC" id="xe5-2h-j6r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4dm-Jd-bhf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-11.214953271028037" y="62.203023758099356"/>
         </scene>
     </scenes>
     <resources>

@@ -24,7 +24,6 @@ struct KeyConstants {
         static let mediaFilesFolder = "MediaFiles"
         static let uploadsFolder = "Uploads"
     }
-
     struct Save {
         static let authSettingsParameters = "kSaveAuthSettingsParameters"
         static let themeMode = "kSaveThemeMode"
@@ -36,13 +35,13 @@ struct KeyConstants {
         static let allowSyncOverCellularData = "kSaveAllowSyncOverCellularData"
         static let allowOnceSyncOverCellularData = "kSaveAllowOnceSyncOverCellularData"
         static let toCameraRoll = "com.apple.UIKit.activity.SaveToCameraRoll"
+        static let edition = "kEdition"
         static let displayFirstName = "kSaveDiplayFirstName"
         static let displayLastName = "kSaveDiplayLastName"
         static let apsUserId = "kAPSUserId"
         static let isAPSEnabled = "isAPSEnabled"
         static let kAPSSource = "kAPSSource"
     }
-
     struct Notification {
         static let showLoginScreen = "kShowLoginScreenNotification"
         static let unauthorizedRequest = "kAPIUnauthorizedRequestNotification"

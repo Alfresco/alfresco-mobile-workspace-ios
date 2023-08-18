@@ -31,18 +31,18 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var shutterButton: ShutterButton!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
-    
+
     @IBOutlet weak var topBarView: UIView!
     @IBOutlet weak var flashMenuView: FlashMenu!
     @IBOutlet weak var finderView: UIView!
     @IBOutlet weak var zoomView: UIView!
     @IBOutlet weak var shutterView: UIView!
     @IBOutlet weak var modeView: UIView!
-
+    
     @IBOutlet weak var modeSelector: ModeSelectorControl!
     @IBOutlet weak var sessionPreview: SessionPreview!
     var timerView: UIView?
-
+    
     var cameraViewModel: CameraViewModel?
     weak var cameraDelegate: CameraKitCaptureDelegate?
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
@@ -51,39 +51,52 @@ class CameraViewController: UIViewController {
     private var cameraSession: CaptureSession?
     private var timerViewConfig: TimerViewConfig?
     
+    // --- multi photos view ---
+    @IBOutlet weak var multiPhotosView: UIView!
+    @IBOutlet weak var multiPhotosImageView: UIImageView!
+    @IBOutlet weak var multiPhotosNumberLabel: UILabel!
+    @IBOutlet weak var multiPhotosButton: UIButton!
+    @IBOutlet weak var badgeCounterView: UIView!
+    var isSessionInterupted = false
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
     // MARK: - View Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        updateMultiPhotosViewUI()
         ApplicationBootstrap.shared().configureCameraKitTheme()
         cameraViewModel?.delegate = self
         configureViewsLayout(for: view.bounds.size)
-
         setUpShutterButton()
         setUpFlashMenu()
         setUpZoomSlider()
         setUpModeSelector()
         setUpTimerView()
+        addCameraNotifications()
         addAccessibility()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
-        sessionPreview.startSession()
+        self.perform(#selector(sessionStart), with: nil, afterDelay: 0.1)
         applyComponentsThemes()
         zoomSlider.setSlider(value: sessionPreview.zoom)
         modeSelector.setNeedsLayout()
     }
     
+    @objc private func sessionStart() {
+        sessionPreview.startSession()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        cameraViewModel?.deletePreviousCapture()
+        if !ConfigurationManager.shared.isPaidUser() {
+            cameraViewModel?.deletePreviousCapture()
+        }
         if cameraSession != nil {
             sessionPreview.update(flashMode: flashMenuView.flashMode)
         }
@@ -111,9 +124,19 @@ class CameraViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func closeButtonTapped(_ sender: UIButton) {
-        sessionPreview.stopSession()
-        cameraDelegate?.didEndReview(for: [])
-        self.dismiss(animated: true, completion: nil)
+        guard let numberOfCapturedAssets = cameraViewModel?.capturedAssets.count,
+              numberOfCapturedAssets != 0 else {
+            dismissCamera()
+            return
+        }
+        CameraKit.shouldDiscard(numberOfCapturedAssets: numberOfCapturedAssets,
+                                in: self) { [weak self] discarded in
+            guard let sSelf = self else { return }
+            if discarded {
+                AnalyticsManager.shared.discardCaptures(count: numberOfCapturedAssets)
+                sSelf.dismissCamera()
+            }
+        }
     }
     
     @IBAction func flashModeButtonTapped(_ sender: UIButton) {
@@ -125,6 +148,11 @@ class CameraViewController: UIViewController {
             shutterButton.isUserInteractionEnabled = false
             sessionPreview.isVideoRecording = false
         } else if modeSelector.currentSelection == videoSlider {
+            let isSessionRunning = cameraSession?.session.isRunning ?? false
+            if isSessionInterupted && isSessionRunning == false { // video recording
+                self.modeSelector.scrollTo(index: 0)
+                return
+            }
             timerViewConfig?.isStarted = !(timerViewConfig?.isStarted ?? true)
             sessionPreview.isVideoRecording = timerViewConfig?.isStarted
             timerView?.isHidden = !(timerView?.isHidden ?? true)
@@ -134,7 +162,14 @@ class CameraViewController: UIViewController {
         sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
-
+    
+    @IBAction func multiPhotosButtonTapped(_ sender: UIButton) {
+        if cameraViewModel?.capturedAssets.isEmpty == false {
+            performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
+                         sender: nil)
+        }
+    }
+    
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
         sessionPreview.changeCameraPosition()
         setUpCameraSession(for: modeSelector.currentSelection)
@@ -154,6 +189,13 @@ class CameraViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    
+    private func dismissCamera() {
+        sessionPreview.stopSession()
+        cameraDelegate?.didEndReview(for: [])
+        cameraViewModel?.deleteAllCapturedAssets()
+        dismiss(animated: true, completion: nil)
+    }
 
     private func setUpShutterButton() {
         guard let theme = CameraKit.theme else { return }
@@ -271,10 +313,14 @@ class CameraViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
-           let asset = cameraViewModel?.capturedAsset {
-            let previewViewModel = PreviewViewModel(assets: [asset])
+           let assets = cameraViewModel?.capturedAssets {
+            let previewViewModel = PreviewViewModel(assets: assets)
             pvc.controller.previewViewModel = previewViewModel
             pvc.cameraDelegate = cameraDelegate
+            previewViewModel.callback = { (deletedIndex) in
+                self.cameraViewModel?.capturedAssets.remove(at: deletedIndex)
+                self.updateMultiPhotosViewUI()
+            }
         }
     }
 }
@@ -282,11 +328,39 @@ class CameraViewController: UIViewController {
 // MARK: - CameraViewModel Delegate
 
 extension CameraViewController: CameraViewModelDelegate {
+    func deleteAllCapturedAssets() {
+        updateMultiPhotosViewUI()
+    }
+    
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?) {
         shutterButton.isUserInteractionEnabled = true
-        if capturedAsset != nil {
+        guard error == nil else { return }
+        
+        if !ConfigurationManager.shared.isPaidUser() {
+            multiPhotosView.isHidden = true
+            badgeCounterView.isHidden = multiPhotosView.isHidden
+            multiPhotosButton.isHidden = multiPhotosView.isHidden
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
-                         sender: nil)
+                                     sender: nil)
+        } else {
+            updateMultiPhotosViewUI()
+        }
+    }
+    
+    private func updateMultiPhotosViewUI() {
+        if cameraViewModel?.capturedAssets.isEmpty == true || !ConfigurationManager.shared.isPaidUser() {
+            multiPhotosView.isHidden = true
+            badgeCounterView.isHidden = multiPhotosView.isHidden
+            multiPhotosButton.isHidden = multiPhotosView.isHidden
+        } else {
+            let capturedAssetsCount = cameraViewModel?.capturedAssets.count ?? 0
+            let image = cameraViewModel?.capturedAssets.last?.thumbnailImage()
+            multiPhotosNumberLabel.text = String(capturedAssetsCount)
+            multiPhotosView.isHidden = false
+            badgeCounterView.isHidden = multiPhotosView.isHidden
+            multiPhotosButton.isHidden = multiPhotosView.isHidden
+            multiPhotosImageView.image = image
+            configureMultiPhotoLabelFrame()
         }
         self.resetVideoCaptureModeForInteruptions()
     }
@@ -299,6 +373,7 @@ extension CameraViewController: CameraViewModelDelegate {
             modeSelector.isHidden = !modeSelector.isHidden
             switchCameraButton.isHidden = !switchCameraButton.isHidden
             apply(fade: true, to: flashMenuView)
+            setUpShutterButton()
         }
         self.resetVideoCaptureModeForInteruptions()
     }
@@ -358,6 +433,7 @@ extension CameraViewController: CaptureSessionUIDelegate {
             sSelf.switchCameraButton.rotate(to: orientation)
             sSelf.zoomLabel.rotate(to: orientation)
             sSelf.flashMenuView.rotate(to: orientation)
+            sSelf.multiPhotosView.rotate(to: orientation)
         }
     }
 }
@@ -378,7 +454,7 @@ extension CameraViewController: ModeSelectorControlDelegate {
 
 extension CameraViewController: RangeSliderControlDelegate {
     func didChangeSlider(value: Float) {
-        sessionPreview.zoom = value 
+        sessionPreview.zoom = value
     }
 }
 
@@ -389,6 +465,30 @@ extension CameraViewController: FlashMenuDelegate {
         sessionPreview.update(flashMode: flashMode)
         apply(fade: true, to: flashMenuView)
         flashModeButton.setImage(flashMode.icon, for: .normal)
+    }
+}
+
+// MARK: - Camera Interuption Notification
+extension CameraViewController {
+    func addCameraNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionWasInterrupted),
+                                               name: .AVCaptureSessionWasInterrupted,
+                                               object: cameraSession?.session)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionInterruptionEnded),
+                                               name: .AVCaptureSessionInterruptionEnded,
+                                               object: cameraSession?.session)
+    }
+    
+    @objc
+    func sessionWasInterrupted(notification: NSNotification) {
+        isSessionInterupted = true
+    }
+    
+    @objc
+    func sessionInterruptionEnded(notification: NSNotification) {
+        isSessionInterupted = false
     }
 }
 

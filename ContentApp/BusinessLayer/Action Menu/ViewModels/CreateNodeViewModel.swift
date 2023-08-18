@@ -167,7 +167,7 @@ class CreateNodeViewModel {
                                       description: nodeDescription,
                                       nodeExtension: nodeExtension,
                                       fileData: dataTemplate,
-                                      autoRename: autoRename) { [weak self] (result, error) in
+                                      autoRename: autoRename, relativePath: nil) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
 
                 sSelf.uploadDialog?.dismiss(animated: true)

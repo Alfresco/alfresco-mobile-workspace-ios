@@ -29,9 +29,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     @IBOutlet weak var descriptionTextArea: MDCOutlinedTextArea!
     @IBOutlet weak var uploadButton: MDCButton!
     @IBOutlet weak var cancelButton: MDCButton!
-
     var createNodeViewModel: CreateNodeViewModel?
-
     var enableUploadButton = false {
         didSet {
             uploadButton.isEnabled = enableUploadButton

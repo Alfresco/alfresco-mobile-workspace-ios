@@ -145,6 +145,7 @@ class NodeOperations {
                     nodeExtension: String,
                     fileData: Data,
                     autoRename: Bool,
+                    relativePath: String?,
                     completionHandler: @escaping (ListNode?, Error?) -> Void) {
         let nodeBody = NodeBodyCreate(name: name + "." + nodeExtension,
                                       nodeType: "cm:content",

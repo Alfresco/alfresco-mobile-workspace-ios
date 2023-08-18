@@ -234,6 +234,8 @@
 "action-menu-remove-offline" = "Quitar sin conexión";
 "action-menu-create-media" = "Tomar una foto o un vídeo";
 "action-menu-upload-media" = "Cargar fotos o vídeos";
+"action-menu-create-single-media" = "Tomar una foto o un vídeo";
+"action-menu-upload-single-media" = "Cargar una foto o vídeo";
 "action-menu-upload-files" = "Cargar ficheros";
 "action-menu-move-folder" = "Mover";
 "action-menu-rename-node" = "Cambiar nombre";
@@ -248,11 +250,12 @@
 "dialog-session-expired-message" = "Su sesión ya no está activa. Vuelva a iniciar sesión para continuar.";
 "dialog-override-sync-cellular-data-title" = "¿Utilizar los datos móviles?";
 "dialog-override-sync-cellular-data-message" = "Esto anulará su configuración y se descargará a través de datos móviles esta vez. De lo contrario, la descarga comenzará más tarde después de conectarse a Wi-Fi.";
+"dialog-discard-captures-title" = "¿Descartar capturas?";
+"dialog-discard-captures-message" = "Si sale, se descartarán %d ficheros multimedia.";
 "dialog-session-unavailable-title" = "Sesión no disponible";
 "dialog-session-unavailable-message" = "Toque para iniciar Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet no disponible";
 "dialog-internet-unavailable-message" = "Verifique su conexión a Internet y vuelva a intentarlo";
-
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";

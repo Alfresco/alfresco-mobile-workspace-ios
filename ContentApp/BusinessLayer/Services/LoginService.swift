@@ -49,12 +49,24 @@ protocol AuthenticationServiceProtocol {
     /// - Parameters:
     ///   - stringURL: URL to check the version
     ///   - handler: Signals the success or failure of the operation with additional error information
-    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<Bool, APIError>) -> Void))
+    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<VersionContentService?, APIError>) -> Void))
 }
 
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
 class AuthenticationService: AuthenticationServiceProtocol, Service {
+    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<VersionContentService?, APIError>) -> Void)) {
+        apiClient = APIClient(with: String(format: "%@/%@/", stringURL, parameters.path))
+        _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
+            switch result {
+            case .success(let response):
+                handler(.success(response))
+            case .failure(let error):
+                handler(.failure(error))
+            }
+        })
+    }
+    
     private (set) var parameters: AuthenticationParameters
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = parameters.authenticationConfiguration()
@@ -92,19 +104,6 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
             switch result {
             case .success(_):
                 handler(.success(true))
-            case .failure(let error):
-                handler(.failure(error))
-            }
-        })
-    }
-
-    func isContentServicesAvailable(on stringURL: String,
-                                    handler: @escaping ((Result<Bool, APIError>) -> Void)) {
-        apiClient = APIClient(with: String(format: "%@/%@/", stringURL, parameters.path))
-        _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
-            switch result {
-            case .success(let response):
-                handler(.success(response?.isVersionOverMinium() ?? false))
             case .failure(let error):
                 handler(.failure(error))
             }

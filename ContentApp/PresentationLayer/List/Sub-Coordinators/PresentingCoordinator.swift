@@ -28,7 +28,8 @@ class PresentingCoordinator: Coordinator {
     }
 
     func startFileCoordinator(for node: ListNode,
-                              presenter: UINavigationController) {
+                              presenter: UINavigationController,
+                              isScannedDocument: Bool = false) {
         let isNodeOffline = isNodeOffline(node: node)
         if isNodeOffline {
             let coordinator = FilePreviewScreenCoordinator(with: presenter,
