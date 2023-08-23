@@ -329,7 +329,7 @@ extension SearchModel: ListComponentModelProtocol {
                                   facetIntervals: self.facetIntervals,
                                   paginationRequest: requestPagination,
                                   completionHandler: completionHandler)
-        case .live :
+        case .live:
             self.performLiveSearch(for: string,
                                       with: self.facetFields,
                                       facetQueries: self.facetQueries,

@@ -77,7 +77,7 @@ class FavoritesModel: ListComponentModelProtocol {
                                                  APIConstants.Include.allowableOperations,
                                                  APIConstants.Include.properties],
                                        fields: nil) { (result, error) in
-
+                
                                         var listNodes: [ListNode] = []
                                         if let entries = result?.list {
                                             listNodes = FavoritesNodeMapper.map(entries.entries)

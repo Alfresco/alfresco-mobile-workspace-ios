@@ -23,10 +23,11 @@ struct FavoritesNodeMapper {
     static func map(_ entries: [FavoriteEntry]) -> [ListNode] {
         var nodes: [ListNode] = []
         for entry in entries {
+            let allowableOperations = entry.entry.allowableOperations ?? []
             if let nodeFile = entry.entry.target.file {
-                nodes.append(self.create(from: nodeFile))
+                nodes.append(self.create(from: nodeFile, allowableOperations: allowableOperations))
             } else if let nodeFolder = entry.entry.target.folder {
-                nodes.append(self.create(from: nodeFolder))
+                nodes.append(self.create(from: nodeFolder, allowableOperations: allowableOperations))
             } else if let nodeSite = entry.entry.target.site {
                 nodes.append(self.create(from: nodeSite))
             }
@@ -34,7 +35,7 @@ struct FavoritesNodeMapper {
         return nodes
     }
 
-    private static func create(from node: FavoriteTargetNode) -> ListNode {
+    private static func create(from node: FavoriteTargetNode, allowableOperations: [String]) -> ListNode {
         let path = node.path?.elements?.compactMap({ $0.name })
             .joined(separator: " \u{203A} ") ?? ""
         var mimeType = node.content?.mimeType
@@ -43,6 +44,11 @@ struct FavoritesNodeMapper {
             mimeType = "cm:folder"
             nodeType = NodeType.folder
         }
+        
+        var operations = node.allowableOperations ?? []
+        if operations.isEmpty {
+            operations = allowableOperations
+        }
         return ListNode(guid: node._id,
                         mimeType: mimeType,
                         title: node.name,
@@ -50,7 +56,7 @@ struct FavoritesNodeMapper {
                         modifiedAt: node.modifiedAt,
                         nodeType: nodeType,
                         favorite: true,
-                        allowableOperations: node.allowableOperations ?? [],
+                        allowableOperations: operations,
                         isFile: node.isFile,
                         isFolder: node.isFolder)
     }

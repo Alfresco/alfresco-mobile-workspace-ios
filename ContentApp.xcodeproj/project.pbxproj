@@ -57,6 +57,7 @@
 		47F5A6E629DE801100073D7F /* WorkflowListCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6E529DE801100073D7F /* WorkflowListCollectionViewModel.swift */; };
 		47F5A6E929DEA4FC00073D7F /* WFlowAppDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6E829DEA4FC00073D7F /* WFlowAppDefinitions.swift */; };
 		47F5A6EB29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */; };
+		47FA61132A89FA5800C7D868 /* DetectJailBreakDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FA61122A89FA5800C7D868 /* DetectJailBreakDevice.swift */; };
 		47FBDF6129E3FF6D00EE56AC /* StartWorkflowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6029E3FF6D00EE56AC /* StartWorkflowViewController.swift */; };
 		47FBDF6329E3FFD600EE56AC /* StartWorkflowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6229E3FFD600EE56AC /* StartWorkflowController.swift */; };
 		47FBDF6529E3FFEB00EE56AC /* StartWorkflowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FBDF6429E3FFEB00EE56AC /* StartWorkflowViewModel.swift */; };
@@ -863,6 +864,7 @@
 		47F5A6E529DE801100073D7F /* WorkflowListCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListCollectionViewModel.swift; sourceTree = "<group>"; };
 		47F5A6E829DEA4FC00073D7F /* WFlowAppDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowAppDefinitions.swift; sourceTree = "<group>"; };
 		47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WFlowAppDefinitionOperations.swift; sourceTree = "<group>"; };
+		47FA61122A89FA5800C7D868 /* DetectJailBreakDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetectJailBreakDevice.swift; sourceTree = "<group>"; };
 		47FBDF6029E3FF6D00EE56AC /* StartWorkflowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowViewController.swift; sourceTree = "<group>"; };
 		47FBDF6229E3FFD600EE56AC /* StartWorkflowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowController.swift; sourceTree = "<group>"; };
 		47FBDF6429E3FFEB00EE56AC /* StartWorkflowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkflowViewModel.swift; sourceTree = "<group>"; };
@@ -1591,6 +1593,14 @@
 				47F5A6EA29DEA50D00073D7F /* WFlowAppDefinitionOperations.swift */,
 			);
 			path = WFlowAppDefinitions;
+			sourceTree = "<group>";
+		};
+		47FA61112A89FA5800C7D868 /* Jail Broken */ = {
+			isa = PBXGroup;
+			children = (
+				47FA61122A89FA5800C7D868 /* DetectJailBreakDevice.swift */,
+			);
+			path = "Jail Broken";
 			sourceTree = "<group>";
 		};
 		47FBDF5F29E3FF5200EE56AC /* Start Workflow */ = {
@@ -3458,6 +3468,7 @@
 				E335E738253866F70036E090 /* Action Menu */,
 				B96B9AF22480F9D70035AE97 /* Extensions */,
 				C940BB8C286024040064E2E7 /* Analytics  */,
+				47FA61112A89FA5800C7D868 /* Jail Broken */,
 				B96B9AF32480FA5A0035AE97 /* Constants */,
 				C9A759B9289BE403006603E0 /* Helper */,
 				B96B9AF42480FA710035AE97 /* Services */,
@@ -3785,7 +3796,7 @@
 				E334C03924755D8E00F74880 /* Frameworks */,
 				E334C03A24755D8E00F74880 /* Resources */,
 				B95605062502721200D955BA /* Upload Symbols */,
-				C9E79E7F27A3E653002BC5A0 /* Embed App Extensions */,
+				C9E79E7F27A3E653002BC5A0 /* Embed Foundation Extensions */,
 				FBE759E3F9FF8319C895661D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -4531,6 +4542,7 @@
 				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
 				E32A369C25C7E73A00F873CB /* DataPlanDialogViewModel.swift in Sources */,
+				47FA61132A89FA5800C7D868 /* DetectJailBreakDevice.swift in Sources */,
 				F168F45926246B590002D3A5 /* PhotoLibraryScreenCoordinator.swift in Sources */,
 				F1AC6C44262065710096743B /* FullScreenPhotoViewController.swift in Sources */,
 				B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */,
@@ -4998,7 +5010,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AMW_ShareExtesntion_Dev_Profile;
@@ -5032,7 +5044,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AMW_ShareEntension_AppStore_Profile;
@@ -5182,7 +5194,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AMW_Dev_Profile;
@@ -5209,7 +5221,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = AMW_AppStore_Profile;
