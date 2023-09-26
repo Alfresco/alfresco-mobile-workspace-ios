@@ -21,6 +21,6 @@ import UIKit
 struct TaskListFilterParams {
     var dueAfter: String?
     var dueBefore: String?
-    var state: String? = "all"
+    var state: String?
     var text: String?
 }

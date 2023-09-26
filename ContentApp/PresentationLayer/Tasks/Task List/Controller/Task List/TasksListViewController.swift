@@ -125,7 +125,7 @@ class TasksListViewController: SystemSearchViewController {
     
     // MARK: - Get Tasks List
     func getTaskList() {
-        var state: String? = viewModel.filterParams.state ?? ""
+        var state: String? = viewModel.filterParams.state ?? "active"
         var assignment: String?
         if state == "candidate" {
             assignment = state
