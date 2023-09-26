@@ -3,8 +3,9 @@ PODS:
   - AlfrescoAuth (0.1.2):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (0.2.49):
+  - AlfrescoContent (0.2.52):
     - Alamofire (~> 4.9.0)
+    - TrustKit
   - AlfrescoCore (0.1.2)
   - AppAuth (1.6.1):
     - AppAuth/Core (= 1.6.1)
@@ -778,6 +779,7 @@ PODS:
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
   - SwiftLint (0.51.0)
+  - TrustKit (3.0.3)
 
 DEPENDENCIES:
   - AlfrescoAuth
@@ -831,11 +833,12 @@ SPEC REPOS:
     - PromisesSwift
     - SVGKit
     - SwiftLint
+    - TrustKit
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlfrescoAuth: 65ff558e5d65f82762dfdf54257a57ba413816e3
-  AlfrescoContent: 702c7d6d98227879baf8480a0f0876485cef7be6
+  AlfrescoContent: 6356830cd661304c1edf8ffff1ce837569a02a63
   AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
   AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
@@ -867,7 +870,8 @@ SPEC CHECKSUMS:
   PromisesSwift: cf9eb58666a43bbe007302226e510b16c1e10959
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: 1b7561918a19e23bfed960e40759086e70f4dba5
+  TrustKit: 7858ea59d0e226b1457b2e9cc8b95d77ab21d471
 
 PODFILE CHECKSUM: 022d96978a65599b1c2f52b37c4ce2380f547d1a
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.12.1
