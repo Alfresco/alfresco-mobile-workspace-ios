@@ -17,7 +17,7 @@ target 'ContentApp' do
   pod 'DropDown'
   pod 'MaterialComponents'
   pod 'GrowingTextView'
-
+  
   # Alfresco iOS Swift API
   pod 'AlfrescoAuth'
   pod 'AlfrescoContent'
@@ -47,3 +47,4 @@ post_install do |installer|
     end
   end
 end
+
