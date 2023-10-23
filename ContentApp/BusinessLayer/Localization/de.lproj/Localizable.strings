@@ -354,6 +354,7 @@
 "Active" = "Aktiv";
 "Completed" = "Abgeschlossen";
 "Queued" = "In Warteschlange";
+"All" = "Alle";
 
 // MARK: - Task Operations
 "no-description" = "Keine Beschreibung";

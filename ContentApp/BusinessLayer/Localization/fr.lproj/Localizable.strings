@@ -353,6 +353,7 @@
 "Active" = "Actif";
 "Completed" = "Terminée";
 "Queued" = "En file d’attente";
+"All" = "Tout";
 
 // MARK: - Task Operations
 "no-description" = "Aucune description";
