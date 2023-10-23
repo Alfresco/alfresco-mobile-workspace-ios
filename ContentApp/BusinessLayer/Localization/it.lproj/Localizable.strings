@@ -350,6 +350,7 @@
 "Active" = "Attivo";
 "Completed" = "Completato";
 "Queued" = "In coda";
+"All" = "Tutti";
 
 // MARK: - Task Operations
 "no-description" = "Nessuna descrizione";

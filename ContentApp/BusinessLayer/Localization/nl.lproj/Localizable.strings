@@ -350,6 +350,7 @@
 "Active" = "Actief";
 "Completed" = "Voltooid";
 "Queued" = "In wachtrij";
+"All" = "Alle";
 
 // MARK: - Task Operations
 "no-description" = "Geen beschrijving";
