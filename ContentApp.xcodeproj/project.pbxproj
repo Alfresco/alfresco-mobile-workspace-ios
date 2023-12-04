@@ -45,6 +45,8 @@
 		47D285BA2A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D285B92A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift */; };
 		47D285BC2A6108B20003DF98 /* mockNodeList.json in Resources */ = {isa = PBXBuildFile; fileRef = 47D285BB2A6108B20003DF98 /* mockNodeList.json */; };
 		47D285BE2A6110D10003DF98 /* mockNodeList.json in Resources */ = {isa = PBXBuildFile; fileRef = 47D285BB2A6108B20003DF98 /* mockNodeList.json */; };
+		47D5C51F2B15ADEC00EEED1F /* ComplexFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D5C51E2B15ADEC00EEED1F /* ComplexFormViewController.swift */; };
+		47D5C5212B15AE0200EEED1F /* ComplexFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D5C5202B15AE0200EEED1F /* ComplexFormController.swift */; };
 		47DB20B52A35AB9F00B13586 /* RadioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */; };
 		47DB20B72A35ABAF00B13586 /* RadioListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B62A35ABAF00B13586 /* RadioListController.swift */; };
 		47DB20B92A35ABBF00B13586 /* RadioListViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DB20B82A35ABBF00B13586 /* RadioListViewViewModel.swift */; };
@@ -843,6 +845,8 @@
 		47CC530629F56FB40096A3C9 /* TestWorkflowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowModel.swift; sourceTree = "<group>"; };
 		47D285B92A6106000003DF98 /* TestMultipleFilesActionMenuGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMultipleFilesActionMenuGeneric.swift; sourceTree = "<group>"; };
 		47D285BB2A6108B20003DF98 /* mockNodeList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mockNodeList.json; sourceTree = "<group>"; };
+		47D5C51E2B15ADEC00EEED1F /* ComplexFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewController.swift; sourceTree = "<group>"; };
+		47D5C5202B15AE0200EEED1F /* ComplexFormController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormController.swift; sourceTree = "<group>"; };
 		47DB20B42A35AB9F00B13586 /* RadioListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListViewController.swift; sourceTree = "<group>"; };
 		47DB20B62A35ABAF00B13586 /* RadioListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListController.swift; sourceTree = "<group>"; };
 		47DB20B82A35ABBF00B13586 /* RadioListViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioListViewViewModel.swift; sourceTree = "<group>"; };
@@ -1538,6 +1542,15 @@
 				47CA83A32A57F16A0081A000 /* MultipleSelectionHeaderView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		47D5C51D2B15ADCF00EEED1F /* Complex Forms */ = {
+			isa = PBXGroup;
+			children = (
+				47D5C51E2B15ADEC00EEED1F /* ComplexFormViewController.swift */,
+				47D5C5202B15AE0200EEED1F /* ComplexFormController.swift */,
+			);
+			path = "Complex Forms";
 			sourceTree = "<group>";
 		};
 		47DB20B12A35AB6A00B13586 /* Radio List */ = {
@@ -2497,6 +2510,7 @@
 				C9688BAA28D30DA40020206C /* Create Task */,
 				4792042A29CF0AF50080BB13 /* Workflow List */,
 				4734440029DC0CCF004A72CD /* Startable Workflows */,
+				47D5C51D2B15ADCF00EEED1F /* Complex Forms */,
 				47FBDF5F29E3FF5200EE56AC /* Start Workflow */,
 				476CB2CE2A339A6200207C4D /* Workflow Task Detail */,
 				476CB2D52A34D8E300207C4D /* Workflow Task Status */,
@@ -4407,6 +4421,7 @@
 				E3E0F81E25CAFC5700DBC6F6 /* ErrorCodes.swift in Sources */,
 				E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
+				47D5C51F2B15ADEC00EEED1F /* ComplexFormViewController.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
 				F188EE63262DCC4E0019F4E7 /* FlashMenu.swift in Sources */,
 				C9205C7428A0D96700DEF5AC /* TaskCommentModel.swift in Sources */,
@@ -4469,6 +4484,7 @@
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
 				B9EE37E8266A44A70020A3FC /* SearchModel.swift in Sources */,
 				C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */,
+				47D5C5212B15AE0200EEED1F /* ComplexFormController.swift in Sources */,
 				C9A759AB289BBB72006603E0 /* TitleTableCellViewModel.swift in Sources */,
 				4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */,
 				E3A87A38251CBB2100AE8175 /* String+CompareVersions.swift in Sources */,
