@@ -3,7 +3,7 @@ PODS:
   - AlfrescoAuth (0.1.2):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (0.2.52):
+  - AlfrescoContent (0.2.53):
     - Alamofire (~> 4.9.0)
     - TrustKit
   - AlfrescoCore (0.1.2)
@@ -838,7 +838,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlfrescoAuth: 65ff558e5d65f82762dfdf54257a57ba413816e3
-  AlfrescoContent: 6356830cd661304c1edf8ffff1ce837569a02a63
+  AlfrescoContent: 35814ca628c77e3366c75a751dddbd54ba744b2d
   AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
   AppAuth: e48b432bb4ba88b10cb2bcc50d7f3af21e78b9c2
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
