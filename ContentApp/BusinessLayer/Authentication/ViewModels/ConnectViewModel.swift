@@ -100,4 +100,10 @@ class ConnectViewModel {
             }
         }
     }
+    
+    func apiToCheckServerDetails(on stringURL: String, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
+        self.authenticationService?.isFavAllowedOnMultSelect(on: stringURL, handler: { (result) in
+            handler(result)
+        })
+    }
 }

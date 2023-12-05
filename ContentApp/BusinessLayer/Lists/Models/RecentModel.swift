@@ -31,6 +31,10 @@ class RecentModel: ListComponentModelProtocol {
         }
     }
 
+    var repository: ServiceRepository {
+        return ApplicationBootstrap.shared().repository
+    }
+    
     init(services: CoordinatorServices) {
         self.services = services
     }
@@ -75,7 +79,9 @@ class RecentModel: ListComponentModelProtocol {
         services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let recentFilesRequest = SearchRequestBuilder.recentFilesRequest(pagination: paginationRequest)
-            SearchAPI.recentFiles(recentFilesRequest: recentFilesRequest) { (result, error) in
+            let isFavoriteAllowed = UIFunction.isFavoriteAllowedForACSVersion()
+            
+            SearchAPI.recentFiles(recentFilesRequest: recentFilesRequest, isFavoriteAllowed: isFavoriteAllowed) { (result, error) in
                 var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)
@@ -188,6 +194,24 @@ extension RecentModel: EventObservable {
 
             let indexPath = IndexPath(row: indexOfOfflineNode, section: 0)
             delegate?.forceDisplayRefresh(for: indexPath)
+        }
+    }
+}
+
+extension RecentModel {
+    
+    func getServerDetailsForMultiSelectFav(completionHandler: @escaping ((_ isFavKeyAllowed: Bool) -> Void)) {
+        
+        let loginService = repository.service(of: AuthenticationService.identifier) as? AuthenticationService
+        let viewModel = ConnectViewModel(with: loginService)
+        let url = AuthenticationParameters.parameters().fullHostnameURL
+        viewModel.apiToCheckServerDetails(on: url) { (result) in
+            switch result {
+            case .success(let isAllowed):
+                completionHandler(isAllowed)
+            case .failure(let error):
+                AlfrescoLog.error("Error: \(error.localizedDescription)")
+            }
         }
     }
 }

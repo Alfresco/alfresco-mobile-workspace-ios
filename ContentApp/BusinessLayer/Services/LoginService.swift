@@ -122,4 +122,16 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
         guard let authSession = session else { return false}
         return authSession.resumeExternalUserAgentFlow(with: url)
     }
+    
+    func isFavAllowedOnMultSelect(on stringURL: String, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
+        apiClient = APIClient(with: String(format: "%@/%@/", stringURL, parameters.path))
+        _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
+            switch result {
+            case .success(let response):
+                handler(.success(response?.isMultiSelectFavAllowed() ?? false))
+            case .failure(let error):
+                handler(.failure(error))
+            }
+        })
+    }
 }
