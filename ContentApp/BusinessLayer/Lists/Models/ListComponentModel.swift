@@ -63,4 +63,8 @@ extension ListComponentModelProtocol {
         }
         return .undefined
     }
+    
+    func getServerDetailsForMultiSelectFav(completionHandler: @escaping ((_ isFavKeyAllowed: Bool) -> Void)) {
+        completionHandler(false)
+    }
 }
