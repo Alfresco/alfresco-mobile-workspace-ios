@@ -156,7 +156,7 @@ class AccountService: AccountServiceProtocol, Service {
             listNodeDataAccessor.removeAllNodes()
 
             UserProfile.removeUserProfile(forAccountIdentifier: identifier)
-
+            UserDefaultsModel.remove(forKey: APIConstants.latestServerVersion)
             accounts.remove(at: index)
         }
     }

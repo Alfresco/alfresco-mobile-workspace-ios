@@ -25,6 +25,8 @@ struct APIConstants {
     static let daysModifiedInterval = 30
     static let pageSize = 25
     static let multipleActionMaxSize = 25
+    static let minVersionToSupportMultiSelectFav = "23.0.0"
+    static let latestServerVersion = ""
 
     struct Path {
         static let version = "alfresco/versions/1"
