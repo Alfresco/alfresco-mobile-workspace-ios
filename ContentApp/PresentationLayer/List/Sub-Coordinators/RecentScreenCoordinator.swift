@@ -118,14 +118,8 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
                                                from dataSource: ListComponentModelProtocol,
                                                delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let isFavoriteAllowed = UIFunction.isFavoriteAllowedForACSVersion()
-            var excludedActions: [ActionMenuType] = []
-            if !isFavoriteAllowed {
-                excludedActions = [.addFavorite, .removeFavorite]
-            }
             
             let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
-                                                                           excludedActions: excludedActions,
                                                           coordinatorServices: coordinatorServices)
             
             let nodeActionsModel = NodeActionsViewModel(node: nodes.first,

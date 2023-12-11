@@ -20,6 +20,8 @@ import Foundation
 import AlfrescoAuth
 
 class AuthenticationParameters: Codable {
+    var unsecuredDefaultPort = "80"
+    var securedDefaultPort = "443"
     var https = true
     var port: String = "443"
     var path: String = "alfresco"
@@ -31,7 +33,11 @@ class AuthenticationParameters: Codable {
     var fullHostnameURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", hostname)
         if !port.isEmpty {
-            fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            if https && port != securedDefaultPort {
+                fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            } else if !https && port != unsecuredDefaultPort {
+                fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            }
         }
         return fullFormatURL
     }
@@ -39,7 +45,11 @@ class AuthenticationParameters: Codable {
     var fullContentURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", contentURL)
         if !port.isEmpty {
-            fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            if https && port != securedDefaultPort {
+                fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            } else if !https && port != unsecuredDefaultPort {
+                fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            }
         }
         return fullFormatURL
     }
