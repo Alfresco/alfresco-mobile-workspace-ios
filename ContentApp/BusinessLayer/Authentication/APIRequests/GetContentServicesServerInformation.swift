@@ -80,10 +80,21 @@ public struct VersionContentService: Codable {
         }
         return false
     }
+    
+    func isMultiSelectFavAllowed() -> Bool {
+        guard let version = self.version?.split(separator: " ").first else {
+            return false
+        }
+        UserDefaultsModel.set(value: version, for: APIConstants.latestServerVersion)        
+        let comparison = String(version).versionCompare(APIConstants.minVersionToSupportMultiSelectFav)
+        if comparison == .orderedDescending || comparison == .orderedSame {
+            return true
+        }
+        return false
+    }
 
     func serverEdition() -> String? {
         return edition
     }
-    
 }
 

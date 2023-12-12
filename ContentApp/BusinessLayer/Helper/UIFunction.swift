@@ -66,4 +66,17 @@ class UIFunction: NSObject {
         }
         return(textColor, backgroundColor, priorityText)
     }
+    
+    class func isFavoriteAllowedForACSVersion() -> Bool {
+        let version = (UserDefaultsModel.value(for: APIConstants.latestServerVersion) as? String) ?? ""
+        if version.isEmpty {
+            return false
+        }
+        let comparison = String(version).versionCompare(APIConstants.minVersionToSupportMultiSelectFav)
+        if comparison == .orderedDescending || comparison == .orderedSame {
+            return true
+        }
+        
+        return false
+    }
 }

@@ -14,6 +14,8 @@ variables:
     value: 'iphoneos'
   - name: cocoapods_path
     value: $(Pipeline.Workspace)/.cocoapods
+  - name: "DELIVER_ITMSTRANSPORTER_ADDITIONAL_UPLOAD_PARAMETERS"
+    value: "-asc_provider $(appleTeamId)"
 
 steps:
 - checkout: self
@@ -37,7 +39,7 @@ steps:
     sourcePath: 'ContentApp/Supporting Files/Info.plist'
     versionCodeOption: 'buildid'
     versionCode: '$(build_version)'
-    versionName: '1.8.0'
+    versionName: '1.9.0-M1'
     printFile: true
 
 - task: CmdLine@2
@@ -78,6 +80,13 @@ steps:
     sudo xcode-select -s /Applications/Xcode_14.2.app
   displayName: Selects a specific version of Xcode
 
+- script: |
+      sudo xcode-select -s /Applications/Xcode_13.4.1.app
+
+- task: DownloadSecureFile@1
+  name: prov_profile_share
+  inputs:
+    secureFile: '$(provisioning_profile_share)'
 - task: CmdLine@2
   displayName: 'Build and Pilot'
   inputs:

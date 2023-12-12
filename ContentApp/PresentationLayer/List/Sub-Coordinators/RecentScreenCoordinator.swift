@@ -118,6 +118,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
                                                from dataSource: ListComponentModelProtocol,
                                                delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
+            
             let actionMenuViewModel = MultipleSelectionActionMenuViewModel(nodes: nodes,
                                                           coordinatorServices: coordinatorServices)
             

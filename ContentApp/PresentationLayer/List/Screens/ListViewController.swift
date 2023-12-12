@@ -72,6 +72,7 @@ class ListViewController: SystemSearchViewController {
 
         listController?.startLoading()
         pageController?.refreshList()
+        pageController?.checkServerDetails()
         registerNotifications()
     }
     

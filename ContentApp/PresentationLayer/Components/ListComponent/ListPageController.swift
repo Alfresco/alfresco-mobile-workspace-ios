@@ -79,6 +79,19 @@ class ListPageController: ListPageControllerProtocol {
         return paginationEnabled &&
             services.connectivityService?.hasInternetConnection() == true
     }
+    
+    func checkServerDetails() {
+        let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
+        let serverVersion = (UserDefaultsModel.value(for: APIConstants.latestServerVersion) as? String) ?? ""
+
+        if connectivityService?.hasInternetConnection() == true && dataSource is RecentModel && serverVersion.isEmpty {
+            (dataSource as? RecentModel)?.getServerDetailsForMultiSelectFav(completionHandler: { [weak self] isFavKeyAllowed in
+                guard let sSelf = self else { return }
+                sSelf.requestInProgress = false
+                sSelf.refreshList()
+            })
+        }
+    }
 
     func fetchNextPage() {
         let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
