@@ -32,26 +32,12 @@ class AuthenticationParameters: Codable {
     var contentURL: String = ""
     var fullHostnameURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", hostname)
-        if !port.isEmpty {
-            if https && port != securedDefaultPort {
-                fullFormatURL.append(contentsOf: String(format: ":%@", port))
-            } else if !https && port != unsecuredDefaultPort {
-                fullFormatURL.append(contentsOf: String(format: ":%@", port))
-            }
-        }
-        return fullFormatURL
+        return urlWithPort(fullFormatURL: &fullFormatURL)
     }
 
     var fullContentURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", contentURL)
-        if !port.isEmpty {
-            if https && port != securedDefaultPort {
-                fullFormatURL.append(contentsOf: String(format: ":%@", port))
-            } else if !https && port != unsecuredDefaultPort {
-                fullFormatURL.append(contentsOf: String(format: ":%@", port))
-            }
-        }
-        return fullFormatURL
+        return urlWithPort(fullFormatURL: &fullFormatURL)
     }
     
     var processAppClientID: String = "activiti-app"
@@ -91,5 +77,16 @@ class AuthenticationParameters: Codable {
                                            realm: realm,
                                            redirectURI: redirectURI.encoding())
         return authConfig
+    }
+    
+    func urlWithPort(fullFormatURL: inout String) -> String {
+        if !port.isEmpty {
+            if https && port != securedDefaultPort {
+                fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            } else if !https && port != unsecuredDefaultPort {
+                fullFormatURL.append(contentsOf: String(format: ":%@", port))
+            }
+        }
+        return fullFormatURL
     }
 }
