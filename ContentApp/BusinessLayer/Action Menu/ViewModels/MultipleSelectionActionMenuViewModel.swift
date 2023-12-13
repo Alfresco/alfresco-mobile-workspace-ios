@@ -22,7 +22,7 @@ import AlfrescoContent
 class MultipleSelectionActionMenuViewModel {
     private var nodes: [ListNode]
     private var menuActions: [[ActionMenu]]
-    private let excludedActions: [ActionMenuType]
+    private var excludedActions: [ActionMenuType]
     private var coordinatorServices: CoordinatorServices?
     weak var delegate: ActionMenuViewModelDelegate?
 
@@ -72,6 +72,10 @@ class MultipleSelectionActionMenuViewModel {
             menuActions = MultipleFileActionsMenuTrashMoreButton.actions(for: nodes)
         } else {
             menuActions = MultipleFilesActionMenuGeneric.actions(for: nodes)
+        }
+        let isFavoriteAllowed = UIFunction.isFavoriteAllowedForACSVersion()
+        if !isFavoriteAllowed {
+            excludedActions.append(contentsOf: [.addFavorite, .removeFavorite])
         }
         
         if !excludedActions.isEmpty {
