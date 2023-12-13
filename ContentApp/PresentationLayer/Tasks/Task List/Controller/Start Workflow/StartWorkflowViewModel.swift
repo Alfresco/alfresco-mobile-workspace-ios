@@ -35,6 +35,8 @@ class StartWorkflowViewModel: NSObject {
     var selectedAttachments = [ListNode]()
     var workflowDetailTasks = [TaskNode]()
     var didRefreshTaskList: (() -> Void)?
+    var formFields = [Field]()
+    var formData: StartFormFields?
 
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
@@ -136,7 +138,7 @@ class StartWorkflowViewModel: NSObject {
     }
     
     // MARK: - Check Assignee type
-    func getFormFieldsToCheckAssigneeType(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func getFormFields(completionHandler: @escaping (_ error: Error?) -> Void) {
         
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
@@ -147,6 +149,8 @@ class StartWorkflowViewModel: NSObject {
                 guard let sSelf = self else { return }
                 sSelf.isLoading.value = false
                 sSelf.isAllowedToEditAssignee = true
+                sSelf.formFields = fields
+                sSelf.formData = data
                 
                 if data != nil && !fields.isEmpty {
                     for field in fields {

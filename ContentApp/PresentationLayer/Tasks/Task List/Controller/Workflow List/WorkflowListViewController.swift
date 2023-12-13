@@ -364,7 +364,26 @@ extension WorkflowListViewController {
         
     private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: ListNode?, workflowNode: WorkflowNode?, isDetailFlow: Bool = false) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+//        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+//            viewController.coordinatorServices = coordinatorServices
+//            if isDetailFlow {
+//                viewController.viewModel.isEditMode = false
+//                viewController.viewModel.workflowDetailNode = workflowNode
+//            } else {
+//                viewController.viewModel.appDefinition = appDefinition
+//                viewController.viewModel.isEditMode = true
+//                viewController.viewModel.selectedAttachments = []
+//                viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+//            }
+//            viewController.viewModel.isDetailWorkflow = isDetailFlow
+//            self.navigationViewController?.pushViewController(viewController, animated: true)
+//            viewController.viewModel.didRefreshTaskList = {[weak self] in
+//                guard let sSelf = self else { return }
+//                sSelf.handlePullToRefresh()
+//            }
+//        }
+        
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.complexWorkflowPage) as? ComplexFormViewController {
             viewController.coordinatorServices = coordinatorServices
             if isDetailFlow {
                 viewController.viewModel.isEditMode = false
