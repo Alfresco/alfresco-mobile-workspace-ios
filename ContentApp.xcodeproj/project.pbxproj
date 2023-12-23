@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,9 @@
 		133825D526300DC6000FFD4E /* String+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133825D426300DC6000FFD4E /* String+Paths.swift */; };
 		1346FA07261DA4CF00336990 /* ModeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1346FA06261DA4CF00336990 /* ModeSelector.swift */; };
 		4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */; };
+		471993B02B3016CD00F21CBA /* MultiLineTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471993AE2B3016CD00F21CBA /* MultiLineTextTableViewCell.swift */; };
+		471993B12B3016CD00F21CBA /* MultiLineTextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 471993AF2B3016CD00F21CBA /* MultiLineTextTableViewCell.xib */; };
+		471993B32B3016EF00F21CBA /* MultiLineTextTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471993B22B3016EF00F21CBA /* MultiLineTextTableCellViewModel.swift */; };
 		4734440229DC0CED004A72CD /* StartableWorkflowsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */; };
 		4734440429DC0D1E004A72CD /* StartableWorkflowsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */; };
 		474172C229F03C48001F1403 /* WorkflowOperationsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474172C129F03C48001F1403 /* WorkflowOperationsModel.swift */; };
@@ -816,6 +819,9 @@
 		1346FA06261DA4CF00336990 /* ModeSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeSelector.swift; sourceTree = "<group>"; };
 		29A47D6A592A38D4559AC74E /* Pods-ContentApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.release.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.release.xcconfig"; sourceTree = "<group>"; };
 		4700B9D829D1AE74001E9CEA /* WorkflowFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowFilters.swift; sourceTree = "<group>"; };
+		471993AE2B3016CD00F21CBA /* MultiLineTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineTextTableViewCell.swift; sourceTree = "<group>"; };
+		471993AF2B3016CD00F21CBA /* MultiLineTextTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultiLineTextTableViewCell.xib; sourceTree = "<group>"; };
+		471993B22B3016EF00F21CBA /* MultiLineTextTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiLineTextTableCellViewModel.swift; sourceTree = "<group>"; };
 		4734440129DC0CED004A72CD /* StartableWorkflowsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewController.swift; sourceTree = "<group>"; };
 		4734440329DC0D1E004A72CD /* StartableWorkflowsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartableWorkflowsViewModel.swift; sourceTree = "<group>"; };
 		474172C129F03C48001F1403 /* WorkflowOperationsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowOperationsModel.swift; sourceTree = "<group>"; };
@@ -1469,6 +1475,24 @@
 				C98C128C271E85EB001C84D6 /* Advance Search */,
 			);
 			path = Modules;
+			sourceTree = "<group>";
+		};
+		471993AC2B3016A000F21CBA /* Complex Forms */ = {
+			isa = PBXGroup;
+			children = (
+				471993AD2B3016A000F21CBA /* Multi Line Text */,
+			);
+			path = "Complex Forms";
+			sourceTree = "<group>";
+		};
+		471993AD2B3016A000F21CBA /* Multi Line Text */ = {
+			isa = PBXGroup;
+			children = (
+				471993AE2B3016CD00F21CBA /* MultiLineTextTableViewCell.swift */,
+				471993B22B3016EF00F21CBA /* MultiLineTextTableCellViewModel.swift */,
+				471993AF2B3016CD00F21CBA /* MultiLineTextTableViewCell.xib */,
+			);
+			path = "Multi Line Text";
 			sourceTree = "<group>";
 		};
 		4734440029DC0CCF004A72CD /* Startable Workflows */ = {
@@ -2675,6 +2699,7 @@
 				C93A246828A636D4005F46C2 /* Attachment Table Cell */,
 				C97338AA28F532170060B37A /* Add Attachment */,
 				C9AF1B0928DEDB590020D36A /* Assignee */,
+				471993AC2B3016A000F21CBA /* Complex Forms */,
 			);
 			path = "Table Cells";
 			sourceTree = "<group>";
@@ -3955,6 +3980,7 @@
 				C9AF1B0D28DEDB710020D36A /* TaskAssigneeTableViewCell.xib in Resources */,
 				B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */,
 				C95B2A2E28BE0621007841F4 /* mockTasks.json in Resources */,
+				471993B12B3016CD00F21CBA /* MultiLineTextTableViewCell.xib in Resources */,
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
 				C9A759B0289BCA37006603E0 /* InfoTableViewCell.xib in Resources */,
@@ -4467,6 +4493,7 @@
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
 				476CB2DB2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift in Sources */,
 				C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */,
+				471993B02B3016CD00F21CBA /* MultiLineTextTableViewCell.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
 				E387387C24D1D1820028F76B /* SystemSearchViewController.swift in Sources */,
@@ -4633,6 +4660,7 @@
 				47FBDF6829E5394B00EE56AC /* WFlowProcessDefinitions.swift in Sources */,
 				C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
+				471993B32B3016EF00F21CBA /* MultiLineTextTableCellViewModel.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
 				E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */,

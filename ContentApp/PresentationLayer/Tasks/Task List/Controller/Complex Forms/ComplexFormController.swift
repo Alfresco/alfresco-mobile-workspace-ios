@@ -17,14 +17,58 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class ComplexFormController: NSObject {
     let viewModel: StartWorkflowViewModel
     var currentTheme: PresentationTheme?
     internal var supportedNodeTypes: [NodeType] = []
-
+    
     init(viewModel: StartWorkflowViewModel = StartWorkflowViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
         self.currentTheme = currentTheme
+    }
+    
+    func cellIdentifier(for viewModel: RowViewModel) -> String {
+        switch viewModel {
+        case is MultiLineTextTableCellViewModel:
+            return MultiLineTextTableViewCell.cellIdentifier()
+        default:
+            fatalError("Unexpected view model type: \(viewModel)")
+        }
+    }
+    
+    // MARK: - Build View Models
+    func buildViewModel() {
+        var rowViewModels = [RowViewModel]()
+        for field in viewModel.formFields {
+            let type = field.type
+            switch type {
+            case ComplexFormFields.multiLineText.rawValue:
+                let cellVM = multiLineTextCellVM(for: field)
+                rowViewModels.append(cellVM)
+            default:
+                AlfrescoLog.debug("No matching field")
+            }
+            
+            self.viewModel.rowViewModels.value = rowViewModels
+        }
+    }
+    
+    // MARK: - Title
+    private func multiLineTextCellVM(for field: Field) -> MultiLineTextTableCellViewModel {
+        var processDescription = viewModel.processDefintionDescription
+        if processDescription.isEmpty {
+            processDescription = LocalizationConstants.Tasks.noDescription
+        }
+        
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let rowVM = MultiLineTextTableCellViewModel(componentID: field.id,
+                                                    title: field.name,
+                                                    placeholder: field.placeholder,
+                                                    text: text,
+                                                    readOnly: field.readOnly)
+        
+        return rowVM
     }
 }
