@@ -29,6 +29,7 @@ class ComplexFormViewController: SystemSearchViewController {
     @IBOutlet weak var nextPageButton: MDCButton!
     @IBOutlet weak var labelPageNumber: UILabel!
     @IBOutlet weak var heightFooterView: NSLayoutConstraint!
+    @IBOutlet weak var tableView: UITableView!
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -50,6 +51,8 @@ class ComplexFormViewController: SystemSearchViewController {
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyTheme()
+        registerCells()
+        setupBindings()
         applyLocalization()
         getWorkflowDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
@@ -70,7 +73,7 @@ class ComplexFormViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         updateTheme()
-        //controller.buildViewModel()
+        controller.buildViewModel()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -84,13 +87,16 @@ class ComplexFormViewController: SystemSearchViewController {
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
     
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
     }
     
     private func applyLocalization() {
         self.title = viewModel.screenTitle
+    }
+    
+    func registerCells() {
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.multiLineTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.multiLineTextComplexForm)
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -147,7 +153,7 @@ class ComplexFormViewController: SystemSearchViewController {
         if viewModel.isDetailWorkflow { return }
         viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
             guard let sSelf = self else { return }
-           // sSelf.tableView.reloadData()
+            sSelf.tableView.reloadData()
             sSelf.getFormFields()
         }
     }
@@ -155,7 +161,64 @@ class ComplexFormViewController: SystemSearchViewController {
     private func getFormFields() {
         viewModel.getFormFields {[weak self] error in
             guard let sSelf = self else { return }
-         //   sSelf.controller.buildViewModel()
+            sSelf.controller.buildViewModel()
+        }
+    }
+    
+    // MARK: - Set up Bindings
+    private func setupBindings() {
+        
+        /* observer loader */
+        viewModel.isLoading.addObserver { [weak self] (isLoading) in
+            guard let sSelf = self else { return }
+            if isLoading {
+                sSelf.startLoading()
+            } else {
+                sSelf.stopLoading()
+            }
+        }
+        
+        /* observing rows */
+        viewModel.rowViewModels.addObserver() { [weak self] (rows) in
+            guard let sSelf = self else { return }
+            DispatchQueue.main.async {
+                sSelf.tableView.reloadData()
+            }
+        }
+    }
+}
+
+// MARK: - Table View Data Source and Delegates
+extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.rowViewModels.value.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: controller.cellIdentifier(for: rowViewModel), for: indexPath)
+        if let cell = cell as? CellConfigurable {
+            cell.setup(viewModel: rowViewModel)
+        }
+        
+        if let theme = coordinatorServices?.themingService {
+            if cell is MultiLineTextTableViewCell {
+                (cell as? MultiLineTextTableViewCell)?.applyTheme(with: theme)
+            }
+        }
+        
+        cell.layoutIfNeeded()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
+        switch rowViewModel {
+        case is MultiLineTextTableCellViewModel:
+            return 120.0
+        default:
+            return UITableView.automaticDimension
         }
     }
 }
