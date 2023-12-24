@@ -33,7 +33,8 @@ enum AttachmentType: String, Codable {
 }
 
 // MARK: - Complex Form Fields
-enum ComplexFormFields: String {
+enum ComplexFormFieldType: String {
     case multiLineText = "multi-line-text"
     case singleLineText = "text"
+    case numberField = "integer"
 }

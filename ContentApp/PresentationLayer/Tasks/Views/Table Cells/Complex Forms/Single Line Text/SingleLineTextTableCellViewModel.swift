@@ -24,6 +24,16 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var placeholder: String?
     var text: String?
     var readOnly = false
+    var type: ComplexFormFieldType
+    var keyboardType: UIKeyboardType {
+        if type == .singleLineText {
+            return .default
+        } else if type == .numberField {
+            return .numberPad
+        }
+        
+        return .default
+    }
     
     func cellIdentifier() -> String {
         return "SingleLineTextTableViewCell"
@@ -33,11 +43,13 @@ class SingleLineTextTableCellViewModel: RowViewModel {
          title: String?,
          placeholder: String?,
          text: String?,
-         readOnly: Bool = false) {
+         readOnly: Bool = false,
+         type: ComplexFormFieldType) {
         self.componentID = componentID
         self.title = title
         self.placeholder = placeholder
         self.text = text
         self.readOnly = readOnly
+        self.type = type
     }
 }

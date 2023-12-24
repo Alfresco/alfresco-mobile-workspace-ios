@@ -46,11 +46,14 @@ class ComplexFormController: NSObject {
         for field in viewModel.formFields {
             let type = field.type
             switch type {
-            case ComplexFormFields.multiLineText.rawValue:
+            case ComplexFormFieldType.multiLineText.rawValue:
                 let cellVM = multiLineTextCellVM(for: field)
                 rowViewModels.append(cellVM)
-            case ComplexFormFields.singleLineText.rawValue:
+            case ComplexFormFieldType.singleLineText.rawValue:
                 let cellVM = singleLineTextCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.numberField.rawValue:
+                let cellVM = numberTextCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
@@ -76,10 +79,24 @@ class ComplexFormController: NSObject {
     private func singleLineTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
-                                                    title: field.name,
-                                                    placeholder: field.placeholder,
-                                                    text: text,
-                                                    readOnly: field.readOnly)
+                                                     title: field.name,
+                                                     placeholder: field.placeholder,
+                                                     text: text,
+                                                     readOnly: field.readOnly,
+                                                     type: .singleLineText)
+        
+        return rowVM
+    }
+    
+    // MARK: - Number Text Field
+    private func numberTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
+                                                     title: field.name,
+                                                     placeholder: field.placeholder,
+                                                     text: text,
+                                                     readOnly: field.readOnly,
+                                                     type: .numberField)
         
         return rowVM
     }
