@@ -55,6 +55,9 @@ class ComplexFormController: NSObject {
             case ComplexFormFieldType.numberField.rawValue:
                 let cellVM = numberTextCellVM(for: field)
                 rowViewModels.append(cellVM)
+            case ComplexFormFieldType.amountField.rawValue:
+                let cellVM = amountTextCellVM(for: field)
+                rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
             }
@@ -71,7 +74,6 @@ class ComplexFormController: NSObject {
                                                     placeholder: field.placeholder,
                                                     text: text,
                                                     readOnly: field.readOnly)
-        
         return rowVM
     }
     
@@ -84,7 +86,6 @@ class ComplexFormController: NSObject {
                                                      text: text,
                                                      readOnly: field.readOnly,
                                                      type: .singleLineText)
-        
         return rowVM
     }
     
@@ -97,7 +98,18 @@ class ComplexFormController: NSObject {
                                                      text: text,
                                                      readOnly: field.readOnly,
                                                      type: .numberField)
-        
+        return rowVM
+    }
+    
+    // MARK: - Amount Text Field
+    private func amountTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
+                                                     title: field.name,
+                                                     placeholder: field.placeholder,
+                                                     text: text,
+                                                     readOnly: field.readOnly,
+                                                     type: .amountField)
         return rowVM
     }
 }

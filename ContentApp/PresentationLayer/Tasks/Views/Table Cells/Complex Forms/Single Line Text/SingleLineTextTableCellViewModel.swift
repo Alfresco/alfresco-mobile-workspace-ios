@@ -30,6 +30,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
             return .default
         } else if type == .numberField {
             return .numberPad
+        } else if type == .amountField {
+            return .decimalPad
         }
         
         return .default

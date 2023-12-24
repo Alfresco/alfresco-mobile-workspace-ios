@@ -46,4 +46,3 @@ struct CellConstants {
         static let singleLineTextComplexForm = "SingleLineTextTableViewCell"
     }
 }
-
