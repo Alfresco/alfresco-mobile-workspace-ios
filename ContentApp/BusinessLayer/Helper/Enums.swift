@@ -37,4 +37,5 @@ enum ComplexFormFieldType: String {
     case multiLineText = "multi-line-text"
     case singleLineText = "text"
     case numberField = "integer"
+    case amountField = "amount"
 }
