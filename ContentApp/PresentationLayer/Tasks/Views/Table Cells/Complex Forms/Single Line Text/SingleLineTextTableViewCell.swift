@@ -28,7 +28,6 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
     var viewModel: SingleLineTextTableCellViewModel?
     var activeTheme: PresentationTheme?
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         baseView.isAccessibilityElement = false
@@ -43,6 +42,7 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
         titleLabel.text = viewModel.title
         textField.text = viewModel.text
         textField.placeholder = viewModel.placeholder
+        textField.keyboardType = viewModel.keyboardType
         addAccessibility()
     }
     
