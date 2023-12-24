@@ -31,6 +31,9 @@
 		476CB2D92A34D92300207C4D /* WorkflowTaskStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2D82A34D92300207C4D /* WorkflowTaskStatusController.swift */; };
 		476CB2DB2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */; };
 		47741B272A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47741B262A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift */; };
+		47789D852B38091900458817 /* SingleLineTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47789D832B38091900458817 /* SingleLineTextTableViewCell.swift */; };
+		47789D862B38091900458817 /* SingleLineTextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47789D842B38091900458817 /* SingleLineTextTableViewCell.xib */; };
+		47789D882B38093700458817 /* SingleLineTextTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47789D872B38093700458817 /* SingleLineTextTableCellViewModel.swift */; };
 		4792042929CF02090080BB13 /* TaskProcessBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */; };
 		4792042C29CF0B150080BB13 /* WorkflowListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */; };
 		4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */; };
@@ -835,6 +838,9 @@
 		476CB2D82A34D92300207C4D /* WorkflowTaskStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusController.swift; sourceTree = "<group>"; };
 		476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTaskStatusViewModel.swift; sourceTree = "<group>"; };
 		47741B262A3A444600EF2044 /* TestWorkflowTaskDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWorkflowTaskDetailViewModel.swift; sourceTree = "<group>"; };
+		47789D832B38091900458817 /* SingleLineTextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineTextTableViewCell.swift; sourceTree = "<group>"; };
+		47789D842B38091900458817 /* SingleLineTextTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleLineTextTableViewCell.xib; sourceTree = "<group>"; };
+		47789D872B38093700458817 /* SingleLineTextTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleLineTextTableCellViewModel.swift; sourceTree = "<group>"; };
 		4792042829CF02090080BB13 /* TaskProcessBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskProcessBaseViewController.swift; sourceTree = "<group>"; };
 		4792042B29CF0B150080BB13 /* WorkflowListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewController.swift; sourceTree = "<group>"; };
 		4792042D29CF0B2F0080BB13 /* WorkflowListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowListViewModel.swift; sourceTree = "<group>"; };
@@ -1481,6 +1487,7 @@
 			isa = PBXGroup;
 			children = (
 				471993AD2B3016A000F21CBA /* Multi Line Text */,
+				47789D822B3808F900458817 /* Single Line Text */,
 			);
 			path = "Complex Forms";
 			sourceTree = "<group>";
@@ -1531,6 +1538,16 @@
 				476CB2DA2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift */,
 			);
 			path = "Workflow Task Status";
+			sourceTree = "<group>";
+		};
+		47789D822B3808F900458817 /* Single Line Text */ = {
+			isa = PBXGroup;
+			children = (
+				47789D832B38091900458817 /* SingleLineTextTableViewCell.swift */,
+				47789D872B38093700458817 /* SingleLineTextTableCellViewModel.swift */,
+				47789D842B38091900458817 /* SingleLineTextTableViewCell.xib */,
+			);
+			path = "Single Line Text";
 			sourceTree = "<group>";
 		};
 		4792042729CF01C00080BB13 /* Task Process Base */ = {
@@ -3979,6 +3996,7 @@
 				C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */,
 				C9AF1B0D28DEDB710020D36A /* TaskAssigneeTableViewCell.xib in Resources */,
 				B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */,
+				47789D862B38091900458817 /* SingleLineTextTableViewCell.xib in Resources */,
 				C95B2A2E28BE0621007841F4 /* mockTasks.json in Resources */,
 				471993B12B3016CD00F21CBA /* MultiLineTextTableViewCell.xib in Resources */,
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
@@ -4683,6 +4701,7 @@
 				C9D9E20D28DD9EFE0011D6EE /* TaskAssigneeViewController.swift in Sources */,
 				B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */,
 				C9A759A0289BBAA1006603E0 /* TaskListCollectionViewCell.swift in Sources */,
+				47789D852B38091900458817 /* SingleLineTextTableViewCell.swift in Sources */,
 				F185B19026174A0100407451 /* CameraViewModel.swift in Sources */,
 				C9848016272A5BF800BB556B /* SearchSliderRangeComponentViewModel.swift in Sources */,
 				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
@@ -4811,6 +4830,7 @@
 				B99D9BBD2486724D00FBFC9B /* AuthenticationProviderProtocol.swift in Sources */,
 				E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */,
 				C95C28C2289E45C900000080 /* AddCommentTableViewCell.swift in Sources */,
+				47789D882B38093700458817 /* SingleLineTextTableCellViewModel.swift in Sources */,
 				B9ECED28254308280097DB3F /* EventObservable.swift in Sources */,
 				B9AE0BBB24C17D880001289C /* PageFetchableCollectionView.swift in Sources */,
 				C903CBAE288149A70080EF69 /* EmptyTasks.swift in Sources */,

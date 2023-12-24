@@ -97,6 +97,8 @@ class ComplexFormViewController: SystemSearchViewController {
     
     func registerCells() {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.multiLineTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.multiLineTextComplexForm)
+        
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.singleLineTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.singleLineTextComplexForm)
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -205,6 +207,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         if let theme = coordinatorServices?.themingService {
             if cell is MultiLineTextTableViewCell {
                 (cell as? MultiLineTextTableViewCell)?.applyTheme(with: theme)
+            } else if cell is SingleLineTextTableViewCell {
+                (cell as? SingleLineTextTableViewCell)?.applyTheme(with: theme)
             }
         }
         
@@ -216,7 +220,9 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
         switch rowViewModel {
         case is MultiLineTextTableCellViewModel:
-            return 120.0
+            return 125.0
+        case is SingleLineTextTableCellViewModel:
+            return 95.0
         default:
             return UITableView.automaticDimension
         }
