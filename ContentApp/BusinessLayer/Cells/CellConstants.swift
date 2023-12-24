@@ -43,6 +43,7 @@ struct CellConstants {
         static let spaceCell = "SpaceTableViewCell"
         
         static let multiLineTextComplexForm = "MultiLineTextTableViewCell"
+        static let singleLineTextComplexForm = "SingleLineTextTableViewCell"
     }
 }
 

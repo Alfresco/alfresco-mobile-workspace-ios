@@ -33,6 +33,8 @@ class ComplexFormController: NSObject {
         switch viewModel {
         case is MultiLineTextTableCellViewModel:
             return MultiLineTextTableViewCell.cellIdentifier()
+        case is SingleLineTextTableCellViewModel:
+            return SingleLineTextTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -47,6 +49,9 @@ class ComplexFormController: NSObject {
             case ComplexFormFields.multiLineText.rawValue:
                 let cellVM = multiLineTextCellVM(for: field)
                 rowViewModels.append(cellVM)
+            case ComplexFormFields.singleLineText.rawValue:
+                let cellVM = singleLineTextCellVM(for: field)
+                rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
             }
@@ -55,15 +60,22 @@ class ComplexFormController: NSObject {
         }
     }
     
-    // MARK: - Title
+    // MARK: - Multi Line Text View
     private func multiLineTextCellVM(for field: Field) -> MultiLineTextTableCellViewModel {
-        var processDescription = viewModel.processDefintionDescription
-        if processDescription.isEmpty {
-            processDescription = LocalizationConstants.Tasks.noDescription
-        }
-        
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         let rowVM = MultiLineTextTableCellViewModel(componentID: field.id,
+                                                    title: field.name,
+                                                    placeholder: field.placeholder,
+                                                    text: text,
+                                                    readOnly: field.readOnly)
+        
+        return rowVM
+    }
+    
+    // MARK: - Single Line Text Field
+    private func singleLineTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
                                                     title: field.name,
                                                     placeholder: field.placeholder,
                                                     text: text,

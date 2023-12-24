@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sog-T0-I6j" userLabel="baseView">
-                        <rect key="frame" x="0.0" y="0.0" width="376" height="120"/>
+                        <rect key="frame" x="0.0" y="5" width="376" height="120"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dp-iH-3UC" userLabel="titleLabel">
                                 <rect key="frame" x="20" y="5" width="336" height="20.333333333333332"/>
@@ -72,7 +72,7 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="sog-T0-I6j" secondAttribute="trailing" id="D29-eZ-FeL"/>
-                    <constraint firstItem="sog-T0-I6j" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Jdg-vs-wxd"/>
+                    <constraint firstItem="sog-T0-I6j" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="Jdg-vs-wxd"/>
                     <constraint firstItem="sog-T0-I6j" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="baq-te-lV0"/>
                 </constraints>
             </tableViewCellContentView>
