@@ -23,7 +23,7 @@ class ComplexFormController: NSObject {
     let viewModel: StartWorkflowViewModel
     var currentTheme: PresentationTheme?
     internal var supportedNodeTypes: [NodeType] = []
-    
+
     init(viewModel: StartWorkflowViewModel = StartWorkflowViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
         self.currentTheme = currentTheme

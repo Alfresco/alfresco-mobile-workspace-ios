@@ -22,36 +22,28 @@ import MaterialComponents
 class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
 
     @IBOutlet weak var baseView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var textBaseView: UIView!
-    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var textField: MDCOutlinedTextField!
     var viewModel: SingleLineTextTableCellViewModel?
     var activeTheme: PresentationTheme?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         baseView.isAccessibilityElement = false
-        titleLabel.isAccessibilityElement = true
-        textBaseView.isAccessibilityElement = false
         textField.isAccessibilityElement = true
     }
 
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? SingleLineTextTableCellViewModel else { return }
         self.viewModel = viewModel
-        titleLabel.text = viewModel.title
+            
         textField.text = viewModel.text
+        textField.label.text = viewModel.title
         textField.placeholder = viewModel.placeholder
         textField.keyboardType = viewModel.keyboardType
         addAccessibility()
     }
     
     private func addAccessibility() {
-        titleLabel.accessibilityTraits = .staticText
-        titleLabel.accessibilityIdentifier = "title"
-        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        titleLabel.accessibilityValue = titleLabel.text
-        
         textField.accessibilityTraits = .staticText
         textField.accessibilityIdentifier = "sub-title"
         textField.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
@@ -60,20 +52,15 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
-        guard let currentTheme = service?.activeTheme else { return }
+        guard let currentTheme = service?.activeTheme,
+              let textFieldScheme = service?.containerScheming(for: .loginTextField) else { return}
        
         self.activeTheme = currentTheme
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
-        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        
-        textField.backgroundColor = currentTheme.surfaceColor
-        textField.textColor = currentTheme.onSurface70Color
-        textField.font = currentTheme.subtitle2TextStyle.font
-        
-        textBaseView.backgroundColor = currentTheme.surfaceColor
-        textBaseView.layer.cornerRadius = 5
-        textBaseView.layer.borderWidth = 1
-        textBaseView.layer.borderColor = currentTheme.onSurface15Color.cgColor
+        textField.applyTheme(withScheme: textFieldScheme)
+        textField.trailingViewMode = .unlessEditing
+        textField.leadingAssistiveLabel.text = ""
+        textField.trailingView = nil
     }
 }

@@ -220,9 +220,9 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
         switch rowViewModel {
         case is MultiLineTextTableCellViewModel:
-            return 135.0
+            return 120.0
         case is SingleLineTextTableCellViewModel:
-            return 105.0
+            return 100.0
         default:
             return UITableView.automaticDimension
         }

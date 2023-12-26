@@ -151,7 +151,6 @@ class StartWorkflowViewModel: NSObject {
                 sSelf.isAllowedToEditAssignee = true
                 sSelf.formFields = fields
                 sSelf.formData = data
-                
                 if data != nil && !fields.isEmpty {
                     for field in fields {
                         if field.id == "reviewer" {

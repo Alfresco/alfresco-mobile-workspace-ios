@@ -10,68 +10,51 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="149" id="KGk-i7-Jjw" customClass="SingleLineTextTableViewCell" customModule="ContentApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="455" height="149"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="140" id="KGk-i7-Jjw" customClass="SingleLineTextTableViewCell" customModule="ContentApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="466" height="140"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="455" height="149"/>
+                <rect key="frame" x="0.0" y="0.0" width="466" height="140"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nVB-Oa-rpU" userLabel="baseView">
-                        <rect key="frame" x="0.0" y="15" width="455" height="90"/>
+                        <rect key="frame" x="0.0" y="0.0" width="466" height="140"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ua9-4F-bOh" userLabel="titleLabel">
-                                <rect key="frame" x="20" y="5" width="415" height="20.333333333333332"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7C4-MU-Pd2" userLabel="textBaseView">
-                                <rect key="frame" x="20" y="35.333333333333343" width="415" height="49.666666666666657"/>
-                                <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SiJ-ng-HKp" userLabel="textField">
-                                        <rect key="frame" x="5" y="5" width="405" height="39.666666666666664"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="SiJ-ng-HKp" secondAttribute="trailing" constant="5" id="IjT-SL-g9Y"/>
-                                    <constraint firstItem="SiJ-ng-HKp" firstAttribute="leading" secondItem="7C4-MU-Pd2" secondAttribute="leading" constant="5" id="kNx-sb-YFM"/>
-                                    <constraint firstItem="SiJ-ng-HKp" firstAttribute="top" secondItem="7C4-MU-Pd2" secondAttribute="top" constant="5" id="kPM-Hg-y1q"/>
-                                    <constraint firstAttribute="bottom" secondItem="SiJ-ng-HKp" secondAttribute="bottom" constant="5" id="tWv-Ns-0pD"/>
-                                </constraints>
-                            </view>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dsk-t7-3i9" userLabel="textField" customClass="MDCOutlinedTextField">
+                                <rect key="frame" x="20" y="10" width="426" height="120"/>
+                                <accessibility key="accessibilityConfiguration" identifier="fileNameTextField">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="-1" id="jOV-7w-OCE"/>
+                                </connections>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="7C4-MU-Pd2" firstAttribute="leading" secondItem="ua9-4F-bOh" secondAttribute="leading" id="34G-8A-yNd"/>
-                            <constraint firstItem="ua9-4F-bOh" firstAttribute="top" secondItem="nVB-Oa-rpU" secondAttribute="top" constant="5" id="5g1-Fy-Mir"/>
-                            <constraint firstAttribute="trailing" secondItem="ua9-4F-bOh" secondAttribute="trailing" constant="20" id="NSv-Qa-JM1"/>
-                            <constraint firstAttribute="bottom" secondItem="7C4-MU-Pd2" secondAttribute="bottom" constant="5" id="RrN-u4-095"/>
-                            <constraint firstItem="ua9-4F-bOh" firstAttribute="leading" secondItem="nVB-Oa-rpU" secondAttribute="leading" constant="20" id="aMA-SS-pbh"/>
-                            <constraint firstItem="7C4-MU-Pd2" firstAttribute="top" secondItem="ua9-4F-bOh" secondAttribute="bottom" constant="10" id="pM7-7T-Jid"/>
-                            <constraint firstAttribute="height" constant="90" id="tc2-Tc-PGw"/>
-                            <constraint firstItem="7C4-MU-Pd2" firstAttribute="trailing" secondItem="ua9-4F-bOh" secondAttribute="trailing" id="xuc-aG-B39"/>
+                            <constraint firstItem="dsk-t7-3i9" firstAttribute="leading" secondItem="nVB-Oa-rpU" secondAttribute="leading" constant="20" id="A1e-V6-rSu"/>
+                            <constraint firstItem="dsk-t7-3i9" firstAttribute="top" secondItem="nVB-Oa-rpU" secondAttribute="top" constant="10" id="AAN-VZ-PJc"/>
+                            <constraint firstAttribute="trailing" secondItem="dsk-t7-3i9" secondAttribute="trailing" constant="20" id="EjZ-Yg-ZPf"/>
+                            <constraint firstAttribute="bottom" secondItem="dsk-t7-3i9" secondAttribute="bottom" constant="10" id="g17-gp-qyI"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="nVB-Oa-rpU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="D87-7M-85w"/>
+                    <constraint firstItem="nVB-Oa-rpU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="D87-7M-85w"/>
                     <constraint firstItem="nVB-Oa-rpU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="IeR-2g-bDR"/>
                     <constraint firstAttribute="trailing" secondItem="nVB-Oa-rpU" secondAttribute="trailing" id="cGd-Yg-gEf"/>
+                    <constraint firstAttribute="bottom" secondItem="nVB-Oa-rpU" secondAttribute="bottom" id="cwk-x5-gs9"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="baseView" destination="nVB-Oa-rpU" id="sWt-hS-zDd"/>
-                <outlet property="textBaseView" destination="7C4-MU-Pd2" id="4ZH-Tv-yZ0"/>
-                <outlet property="textField" destination="SiJ-ng-HKp" id="w8W-Ip-9CV"/>
-                <outlet property="titleLabel" destination="ua9-4F-bOh" id="P4F-B4-gAQ"/>
+                <outlet property="textField" destination="dsk-t7-3i9" id="f5q-tQ-3uf"/>
             </connections>
-            <point key="canvasLocation" x="205.34351145038167" y="-15.845070422535212"/>
+            <point key="canvasLocation" x="213.74045801526717" y="-19.014084507042256"/>
         </tableViewCell>
     </objects>
 </document>
