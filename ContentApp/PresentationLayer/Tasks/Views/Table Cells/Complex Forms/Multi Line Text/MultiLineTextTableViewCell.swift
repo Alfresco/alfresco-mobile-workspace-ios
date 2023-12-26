@@ -18,63 +18,50 @@
 
 import UIKit
 import MaterialComponents
-import GrowingTextView
 
 class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
 
     @IBOutlet weak var baseView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var textBaseView: UIView!
-    @IBOutlet weak var textView: GrowingTextView!
+    @IBOutlet weak var textArea: MDCOutlinedTextArea!    
     var viewModel: MultiLineTextTableCellViewModel?
     var activeTheme: PresentationTheme?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         baseView.isAccessibilityElement = false
-        titleLabel.isAccessibilityElement = true
-        textBaseView.isAccessibilityElement = false
-        textView.isAccessibilityElement = true
+        textArea.isAccessibilityElement = true
     }
 
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? MultiLineTextTableCellViewModel else { return }
         self.viewModel = viewModel
-        titleLabel.text = viewModel.title
-        textView.text = viewModel.text
-        textView.placeholder = viewModel.placeholder
+        
+        textArea.textView.text = viewModel.text
+        textArea.label.text = viewModel.title
+        textArea.placeholder = viewModel.placeholder
+        textArea.sizeToFit()
         addAccessibility()
     }
     
     private func addAccessibility() {
-        titleLabel.accessibilityTraits = .staticText
-        titleLabel.accessibilityIdentifier = "title"
-        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        titleLabel.accessibilityValue = titleLabel.text
-        
-        textView.accessibilityTraits = .staticText
-        textView.accessibilityIdentifier = "sub-title"
-        textView.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
-        textView.accessibilityValue = textView.text
+        textArea.accessibilityTraits = .staticText
+        textArea.accessibilityIdentifier = "sub-title"
+        textArea.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
+        textArea.accessibilityValue = textArea.textView.text
     }
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
-        guard let currentTheme = service?.activeTheme else { return }
-       
+        guard let currentTheme = service?.activeTheme,
+              let textFieldScheme = service?.containerScheming(for: .loginTextField) else { return}
+        
         self.activeTheme = currentTheme
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
-        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        
-        textView.backgroundColor = currentTheme.surfaceColor
-        textView.textColor = currentTheme.onSurface70Color
-        textView.font = currentTheme.subtitle2TextStyle.font
-        textView.placeholderColor = currentTheme.onSurface15Color
-        
-        textBaseView.backgroundColor = currentTheme.surfaceColor
-        textBaseView.layer.cornerRadius = 5
-        textBaseView.layer.borderWidth = 1
-        textBaseView.layer.borderColor = currentTheme.onSurface15Color.cgColor
+        textArea.applyTheme(withScheme: textFieldScheme)
+        textArea.trailingViewMode = .unlessEditing
+        textArea.leadingAssistiveLabel.text = ""
+        textArea.trailingView = nil
+        textArea.maximumNumberOfVisibleRows = 3
     }
 }
