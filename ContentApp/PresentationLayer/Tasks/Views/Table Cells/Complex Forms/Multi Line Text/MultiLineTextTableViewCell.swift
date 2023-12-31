@@ -24,12 +24,13 @@ class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var textArea: MDCOutlinedTextArea!    
     var viewModel: MultiLineTextTableCellViewModel?
-    var activeTheme: PresentationTheme?
+    var service: MaterialDesignThemingService?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         baseView.isAccessibilityElement = false
         textArea.isAccessibilityElement = true
+        textArea.textView.delegate = self
     }
 
     func setup(viewModel: RowViewModel) {
@@ -52,16 +53,40 @@ class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
-        guard let currentTheme = service?.activeTheme,
-              let textFieldScheme = service?.containerScheming(for: .loginTextField) else { return}
+        guard let currentTheme = service?.activeTheme else { return }
         
-        self.activeTheme = currentTheme
+        self.service = service
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
-        textArea.applyTheme(withScheme: textFieldScheme)
         textArea.trailingViewMode = .unlessEditing
-        textArea.leadingAssistiveLabel.text = ""
-        textArea.trailingView = nil
         textArea.maximumNumberOfVisibleRows = 3
+        applyTextViewComponentTheme()
+    }
+    
+    func applyTextViewComponentTheme() {
+        guard let textFieldScheme = service?.containerScheming(for: .loginTextField),
+              let viewModel = self.viewModel else { return }
+        
+        let errorMessage = viewModel.errorMessage ?? ""
+        if !errorMessage.isEmpty {
+            textArea.applyErrorTheme(withScheme: textFieldScheme)
+        } else {
+            textArea.applyTheme(withScheme: textFieldScheme)
+        }
+        textArea.leadingAssistiveLabel.text = viewModel.errorMessage
+        textArea.trailingView = nil
+    }
+}
+
+// MARK: - UITextField Delegate
+extension MultiLineTextTableViewCell: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard let viewModel = self.viewModel else { return false }
+        
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text) 
+        viewModel.checkForErrorMessages(for: newText)
+        applyTextViewComponentTheme()
+        return true
     }
 }
