@@ -73,7 +73,9 @@ class ComplexFormController: NSObject {
                                                     title: field.name,
                                                     placeholder: field.placeholder,
                                                     text: text,
-                                                    readOnly: field.readOnly)
+                                                    readOnly: field.readOnly,
+                                                    minLength: field.minLength,
+                                                    maxLength: field.maxLength)
         return rowVM
     }
     
@@ -85,7 +87,11 @@ class ComplexFormController: NSObject {
                                                      placeholder: field.placeholder,
                                                      text: text,
                                                      readOnly: field.readOnly,
-                                                     type: .singleLineText)
+                                                     type: .singleLineText,
+                                                     minLength: field.minLength,
+                                                     maxLength: field.maxLength,
+                                                     minValue: field.minValue,
+                                                     maxValue: field.maxValue)
         return rowVM
     }
     
@@ -97,7 +103,11 @@ class ComplexFormController: NSObject {
                                                      placeholder: field.placeholder,
                                                      text: text,
                                                      readOnly: field.readOnly,
-                                                     type: .numberField)
+                                                     type: .numberField,
+                                                     minLength: field.minLength,
+                                                     maxLength: field.maxLength,
+                                                     minValue: field.minValue,
+                                                     maxValue: field.maxValue)
         return rowVM
     }
     
@@ -109,7 +119,11 @@ class ComplexFormController: NSObject {
                                                      placeholder: field.placeholder,
                                                      text: text,
                                                      readOnly: field.readOnly,
-                                                     type: .amountField)
+                                                     type: .amountField,
+                                                     minLength: field.minLength,
+                                                     maxLength: field.maxLength,
+                                                     minValue: field.minValue,
+                                                     maxValue: field.maxValue)
         return rowVM
     }
 }

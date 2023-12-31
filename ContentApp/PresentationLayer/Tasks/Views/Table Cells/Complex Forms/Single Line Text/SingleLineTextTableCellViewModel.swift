@@ -25,6 +25,11 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var text: String?
     var readOnly = false
     var type: ComplexFormFieldType
+    var minLength = 0
+    var maxLength = 0
+    var minValue, maxValue: String
+    var errorMessage: String?
+
     var keyboardType: UIKeyboardType {
         if type == .singleLineText {
             return .default
@@ -46,12 +51,73 @@ class SingleLineTextTableCellViewModel: RowViewModel {
          placeholder: String?,
          text: String?,
          readOnly: Bool = false,
-         type: ComplexFormFieldType) {
+         type: ComplexFormFieldType,
+         minLength: Int = 0,
+         maxLength: Int = 0,
+         minValue: String?,
+         maxValue: String?) {
         self.componentID = componentID
         self.title = title
         self.placeholder = placeholder
         self.text = text
         self.readOnly = readOnly
         self.type = type
+        self.minLength = minLength
+        self.maxLength = maxLength
+        self.minValue = minValue ?? ""
+        self.maxValue = maxValue ?? ""
+    }
+    
+    func checkForErrorMessages(for text: String) {
+        if type == .singleLineText {
+            checkErrorForStringValue(text: text)
+        } else if type == .numberField {
+            checkErrorForIntegerValue(text: text)
+        } else if type == .amountField {
+            checkErrorForFloatValue(text: text)
+        }
+    }
+
+    private func checkErrorForStringValue(text: String) {
+        let numberOfChars = text.count
+        if maxLength == 0 {
+            errorMessage = nil
+        } else if numberOfChars < minLength {
+            errorMessage = "Enter atleast \(minLength) characters"
+        } else if numberOfChars > maxLength {
+            errorMessage = "Enter maximum \(maxLength) characters"
+        } else {
+            errorMessage = nil
+        }
+    }
+    
+    private func checkErrorForIntegerValue(text: String) {
+        let numberOfChars = text.count
+        if !minValue.isEmpty {
+            if text.isEmpty {
+                errorMessage = nil
+            } else if (Int(text) ?? 0) < (Int(minValue) ?? 0) {
+                errorMessage = "Can't be less than \(minValue)"
+            } else if (Int(text) ?? 0) > (Int(maxValue) ?? 0) {
+                errorMessage = "Can't be greater than \(maxValue)"
+            } else {
+                errorMessage = nil
+            }
+        }
+    }
+    
+    private func checkErrorForFloatValue(text: String) {
+        let numberOfChars = text.count
+        if !minValue.isEmpty {
+            if text.isEmpty {
+                errorMessage = nil
+            } else if (Float(text) ?? 0) < (Float(minValue) ?? 0) {
+                errorMessage = "Can't be less than \(minValue)"
+            } else if (Float(text) ?? 0) > (Float(maxValue) ?? 0) {
+                errorMessage = "Can't be greater than \(maxValue)"
+            } else {
+                errorMessage = nil
+            }
+        }
     }
 }

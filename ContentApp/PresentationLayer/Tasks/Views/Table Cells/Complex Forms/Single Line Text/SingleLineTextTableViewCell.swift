@@ -24,12 +24,13 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var textField: MDCOutlinedTextField!
     var viewModel: SingleLineTextTableCellViewModel?
-    var activeTheme: PresentationTheme?
+    var service: MaterialDesignThemingService?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         baseView.isAccessibilityElement = false
         textField.isAccessibilityElement = true
+        textField.delegate = self
     }
 
     func setup(viewModel: RowViewModel) {
@@ -52,15 +53,46 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
-        guard let currentTheme = service?.activeTheme,
-              let textFieldScheme = service?.containerScheming(for: .loginTextField) else { return}
+        guard let currentTheme = service?.activeTheme else { return }
        
-        self.activeTheme = currentTheme
+        self.service = service
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
-        textField.applyTheme(withScheme: textFieldScheme)
         textField.trailingViewMode = .unlessEditing
-        textField.leadingAssistiveLabel.text = ""
+        applyTextFieldComponentTheme()
+    }
+    
+    func applyTextFieldComponentTheme() {
+        guard let textFieldScheme = service?.containerScheming(for: .loginTextField),
+              let viewModel = self.viewModel else { return }
+        
+        let errorMessage = viewModel.errorMessage ?? ""
+        if !errorMessage.isEmpty {
+            textField.applyErrorTheme(withScheme: textFieldScheme)
+        } else {
+            textField.applyTheme(withScheme: textFieldScheme)
+        }
+        textField.leadingAssistiveLabel.text = viewModel.errorMessage
         textField.trailingView = nil
+    }
+}
+
+// MARK: - UITextField Delegate
+extension SingleLineTextTableViewCell: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let viewModel = self.viewModel else { return false }
+        
+        let newText = (textField.text as? NSString)?.replacingCharacters(in: range, with: string) ?? ""
+        viewModel.checkForErrorMessages(for: newText)
+        applyTextFieldComponentTheme()
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        guard let viewModel = self.viewModel else { return true }
+        viewModel.checkForErrorMessages(for: "")
+        applyTextFieldComponentTheme()
+        return true
     }
 }
