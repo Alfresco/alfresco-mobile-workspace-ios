@@ -75,7 +75,8 @@ class ComplexFormController: NSObject {
                                                     text: text,
                                                     readOnly: field.readOnly,
                                                     minLength: field.minLength,
-                                                    maxLength: field.maxLength)
+                                                    maxLength: field.maxLength, 
+                                                    fieldRequired: field.fieldRequired)
         return rowVM
     }
     
@@ -91,7 +92,8 @@ class ComplexFormController: NSObject {
                                                      minLength: field.minLength,
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
-                                                     maxValue: field.maxValue)
+                                                     maxValue: field.maxValue,
+                                                     fieldRequired: field.fieldRequired)
         return rowVM
     }
     
@@ -107,7 +109,8 @@ class ComplexFormController: NSObject {
                                                      minLength: field.minLength,
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
-                                                     maxValue: field.maxValue)
+                                                     maxValue: field.maxValue,
+                                                     fieldRequired: field.fieldRequired)
         return rowVM
     }
     
@@ -123,7 +126,8 @@ class ComplexFormController: NSObject {
                                                      minLength: field.minLength,
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
-                                                     maxValue: field.maxValue)
+                                                     maxValue: field.maxValue,
+                                                     fieldRequired: field.fieldRequired)
         return rowVM
     }
 }

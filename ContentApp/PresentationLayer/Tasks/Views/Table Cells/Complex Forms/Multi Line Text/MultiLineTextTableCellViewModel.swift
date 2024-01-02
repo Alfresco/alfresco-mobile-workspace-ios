@@ -27,7 +27,16 @@ class MultiLineTextTableCellViewModel: RowViewModel {
     var minLength = 0
     var maxLength = 0
     var errorMessage: String?
+    var fieldRequired = false
     
+    var name: String? {
+        if fieldRequired {
+            return String(format: "%@*", title ?? "")
+        } else {
+            return title
+        }
+    }
+
     func cellIdentifier() -> String {
         return "MultiLineTextTableViewCell"
     }
@@ -38,7 +47,8 @@ class MultiLineTextTableCellViewModel: RowViewModel {
          text: String?,
          readOnly: Bool = false,
          minLength: Int = 0,
-         maxLength: Int = 0) {
+         maxLength: Int = 0,
+         fieldRequired: Bool?) {
         self.componentID = componentID
         self.title = title
         self.placeholder = placeholder
@@ -46,6 +56,7 @@ class MultiLineTextTableCellViewModel: RowViewModel {
         self.readOnly = readOnly
         self.minLength = minLength
         self.maxLength = maxLength
+        self.fieldRequired = fieldRequired ?? false
     }
     
     func checkForErrorMessages(for text: String) {
