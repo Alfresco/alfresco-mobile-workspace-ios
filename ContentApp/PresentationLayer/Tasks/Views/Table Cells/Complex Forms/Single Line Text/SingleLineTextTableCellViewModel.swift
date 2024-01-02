@@ -92,7 +92,6 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     }
     
     private func checkErrorForIntegerValue(text: String) {
-        let numberOfChars = text.count
         if !minValue.isEmpty {
             if text.isEmpty {
                 errorMessage = nil
@@ -107,7 +106,6 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     }
     
     private func checkErrorForFloatValue(text: String) {
-        let numberOfChars = text.count
         if !minValue.isEmpty {
             if text.isEmpty {
                 errorMessage = nil
