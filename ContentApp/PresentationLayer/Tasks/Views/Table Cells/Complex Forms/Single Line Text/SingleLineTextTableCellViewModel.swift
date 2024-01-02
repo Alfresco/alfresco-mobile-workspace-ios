@@ -29,6 +29,15 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var maxLength = 0
     var minValue, maxValue: String
     var errorMessage: String?
+    var fieldRequired = false
+
+    var name: String? {
+        if fieldRequired {
+            return String(format: "%@*", title ?? "")
+        } else {
+            return title
+        }
+    }
 
     var keyboardType: UIKeyboardType {
         if type == .singleLineText {
@@ -55,7 +64,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
          minLength: Int = 0,
          maxLength: Int = 0,
          minValue: String?,
-         maxValue: String?) {
+         maxValue: String?,
+         fieldRequired: Bool?) {
         self.componentID = componentID
         self.title = title
         self.placeholder = placeholder
@@ -66,6 +76,7 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         self.maxLength = maxLength
         self.minValue = minValue ?? ""
         self.maxValue = maxValue ?? ""
+        self.fieldRequired = fieldRequired ?? false
     }
     
     func checkForErrorMessages(for text: String) {

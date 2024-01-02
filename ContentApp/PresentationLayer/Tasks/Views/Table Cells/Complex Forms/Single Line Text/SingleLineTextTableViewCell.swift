@@ -39,7 +39,7 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
             
         textField.maxLength = viewModel.maxLength
         textField.text = viewModel.text
-        textField.label.text = viewModel.title
+        textField.label.text = viewModel.name
         textField.placeholder = viewModel.placeholder
         textField.keyboardType = viewModel.keyboardType
         addAccessibility()

@@ -38,7 +38,7 @@ class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
         self.viewModel = viewModel
         
         textArea.textView.text = viewModel.text
-        textArea.label.text = viewModel.title
+        textArea.label.text = viewModel.name
         textArea.placeholder = viewModel.placeholder
         textArea.sizeToFit()
         addAccessibility()
