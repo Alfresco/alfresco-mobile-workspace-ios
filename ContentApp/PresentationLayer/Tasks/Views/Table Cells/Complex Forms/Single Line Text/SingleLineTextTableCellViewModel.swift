@@ -25,9 +25,10 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var text: String?
     var readOnly = false
     var type: ComplexFormFieldType
-    var minLength = 0
-    var maxLength = 0
-    var minValue, maxValue: String
+    var minLength: Int?
+    var maxLength: Int?
+    var minValue: String?
+    var maxValue: String?
     var errorMessage: String?
     var fieldRequired = false
 
@@ -51,6 +52,18 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         return .default
     }
     
+    var maximumInputCharacters: Int? {
+        if type == .singleLineText {
+            return maxLength
+        } else if type == .numberField {
+            return nil
+        } else if type == .amountField {
+            return nil
+        }
+        
+        return nil
+    }
+    
     func cellIdentifier() -> String {
         return "SingleLineTextTableViewCell"
     }
@@ -61,8 +74,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
          text: String?,
          readOnly: Bool = false,
          type: ComplexFormFieldType,
-         minLength: Int = 0,
-         maxLength: Int = 0,
+         minLength: Int?,
+         maxLength: Int?,
          minValue: String?,
          maxValue: String?,
          fieldRequired: Bool?) {
@@ -74,8 +87,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         self.type = type
         self.minLength = minLength
         self.maxLength = maxLength
-        self.minValue = minValue ?? ""
-        self.maxValue = maxValue ?? ""
+        self.minValue = minValue
+        self.maxValue = maxValue
         self.fieldRequired = fieldRequired ?? false
     }
     
@@ -91,25 +104,29 @@ class SingleLineTextTableCellViewModel: RowViewModel {
 
     private func checkErrorForStringValue(text: String) {
         let numberOfChars = text.count
-        if maxLength == 0 {
+        guard let maximumLength = maxLength, let minimumLength = minLength else { return }
+        
+        if maximumLength == 0 {
             errorMessage = nil
-        } else if numberOfChars < minLength {
-            errorMessage = "Enter atleast \(minLength) characters"
-        } else if numberOfChars > maxLength {
-            errorMessage = "Enter maximum \(maxLength) characters"
+        } else if numberOfChars < minimumLength {
+            errorMessage = "Enter atleast \(minimumLength) characters"
+        } else if numberOfChars > maximumLength {
+            errorMessage = "Enter maximum \(maximumLength) characters"
         } else {
             errorMessage = nil
         }
     }
     
     private func checkErrorForIntegerValue(text: String) {
-        if !minValue.isEmpty {
+        guard let maximumValue = maxValue, let minimumValue = minValue else { return }
+
+        if !minimumValue.isEmpty {
             if text.isEmpty {
                 errorMessage = nil
-            } else if (Int(text) ?? 0) < (Int(minValue) ?? 0) {
-                errorMessage = "Can't be less than \(minValue)"
-            } else if (Int(text) ?? 0) > (Int(maxValue) ?? 0) {
-                errorMessage = "Can't be greater than \(maxValue)"
+            } else if (Int(text) ?? 0) < (Int(minimumValue) ?? 0) {
+                errorMessage = "Can't be less than \(minimumValue)"
+            } else if (Int(text) ?? 0) > (Int(maximumValue) ?? 0) {
+                errorMessage = "Can't be greater than \(maximumValue)"
             } else {
                 errorMessage = nil
             }
@@ -117,13 +134,15 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     }
     
     private func checkErrorForFloatValue(text: String) {
-        if !minValue.isEmpty {
+        guard let maximumValue = maxValue, let minimumValue = minValue else { return }
+
+        if !minimumValue.isEmpty {
             if text.isEmpty {
                 errorMessage = nil
-            } else if (Float(text) ?? 0) < (Float(minValue) ?? 0) {
-                errorMessage = "Can't be less than \(minValue)"
-            } else if (Float(text) ?? 0) > (Float(maxValue) ?? 0) {
-                errorMessage = "Can't be greater than \(maxValue)"
+            } else if (Float(text) ?? 0) < (Float(minimumValue) ?? 0) {
+                errorMessage = "Can't be less than \(minimumValue)"
+            } else if (Float(text) ?? 0) > (Float(maximumValue) ?? 0) {
+                errorMessage = "Can't be greater than \(maximumValue)"
             } else {
                 errorMessage = nil
             }

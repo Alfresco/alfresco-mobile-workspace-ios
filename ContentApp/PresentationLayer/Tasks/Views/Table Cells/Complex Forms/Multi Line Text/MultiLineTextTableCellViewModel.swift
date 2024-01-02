@@ -24,8 +24,8 @@ class MultiLineTextTableCellViewModel: RowViewModel {
     var placeholder: String?
     var text: String?
     var readOnly = false
-    var minLength = 0
-    var maxLength = 0
+    var minLength: Int?
+    var maxLength: Int?
     var errorMessage: String?
     var fieldRequired = false
     
@@ -46,8 +46,8 @@ class MultiLineTextTableCellViewModel: RowViewModel {
          placeholder: String?,
          text: String?,
          readOnly: Bool = false,
-         minLength: Int = 0,
-         maxLength: Int = 0,
+         minLength: Int?,
+         maxLength: Int?,
          fieldRequired: Bool?) {
         self.componentID = componentID
         self.title = title
@@ -60,11 +60,12 @@ class MultiLineTextTableCellViewModel: RowViewModel {
     }
     
     func checkForErrorMessages(for text: String) {
+        guard let maximumLength = maxLength, let minimumLength = minLength else { return }
         let numberOfChars = text.count
-        if numberOfChars < minLength {
-            errorMessage = "Enter atleast \(minLength) characters"
-        } else if numberOfChars > maxLength {
-            errorMessage = "Enter maximum \(maxLength) characters"
+        if numberOfChars < minimumLength {
+            errorMessage = "Enter atleast \(minimumLength) characters"
+        } else if numberOfChars > maximumLength {
+            errorMessage = "Enter maximum \(maximumLength) characters"
         } else {
             errorMessage = nil
         }

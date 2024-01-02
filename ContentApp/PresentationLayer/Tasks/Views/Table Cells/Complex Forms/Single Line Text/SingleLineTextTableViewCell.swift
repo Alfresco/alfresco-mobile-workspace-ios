@@ -37,7 +37,9 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
         guard let viewModel = viewModel as? SingleLineTextTableCellViewModel else { return }
         self.viewModel = viewModel
             
-        textField.maxLength = viewModel.maxLength
+        if viewModel.maximumInputCharacters != nil {
+            textField.maxLength = viewModel.maximumInputCharacters!
+        }
         textField.text = viewModel.text
         textField.label.text = viewModel.name
         textField.placeholder = viewModel.placeholder
