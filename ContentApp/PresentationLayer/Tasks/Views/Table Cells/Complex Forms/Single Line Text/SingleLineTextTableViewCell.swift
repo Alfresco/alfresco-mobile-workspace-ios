@@ -96,4 +96,9 @@ extension SingleLineTextTableViewCell: UITextFieldDelegate {
         applyTextFieldComponentTheme()
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
