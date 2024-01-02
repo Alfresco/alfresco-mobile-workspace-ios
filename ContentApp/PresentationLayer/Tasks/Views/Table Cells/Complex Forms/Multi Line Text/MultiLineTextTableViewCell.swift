@@ -58,8 +58,9 @@ class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
         self.service = service
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
+        textArea.backgroundColor = currentTheme.surfaceColor
         textArea.trailingViewMode = .unlessEditing
-        textArea.maximumNumberOfVisibleRows = 3
+        textArea.maximumNumberOfVisibleRows = 2
         applyTextViewComponentTheme()
     }
     
