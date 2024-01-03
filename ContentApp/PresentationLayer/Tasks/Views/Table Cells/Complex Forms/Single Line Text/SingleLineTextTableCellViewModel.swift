@@ -31,7 +31,10 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var maxValue: String?
     var errorMessage: String?
     var fieldRequired = false
-
+    var currency: String?
+    var enableFractions = false
+    var fractionLength = 0
+    
     var name: String? {
         if fieldRequired {
             return String(format: "%@*", title ?? "")
@@ -46,7 +49,11 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         } else if type == .numberField {
             return .numberPad
         } else if type == .amountField {
-            return .decimalPad
+            if enableFractions {
+                return .decimalPad
+            } else {
+                return .numberPad
+            }
         }
         return .default
     }
@@ -65,7 +72,10 @@ class SingleLineTextTableCellViewModel: RowViewModel {
          maxLength: Int?,
          minValue: String?,
          maxValue: String?,
-         fieldRequired: Bool?) {
+         fieldRequired: Bool?,
+         currency: String?,
+         enableFractions: Bool?,
+         fractionLength: Int?) {
         self.componentID = componentID
         self.title = title
         self.placeholder = placeholder
@@ -77,6 +87,9 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         self.minValue = minValue
         self.maxValue = maxValue
         self.fieldRequired = fieldRequired ?? false
+        self.currency = currency
+        self.enableFractions = enableFractions ?? false
+        self.fractionLength = fractionLength ?? 0
     }
     
     func checkForErrorMessages(for text: String) {
