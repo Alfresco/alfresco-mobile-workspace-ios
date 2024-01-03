@@ -25,8 +25,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var text: String?
     var readOnly = false
     var type: ComplexFormFieldType
-    var minLength: Int?
-    var maxLength: Int?
+    var minLength = 0
+    var maxLength = 0
     var minValue: String?
     var maxValue: String?
     var errorMessage: String?
@@ -48,20 +48,7 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         } else if type == .amountField {
             return .decimalPad
         }
-        
         return .default
-    }
-    
-    var maximumInputCharacters: Int? {
-        if type == .singleLineText {
-            return maxLength
-        } else if type == .numberField {
-            return nil
-        } else if type == .amountField {
-            return nil
-        }
-        
-        return nil
     }
     
     func cellIdentifier() -> String {
@@ -85,8 +72,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         self.text = text
         self.readOnly = readOnly
         self.type = type
-        self.minLength = minLength
-        self.maxLength = maxLength
+        self.minLength = minLength ?? 0
+        self.maxLength = maxLength ?? 0
         self.minValue = minValue
         self.maxValue = maxValue
         self.fieldRequired = fieldRequired ?? false
@@ -104,14 +91,12 @@ class SingleLineTextTableCellViewModel: RowViewModel {
 
     private func checkErrorForStringValue(text: String) {
         let numberOfChars = text.count
-        guard let maximumLength = maxLength, let minimumLength = minLength else { return }
-        
-        if maximumLength == 0 {
+        if maxLength == 0 {
             errorMessage = nil
-        } else if numberOfChars < minimumLength {
-            errorMessage = "Enter atleast \(minimumLength) characters"
-        } else if numberOfChars > maximumLength {
-            errorMessage = "Enter maximum \(maximumLength) characters"
+        } else if numberOfChars < minLength {
+            errorMessage = "Enter atleast \(minLength) characters"
+        } else if numberOfChars > maxLength {
+            errorMessage = "Enter maximum \(maxLength) characters"
         } else {
             errorMessage = nil
         }
@@ -119,7 +104,6 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     
     private func checkErrorForIntegerValue(text: String) {
         guard let maximumValue = maxValue, let minimumValue = minValue else { return }
-
         if !minimumValue.isEmpty {
             if text.isEmpty {
                 errorMessage = nil
@@ -135,7 +119,6 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     
     private func checkErrorForFloatValue(text: String) {
         guard let maximumValue = maxValue, let minimumValue = minValue else { return }
-
         if !minimumValue.isEmpty {
             if text.isEmpty {
                 errorMessage = nil

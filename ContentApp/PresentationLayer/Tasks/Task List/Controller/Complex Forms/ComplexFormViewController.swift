@@ -67,6 +67,10 @@ class ComplexFormViewController: SystemSearchViewController {
                                                selector: #selector(self.handleReSignIn(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.reSignin),
                                                object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+       
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,6 +106,16 @@ class ComplexFormViewController: SystemSearchViewController {
     }
     
     @objc private func handleReSignIn(notification: Notification) {
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height + tableView.rowHeight, right: 0)
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        tableView.contentInset = .zero
     }
     
     // MARK: - Back button
