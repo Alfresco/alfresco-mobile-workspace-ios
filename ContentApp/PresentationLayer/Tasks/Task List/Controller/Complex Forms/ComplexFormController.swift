@@ -93,7 +93,10 @@ class ComplexFormController: NSObject {
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
                                                      maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired)
+                                                     fieldRequired: field.fieldRequired,
+                                                     currency: field.currency,
+                                                     enableFractions: field.enableFractions,
+                                                     fractionLength: field.fractionLength)
         return rowVM
     }
     
@@ -110,12 +113,16 @@ class ComplexFormController: NSObject {
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
                                                      maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired)
+                                                     fieldRequired: field.fieldRequired,
+                                                     currency: field.currency,
+                                                     enableFractions: field.enableFractions,
+                                                     fractionLength: field.fractionLength)
         return rowVM
     }
     
     // MARK: - Amount Text Field
     private func amountTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
+        print("---- CURRENCY ----- \(field.currency)")
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
                                                      title: field.name,
@@ -127,7 +134,10 @@ class ComplexFormController: NSObject {
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
                                                      maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired)
+                                                     fieldRequired: field.fieldRequired,
+                                                     currency: field.currency,
+                                                     enableFractions: field.enableFractions,
+                                                     fractionLength: field.fractionLength)
         return rowVM
     }
 }

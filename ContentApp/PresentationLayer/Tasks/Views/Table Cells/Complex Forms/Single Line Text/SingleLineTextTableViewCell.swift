@@ -44,6 +44,7 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
         textField.label.text = viewModel.name
         textField.placeholder = viewModel.placeholder
         textField.keyboardType = viewModel.keyboardType
+        textField.leadingViewMode = .always
         addAccessibility()
     }
     
@@ -63,6 +64,17 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
         baseView.backgroundColor = currentTheme.surfaceColor
         textField.trailingViewMode = .unlessEditing
         applyTextFieldComponentTheme()
+        textField.leadingView = leadingView()
+    }
+    
+    private func leadingView() -> UILabel? {
+        if let currency = viewModel?.currency, let currentTheme = service?.activeTheme {
+            var label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
+            label.text = currency
+            label.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+            return label
+        }
+        return nil
     }
     
     func applyTextFieldComponentTheme() {
@@ -76,7 +88,6 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
             textField.applyTheme(withScheme: textFieldScheme)
         }
         textField.leadingAssistiveLabel.text = viewModel.errorMessage
-        textField.trailingView = nil
     }
 }
 
