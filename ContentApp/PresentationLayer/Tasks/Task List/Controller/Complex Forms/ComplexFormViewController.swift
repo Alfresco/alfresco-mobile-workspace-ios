@@ -50,7 +50,6 @@ class ComplexFormViewController: SystemSearchViewController {
         addBackButton()
         progressView.progress = 0
         progressView.mode = .indeterminate
-        applyTheme()
         registerCells()
         setupBindings()
         applyLocalization()
@@ -148,12 +147,6 @@ class ComplexFormViewController: SystemSearchViewController {
     }
     
     // MARK: - Public Helpers
-    func applyTheme() {
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-              let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton)
-        else { return }
-    }
-    
     func startLoading() {
         progressView?.startAnimating()
         progressView?.setHidden(false, animated: true)
