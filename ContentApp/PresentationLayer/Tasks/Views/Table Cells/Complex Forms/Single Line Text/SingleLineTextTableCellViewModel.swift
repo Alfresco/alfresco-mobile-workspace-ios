@@ -42,6 +42,13 @@ class SingleLineTextTableCellViewModel: RowViewModel {
             return title
         }
     }
+    
+    var currencyForAmount: String? {
+        if type == .amountField && currency == nil {
+            return "USD"
+        }
+        return currency
+    }
 
     var keyboardType: UIKeyboardType {
         if type == .singleLineText {
@@ -141,6 +148,19 @@ class SingleLineTextTableCellViewModel: RowViewModel {
                 errorMessage = "Can't be greater than \(maximumValue)"
             } else {
                 errorMessage = nil
+            }
+        }
+        
+        if enableFractions && !text.isEmpty && errorMessage == nil {
+            let textArray = text.components(separatedBy: ".")
+            let count = textArray.count - 1
+            if count > 1 {
+                errorMessage = "Use a different number format"
+            } else if textArray.count > 1 {
+                let valueAfterDecimal = textArray[1].count
+                if fractionLength != 0 && valueAfterDecimal > fractionLength {
+                    errorMessage = "Use a different number format"
+                }
             }
         }
     }

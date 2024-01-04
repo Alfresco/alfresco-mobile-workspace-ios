@@ -68,7 +68,7 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func leadingView() -> UILabel? {
-        if let currency = viewModel?.currency, let currentTheme = service?.activeTheme {
+        if let currency = viewModel?.currencyForAmount, let currentTheme = service?.activeTheme {
             var label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
             label.text = currency
             label.applyStyleSubtitle2OnSurface60(theme: currentTheme)
