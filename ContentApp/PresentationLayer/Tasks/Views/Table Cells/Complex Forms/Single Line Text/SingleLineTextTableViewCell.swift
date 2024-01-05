@@ -49,9 +49,10 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-        textField.accessibilityTraits = .staticText
-        textField.accessibilityIdentifier = "sub-title"
-        textField.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
+        textField.accessibilityTraits = .searchField
+        textField.accessibilityIdentifier = textField.label.text
+        textField.accessibilityLabel = textField.label.text
+        textField.accessibilityHint = textField.placeholder
         textField.accessibilityValue = textField.text
     }
     
@@ -69,7 +70,7 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
     
     private func leadingView() -> UILabel? {
         if let currency = viewModel?.currencyForAmount, let currentTheme = service?.activeTheme {
-            var label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
             label.text = currency
             label.applyStyleSubtitle2OnSurface60(theme: currentTheme)
             return label
@@ -100,6 +101,7 @@ extension SingleLineTextTableViewCell: UITextFieldDelegate {
         let newText = (textField.text as? NSString)?.replacingCharacters(in: range, with: string) ?? ""
         viewModel.checkForErrorMessages(for: newText)
         applyTextFieldComponentTheme()
+        addAccessibility()
         return true
     }
     

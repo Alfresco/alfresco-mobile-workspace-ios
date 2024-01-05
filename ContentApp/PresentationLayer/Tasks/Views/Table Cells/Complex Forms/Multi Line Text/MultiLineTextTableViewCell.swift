@@ -45,10 +45,11 @@ class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-        textArea.accessibilityTraits = .staticText
-        textArea.accessibilityIdentifier = "sub-title"
-        textArea.accessibilityLabel = LocalizationConstants.Accessibility.descriptionTitle
+        textArea.accessibilityTraits = .searchField
+        textArea.accessibilityIdentifier = textArea.label.text
+        textArea.accessibilityLabel = textArea.label.text
         textArea.accessibilityValue = textArea.textView.text
+        textArea.accessibilityHint = textArea.placeholder
     }
     
     // MARK: - Apply Themes and Localization
@@ -88,6 +89,7 @@ extension MultiLineTextTableViewCell: UITextViewDelegate {
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text) 
         viewModel.checkForErrorMessages(for: newText)
         applyTextViewComponentTheme()
+        addAccessibility()
         return true
     }
 }
