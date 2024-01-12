@@ -45,6 +45,7 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
         textField.placeholder = viewModel.placeholder
         textField.keyboardType = viewModel.keyboardType
         textField.leadingViewMode = .always
+        textField.isUserInteractionEnabled = !viewModel.readOnly
         addAccessibility()
     }
     
