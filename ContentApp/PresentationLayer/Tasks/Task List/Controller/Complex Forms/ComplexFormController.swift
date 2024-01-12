@@ -58,9 +58,6 @@ class ComplexFormController: NSObject {
             case ComplexFormFieldType.amountField.rawValue:
                 let cellVM = amountTextCellVM(for: field)
                 rowViewModels.append(cellVM)
-            case ComplexFormFieldType.displayValue.rawValue:
-                let cellVM = displayTextCellVM(for: field)
-                rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
             }
@@ -132,31 +129,6 @@ class ComplexFormController: NSObject {
                                                      text: text,
                                                      readOnly: field.readOnly,
                                                      type: .amountField,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
-        return rowVM
-    }
-    
-    // MARK: - Display Value Field
-    private func displayTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let type = field.type
-        var readOnly = false
-        if type == "readonly" {
-            readOnly = true
-        }
-        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: readOnly,
-                                                     type: .displayValue,
                                                      minLength: field.minLength,
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
