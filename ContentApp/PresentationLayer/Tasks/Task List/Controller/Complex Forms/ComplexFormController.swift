@@ -59,6 +59,9 @@ class ComplexFormController: NSObject {
                 let cellVM = amountTextCellVM(for: field)
                 rowViewModels.append(cellVM)
             case ComplexFormFieldType.displayValue.rawValue:
+                let cellVM = displayValueCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.displayText.rawValue:
                 let cellVM = displayTextCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
@@ -144,11 +147,11 @@ class ComplexFormController: NSObject {
     }
     
     // MARK: - Display Value Field
-    private func displayTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
+    private func displayValueCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         let type = field.type
         var readOnly = false
-        if type == "readonly" {
+        if type == ComplexFormFieldType.displayValue.rawValue {
             readOnly = true
         }
         let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
@@ -157,6 +160,31 @@ class ComplexFormController: NSObject {
                                                      text: text,
                                                      readOnly: readOnly,
                                                      type: .displayValue,
+                                                     minLength: field.minLength,
+                                                     maxLength: field.maxLength,
+                                                     minValue: field.minValue,
+                                                     maxValue: field.maxValue,
+                                                     fieldRequired: field.fieldRequired,
+                                                     currency: field.currency,
+                                                     enableFractions: field.enableFractions,
+                                                     fractionLength: field.params?.fractionLength)
+        return rowVM
+    }
+    
+    // MARK: - Display Text Field
+    private func displayTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let type = field.type
+        var readOnly = false
+        if type == ComplexFormFieldType.displayText.rawValue {
+            readOnly = true
+        }
+        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
+                                                     title: field.name,
+                                                     placeholder: field.placeholder,
+                                                     text: text,
+                                                     readOnly: readOnly,
+                                                     type: .displayText,
                                                      minLength: field.minLength,
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,

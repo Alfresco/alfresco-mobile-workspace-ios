@@ -147,6 +147,7 @@ class StartWorkflowViewModel: NSObject {
             
             ProcessAPI.formFields(name: name) {[weak self] data, fields, error in
                 guard let sSelf = self else { return }
+                print(error)
                 sSelf.isLoading.value = false
                 sSelf.isAllowedToEditAssignee = true
                 sSelf.formFields = fields
