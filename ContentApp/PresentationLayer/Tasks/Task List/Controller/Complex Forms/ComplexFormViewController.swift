@@ -19,6 +19,7 @@
 import UIKit
 import AlfrescoContent
 import MaterialComponents
+import Foundation
 
 class ComplexFormViewController: SystemSearchViewController {
    
@@ -30,6 +31,7 @@ class ComplexFormViewController: SystemSearchViewController {
     @IBOutlet weak var labelPageNumber: UILabel!
     @IBOutlet weak var heightFooterView: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
+    lazy var complexFormViewModel = ComplexFormViewModel()
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -102,6 +104,8 @@ class ComplexFormViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.multiLineTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.multiLineTextComplexForm)
         
         self.tableView.register(UINib(nibName: CellConstants.TableCells.singleLineTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.singleLineTextComplexForm)
+        
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.datePickerTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.datePickerTextComplexForm)
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -216,6 +220,19 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
                 (cell as? MultiLineTextTableViewCell)?.applyTheme(with: theme)
             } else if cell is SingleLineTextTableViewCell {
                 (cell as? SingleLineTextTableViewCell)?.applyTheme(with: theme)
+            } else if cell is DatePickerTableViewCell {
+                guard let localViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return cell }
+                if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
+                    (cell as? DatePickerTableViewCell)?.applyTheme(with: theme)
+                    (cell as? DatePickerTableViewCell)?.textField.tag = indexPath.row
+                    complexFormViewModel.selectedDateTimeTextField = (cell as? DatePickerTableViewCell)?.textField
+                    complexFormViewModel.selectedDateTimeTextField.delegate = self
+                } else {
+                    (cell as? DatePickerTableViewCell)?.applyTheme(with: theme)
+                    (cell as? DatePickerTableViewCell)?.textField.tag = indexPath.row
+                    complexFormViewModel.selectedDateTextField = (cell as? DatePickerTableViewCell)?.textField
+                    complexFormViewModel.selectedDateTextField.delegate = self
+                }
             }
         }
         
@@ -230,8 +247,98 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             return 120.0
         case is SingleLineTextTableCellViewModel:
             return 100.0
+        case is DatePickerTableViewCellViewModel:
+            return 100.0
         default:
             return UITableView.automaticDimension
         }
+    }
+}
+// MARK: - Date Picker
+extension ComplexFormViewController {
+    func showDatePicker(tag: Int, rowViewModel: RowViewModel) {
+        var datePicker = UIDatePicker()
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        guard let rowViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
+        if rowViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
+            datePicker.datePickerMode = .dateAndTime
+            complexFormViewModel.selectedDateTimeTextField.inputView = datePicker
+            complexFormViewModel.selectedDateTimeTextField.inputAccessoryView = getToolBar(tag: tag)
+        } else {
+            datePicker.datePickerMode = .date
+            complexFormViewModel.selectedDateTextField.inputView = datePicker
+            complexFormViewModel.selectedDateTextField.inputAccessoryView = getToolBar(tag: tag)
+        }
+        
+        datePicker.preferredDatePickerStyle = .inline
+        datePicker.backgroundColor = currentTheme.surfaceColor
+        setDatesForDatePicker(rowViewModel: rowViewModel, datePicker: &datePicker)
+        
+        datePicker.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight/2.0)
+    }
+    
+    private func setDatesForDatePicker(rowViewModel: RowViewModel, datePicker: inout UIDatePicker) {
+        
+        guard let rowViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
+        
+        let minDateStr = rowViewModel.minValue ?? ""
+        let maxDateStr = rowViewModel.maxValue ?? ""
+        
+        var minimumDate: Date?
+        var maximumDate: Date?
+        var date = Date()
+        if rowViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
+            minimumDate = complexFormViewModel.convertStringToDateTime(dateStr: minDateStr)
+            maximumDate = complexFormViewModel.convertStringToDateTime(dateStr: maxDateStr)
+        } else {
+            minimumDate = complexFormViewModel.convertStringToDate(dateStr: minDateStr)
+            maximumDate = complexFormViewModel.convertStringToDate(dateStr: maxDateStr)
+        }
+        
+        datePicker.minimumDate = minimumDate
+        datePicker.maximumDate = maximumDate
+        datePicker.date = date
+    }
+    
+    func getToolBar(tag: Int) -> UIToolbar {
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: 44.0))
+        let cancelButton = UIBarButtonItem(title: LocalizationConstants.General.cancel, style: .plain, target: self, action: #selector(self.dismissToolBar))
+        let doneButton = UIBarButtonItem(title: LocalizationConstants.General.done, style: .done, target: self, action: #selector(self.handleDatePicker))
+        doneButton.tag = tag
+        let flexibleButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([cancelButton, flexibleButton, doneButton], animated: false)
+        return toolBar
+    }
+    
+    @objc func dismissToolBar() {
+        self.view.endEditing(true)
+    }
+    
+    @objc func handleDatePicker(sender: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[sender.tag]
+        guard let localViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
+        
+        if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
+            if let dateTimePicker = complexFormViewModel.selectedDateTimeTextField.inputView as? UIDatePicker {
+                // Use DateFormatter to format the date and time
+                let date = complexFormViewModel.selectedDateTimeString(for: dateTimePicker.date)
+                complexFormViewModel.selectedDateTimeTextField.text = date
+            }
+        } else {
+            if let dateTimePicker = complexFormViewModel.selectedDateTextField.inputView as? UIDatePicker {
+                let date = complexFormViewModel.selectedDateString(for: dateTimePicker.date)
+                complexFormViewModel.selectedDateTextField.text = date
+            }
+        }
+        
+        self.view.endEditing(true)
+    }
+}
+
+// MARK: - Textfield Delegate
+extension ComplexFormViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let rowViewModel = viewModel.rowViewModels.value[textField.tag]
+        showDatePicker(tag: textField.tag, rowViewModel: rowViewModel)
     }
 }

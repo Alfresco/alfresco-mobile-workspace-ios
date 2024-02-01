@@ -74,6 +74,10 @@
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
 		706A47BCD38A49C03D05F60C /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A230D94AA20A969ED5B23885 /* Pods_Share.framework */; };
+		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
+		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
+		74847FA32B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift */; };
+		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
 		A24BD3F41371BDA3E3A64E53 /* Pods_ContentApp_ContentAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */; };
 		B5E392CD597158BADA51B20F /* EntityInfo-ContentApp.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */; };
 		B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
@@ -881,6 +885,10 @@
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "EntityInfo-ContentApp.generated.swift"; sourceTree = "<group>"; };
 		73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCell.swift; sourceTree = "<group>"; };
+		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
+		74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellModel.swift; sourceTree = "<group>"; };
+		74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewModel.swift; sourceTree = "<group>"; };
 		978127C511FEA1D69B063806 /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A230D94AA20A969ED5B23885 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp_ContentAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1486,6 +1494,7 @@
 		471993AC2B3016A000F21CBA /* Complex Forms */ = {
 			isa = PBXGroup;
 			children = (
+				74847F972B5A862700EEC9D8 /* Date Picker */,
 				471993AD2B3016A000F21CBA /* Multi Line Text */,
 				47789D822B3808F900458817 /* Single Line Text */,
 			);
@@ -1590,6 +1599,7 @@
 			children = (
 				47D5C51E2B15ADEC00EEED1F /* ComplexFormViewController.swift */,
 				47D5C5202B15AE0200EEED1F /* ComplexFormController.swift */,
+				74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */,
 			);
 			path = "Complex Forms";
 			sourceTree = "<group>";
@@ -1673,6 +1683,16 @@
 				BB46D2BADEA2836E7A3A00DF /* Pods-Share.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		74847F972B5A862700EEC9D8 /* Date Picker */ = {
+			isa = PBXGroup;
+			children = (
+				74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */,
+				74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift */,
+				74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */,
+			);
+			path = "Date Picker";
 			sourceTree = "<group>";
 		};
 		B91A5E46247825CF0063E938 /* ServiceRepository */ = {
@@ -4004,6 +4024,7 @@
 				C9A759B0289BCA37006603E0 /* InfoTableViewCell.xib in Resources */,
 				C9AEE04C270D9DC900880235 /* Configurations.plist in Resources */,
 				C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */,
+				74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4499,6 +4520,7 @@
 				C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */,
 				F185B19E2617591200407451 /* ListComponent+Delegates.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
+				74847FA32B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift in Sources */,
 				C9A75992289BB0E8006603E0 /* TaskDetailViewController.swift in Sources */,
 				E3724FD825CBD2D10005AA1C /* KeyConstants.swift in Sources */,
 				B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */,
@@ -4645,6 +4667,7 @@
 				C97BEB7226EB36E400E05375 /* CellConstants.swift in Sources */,
 				C9AF1B0F28DEDB820020D36A /* TaskAssigneeTableCellViewModel.swift in Sources */,
 				C97BEB7D26EB3AC700E05375 /* PreviewCellViewModel.swift in Sources */,
+				74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */,
 				E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */,
 				C9D5334C2869C91400224873 /* AnalyticsManager+PageEvents.swift in Sources */,
 				E30FCD8425A6F73500C4ABAF /* OfflineEvent.swift in Sources */,
@@ -4759,6 +4782,7 @@
 				E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */,
 				C9A759B2289BCA49006603E0 /* InfoTableCellViewModel.swift in Sources */,
 				B9233FC525A70ADC006EA4DA /* OfflineViewModel.swift in Sources */,
+				74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */,
 				B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */,
 				E3A33E3124B7317D005FFB40 /* RecentSearchCollectionViewCell.swift in Sources */,
 				B95605022501208600D955BA /* PDFRenderer.swift in Sources */,
@@ -5011,6 +5035,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5027,6 +5052,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5043,6 +5069,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5059,6 +5086,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp.Share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

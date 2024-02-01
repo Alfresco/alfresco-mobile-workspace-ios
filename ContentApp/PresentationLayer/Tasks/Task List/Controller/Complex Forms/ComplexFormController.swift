@@ -35,6 +35,8 @@ class ComplexFormController: NSObject {
             return MultiLineTextTableViewCell.cellIdentifier()
         case is SingleLineTextTableCellViewModel:
             return SingleLineTextTableViewCell.cellIdentifier()
+        case is DatePickerTableViewCellViewModel:
+            return DatePickerTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -63,6 +65,12 @@ class ComplexFormController: NSObject {
                 rowViewModels.append(cellVM)
             case ComplexFormFieldType.displayText.rawValue:
                 let cellVM = displayTextCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.date.rawValue:
+                let cellVM = dateCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.dateTime.rawValue:
+                let cellVM = dateTimeCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
@@ -185,6 +193,46 @@ class ComplexFormController: NSObject {
                                                      text: text,
                                                      readOnly: readOnly,
                                                      type: .displayText,
+                                                     minLength: field.minLength,
+                                                     maxLength: field.maxLength,
+                                                     minValue: field.minValue,
+                                                     maxValue: field.maxValue,
+                                                     fieldRequired: field.fieldRequired,
+                                                     currency: field.currency,
+                                                     enableFractions: field.enableFractions,
+                                                     fractionLength: field.params?.fractionLength)
+        return rowVM
+    }
+    
+    // MARK: - Display Date Time
+    private func dateTimeCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let rowVM = DatePickerTableViewCellViewModel(componentID: field.id,
+                                                     title: field.name,
+                                                     placeholder: field.placeholder,
+                                                     text: text,
+                                                     readOnly: field.readOnly,
+                                                     type: .dateTime,
+                                                     minLength: field.minLength,
+                                                     maxLength: field.maxLength,
+                                                     minValue: field.minValue,
+                                                     maxValue: field.maxValue,
+                                                     fieldRequired: field.fieldRequired,
+                                                     currency: field.currency,
+                                                     enableFractions: field.enableFractions,
+                                                     fractionLength: field.params?.fractionLength)
+        return rowVM
+    }
+    
+    // MARK: - Display Date
+    private func dateCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let rowVM = DatePickerTableViewCellViewModel(componentID: field.id,
+                                                     title: field.name,
+                                                     placeholder: field.placeholder,
+                                                     text: text,
+                                                     readOnly: field.readOnly,
+                                                     type: .date,
                                                      minLength: field.minLength,
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
