@@ -40,4 +40,6 @@ enum ComplexFormFieldType: String {
     case amountField = "amount"
     case displayValue = "readonly"
     case displayText = "readonly-text"
+    case dateTime = "datetime"
+    case date = "date"
 }
