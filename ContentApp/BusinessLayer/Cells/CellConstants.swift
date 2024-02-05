@@ -45,5 +45,6 @@ struct CellConstants {
         static let multiLineTextComplexForm = "MultiLineTextTableViewCell"
         static let singleLineTextComplexForm = "SingleLineTextTableViewCell"
         static let datePickerTextComplexForm = "DatePickerTableViewCell"
+        static let assigneeTableViewCell = "AssigneeTableViewCell"
     }
 }

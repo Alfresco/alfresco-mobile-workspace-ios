@@ -42,4 +42,5 @@ enum ComplexFormFieldType: String {
     case displayText = "readonly-text"
     case dateTime = "datetime"
     case date = "date"
+    case people = "people"
 }

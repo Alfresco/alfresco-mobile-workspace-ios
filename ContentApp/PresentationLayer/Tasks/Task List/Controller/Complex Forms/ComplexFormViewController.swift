@@ -43,7 +43,6 @@ class ComplexFormViewController: SystemSearchViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         viewModel.workflowOperationsModel = WorkflowOperationsModel(services: viewModel.services, tempWorkflowId: viewModel.tempWorkflowId)
         viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
@@ -106,6 +105,8 @@ class ComplexFormViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.singleLineTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.singleLineTextComplexForm)
         
         self.tableView.register(UINib(nibName: CellConstants.TableCells.datePickerTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.datePickerTextComplexForm)
+        
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.assigneeTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.assigneeTableViewCell)
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -233,6 +234,10 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
                     complexFormViewModel.selectedDateTextField = (cell as? DatePickerTableViewCell)?.textField
                     complexFormViewModel.selectedDateTextField.delegate = self
                 }
+            } else if cell is AssigneeTableViewCell {
+                (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.userName
+                (cell as? AssigneeTableViewCell)?.applyTheme(with: theme)
+                (cell as? AssigneeTableViewCell)?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
             }
         }
         
@@ -249,6 +254,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             return 100.0
         case is DatePickerTableViewCellViewModel:
             return 100.0
+        case is AssigneeTableViewCellViewModel:
+            return complexFormViewModel.userName?.count ?? 0 > 0 ? 100 : 50.0
         default:
             return UITableView.automaticDimension
         }
@@ -286,7 +293,7 @@ extension ComplexFormViewController {
         
         var minimumDate: Date?
         var maximumDate: Date?
-        var date = Date()
+        let date = Date()
         if rowViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
             minimumDate = complexFormViewModel.convertStringToDateTime(dateStr: minDateStr)
             maximumDate = complexFormViewModel.convertStringToDateTime(dateStr: maxDateStr)
@@ -340,5 +347,38 @@ extension ComplexFormViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         let rowViewModel = viewModel.rowViewModels.value[textField.tag]
         showDatePicker(tag: textField.tag, rowViewModel: rowViewModel)
+    }
+}
+
+// MARK: - Add Assignee
+extension ComplexFormViewController {
+    
+    @objc func addAssigneeAction(sender: UIButton) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.isWorkflowSearch = true
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true)
+            viewController.callBack = { [weak self] (assignee) in
+                guard let sSelf = self else { return }
+                sSelf.updateAssignee(with: assignee)
+            }
+        }
+    }
+    private func updateAssignee(with assignee: TaskNodeAssignee) {
+        if let apsUserID = UserProfile.apsUserID {
+            if assignee.assigneeID == apsUserID {
+                let name = LocalizationConstants.EditTask.meTitle
+                complexFormViewModel.userName = name
+            } else {
+                if let groupName = assignee.groupName, !groupName.isEmpty {
+                    complexFormViewModel.userName = groupName
+                } else {
+                    complexFormViewModel.userName = assignee.userName
+                }
+            }
+        }
+        tableView .reloadData()
     }
 }
