@@ -43,4 +43,5 @@ enum ComplexFormFieldType: String {
     case dateTime = "datetime"
     case date = "date"
     case people = "people"
+    case group = "functional-group"
 }
