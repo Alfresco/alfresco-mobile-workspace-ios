@@ -64,6 +64,7 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable {
         userView.backgroundColor = currentTheme.onSurface5Color
         if viewModel?.userName?.count ?? 0 > 0 {
             addUserButton.setImage(UIImage(named: "ic-edit-icon"), for: .normal)
+            addUserButton.tintColor = currentTheme.onSurfaceColor
         } else {
             addUserButton.setImage(UIImage(named: "ic-add"), for: .normal)
         }
