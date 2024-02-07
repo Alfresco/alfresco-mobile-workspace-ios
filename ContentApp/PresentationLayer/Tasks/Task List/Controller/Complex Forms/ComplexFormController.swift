@@ -77,6 +77,9 @@ class ComplexFormController: NSObject {
             case ComplexFormFieldType.people.rawValue:
                 let cellVM = peopleCellVM(for: field)
                 rowViewModels.append(cellVM)
+            case ComplexFormFieldType.group.rawValue:
+                let cellVM = groupCellVM(for: field)
+                rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
             }
@@ -249,7 +252,7 @@ class ComplexFormController: NSObject {
         return rowVM
     }
     
-    // MARK: - Display Date
+    // MARK: - Assignee User
     private func peopleCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         let rowVM = AssigneeTableViewCellViewModel(componentID: field.id,
@@ -258,6 +261,26 @@ class ComplexFormController: NSObject {
                                                      text: text,
                                                      readOnly: field.readOnly,
                                                      type: .people,
+                                                     minLength: field.minLength,
+                                                     maxLength: field.maxLength,
+                                                     minValue: field.minValue,
+                                                     maxValue: field.maxValue,
+                                                     fieldRequired: field.fieldRequired,
+                                                     currency: field.currency,
+                                                     enableFractions: field.enableFractions,
+                                                     fractionLength: field.params?.fractionLength)
+        return rowVM
+    }
+    
+    // MARK: - Assignee Group
+    private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let rowVM = AssigneeTableViewCellViewModel(componentID: field.id,
+                                                     title: field.name,
+                                                     placeholder: field.placeholder,
+                                                     text: text,
+                                                     readOnly: field.readOnly,
+                                                     type: .group,
                                                      minLength: field.minLength,
                                                      maxLength: field.maxLength,
                                                      minValue: field.minValue,
