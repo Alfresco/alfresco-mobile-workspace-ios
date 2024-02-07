@@ -62,6 +62,12 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable {
         userLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         baseView.backgroundColor = currentTheme.surfaceColor
         userView.backgroundColor = currentTheme.onSurface5Color
+        if viewModel?.userName?.count ?? 0 > 0 {
+            addUserButton.setImage(UIImage(named: "ic-edit-icon"), for: .normal)
+            addUserButton.tintColor = currentTheme.onSurfaceColor
+        } else {
+            addUserButton.setImage(UIImage(named: "ic-add"), for: .normal)
+        }
         updateUserImage()
     }
     
