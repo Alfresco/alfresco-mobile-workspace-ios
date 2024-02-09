@@ -74,6 +74,10 @@
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
 		706A47BCD38A49C03D05F60C /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A230D94AA20A969ED5B23885 /* Pods_Share.framework */; };
+		74657CD72B6CD82400FF3C44 /* AssigneeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */; };
+		74657CD82B6CD82400FF3C44 /* AssigneeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */; };
+		74657CDC2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */; };
+		74657CDE2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDD2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift */; };
 		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
 		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
 		74847FA32B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift */; };
@@ -885,6 +889,10 @@
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "EntityInfo-ContentApp.generated.swift"; sourceTree = "<group>"; };
 		73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeTableViewCell.swift; sourceTree = "<group>"; };
+		74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssigneeTableViewCell.xib; sourceTree = "<group>"; };
+		74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		74657CDD2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
 		74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -1494,6 +1502,7 @@
 		471993AC2B3016A000F21CBA /* Complex Forms */ = {
 			isa = PBXGroup;
 			children = (
+				74AA1B7C2B6CC0D500F32403 /* People */,
 				74847F972B5A862700EEC9D8 /* Date Picker */,
 				471993AD2B3016A000F21CBA /* Multi Line Text */,
 				47789D822B3808F900458817 /* Single Line Text */,
@@ -1693,6 +1702,16 @@
 				74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */,
 			);
 			path = "Date Picker";
+			sourceTree = "<group>";
+		};
+		74AA1B7C2B6CC0D500F32403 /* People */ = {
+			isa = PBXGroup;
+			children = (
+				74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */,
+				74657CDD2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift */,
+				74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */,
+			);
+			path = People;
 			sourceTree = "<group>";
 		};
 		B91A5E46247825CF0063E938 /* ServiceRepository */ = {
@@ -4000,6 +4019,7 @@
 				E334C07424755E6B00F74880 /* Localizable.strings in Resources */,
 				C95C28C3289E45C900000080 /* AddCommentTableViewCell.xib in Resources */,
 				47F5A6E429DE7FED00073D7F /* WorkflowListCollectionViewCell.xib in Resources */,
+				74657CD82B6CD82400FF3C44 /* AssigneeTableViewCell.xib in Resources */,
 				C915CDD2288FEBF500819F86 /* TasksSortAndFilterView.xib in Resources */,
 				C9A7599E289BBAA1006603E0 /* TaskSectionCollectionViewCell.xib in Resources */,
 				C95B2A3528BE1866007841F4 /* mockComments.json in Resources */,
@@ -4527,6 +4547,7 @@
 				C9A75990289BB0CC006603E0 /* TasksListViewController.swift in Sources */,
 				47FBDF6329E3FFD600EE56AC /* StartWorkflowController.swift in Sources */,
 				F14E689C261727B1002FDEF9 /* CameraFeatures.swift in Sources */,
+				74657CDE2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift in Sources */,
 				F168F465262484FC0002D3A5 /* PhotoGalleryViewController.swift in Sources */,
 				B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */,
 				E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */,
@@ -4611,6 +4632,7 @@
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
 				47DB20B52A35AB9F00B13586 /* RadioListViewController.swift in Sources */,
 				E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */,
+				74657CDC2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift in Sources */,
 				476CB2D02A339A8800207C4D /* WflowTaskDetailViewController.swift in Sources */,
 				C9AEE04E270D9DEC00880235 /* IntegerExtension.swift in Sources */,
 				E30B077C25B6C9FA0030FE3B /* ConnectivityService.swift in Sources */,
@@ -4635,6 +4657,7 @@
 				C97BEB6B26EB363100E05375 /* CellConfigurable.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
 				476CB2D92A34D92300207C4D /* WorkflowTaskStatusController.swift in Sources */,
+				74657CD72B6CD82400FF3C44 /* AssigneeTableViewCell.swift in Sources */,
 				C91F75AB290017B7008F31EF /* SpaceTableViewCell.swift in Sources */,
 				B9233FC025A708D1006EA4DA /* OfflineViewModelFactory.swift in Sources */,
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
