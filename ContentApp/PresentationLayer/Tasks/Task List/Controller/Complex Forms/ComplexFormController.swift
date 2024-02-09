@@ -138,41 +138,13 @@ class ComplexFormController: NSObject {
     
     // MARK: - Assignee User
     private func peopleCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = AssigneeTableViewCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: field.readOnly,
-                                                     type: .people,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = AssigneeTableViewCellViewModel(field: field, type: .people)
         return rowVM
     }
     
     // MARK: - Assignee Group
     private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = AssigneeTableViewCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: field.readOnly,
-                                                     type: .group,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
         return rowVM
     }
 }

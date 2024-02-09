@@ -21,3 +21,7 @@ import Foundation
 @objc protocol CellConfigurable {
     func setup(viewModel: RowViewModel)
 }
+
+protocol CellThemeApplier {
+    func applyCellTheme(with service: MaterialDesignThemingService?)
+}

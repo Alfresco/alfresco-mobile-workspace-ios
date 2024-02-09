@@ -18,7 +18,7 @@
 
 import UIKit
 
-class AssigneeTableViewCell: UITableViewCell, CellConfigurable {
+class AssigneeTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier {
     
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var peopleLabel: UILabel!
@@ -53,6 +53,9 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable {
         peopleLabel.accessibilityValue = peopleLabel.text
     }
     
+    func applyCellTheme(with service: MaterialDesignThemingService?) {
+        applyTheme(with: service)
+    }
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }

@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class AssigneeTableViewCellViewModel: RowViewModel {
     var userName: String?
@@ -70,34 +71,22 @@ class AssigneeTableViewCellViewModel: RowViewModel {
         return "AssigneeTableViewCell"
     }
     
-    init(componentID: String?,
-         title: String?,
-         placeholder: String?,
-         text: String?,
-         readOnly: Bool = false,
-         type: ComplexFormFieldType,
-         minLength: Int?,
-         maxLength: Int?,
-         minValue: String?,
-         maxValue: String?,
-         fieldRequired: Bool?,
-         currency: String?,
-         enableFractions: Bool?,
-         fractionLength: Int?) {
-        self.componentID = componentID
-        self.title = title
-        self.placeholder = placeholder
+    init(field: Field, type: ComplexFormFieldType){
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        self.componentID = field.id
+        self.title = field.name
+        self.placeholder = field.placeholder
         self.text = text
-        self.readOnly = readOnly
+        self.readOnly = field.readOnly
         self.type = type
-        self.minLength = minLength ?? 0
-        self.maxLength = maxLength ?? 0
-        self.minValue = minValue
-        self.maxValue = maxValue
-        self.fieldRequired = fieldRequired ?? false
-        self.currency = currency
-        self.enableFractions = enableFractions ?? false
-        self.fractionLength = fractionLength ?? 0
+        self.minLength = field.minLength ?? 0
+        self.maxLength = field.maxLength ?? 0
+        self.minValue = field.minValue
+        self.maxValue = field.maxValue
+        self.fieldRequired = field.fieldRequired ?? false
+        self.currency = field.currency
+        self.enableFractions = field.enableFractions ?? false
+        self.fractionLength = field.fractionLength ?? 0
     }
 
     private func checkErrorForStringValue(text: String) {
