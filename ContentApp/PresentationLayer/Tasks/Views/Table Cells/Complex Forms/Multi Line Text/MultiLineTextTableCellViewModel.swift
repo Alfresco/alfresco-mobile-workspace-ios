@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class MultiLineTextTableCellViewModel: RowViewModel {
     var componentID: String?
@@ -40,23 +41,16 @@ class MultiLineTextTableCellViewModel: RowViewModel {
     func cellIdentifier() -> String {
         return "MultiLineTextTableViewCell"
     }
-    
-    init(componentID: String?,
-         title: String?,
-         placeholder: String?,
-         text: String?,
-         readOnly: Bool = false,
-         minLength: Int?,
-         maxLength: Int?,
-         fieldRequired: Bool?) {
-        self.componentID = componentID
-        self.title = title
-        self.placeholder = placeholder
+    init(field: Field){
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        self.componentID = field.id
+        self.title = field.name
+        self.placeholder = field.placeholder
         self.text = text
-        self.readOnly = readOnly
-        self.minLength = minLength ?? 0
-        self.maxLength = maxLength ?? 0
-        self.fieldRequired = fieldRequired ?? false
+        self.readOnly = field.readOnly
+        self.minLength = field.minLength
+        self.maxLength = field.maxLength
+        self.fieldRequired = field.fieldRequired 
     }
     
     func checkForErrorMessages(for text: String) {

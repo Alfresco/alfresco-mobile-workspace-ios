@@ -67,7 +67,7 @@ class AssigneeTableViewCellViewModel: RowViewModel {
     }
     
     func cellIdentifier() -> String {
-        return "DatePickerTableViewCell"
+        return "AssigneeTableViewCell"
     }
     
     init(componentID: String?,
