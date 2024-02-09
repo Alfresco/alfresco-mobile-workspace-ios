@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class SingleLineTextTableCellViewModel: RowViewModel {
     var componentID: String?
@@ -69,36 +70,24 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         return "SingleLineTextTableViewCell"
     }
     
-    init(componentID: String?,
-         title: String?,
-         placeholder: String?,
-         text: String?,
-         readOnly: Bool = false,
-         type: ComplexFormFieldType,
-         minLength: Int?,
-         maxLength: Int?,
-         minValue: String?,
-         maxValue: String?,
-         fieldRequired: Bool?,
-         currency: String?,
-         enableFractions: Bool?,
-         fractionLength: Int?) {
-        self.componentID = componentID
-        self.title = title
-        self.placeholder = placeholder
+    init(field: Field, type: ComplexFormFieldType) {
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        self.componentID = field.id
+        self.title = field.name
+        self.placeholder = field.placeholder
         self.text = text
-        self.readOnly = readOnly
         self.type = type
-        self.minLength = minLength ?? 0
-        self.maxLength = maxLength ?? 0
-        self.minValue = minValue
-        self.maxValue = maxValue
-        self.fieldRequired = fieldRequired ?? false
-        self.currency = currency
-        self.enableFractions = enableFractions ?? false
-        self.fractionLength = fractionLength ?? 0
+        self.readOnly = ComplexFormFieldType.displayText.rawValue == type.rawValue || ComplexFormFieldType.displayValue.rawValue == type.rawValue
+        self.minLength = field.minLength
+        self.maxLength = field.maxLength
+        self.minValue = field.minValue
+        self.maxValue = field.maxValue
+        self.fieldRequired = field.fieldRequired
+        self.currency = field.currency
+        self.enableFractions = field.enableFractions ?? false
+        self.fractionLength = field.fractionLength ?? 0
     }
-    
+
     func checkForErrorMessages(for text: String) {
         if type == .singleLineText {
             checkErrorForStringValue(text: text)

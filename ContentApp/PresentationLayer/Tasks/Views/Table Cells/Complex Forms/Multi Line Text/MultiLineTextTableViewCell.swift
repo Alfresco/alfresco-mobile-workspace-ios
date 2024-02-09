@@ -19,8 +19,7 @@
 import UIKit
 import MaterialComponents
 
-class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
-
+class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var textArea: MDCOutlinedTextArea!    
     var viewModel: MultiLineTextTableCellViewModel?
@@ -50,6 +49,10 @@ class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable {
         textArea.accessibilityLabel = textArea.label.text
         textArea.accessibilityValue = textArea.textView.text
         textArea.accessibilityHint = textArea.placeholder
+    }
+    
+    func applyCellTheme(with service: MaterialDesignThemingService?) {
+        applyTheme(with: service)
     }
     
     // MARK: - Apply Themes and Localization

@@ -209,48 +209,62 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         return self.viewModel.rowViewModels.value.count
     }
     
+    fileprivate func configureDatePickerCells(_ localViewModel: DatePickerTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        (cell as? DatePickerTableViewCell)?.textField.tag = indexPath.row
+        if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
+            complexFormViewModel.selectedDateTimeTextField = (cell as? DatePickerTableViewCell)?.textField
+            complexFormViewModel.selectedDateTimeTextField.delegate = self
+        } else {
+            
+            complexFormViewModel.selectedDateTextField = (cell as? DatePickerTableViewCell)?.textField
+            complexFormViewModel.selectedDateTextField.delegate = self
+        }
+    }
+    
+    fileprivate func configureAssignUserCells(_ localViewModel: AssigneeTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
+            (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.userName
+        } else {
+            (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.groupName
+        }
+        (cell as? AssigneeTableViewCell)?.addUserButton.tag = indexPath.row
+        (cell as? AssigneeTableViewCell)?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
+    }
+    
+    fileprivate func applyTheme(_ cell: UITableViewCell) {
+        if let themeCell = cell as? CellThemeApplier, let theme = coordinatorServices?.themingService {
+            themeCell.applyCellTheme(with: theme)
+        }
+    }
+    
+    fileprivate func configureCells(_ cell: UITableViewCell, _ rowViewModel: RowViewModel, _ indexPath: IndexPath) {
+        if cell is DatePickerTableViewCell, let localViewModel = rowViewModel as? DatePickerTableViewCellViewModel {
+            configureDatePickerCells(localViewModel, cell, indexPath)
+        } else if cell is AssigneeTableViewCell, let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel {
+            configureAssignUserCells(localViewModel, cell, indexPath)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: controller.cellIdentifier(for: rowViewModel), for: indexPath)
         if let cell = cell as? CellConfigurable {
             cell.setup(viewModel: rowViewModel)
         }
-
-        if let theme = coordinatorServices?.themingService {
-            if cell is MultiLineTextTableViewCell {
-                (cell as? MultiLineTextTableViewCell)?.applyTheme(with: theme)
-            } else if cell is SingleLineTextTableViewCell {
-                (cell as? SingleLineTextTableViewCell)?.applyTheme(with: theme)
-            } else if cell is DatePickerTableViewCell {
-                guard let localViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return cell }
-                if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
-                    (cell as? DatePickerTableViewCell)?.applyTheme(with: theme)
-                    (cell as? DatePickerTableViewCell)?.textField.tag = indexPath.row
-                    complexFormViewModel.selectedDateTimeTextField = (cell as? DatePickerTableViewCell)?.textField
-                    complexFormViewModel.selectedDateTimeTextField.delegate = self
-                } else {
-                    (cell as? DatePickerTableViewCell)?.applyTheme(with: theme)
-                    (cell as? DatePickerTableViewCell)?.textField.tag = indexPath.row
-                    complexFormViewModel.selectedDateTextField = (cell as? DatePickerTableViewCell)?.textField
-                    complexFormViewModel.selectedDateTextField.delegate = self
-                }
-            } else if cell is AssigneeTableViewCell {
-                guard let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel else { return cell }
-                if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
-                    (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.userName
-                    (cell as? AssigneeTableViewCell)?.applyTheme(with: theme)
-                } else {
-                    (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.groupName
-                    (cell as? AssigneeTableViewCell)?.applyTheme(with: theme)
-                }
-                (cell as? AssigneeTableViewCell)?.addUserButton.tag = indexPath.row
-                (cell as? AssigneeTableViewCell)?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
-            }
-        }
-        
+        applyTheme(cell)
+        configureCells(cell, rowViewModel, indexPath)
         cell.layoutIfNeeded()
         return cell
+    }
+    private func assignUserCellHeight(rowViewModel: RowViewModel?) -> CGFloat{
+        if let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel {
+            if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
+                return complexFormViewModel.userName?.count ?? 0 > 0 ? 100 : 50.0
+            } else {
+                return complexFormViewModel.groupName?.count ?? 0 > 0 ? 100 : 50.0
+            }
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -263,12 +277,7 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         case is DatePickerTableViewCellViewModel:
             return 100.0
         case is AssigneeTableViewCellViewModel:
-            guard let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel else { return UITableView.automaticDimension }
-            if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
-                return complexFormViewModel.userName?.count ?? 0 > 0 ? 100 : 50.0
-            } else {
-                return complexFormViewModel.groupName?.count ?? 0 > 0 ? 100 : 50.0
-            }
+            return assignUserCellHeight(rowViewModel: rowViewModel)
         default:
             return UITableView.automaticDimension
         }

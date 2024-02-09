@@ -19,7 +19,7 @@
 import UIKit
 import MaterialComponents
 
-class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
+class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier {
 
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var textField: MDCOutlinedTextField!
@@ -55,6 +55,10 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable {
         textField.accessibilityLabel = textField.label.text
         textField.accessibilityHint = textField.placeholder
         textField.accessibilityValue = textField.text
+    }
+    
+    func applyCellTheme(with service: MaterialDesignThemingService?) {
+        applyTheme(with: service)
     }
     
     // MARK: - Apply Themes and Localization
