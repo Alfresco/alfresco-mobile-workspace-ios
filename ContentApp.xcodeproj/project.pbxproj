@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -76,7 +76,7 @@
 		706A47BCD38A49C03D05F60C /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A230D94AA20A969ED5B23885 /* Pods_Share.framework */; };
 		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
 		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
-		74847FA32B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift */; };
+		74847FA32B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift */; };
 		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
 		A24BD3F41371BDA3E3A64E53 /* Pods_ContentApp_ContentAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */; };
 		B5E392CD597158BADA51B20F /* EntityInfo-ContentApp.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */; };
@@ -887,7 +887,7 @@
 		73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
-		74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellModel.swift; sourceTree = "<group>"; };
+		74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewModel.swift; sourceTree = "<group>"; };
 		978127C511FEA1D69B063806 /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A230D94AA20A969ED5B23885 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1689,7 +1689,7 @@
 			isa = PBXGroup;
 			children = (
 				74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */,
-				74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift */,
+				74847FA22B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift */,
 				74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */,
 			);
 			path = "Date Picker";
@@ -4520,7 +4520,7 @@
 				C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */,
 				F185B19E2617591200407451 /* ListComponent+Delegates.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
-				74847FA32B5A88F600EEC9D8 /* DatePickerTableViewCellModel.swift in Sources */,
+				74847FA32B5A88F600EEC9D8 /* DatePickerTableViewCellViewModel.swift in Sources */,
 				C9A75992289BB0E8006603E0 /* TaskDetailViewController.swift in Sources */,
 				E3724FD825CBD2D10005AA1C /* KeyConstants.swift in Sources */,
 				B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */,

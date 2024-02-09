@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2023 Alfresco Software Limited.
+// Copyright (C) 2005-2024 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -19,7 +19,7 @@
 import UIKit
 import AlfrescoContent
 
-class SingleLineTextTableCellViewModel: RowViewModel {
+class DatePickerTableViewCellViewModel: RowViewModel {
     var componentID: String?
     var title: String?
     var placeholder: String?
@@ -67,17 +67,17 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     }
     
     func cellIdentifier() -> String {
-        return "SingleLineTextTableViewCell"
+        return "DatePickerTableViewCell"
     }
     
-    init(field: Field, type: ComplexFormFieldType) {
+    init(field: Field, type: ComplexFormFieldType){
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         self.componentID = field.id
         self.title = field.name
         self.placeholder = field.placeholder
         self.text = text
+        self.readOnly = field.readOnly
         self.type = type
-        self.readOnly = ComplexFormFieldType.displayText.rawValue == type.rawValue || ComplexFormFieldType.displayValue.rawValue == type.rawValue
         self.minLength = field.minLength
         self.maxLength = field.maxLength
         self.minValue = field.minValue
@@ -86,16 +86,6 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         self.currency = field.currency
         self.enableFractions = field.enableFractions ?? false
         self.fractionLength = field.fractionLength ?? 0
-    }
-
-    func checkForErrorMessages(for text: String) {
-        if type == .singleLineText {
-            checkErrorForStringValue(text: text)
-        } else if type == .numberField {
-            checkErrorForIntegerValue(text: text)
-        } else if type == .amountField {
-            checkErrorForFloatValue(text: text)
-        }
     }
 
     private func checkErrorForStringValue(text: String) {
@@ -122,34 +112,6 @@ class SingleLineTextTableCellViewModel: RowViewModel {
                 errorMessage = "Can't be greater than \(maximumValue)"
             } else {
                 errorMessage = nil
-            }
-        }
-    }
-    
-    private func checkErrorForFloatValue(text: String) {
-        guard let maximumValue = maxValue, let minimumValue = minValue else { return }
-        if !minimumValue.isEmpty {
-            if text.isEmpty {
-                errorMessage = nil
-            } else if (Float(text) ?? 0) < (Float(minimumValue) ?? 0) {
-                errorMessage = "Can't be less than \(minimumValue)"
-            } else if (Float(text) ?? 0) > (Float(maximumValue) ?? 0) {
-                errorMessage = "Can't be greater than \(maximumValue)"
-            } else {
-                errorMessage = nil
-            }
-        }
-        
-        if enableFractions && !text.isEmpty && errorMessage == nil {
-            let textArray = text.components(separatedBy: ".")
-            let count = textArray.count - 1
-            if count > 1 {
-                errorMessage = "Use a different number format"
-            } else if textArray.count > 1 {
-                let valueAfterDecimal = textArray[1].count
-                if fractionLength != 0 && valueAfterDecimal > fractionLength {
-                    errorMessage = "Use a different number format"
-                }
             }
         }
     }

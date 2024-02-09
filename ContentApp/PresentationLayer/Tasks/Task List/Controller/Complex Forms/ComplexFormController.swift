@@ -82,165 +82,49 @@ class ComplexFormController: NSObject {
     
     // MARK: - Multi Line Text View
     private func multiLineTextCellVM(for field: Field) -> MultiLineTextTableCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = MultiLineTextTableCellViewModel(componentID: field.id,
-                                                    title: field.name,
-                                                    placeholder: field.placeholder,
-                                                    text: text,
-                                                    readOnly: field.readOnly,
-                                                    minLength: field.minLength,
-                                                    maxLength: field.maxLength, 
-                                                    fieldRequired: field.fieldRequired)
+        let rowVM = MultiLineTextTableCellViewModel(field: field)
         return rowVM
     }
     
     // MARK: - Single Line Text Field
     private func singleLineTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: field.readOnly,
-                                                     type: .singleLineText,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = SingleLineTextTableCellViewModel(field: field, type: .singleLineText)
         return rowVM
     }
     
     // MARK: - Number Text Field
     private func numberTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: field.readOnly,
-                                                     type: .numberField,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = SingleLineTextTableCellViewModel(field: field, type: .numberField)
         return rowVM
     }
     
     // MARK: - Amount Text Field
     private func amountTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: field.readOnly,
-                                                     type: .amountField,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = SingleLineTextTableCellViewModel(field: field, type: .amountField)
         return rowVM
     }
     
     // MARK: - Display Value Field
     private func displayValueCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let type = field.type
-        var readOnly = false
-        if type == ComplexFormFieldType.displayValue.rawValue {
-            readOnly = true
-        }
-        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: readOnly,
-                                                     type: .displayValue,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = SingleLineTextTableCellViewModel(field: field, type: .displayValue)
         return rowVM
     }
     
     // MARK: - Display Text Field
     private func displayTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let type = field.type
-        var readOnly = false
-        if type == ComplexFormFieldType.displayText.rawValue {
-            readOnly = true
-        }
-        let rowVM = SingleLineTextTableCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: readOnly,
-                                                     type: .displayText,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = SingleLineTextTableCellViewModel(field: field, type: .displayText)
         return rowVM
     }
     
     // MARK: - Display Date Time
     private func dateTimeCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = DatePickerTableViewCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: field.readOnly,
-                                                     type: .dateTime,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = DatePickerTableViewCellViewModel(field: field, type: .dateTime)
         return rowVM
     }
     
     // MARK: - Display Date
     private func dateCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-        let rowVM = DatePickerTableViewCellViewModel(componentID: field.id,
-                                                     title: field.name,
-                                                     placeholder: field.placeholder,
-                                                     text: text,
-                                                     readOnly: field.readOnly,
-                                                     type: .date,
-                                                     minLength: field.minLength,
-                                                     maxLength: field.maxLength,
-                                                     minValue: field.minValue,
-                                                     maxValue: field.maxValue,
-                                                     fieldRequired: field.fieldRequired,
-                                                     currency: field.currency,
-                                                     enableFractions: field.enableFractions,
-                                                     fractionLength: field.params?.fractionLength)
+        let rowVM = DatePickerTableViewCellViewModel(field: field, type: .date)
         return rowVM
     }
 }
