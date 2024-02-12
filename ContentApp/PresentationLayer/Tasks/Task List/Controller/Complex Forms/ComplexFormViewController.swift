@@ -215,6 +215,7 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         if let cell = cell as? CellConfigurable {
             cell.setup(viewModel: rowViewModel)
         }
+<<<<<<< Updated upstream
         
         if let theme = coordinatorServices?.themingService {
             if cell is MultiLineTextTableViewCell {
@@ -238,6 +239,19 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
                 (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.userName
                 (cell as? AssigneeTableViewCell)?.applyTheme(with: theme)
                 (cell as? AssigneeTableViewCell)?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
+=======
+        applyTheme(cell)
+        configureCells(cell, rowViewModel, indexPath)
+        cell.layoutIfNeeded()
+        return cell
+    }
+    private func assignUserCellHeight(rowViewModel: RowViewModel?) -> CGFloat{
+        if let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel {
+            if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
+                return complexFormViewModel.userName?.count ?? 0 > 0 ? 100 : 50.0
+            } else {
+                return complexFormViewModel.groupName?.count ?? 0 > 0 ? 100 : 50.0
+>>>>>>> Stashed changes
             }
         }
         

@@ -70,6 +70,7 @@ class AssigneeTableViewCellViewModel: RowViewModel {
         return "DatePickerTableViewCell"
     }
     
+<<<<<<< Updated upstream
     init(componentID: String?,
          title: String?,
          placeholder: String?,
@@ -87,9 +88,17 @@ class AssigneeTableViewCellViewModel: RowViewModel {
         self.componentID = componentID
         self.title = title
         self.placeholder = placeholder
+=======
+    init(field: Field, type: ComplexFormFieldType){
+        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        self.componentID = field.id
+        self.title = field.name
+        self.placeholder = field.placeholder
+>>>>>>> Stashed changes
         self.text = text
         self.readOnly = readOnly
         self.type = type
+<<<<<<< Updated upstream
         self.minLength = minLength ?? 0
         self.maxLength = maxLength ?? 0
         self.minValue = minValue
@@ -98,6 +107,16 @@ class AssigneeTableViewCellViewModel: RowViewModel {
         self.currency = currency
         self.enableFractions = enableFractions ?? false
         self.fractionLength = fractionLength ?? 0
+=======
+        self.minLength = field.minLength ?? 0
+        self.maxLength = field.maxLength ?? 0
+        self.minValue = field.minValue
+        self.maxValue = field.maxValue
+        self.fieldRequired = field.fieldRequired ?? false
+        self.currency = field.currency
+        self.enableFractions = field.enableFractions ?? false
+        self.fractionLength = field.fractionLength ?? 0
+>>>>>>> Stashed changes
     }
 
     private func checkErrorForStringValue(text: String) {
