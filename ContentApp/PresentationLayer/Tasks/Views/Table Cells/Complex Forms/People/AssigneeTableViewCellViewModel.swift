@@ -71,7 +71,7 @@ class AssigneeTableViewCellViewModel: RowViewModel {
         return "AssigneeTableViewCell"
     }
     
-    init(field: Field, type: ComplexFormFieldType) {
+    init(field: Field, type: ComplexFormFieldType){
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         self.componentID = field.id
         self.title = field.name
@@ -79,11 +79,11 @@ class AssigneeTableViewCellViewModel: RowViewModel {
         self.text = text
         self.readOnly = field.readOnly
         self.type = type
-        self.minLength = field.minLength 
-        self.maxLength = field.maxLength 
+        self.minLength = field.minLength ?? 0
+        self.maxLength = field.maxLength ?? 0
         self.minValue = field.minValue
         self.maxValue = field.maxValue
-        self.fieldRequired = field.fieldRequired 
+        self.fieldRequired = field.fieldRequired ?? false
         self.currency = field.currency
         self.enableFractions = field.enableFractions ?? false
         self.fractionLength = field.fractionLength ?? 0

@@ -251,13 +251,12 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         if let cell = cell as? CellConfigurable {
             cell.setup(viewModel: rowViewModel)
         }
-        configureCells(cell, rowViewModel, indexPath)
         applyTheme(cell)
+        configureCells(cell, rowViewModel, indexPath)
         cell.layoutIfNeeded()
         return cell
     }
-    
-    private func assignUserCellHeight(rowViewModel: RowViewModel?) -> CGFloat {
+    private func assignUserCellHeight(rowViewModel: RowViewModel?) -> CGFloat{
         if let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel {
             if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
                 return complexFormViewModel.userName?.count ?? 0 > 0 ? 100 : 50.0
