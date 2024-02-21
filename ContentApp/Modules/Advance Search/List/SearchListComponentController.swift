@@ -66,6 +66,12 @@ class SearchListComponentController: NSObject {
             } else {
                 self.updateSelectedValueForCheckList(for: index)
             }
+            
+            if self.listViewModel.isComplexFormsFlow {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                    self.listViewModel.isValueSelectedForComplexForms.value = true
+                })
+            }
         }
         return rowVM
     }

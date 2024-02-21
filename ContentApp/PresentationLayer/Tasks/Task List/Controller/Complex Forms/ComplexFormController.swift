@@ -39,6 +39,8 @@ class ComplexFormController: NSObject {
             return DatePickerTableViewCell.cellIdentifier()
         case is AssigneeTableViewCellViewModel:
             return AssigneeTableViewCell.cellIdentifier()
+        case is DropDownTableViewCellViewModel:
+            return DropDownTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -79,6 +81,9 @@ class ComplexFormController: NSObject {
                 rowViewModels.append(cellVM)
             case ComplexFormFieldType.group.rawValue:
                 let cellVM = groupCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.dropDown.rawValue:
+                let cellVM = dropDownCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
@@ -145,6 +150,11 @@ class ComplexFormController: NSObject {
     // MARK: - Assignee Group
     private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
+        return rowVM
+    }
+    // MARK: - Drop Down
+    private func dropDownCellVM(for field: Field) -> DropDownTableViewCellViewModel {
+        let rowVM = DropDownTableViewCellViewModel(field: field, type: .dropDown)
         return rowVM
     }
 }

@@ -46,5 +46,6 @@ struct CellConstants {
         static let singleLineTextComplexForm = "SingleLineTextTableViewCell"
         static let datePickerTextComplexForm = "DatePickerTableViewCell"
         static let assigneeTableViewCell = "AssigneeTableViewCell"
+        static let dropDownTableViewCell = "DropDownTableViewCell"
     }
 }

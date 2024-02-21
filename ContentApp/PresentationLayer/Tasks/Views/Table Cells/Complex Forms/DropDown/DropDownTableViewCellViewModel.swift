@@ -19,7 +19,9 @@
 import UIKit
 import AlfrescoContent
 
-class DatePickerTableViewCellViewModel: RowViewModel {
+class DropDownTableViewCellViewModel: RowViewModel {
+    
+    var userName: String?
     var componentID: String?
     var title: String?
     var placeholder: String?
@@ -35,6 +37,7 @@ class DatePickerTableViewCellViewModel: RowViewModel {
     var currency: String?
     var enableFractions = false
     var fractionLength = 0
+    var taskChip: TaskChipItem?
     
     var name: String? {
         if fieldRequired {
@@ -67,8 +70,9 @@ class DatePickerTableViewCellViewModel: RowViewModel {
     }
     
     func cellIdentifier() -> String {
-        return "DatePickerTableViewCell"
+        return "DropDownTableViewCell"
     }
+    
     init(field: Field, type: ComplexFormFieldType) {
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         self.componentID = field.id
@@ -85,6 +89,28 @@ class DatePickerTableViewCellViewModel: RowViewModel {
         self.currency = field.currency
         self.enableFractions = field.enableFractions ?? false
         self.fractionLength = field.fractionLength ?? 0
+        self.taskChip = getTaskChipItem(for: field.options ?? [], name: text ?? "")
+    }
+    
+    private func getTaskChipItem(for options: [Option], name: String) -> TaskChipItem? {
+        var taskOptions = [TaskOptions]()
+        for option in options {
+            let tOptions = TaskOptions.init(label: option.name,
+                                            query: option.id,
+                                            value: option.name,
+                                           accessibilityIdentifier: option.name)
+            taskOptions.append(tOptions)
+        }
+        
+        let chip = TaskChipItem.init(chipId: 123,
+                                     name: name,
+                                     selectedValue: nil,
+                                     componentType: nil,
+                                     query: nil,
+                                     options: taskOptions,
+                                     accessibilityIdentifier: nil)
+        
+        return chip
     }
 
     private func checkErrorForStringValue(text: String) {

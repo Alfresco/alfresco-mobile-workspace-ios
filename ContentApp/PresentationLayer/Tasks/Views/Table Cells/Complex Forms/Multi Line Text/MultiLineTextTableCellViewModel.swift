@@ -41,7 +41,7 @@ class MultiLineTextTableCellViewModel: RowViewModel {
     func cellIdentifier() -> String {
         return "MultiLineTextTableViewCell"
     }
-    init(field: Field){
+    init(field: Field) {
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         self.componentID = field.id
         self.title = field.name
