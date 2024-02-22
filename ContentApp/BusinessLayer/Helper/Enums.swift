@@ -45,4 +45,5 @@ enum ComplexFormFieldType: String {
     case people = "people"
     case group = "functional-group"
     case dropDown = "dropdown"
+    case radioButton = "radio-buttons"
 }
