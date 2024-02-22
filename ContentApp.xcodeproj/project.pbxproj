@@ -74,6 +74,9 @@
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
 		706A47BCD38A49C03D05F60C /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A230D94AA20A969ED5B23885 /* Pods_Share.framework */; };
+		7429D7602B7B42CC00CA930C /* DropDownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429D75E2B7B42CC00CA930C /* DropDownTableViewCell.swift */; };
+		7429D7612B7B42CC00CA930C /* DropDownTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */; };
+		7429D7632B7B431000CA930C /* DropDownTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */; };
 		74657CD72B6CD82400FF3C44 /* AssigneeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */; };
 		74657CD82B6CD82400FF3C44 /* AssigneeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */; };
 		74657CDC2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */; };
@@ -888,6 +891,9 @@
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "EntityInfo-ContentApp.generated.swift"; sourceTree = "<group>"; };
 		73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7429D75E2B7B42CC00CA930C /* DropDownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCell.swift; sourceTree = "<group>"; };
+		7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropDownTableViewCell.xib; sourceTree = "<group>"; };
+		7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeTableViewCell.swift; sourceTree = "<group>"; };
 		74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssigneeTableViewCell.xib; sourceTree = "<group>"; };
 		74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -1500,6 +1506,7 @@
 		471993AC2B3016A000F21CBA /* Complex Forms */ = {
 			isa = PBXGroup;
 			children = (
+				7429D75B2B7B427C00CA930C /* DropDown */,
 				74AA1B7C2B6CC0D500F32403 /* People */,
 				74847F972B5A862700EEC9D8 /* Date Picker */,
 				471993AD2B3016A000F21CBA /* Multi Line Text */,
@@ -1690,6 +1697,16 @@
 				BB46D2BADEA2836E7A3A00DF /* Pods-Share.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		7429D75B2B7B427C00CA930C /* DropDown */ = {
+			isa = PBXGroup;
+			children = (
+				7429D75E2B7B42CC00CA930C /* DropDownTableViewCell.swift */,
+				7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */,
+				7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */,
+			);
+			path = DropDown;
 			sourceTree = "<group>";
 		};
 		74847F972B5A862700EEC9D8 /* Date Picker */ = {
@@ -4012,6 +4029,7 @@
 				E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */,
 				C9205C8728A173C000DEF5AC /* TaskHeaderTableViewCell.xib in Resources */,
 				E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */,
+				7429D7612B7B42CC00CA930C /* DropDownTableViewCell.xib in Resources */,
 				F185B1A72617663000407451 /* Camera.storyboard in Resources */,
 				B9973068255E7CC70026166A /* InfoPlist.strings in Resources */,
 				E334C07424755E6B00F74880 /* Localizable.strings in Resources */,
@@ -4543,6 +4561,7 @@
 				B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */,
 				C9A75990289BB0CC006603E0 /* TasksListViewController.swift in Sources */,
 				47FBDF6329E3FFD600EE56AC /* StartWorkflowController.swift in Sources */,
+				7429D7632B7B431000CA930C /* DropDownTableViewCellViewModel.swift in Sources */,
 				F14E689C261727B1002FDEF9 /* CameraFeatures.swift in Sources */,
 				74657CDE2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift in Sources */,
 				F168F465262484FC0002D3A5 /* PhotoGalleryViewController.swift in Sources */,
@@ -4783,6 +4802,7 @@
 				C973EC692726BD7D00912015 /* ListItemTableViewCell.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
+				7429D7602B7B42CC00CA930C /* DropDownTableViewCell.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				C9688BAC28D30DCC0020206C /* CreateTaskViewModel.swift in Sources */,
 				4700B9D929D1AE74001E9CEA /* WorkflowFilters.swift in Sources */,

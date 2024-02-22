@@ -28,7 +28,9 @@ class SearchListComponentViewModel {
     var queryBuilder: String?
     var taskChip: TaskChipItem?
     var taskSelectedOptions = [TaskOptions]()
-
+    var isComplexFormsFlow = false
+    let isValueSelectedForComplexForms = Observable<Bool>(false)
+    
     var isTaskFilter: Bool {
         if taskChip != nil {
             return true

@@ -107,6 +107,8 @@ class ComplexFormViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.datePickerTextComplexForm, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.datePickerTextComplexForm)
         
         self.tableView.register(UINib(nibName: CellConstants.TableCells.assigneeTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.assigneeTableViewCell)
+        
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.dropDownTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.dropDownTableViewCell)
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -215,7 +217,6 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             complexFormViewModel.selectedDateTimeTextField = (cell as? DatePickerTableViewCell)?.textField
             complexFormViewModel.selectedDateTimeTextField.delegate = self
         } else {
-            
             complexFormViewModel.selectedDateTextField = (cell as? DatePickerTableViewCell)?.textField
             complexFormViewModel.selectedDateTextField.delegate = self
         }
@@ -231,6 +232,11 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         (cell as? AssigneeTableViewCell)?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
     }
     
+    fileprivate func configureDropDownCells(_ localViewModel: DropDownTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        (cell as? DropDownTableViewCell)?.textField.tag = indexPath.row
+        (cell as? DropDownTableViewCell)?.textField.delegate = self
+    }
+    
     fileprivate func applyTheme(_ cell: UITableViewCell) {
         if let themeCell = cell as? CellThemeApplier, let theme = coordinatorServices?.themingService {
             themeCell.applyCellTheme(with: theme)
@@ -242,6 +248,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             configureDatePickerCells(localViewModel, cell, indexPath)
         } else if cell is AssigneeTableViewCell, let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel {
             configureAssignUserCells(localViewModel, cell, indexPath)
+        } else if cell is DropDownTableViewCell, let localViewModel = rowViewModel as? DropDownTableViewCellViewModel {
+            configureDropDownCells(localViewModel, cell, indexPath)
         }
     }
     
@@ -276,6 +284,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         case is SingleLineTextTableCellViewModel:
             return 100.0
         case is DatePickerTableViewCellViewModel:
+            return 100.0
+        case is DropDownTableViewCellViewModel:
             return 100.0
         case is AssigneeTableViewCellViewModel:
             return assignUserCellHeight(rowViewModel: rowViewModel)
@@ -365,11 +375,39 @@ extension ComplexFormViewController {
     }
 }
 
+// MARK: - Drop Down
+extension ComplexFormViewController {
+    func showDropDown(tag: Int, rowViewModel: RowViewModel) {
+        guard let rowViewModel = rowViewModel as? DropDownTableViewCellViewModel else { return }
+        let viewController = SearchListComponentViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        viewController.coordinatorServices = coordinatorServices
+        viewController.listViewModel.isRadioList = true
+        viewController.listViewModel.isComplexFormsFlow = true
+        viewController.listViewModel.taskChip = rowViewModel.taskChip
+        viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
+            if isBackButtonTapped == false {
+                if let localSelectedChip = selectedChip {
+                    rowViewModel.text = localSelectedChip.selectedValue ?? ""
+                    self.tableView .reloadData()
+                }
+            }
+        }
+        self.present(bottomSheet, animated: true, completion: nil)
+    }
+}
+
 // MARK: - Textfield Delegate
 extension ComplexFormViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         let rowViewModel = viewModel.rowViewModels.value[textField.tag]
-        showDatePicker(tag: textField.tag, rowViewModel: rowViewModel)
+        if let rowViewModel = rowViewModel as? DatePickerTableViewCellViewModel {
+            showDatePicker(tag: textField.tag, rowViewModel: rowViewModel)
+        } else if let rowViewModel = rowViewModel as? DropDownTableViewCellViewModel {
+            textField.resignFirstResponder()
+            showDropDown(tag: textField.tag, rowViewModel: rowViewModel)
+        }
     }
 }
 
