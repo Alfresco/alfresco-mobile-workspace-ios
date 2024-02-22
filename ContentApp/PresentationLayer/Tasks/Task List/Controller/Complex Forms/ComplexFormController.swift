@@ -85,6 +85,9 @@ class ComplexFormController: NSObject {
             case ComplexFormFieldType.dropDown.rawValue:
                 let cellVM = dropDownCellVM(for: field)
                 rowViewModels.append(cellVM)
+            case ComplexFormFieldType.radioButton.rawValue:
+                let cellVM = radioButtonCellVM(for: field)
+                rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
             }
@@ -152,9 +155,16 @@ class ComplexFormController: NSObject {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
         return rowVM
     }
+    
     // MARK: - Drop Down
     private func dropDownCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .dropDown)
+        return rowVM
+    }
+    
+    // MARK: - Radio Button
+    private func radioButtonCellVM(for field: Field) -> DropDownTableViewCellViewModel {
+        let rowVM = DropDownTableViewCellViewModel(field: field, type: .radioButton)
         return rowVM
     }
 }

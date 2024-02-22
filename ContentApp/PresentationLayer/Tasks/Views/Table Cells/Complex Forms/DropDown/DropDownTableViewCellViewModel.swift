@@ -89,13 +89,13 @@ class DropDownTableViewCellViewModel: RowViewModel {
         self.currency = field.currency
         self.enableFractions = field.enableFractions ?? false
         self.fractionLength = field.fractionLength ?? 0
-        self.taskChip = getTaskChipItem(for: field.options ?? [], name: text ?? "")
+        self.taskChip = getTaskChipItem(for: field.options ?? [], name: field.name ?? "")
     }
     
     private func getTaskChipItem(for options: [Option], name: String) -> TaskChipItem? {
         var taskOptions = [TaskOptions]()
         for option in options where option.id != "empty" {
-            let tOptions = TaskOptions.init(label: option.name,
+            let tOptions = TaskOptions(label: option.name,
                                             query: option.id,
                                             value: option.name,
                                             accessibilityIdentifier: option.name)
