@@ -94,15 +94,15 @@ class DropDownTableViewCellViewModel: RowViewModel {
     
     private func getTaskChipItem(for options: [Option], name: String) -> TaskChipItem? {
         var taskOptions = [TaskOptions]()
-        for option in options {
+        for option in options where option.id != "empty" {
             let tOptions = TaskOptions.init(label: option.name,
                                             query: option.id,
                                             value: option.name,
-                                           accessibilityIdentifier: option.name)
+                                            accessibilityIdentifier: option.name)
             taskOptions.append(tOptions)
         }
         
-        let chip = TaskChipItem.init(chipId: 123,
+        let chip = TaskChipItem(chipId: 123,
                                      name: name,
                                      selectedValue: nil,
                                      componentType: nil,
