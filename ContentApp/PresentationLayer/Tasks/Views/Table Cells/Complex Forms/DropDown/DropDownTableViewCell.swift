@@ -70,17 +70,6 @@ class DropDownTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         baseView.backgroundColor = currentTheme.surfaceColor
         textField.trailingViewMode = .unlessEditing
         applyTextFieldComponentTheme()
-        textField.leadingView = leadingView()
-    }
-    
-    private func leadingView() -> UILabel? {
-        if let currency = viewModel?.currencyForAmount, let currentTheme = service?.activeTheme {
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
-            label.text = currency
-            label.applyStyleSubtitle2OnSurface60(theme: currentTheme)
-            return label
-        }
-        return nil
     }
     
     func applyTextFieldComponentTheme() {

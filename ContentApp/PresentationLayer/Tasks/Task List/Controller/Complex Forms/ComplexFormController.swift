@@ -41,6 +41,8 @@ class ComplexFormController: NSObject {
             return AssigneeTableViewCell.cellIdentifier()
         case is DropDownTableViewCellViewModel:
             return DropDownTableViewCell.cellIdentifier()
+        case is HyperlinkTableViewCellViewModel:
+            return HyperlinkTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -87,6 +89,9 @@ class ComplexFormController: NSObject {
                 rowViewModels.append(cellVM)
             case ComplexFormFieldType.radioButton.rawValue:
                 let cellVM = radioButtonCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.hyperlink.rawValue:
+                let cellVM = hyperlinkCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
@@ -165,6 +170,12 @@ class ComplexFormController: NSObject {
     // MARK: - Radio Button
     private func radioButtonCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .radioButton)
+        return rowVM
+    }
+    
+    // MARK: - Hyperlink
+    private func hyperlinkCellVM(for field: Field) -> HyperlinkTableViewCellViewModel {
+        let rowVM = HyperlinkTableViewCellViewModel(field: field, type: .hyperlink)
         return rowVM
     }
 }

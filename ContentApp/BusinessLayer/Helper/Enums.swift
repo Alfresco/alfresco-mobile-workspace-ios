@@ -46,4 +46,5 @@ enum ComplexFormFieldType: String {
     case group = "functional-group"
     case dropDown = "dropdown"
     case radioButton = "radio-buttons"
+    case hyperlink = "hyperlink"
 }

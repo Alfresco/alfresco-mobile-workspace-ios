@@ -19,13 +19,14 @@
 import UIKit
 import MaterialComponents
 
-class DatePickerTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier {
+class HyperlinkTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier {
     
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var textField: MDCOutlinedTextField!
-    var viewModel: DatePickerTableViewCellViewModel?
+    @IBOutlet weak var hyperlinkButton: UIButton!
+    var viewModel: HyperlinkTableViewCellViewModel?
     var service: MaterialDesignThemingService?
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         baseView.isAccessibilityElement = false
@@ -33,18 +34,20 @@ class DatePickerTableViewCell: UITableViewCell, CellConfigurable, CellThemeAppli
     }
     
     func setup(viewModel: RowViewModel) {
-        guard let viewModel = viewModel as? DatePickerTableViewCellViewModel else { return }
+        guard let viewModel = viewModel as? HyperlinkTableViewCellViewModel else { return }
         self.viewModel = viewModel
-        
+            
         if viewModel.maxLength > 0 {
             textField.maxLength = viewModel.maxLength
         }
-        textField.text = viewModel.text
+        textField.text = viewModel.displayText
         textField.label.text = viewModel.name
         textField.placeholder = viewModel.placeholder
         textField.keyboardType = viewModel.keyboardType
         textField.leadingViewMode = .always
-        textField.trailingView = UIImageView(image: UIImage(named: "calendar-icon"))
+        textField.leadingView = UIImageView(image: UIImage(named: "ic-hyperlink"))
+        textField.isUserInteractionEnabled = !viewModel.readOnly
+        hyperlinkButton.setTitle("", for: .normal)
         addAccessibility()
     }
     
@@ -57,13 +60,8 @@ class DatePickerTableViewCell: UITableViewCell, CellConfigurable, CellThemeAppli
     }
     
     func applyCellTheme(with service: MaterialDesignThemingService?) {
-        applyTheme(with: service)
-    }
-    
-    // MARK: - Apply Themes and Localization
-    func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
-        
+       
         self.service = service
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
