@@ -32,6 +32,7 @@ class ComplexFormViewController: SystemSearchViewController {
     @IBOutlet weak var heightFooterView: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     lazy var complexFormViewModel = ComplexFormViewModel()
+    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -109,6 +110,8 @@ class ComplexFormViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.assigneeTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.assigneeTableViewCell)
         
         self.tableView.register(UINib(nibName: CellConstants.TableCells.dropDownTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.dropDownTableViewCell)
+        
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.hyperlinkTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.hyperlinkTableViewCell)
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -237,6 +240,11 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         (cell as? DropDownTableViewCell)?.textField.delegate = self
     }
     
+    fileprivate func configureHyperlinkCells(_ localViewModel: HyperlinkTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        (cell as? HyperlinkTableViewCell)?.hyperlinkButton.tag = indexPath.row
+        (cell as? HyperlinkTableViewCell)?.hyperlinkButton.addTarget(self, action: #selector(hyperlinkButtonAction(button:)), for: .touchUpInside)
+    }
+    
     fileprivate func applyTheme(_ cell: UITableViewCell) {
         if let themeCell = cell as? CellThemeApplier, let theme = coordinatorServices?.themingService {
             themeCell.applyCellTheme(with: theme)
@@ -250,6 +258,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             configureAssignUserCells(localViewModel, cell, indexPath)
         } else if cell is DropDownTableViewCell, let localViewModel = rowViewModel as? DropDownTableViewCellViewModel {
             configureDropDownCells(localViewModel, cell, indexPath)
+        } else if cell is HyperlinkTableViewCell, let localViewModel = rowViewModel as? HyperlinkTableViewCellViewModel {
+            configureHyperlinkCells(localViewModel, cell, indexPath)
         }
     }
     
@@ -289,6 +299,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             return 100.0
         case is AssigneeTableViewCellViewModel:
             return assignUserCellHeight(rowViewModel: rowViewModel)
+        case is HyperlinkTableViewCellViewModel:
+            return 100
         default:
             return UITableView.automaticDimension
         }
@@ -457,5 +469,61 @@ extension ComplexFormViewController {
             complexFormViewModel.groupName = groupName
         }
         tableView .reloadData()
+    }
+}
+
+// MARK: - Hyperlink
+extension ComplexFormViewController {
+    
+    @objc func hyperlinkButtonAction(button: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[button.tag]
+        guard let localViewModel = rowViewModel as? HyperlinkTableViewCellViewModel else { return }
+        let urlSting = localViewModel.hyperlinkUrl ?? ""
+        openFilePreviewController(notificationURL: urlSting)
+    }
+    
+    private func openFilePreviewController(notificationURL: String) {
+        let topMostViewController = UIApplication.shared.topMostViewController()
+        if topMostViewController is MDCAlertController {
+            topMostViewController?.dismiss(animated: true, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.openFilePreviewController(notificationURL: notificationURL)
+                }
+            })
+        }
+        
+        guard let node = listNodeForPreview(guid: "0",
+                                            title: LocalizationConstants.ScreenTitles.previewCaptureAsset),
+              let navigationController = topMostViewController?.navigationController else { return }
+        
+        let viewControllers = navigationController.viewControllers
+        for index in 0 ..< viewControllers.count {
+            let controller = viewControllers[index]
+            if controller is FilePreviewViewController {
+                navigationController.viewControllers.remove(at: index)
+                break
+            }
+        }
+        
+        let coordinator = FilePreviewScreenCoordinator(with: navigationController,
+                                                       listNode: node,
+                                                       excludedActions: [.moveTrash,
+                                                                         .addFavorite,
+                                                                         .removeFavorite],
+                                                       shouldPreviewLatestContent: false,
+                                                       publicPreviewURL: notificationURL)
+        coordinator.start()
+        self.filePreviewCoordinator = coordinator
+    }
+    
+    private func listNodeForPreview(guid: String?,
+                                    nodeType: NodeType = .file,
+                                    syncStatus: SyncStatus = .pending,
+                                    title: String? = nil) -> ListNode? {
+        return ListNode(guid: guid ?? "",
+                        title: title ?? "",
+                        path: "",
+                        nodeType: nodeType,
+                        syncStatus: syncStatus)
     }
 }

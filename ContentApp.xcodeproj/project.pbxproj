@@ -81,6 +81,9 @@
 		74657CD82B6CD82400FF3C44 /* AssigneeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */; };
 		74657CDC2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */; };
 		74657CDE2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDD2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift */; };
+		74731C2D2B875BD600828167 /* HyperlinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74731C2B2B875BD600828167 /* HyperlinkTableViewCell.swift */; };
+		74731C2E2B875BD600828167 /* HyperlinkTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */; };
+		74731C302B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74731C2F2B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift */; };
 		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
 		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
 		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
@@ -898,6 +901,9 @@
 		74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssigneeTableViewCell.xib; sourceTree = "<group>"; };
 		74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		74657CDD2B6CF86500FF3C44 /* AssigneeTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		74731C2B2B875BD600828167 /* HyperlinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperlinkTableViewCell.swift; sourceTree = "<group>"; };
+		74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HyperlinkTableViewCell.xib; sourceTree = "<group>"; };
+		74731C2F2B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperlinkTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
 		74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewModel.swift; sourceTree = "<group>"; };
@@ -1506,6 +1512,7 @@
 		471993AC2B3016A000F21CBA /* Complex Forms */ = {
 			isa = PBXGroup;
 			children = (
+				74731C2A2B875BA300828167 /* Hyperlink */,
 				7429D75B2B7B427C00CA930C /* DropDown */,
 				74AA1B7C2B6CC0D500F32403 /* People */,
 				74847F972B5A862700EEC9D8 /* Date Picker */,
@@ -1707,6 +1714,16 @@
 				7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */,
 			);
 			path = DropDown;
+			sourceTree = "<group>";
+		};
+		74731C2A2B875BA300828167 /* Hyperlink */ = {
+			isa = PBXGroup;
+			children = (
+				74731C2B2B875BD600828167 /* HyperlinkTableViewCell.swift */,
+				74731C2F2B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift */,
+				74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */,
+			);
+			path = Hyperlink;
 			sourceTree = "<group>";
 		};
 		74847F972B5A862700EEC9D8 /* Date Picker */ = {
@@ -4010,6 +4027,7 @@
 				C93A246C28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib in Resources */,
 				C9A759A9289BBB60006603E0 /* TitleTableViewCell.xib in Resources */,
 				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
+				74731C2E2B875BD600828167 /* HyperlinkTableViewCell.xib in Resources */,
 				B9F17149256C116900AD1E3A /* word.docx in Resources */,
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
 				E3436F8B250B8C4A00634C62 /* MediaPreview.xib in Resources */,
@@ -4523,6 +4541,7 @@
 				E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				47D5C51F2B15ADEC00EEED1F /* ComplexFormViewController.swift in Sources */,
+				74731C2D2B875BD600828167 /* HyperlinkTableViewCell.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
 				F188EE63262DCC4E0019F4E7 /* FlashMenu.swift in Sources */,
 				C9205C7428A0D96700DEF5AC /* TaskCommentModel.swift in Sources */,
@@ -4717,6 +4736,7 @@
 				C9AEE049270D9D9E00880235 /* ConfigurationHelper.swift in Sources */,
 				E3E2BDA624CC29BC00D8A7EC /* SharedLinkMapper.swift in Sources */,
 				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,
+				74731C302B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift in Sources */,
 				C9A759B5289BD6FA006603E0 /* PriorityTableViewCell.swift in Sources */,
 				B9A9F124263AEAB800F4428D /* CameraKitTheme.swift in Sources */,
 				B99D9BBA24866F1400FBFC9B /* GetContentServicesProfile.swift in Sources */,
