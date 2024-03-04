@@ -84,6 +84,9 @@
 		74731C2D2B875BD600828167 /* HyperlinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74731C2B2B875BD600828167 /* HyperlinkTableViewCell.swift */; };
 		74731C2E2B875BD600828167 /* HyperlinkTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */; };
 		74731C302B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74731C2F2B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift */; };
+		7483935B2B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748393592B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift */; };
+		7483935C2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7483935A2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib */; };
+		7483935E2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7483935D2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift */; };
 		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
 		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
 		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
@@ -904,6 +907,9 @@
 		74731C2B2B875BD600828167 /* HyperlinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperlinkTableViewCell.swift; sourceTree = "<group>"; };
 		74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HyperlinkTableViewCell.xib; sourceTree = "<group>"; };
 		74731C2F2B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperlinkTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		748393592B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxTableViewCell.swift; sourceTree = "<group>"; };
+		7483935A2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckBoxTableViewCell.xib; sourceTree = "<group>"; };
+		7483935D2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
 		74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewModel.swift; sourceTree = "<group>"; };
@@ -1512,6 +1518,7 @@
 		471993AC2B3016A000F21CBA /* Complex Forms */ = {
 			isa = PBXGroup;
 			children = (
+				748393582B8DD71E008C2DC7 /* CheckBox */,
 				74731C2A2B875BA300828167 /* Hyperlink */,
 				7429D75B2B7B427C00CA930C /* DropDown */,
 				74AA1B7C2B6CC0D500F32403 /* People */,
@@ -1724,6 +1731,16 @@
 				74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */,
 			);
 			path = Hyperlink;
+			sourceTree = "<group>";
+		};
+		748393582B8DD71E008C2DC7 /* CheckBox */ = {
+			isa = PBXGroup;
+			children = (
+				748393592B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift */,
+				7483935D2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift */,
+				7483935A2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib */,
+			);
+			path = CheckBox;
 			sourceTree = "<group>";
 		};
 		74847F972B5A862700EEC9D8 /* Date Picker */ = {
@@ -4060,6 +4077,7 @@
 				C97BEB7F26EB3AC700E05375 /* PreviewCollectionViewCell.xib in Resources */,
 				B9F17141256C115700AD1E3A /* excel.xlsx in Resources */,
 				474D3C982A25F7AD00247DF9 /* EmptyWorkflowListCollectionViewCell.xib in Resources */,
+				7483935C2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib in Resources */,
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
 				C973EC6A2726BD7D00912015 /* ListItemTableViewCell.xib in Resources */,
 				B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */,
@@ -4750,6 +4768,7 @@
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				4792042E29CF0B2F0080BB13 /* WorkflowListViewModel.swift in Sources */,
+				7483935E2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift in Sources */,
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
 				F1448CD32685AC1A00D90494 /* FullScreenVideoViewController.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
@@ -4915,6 +4934,7 @@
 				E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */,
 				C95C28C2289E45C900000080 /* AddCommentTableViewCell.swift in Sources */,
 				47789D882B38093700458817 /* SingleLineTextTableCellViewModel.swift in Sources */,
+				7483935B2B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift in Sources */,
 				B9ECED28254308280097DB3F /* EventObservable.swift in Sources */,
 				B9AE0BBB24C17D880001289C /* PageFetchableCollectionView.swift in Sources */,
 				C903CBAE288149A70080EF69 /* EmptyTasks.swift in Sources */,
