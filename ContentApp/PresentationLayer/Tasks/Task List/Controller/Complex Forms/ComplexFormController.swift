@@ -43,6 +43,8 @@ class ComplexFormController: NSObject {
             return DropDownTableViewCell.cellIdentifier()
         case is HyperlinkTableViewCellViewModel:
             return HyperlinkTableViewCell.cellIdentifier()
+        case is CheckBoxTableViewCellViewModel:
+            return CheckBoxTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -92,6 +94,9 @@ class ComplexFormController: NSObject {
                 rowViewModels.append(cellVM)
             case ComplexFormFieldType.hyperlink.rawValue:
                 let cellVM = hyperlinkCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.checkbox.rawValue:
+                let cellVM = checkBoxCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
@@ -176,6 +181,12 @@ class ComplexFormController: NSObject {
     // MARK: - Hyperlink
     private func hyperlinkCellVM(for field: Field) -> HyperlinkTableViewCellViewModel {
         let rowVM = HyperlinkTableViewCellViewModel(field: field, type: .hyperlink)
+        return rowVM
+    }
+    
+    // MARK: - CheckBox
+    private func checkBoxCellVM(for field: Field) -> CheckBoxTableViewCellViewModel {
+        let rowVM = CheckBoxTableViewCellViewModel(field: field, type: .checkbox)
         return rowVM
     }
 }

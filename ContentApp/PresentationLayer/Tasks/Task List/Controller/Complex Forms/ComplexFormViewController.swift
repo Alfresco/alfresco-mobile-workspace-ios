@@ -112,6 +112,8 @@ class ComplexFormViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.dropDownTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.dropDownTableViewCell)
         
         self.tableView.register(UINib(nibName: CellConstants.TableCells.hyperlinkTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.hyperlinkTableViewCell)
+        
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.checkBoxTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.checkBoxTableViewCell)
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -245,6 +247,13 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         (cell as? HyperlinkTableViewCell)?.hyperlinkButton.addTarget(self, action: #selector(hyperlinkButtonAction(button:)), for: .touchUpInside)
     }
     
+    fileprivate func configureCheckBoxCells(_ localViewModel: CheckBoxTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        (cell as? CheckBoxTableViewCell)?.selectionButton.tag = indexPath.row
+        (cell as? CheckBoxTableViewCell)?.selectionButton.addTarget(self, action: #selector(checkBoxButtonAction(button:)), for: .touchUpInside)
+        (cell as? CheckBoxTableViewCell)?.viewAllButton.tag = indexPath.row
+        (cell as? CheckBoxTableViewCell)?.viewAllButton.addTarget(self, action: #selector(viewAllButtonAction(button:)), for: .touchUpInside)
+    }
+    
     fileprivate func applyTheme(_ cell: UITableViewCell) {
         if let themeCell = cell as? CellThemeApplier, let theme = coordinatorServices?.themingService {
             themeCell.applyCellTheme(with: theme)
@@ -260,6 +269,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             configureDropDownCells(localViewModel, cell, indexPath)
         } else if cell is HyperlinkTableViewCell, let localViewModel = rowViewModel as? HyperlinkTableViewCellViewModel {
             configureHyperlinkCells(localViewModel, cell, indexPath)
+        } else if cell is CheckBoxTableViewCell, let localViewModel = rowViewModel as? CheckBoxTableViewCellViewModel {
+            configureCheckBoxCells(localViewModel, cell, indexPath)
         }
     }
     
@@ -304,6 +315,11 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         default:
             return UITableView.automaticDimension
         }
+    }
+    
+    func reloadTableView(row: Int) {
+        let indexPath = IndexPath(item: row, section: 0)
+        tableView.reloadRows(at: [indexPath], with: .none)
     }
 }
 // MARK: - Date Picker
@@ -398,11 +414,12 @@ extension ComplexFormViewController {
         viewController.listViewModel.isRadioList = true
         viewController.listViewModel.isComplexFormsFlow = true
         viewController.listViewModel.taskChip = rowViewModel.taskChip
-        viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
+        viewController.taskFilterCallBack = { [weak self] (selectedChip, isBackButtonTapped) in
             if isBackButtonTapped == false {
                 if let localSelectedChip = selectedChip {
+                    guard let sSelf = self else { return }
                     rowViewModel.text = localSelectedChip.selectedValue ?? ""
-                    self.tableView .reloadData()
+                    sSelf.reloadTableView(row: tag)
                 }
             }
         }
@@ -442,14 +459,14 @@ extension ComplexFormViewController {
             viewController.callBack = { [weak self] (assignee) in
                 guard let sSelf = self else { return }
                 if localViewModel.type.rawValue == ComplexFormFieldType.group.rawValue {
-                    sSelf.updateGroup(with: assignee)
+                    sSelf.updateGroup(with: assignee, tag: sender.tag)
                 } else {
-                    sSelf.updateAssignee(with: assignee)
+                    sSelf.updateAssignee(with: assignee, tag: sender.tag)
                 }
             }
         }
     }
-    private func updateAssignee(with assignee: TaskNodeAssignee) {
+    private func updateAssignee(with assignee: TaskNodeAssignee, tag: Int) {
         if let apsUserID = UserProfile.apsUserID {
             if assignee.assigneeID == apsUserID {
                 let name = LocalizationConstants.EditTask.meTitle
@@ -462,13 +479,13 @@ extension ComplexFormViewController {
                 }
             }
         }
-        tableView .reloadData()
+        reloadTableView(row: tag)
     }
-    private func updateGroup(with assignee: TaskNodeAssignee) {
+    private func updateGroup(with assignee: TaskNodeAssignee, tag: Int) {
         if let groupName = assignee.groupName, !groupName.isEmpty {
             complexFormViewModel.groupName = groupName
         }
-        tableView .reloadData()
+        reloadTableView(row: tag)
     }
 }
 
@@ -525,5 +542,26 @@ extension ComplexFormViewController {
                         path: "",
                         nodeType: nodeType,
                         syncStatus: syncStatus)
+    }
+}
+// MARK: - CheckBox
+extension ComplexFormViewController {
+    
+    @objc func checkBoxButtonAction(button: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[button.tag]
+        guard let localViewModel = rowViewModel as? CheckBoxTableViewCellViewModel else { return }
+        localViewModel.isSelected = !localViewModel.isSelected
+        reloadTableView(row: button.tag)
+    }
+    @objc func viewAllButtonAction(button: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[button.tag]
+        guard let localViewModel = rowViewModel as? CheckBoxTableViewCellViewModel else { return }
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDescription) as? TaskDescriptionDetailViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = localViewModel.appDefinition
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true)
+        }
     }
 }
