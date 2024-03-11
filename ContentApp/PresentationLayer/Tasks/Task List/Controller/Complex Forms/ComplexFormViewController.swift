@@ -31,6 +31,12 @@ class ComplexFormViewController: SystemSearchViewController {
     @IBOutlet weak var labelPageNumber: UILabel!
     @IBOutlet weak var heightFooterView: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var outcomeView: UIView!
+    @IBOutlet weak var outcomeViewConstant: NSLayoutConstraint!
+    @IBOutlet weak var saveButtonStackView: UIStackView!
+    @IBOutlet weak var saveButton: MDCButton!
+    @IBOutlet weak var completeButton: MDCButton!
+    @IBOutlet weak var actionButton: MDCFloatingButton!
     lazy var complexFormViewModel = ComplexFormViewModel()
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     
@@ -44,6 +50,7 @@ class ComplexFormViewController: SystemSearchViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        startOutcome()
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         viewModel.workflowOperationsModel = WorkflowOperationsModel(services: viewModel.services, tempWorkflowId: viewModel.tempWorkflowId)
         viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
@@ -71,7 +78,7 @@ class ComplexFormViewController: SystemSearchViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -114,6 +121,7 @@ class ComplexFormViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.hyperlinkTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.hyperlinkTableViewCell)
         
         self.tableView.register(UINib(nibName: CellConstants.TableCells.checkBoxTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.checkBoxTableViewCell)
+        
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -183,7 +191,34 @@ class ComplexFormViewController: SystemSearchViewController {
         viewModel.getFormFields {[weak self] error in
             guard let sSelf = self else { return }
             sSelf.controller.buildViewModel()
+            sSelf.updateUI()
         }
+    }
+    
+    fileprivate func applyTheme() {
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
+              let dialogButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton)
+        else { return }
+        
+        saveButton.applyContainedTheme(withScheme: dialogButtonScheme)
+        saveButton.isUppercaseTitle = false
+        saveButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+        saveButton.setShadowColor(.clear, for: .normal)
+        saveButton.setTitleColor(.white, for: .normal)
+                
+        completeButton.applyContainedTheme(withScheme: dialogButtonScheme)
+        completeButton.isUppercaseTitle = false
+        completeButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+        completeButton.setShadowColor(.clear, for: .normal)
+        saveButton.setTitleColor(.white, for: .normal)
+        
+        actionButton.mode = .expanded
+        actionButton.isUppercaseTitle = false
+        actionButton.applyContainedTheme(withScheme: dialogButtonScheme)
+        actionButton.setTitle(LocalizationConstants.Workflows.actions, for: .normal)
+        
+        outcomeView.backgroundColor = currentTheme.surfaceColor
+        saveButtonStackView.backgroundColor = currentTheme.surfaceColor
     }
     
     // MARK: - Set up Bindings
@@ -206,6 +241,84 @@ class ComplexFormViewController: SystemSearchViewController {
                 sSelf.tableView.reloadData()
             }
         }
+    }
+    
+    // MARK: - Save Button Action
+    @IBAction func saveButtonAction(_ sender: Any) {
+    }
+    
+    // MARK: - Complete Button Action
+    @IBAction func completeButtonAction(_ sender: Any) {
+    }
+    
+    // MARK: - Action Button Action
+    @IBAction func actionButtonAction(_ sender: Any) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.actionlist) as? ActionListViewController {
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            viewController.coordinatorServices = coordinatorServices
+            if let outcomes = viewModel.formData?.outcomes {
+                viewController.outcomes = outcomes
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+       
+    }
+}
+
+// MARK: - Outcomes
+extension ComplexFormViewController {
+    
+    fileprivate func updateUI() {
+        if let outcomes = viewModel.formData?.outcomes {
+            switch outcomes.count {
+            case 0, 1:
+                oneOutcome()
+            case 2:
+                twoOutcome(outcomes: outcomes)
+            case let count where count > 2:
+                multipleOutcome()
+            default:
+                break
+            }
+            applyTheme()
+        }
+    }
+    fileprivate func startOutcome() {
+        outcomeViewConstant.constant = 0
+        saveButton.isHidden = true
+        completeButton.isHidden = true
+        actionButton.isHidden = true
+    }
+    
+    fileprivate func oneOutcome() {
+        outcomeViewConstant.constant = 70
+        saveButton.isHidden = false
+        saveButton.setTitle(LocalizationConstants.Accessibility.startWorkflow, for: .normal)
+        saveButton.accessibilityLabel = LocalizationConstants.Accessibility.startWorkflow
+        saveButton.accessibilityIdentifier = ""
+    }
+    
+    fileprivate func twoOutcome(outcomes: [Outcome]) {
+        outcomeViewConstant.constant = 141
+        saveButton.isHidden = false
+        completeButton.isHidden = false
+        saveButton.setTitle(outcomes.first?.name, for: .normal)
+        completeButton.setTitle(outcomes[1].name, for: .normal)
+        
+        saveButton.accessibilityLabel = outcomes.first?.name
+        saveButton.accessibilityIdentifier = ""
+        
+        completeButton.accessibilityLabel = outcomes[1].name
+        completeButton.accessibilityIdentifier = ""
+    }
+    
+    fileprivate func multipleOutcome() {
+        outcomeViewConstant.constant = 0
+        saveButton.isHidden = true
+        completeButton.isHidden = true
+        actionButton.isHidden = false
     }
 }
 
@@ -553,6 +666,7 @@ extension ComplexFormViewController {
         localViewModel.isSelected = !localViewModel.isSelected
         reloadTableView(row: button.tag)
     }
+    
     @objc func viewAllButtonAction(button: UIButton) {
         let rowViewModel = viewModel.rowViewModels.value[button.tag]
         guard let localViewModel = rowViewModel as? CheckBoxTableViewCellViewModel else { return }

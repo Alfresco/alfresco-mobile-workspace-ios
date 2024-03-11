@@ -621,7 +621,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="opN-09-Jux">
-                                <rect key="frame" x="0.0" y="60" width="414" height="802"/>
+                                <rect key="frame" x="0.0" y="60" width="414" height="661"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
@@ -629,27 +629,169 @@
                                     <outlet property="delegate" destination="fT0-cF-jjd" id="nSx-2S-PDq"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mH0-BQ-OTh">
+                                <rect key="frame" x="0.0" y="721" width="414" height="141"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="bqg-Dw-f7Q">
+                                        <rect key="frame" x="20" y="10" width="374" height="121"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvA-Lf-RhZ" userLabel="saveButton" customClass="MDCButton">
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="53"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Save">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="saveButtonAction:" destination="fT0-cF-jjd" eventType="touchUpInside" id="vAO-t8-3jD"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tr0-Vx-WtO" userLabel="completeButton" customClass="MDCButton">
+                                                <rect key="frame" x="0.0" y="68" width="374" height="53"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Complete">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="completeButtonAction:" destination="fT0-cF-jjd" eventType="touchUpInside" id="x0z-GH-5e6"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="141" id="4Dq-PT-q7n"/>
+                                    <constraint firstAttribute="bottom" secondItem="bqg-Dw-f7Q" secondAttribute="bottom" constant="10" id="509-GH-m0g"/>
+                                    <constraint firstItem="bqg-Dw-f7Q" firstAttribute="top" secondItem="mH0-BQ-OTh" secondAttribute="top" constant="10" id="6dp-mf-WCo"/>
+                                    <constraint firstItem="bqg-Dw-f7Q" firstAttribute="leading" secondItem="mH0-BQ-OTh" secondAttribute="leading" constant="20" id="PLE-cv-CgA"/>
+                                    <constraint firstAttribute="trailing" secondItem="bqg-Dw-f7Q" secondAttribute="trailing" constant="20" id="nKv-Zd-sge"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kb8-sW-cM9" customClass="MDCFloatingButton">
+                                <rect key="frame" x="370" y="782" width="24" height="60"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createButton">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="KpP-fV-CZw"/>
+                                </constraints>
+                                <state key="normal" image="ic-actions"/>
+                                <connections>
+                                    <action selector="actionButtonAction:" destination="fT0-cF-jjd" eventType="touchUpInside" id="Hgi-7f-n9i"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bfn-zW-Obf"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="mH0-BQ-OTh" firstAttribute="top" secondItem="opN-09-Jux" secondAttribute="bottom" id="BD8-EK-YLG"/>
+                            <constraint firstItem="Bfn-zW-Obf" firstAttribute="bottom" secondItem="Kb8-sW-cM9" secondAttribute="bottom" constant="20" id="Bp3-Kv-3MY"/>
+                            <constraint firstItem="Bfn-zW-Obf" firstAttribute="trailing" secondItem="Kb8-sW-cM9" secondAttribute="trailing" constant="20" id="Dbx-2G-d50"/>
                             <constraint firstItem="opN-09-Jux" firstAttribute="leading" secondItem="Bfn-zW-Obf" secondAttribute="leading" id="F7V-1J-y2u"/>
+                            <constraint firstItem="Bfn-zW-Obf" firstAttribute="trailing" secondItem="mH0-BQ-OTh" secondAttribute="trailing" id="SpE-DW-c8J"/>
                             <constraint firstItem="opN-09-Jux" firstAttribute="top" secondItem="N7V-cC-3xp" secondAttribute="bottom" constant="10" id="UcN-Sa-vrT"/>
+                            <constraint firstItem="Bfn-zW-Obf" firstAttribute="bottom" secondItem="mH0-BQ-OTh" secondAttribute="bottom" id="VTX-gb-zeR"/>
+                            <constraint firstItem="mH0-BQ-OTh" firstAttribute="leading" secondItem="Bfn-zW-Obf" secondAttribute="leading" id="XaE-hs-yog"/>
                             <constraint firstItem="N7V-cC-3xp" firstAttribute="leading" secondItem="lmu-7T-eHm" secondAttribute="leading" id="bqz-8h-zCg"/>
                             <constraint firstAttribute="trailing" secondItem="N7V-cC-3xp" secondAttribute="trailing" id="hCn-Qq-les"/>
                             <constraint firstItem="N7V-cC-3xp" firstAttribute="top" secondItem="Bfn-zW-Obf" secondAttribute="top" id="iuW-uk-yQE"/>
                             <constraint firstItem="opN-09-Jux" firstAttribute="trailing" secondItem="Bfn-zW-Obf" secondAttribute="trailing" id="mCw-Bc-55F"/>
-                            <constraint firstItem="Bfn-zW-Obf" firstAttribute="bottom" secondItem="opN-09-Jux" secondAttribute="bottom" id="mlh-Q5-Tez"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actionButton" destination="Kb8-sW-cM9" id="1Cv-aF-vOM"/>
+                        <outlet property="completeButton" destination="Tr0-Vx-WtO" id="qdm-8M-Wb5"/>
+                        <outlet property="outcomeView" destination="mH0-BQ-OTh" id="x0A-fL-2cr"/>
+                        <outlet property="outcomeViewConstant" destination="4Dq-PT-q7n" id="BJb-Jv-u5b"/>
                         <outlet property="progressView" destination="N7V-cC-3xp" id="9Pf-e5-EWF"/>
+                        <outlet property="saveButton" destination="dvA-Lf-RhZ" id="lzW-Z6-yeu"/>
+                        <outlet property="saveButtonStackView" destination="bqg-Dw-f7Q" id="e7o-Ln-8qJ"/>
                         <outlet property="tableView" destination="opN-09-Jux" id="8N9-Fj-sYg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VoM-B5-wzU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2161" y="1521"/>
+            <point key="canvasLocation" x="2160.8695652173915" y="1520.7589285714284"/>
+        </scene>
+        <!--Action List View Controller-->
+        <scene sceneID="8ee-xm-xmo">
+            <objects>
+                <viewController storyboardIdentifier="ActionListViewController" id="qbp-ff-Uus" customClass="ActionListViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Lbx-hx-SW8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sqi-Es-NxK" userLabel="baseView">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="213"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0FV-S5-ViA" userLabel="listView">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="213"/>
+                                        <subviews>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="kFX-St-fwZ" userLabel="tableView">
+                                                <rect key="frame" x="0.0" y="13" width="414" height="200"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="C2I-CM-YC5"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="qbp-ff-Uus" id="Csw-nZ-jy6"/>
+                                                    <outlet property="delegate" destination="qbp-ff-Uus" id="F5E-VQ-2WG"/>
+                                                </connections>
+                                            </tableView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="kFX-St-fwZ" secondAttribute="trailing" id="42a-Al-hTk"/>
+                                            <constraint firstItem="kFX-St-fwZ" firstAttribute="leading" secondItem="0FV-S5-ViA" secondAttribute="leading" id="8CG-ZF-fIC"/>
+                                            <constraint firstAttribute="bottom" secondItem="kFX-St-fwZ" secondAttribute="bottom" id="duG-Qs-0oo"/>
+                                            <constraint firstItem="kFX-St-fwZ" firstAttribute="top" secondItem="0FV-S5-ViA" secondAttribute="top" constant="13" id="hoC-ZV-fuR"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="0FV-S5-ViA" firstAttribute="top" secondItem="sqi-Es-NxK" secondAttribute="top" id="Ieg-yN-nDU"/>
+                                    <constraint firstItem="0FV-S5-ViA" firstAttribute="leading" secondItem="sqi-Es-NxK" secondAttribute="leading" id="QdX-ti-gmY"/>
+                                    <constraint firstAttribute="trailing" secondItem="0FV-S5-ViA" secondAttribute="trailing" id="k0c-Kv-mL7"/>
+                                    <constraint firstAttribute="bottom" secondItem="0FV-S5-ViA" secondAttribute="bottom" id="xuW-EJ-Hp6"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="XVV-0W-PqE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="XVV-0W-PqE" firstAttribute="bottom" secondItem="sqi-Es-NxK" secondAttribute="bottom" id="LYQ-ne-zkg"/>
+                            <constraint firstItem="sqi-Es-NxK" firstAttribute="top" secondItem="Lbx-hx-SW8" secondAttribute="top" id="WGV-k9-UlO"/>
+                            <constraint firstAttribute="trailing" secondItem="sqi-Es-NxK" secondAttribute="trailing" id="pei-z3-A2a"/>
+                            <constraint firstItem="sqi-Es-NxK" firstAttribute="leading" secondItem="XVV-0W-PqE" secondAttribute="leading" id="sIc-yq-CPh"/>
+                            <constraint firstAttribute="bottom" secondItem="sqi-Es-NxK" secondAttribute="bottom" constant="683" id="zEM-yB-A8Y"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="baseView" destination="sqi-Es-NxK" id="lCM-oB-U94"/>
+                        <outlet property="heightTableView" destination="C2I-CM-YC5" id="qXh-kC-gBC"/>
+                        <outlet property="tableView" destination="kFX-St-fwZ" id="lNy-IB-Qbk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tUd-Dd-RpE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2878" y="1521"/>
         </scene>
         <!--Task Priority View Controller-->
         <scene sceneID="U5U-eD-xF1">
@@ -1694,6 +1836,7 @@
     </designables>
     <resources>
         <image name="ic-action-start-workflow" width="15" height="17"/>
+        <image name="ic-actions" width="24" height="24"/>
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-close" width="24" height="24"/>
         <image name="ic-drop-down" width="12" height="8"/>

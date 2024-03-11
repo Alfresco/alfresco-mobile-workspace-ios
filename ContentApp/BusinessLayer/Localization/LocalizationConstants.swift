@@ -419,6 +419,7 @@ struct LocalizationConstants {
         static let releaseTitle = NSLocalizedString("release-title", comment: "")
         static let createdDate = NSLocalizedString("created_date", comment: "")
         static let noneTitle = NSLocalizedString("None", comment: "")
+        static let actions = NSLocalizedString("actions", comment: "")
     }
     
     struct MultipleFilesSelection {

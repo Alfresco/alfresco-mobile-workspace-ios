@@ -74,9 +74,13 @@
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
 		706A47BCD38A49C03D05F60C /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A230D94AA20A969ED5B23885 /* Pods_Share.framework */; };
+		7420639C2B9AF5210007653B /* OutcomesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7420639A2B9AF5210007653B /* OutcomesTableViewCell.swift */; };
+		7420639D2B9AF5210007653B /* OutcomesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7420639B2B9AF5210007653B /* OutcomesTableViewCell.xib */; };
+		7420639F2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7420639E2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift */; };
 		7429D7602B7B42CC00CA930C /* DropDownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429D75E2B7B42CC00CA930C /* DropDownTableViewCell.swift */; };
 		7429D7612B7B42CC00CA930C /* DropDownTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */; };
 		7429D7632B7B431000CA930C /* DropDownTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */; };
+		742FB2AD2B985D1A00000291 /* ActionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742FB2AC2B985D1A00000291 /* ActionListViewController.swift */; };
 		74657CD72B6CD82400FF3C44 /* AssigneeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */; };
 		74657CD82B6CD82400FF3C44 /* AssigneeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */; };
 		74657CDC2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */; };
@@ -897,9 +901,13 @@
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "EntityInfo-ContentApp.generated.swift"; sourceTree = "<group>"; };
 		73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7420639A2B9AF5210007653B /* OutcomesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutcomesTableViewCell.swift; sourceTree = "<group>"; };
+		7420639B2B9AF5210007653B /* OutcomesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutcomesTableViewCell.xib; sourceTree = "<group>"; };
+		7420639E2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutcomesTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		7429D75E2B7B42CC00CA930C /* DropDownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCell.swift; sourceTree = "<group>"; };
 		7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropDownTableViewCell.xib; sourceTree = "<group>"; };
 		7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		742FB2AC2B985D1A00000291 /* ActionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionListViewController.swift; sourceTree = "<group>"; };
 		74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeTableViewCell.swift; sourceTree = "<group>"; };
 		74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssigneeTableViewCell.xib; sourceTree = "<group>"; };
 		74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -1518,6 +1526,7 @@
 		471993AC2B3016A000F21CBA /* Complex Forms */ = {
 			isa = PBXGroup;
 			children = (
+				742063992B9AF5010007653B /* Outcomes */,
 				748393582B8DD71E008C2DC7 /* CheckBox */,
 				74731C2A2B875BA300828167 /* Hyperlink */,
 				7429D75B2B7B427C00CA930C /* DropDown */,
@@ -1713,6 +1722,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		742063992B9AF5010007653B /* Outcomes */ = {
+			isa = PBXGroup;
+			children = (
+				7420639A2B9AF5210007653B /* OutcomesTableViewCell.swift */,
+				7420639E2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift */,
+				7420639B2B9AF5210007653B /* OutcomesTableViewCell.xib */,
+			);
+			path = Outcomes;
+			sourceTree = "<group>";
+		};
 		7429D75B2B7B427C00CA930C /* DropDown */ = {
 			isa = PBXGroup;
 			children = (
@@ -1721,6 +1740,14 @@
 				7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */,
 			);
 			path = DropDown;
+			sourceTree = "<group>";
+		};
+		742FB2AB2B985C3800000291 /* Action List */ = {
+			isa = PBXGroup;
+			children = (
+				742FB2AC2B985D1A00000291 /* ActionListViewController.swift */,
+			);
+			path = "Action List";
 			sourceTree = "<group>";
 		};
 		74731C2A2B875BA300828167 /* Hyperlink */ = {
@@ -2629,6 +2656,7 @@
 		C983A265287D5F3D00CEDCAB /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				742FB2AB2B985C3800000291 /* Action List */,
 				C9A75989289BB0CC006603E0 /* Task List */,
 				C9A7598D289BB0CC006603E0 /* Task Detail */,
 				C9B28F1828DC1A8E00C01A91 /* Priority */,
@@ -4083,6 +4111,7 @@
 				B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */,
 				C9205C7928A0FAA100DEF5AC /* TaskCommentTableViewCell.xib in Resources */,
 				E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */,
+				7420639D2B9AF5210007653B /* OutcomesTableViewCell.xib in Resources */,
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
 				47CA83A22A57F15C0081A000 /* MultipleSelectionHeaderView.xib in Resources */,
 				C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */,
@@ -4581,6 +4610,7 @@
 				E319AA74250782F00072DFFE /* FilePreviewFactory.swift in Sources */,
 				E3E9ED3924CB00D200F1A2C2 /* ResultsNodeMapper.swift in Sources */,
 				C9848014272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift in Sources */,
+				742FB2AD2B985D1A00000291 /* ActionListViewController.swift in Sources */,
 				B97A124D258A2B4D00C052AA /* DatabaseService.swift in Sources */,
 				F1AC6C3C262065680096743B /* PreviewViewModel.swift in Sources */,
 				47DC693D29D04B680092A362 /* WorkflowViewModel.swift in Sources */,
@@ -4651,6 +4681,7 @@
 				E32B643124B360F100085472 /* ListElementCollectionViewCell.swift in Sources */,
 				C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */,
 				E363E34E256285DA00CB5338 /* EmptyFavoritesLibraries.swift in Sources */,
+				7420639F2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
@@ -4662,6 +4693,7 @@
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				47DB20B72A35ABAF00B13586 /* RadioListController.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
+				7420639C2B9AF5210007653B /* OutcomesTableViewCell.swift in Sources */,
 				B9A90E71265D189700B89766 /* FolderDrillModel.swift in Sources */,
 				E315151625AC493000DF8735 /* OfflineFoldreDrillViewModel.swift in Sources */,
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
