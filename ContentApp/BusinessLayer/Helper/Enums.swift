@@ -48,4 +48,5 @@ enum ComplexFormFieldType: String {
     case radioButton = "radio-buttons"
     case hyperlink = "hyperlink"
     case checkbox = "boolean"
+    case outcomes = "outcomes"
 }

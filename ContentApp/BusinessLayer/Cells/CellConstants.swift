@@ -49,5 +49,6 @@ struct CellConstants {
         static let dropDownTableViewCell = "DropDownTableViewCell"
         static let hyperlinkTableViewCell = "HyperlinkTableViewCell"
         static let checkBoxTableViewCell = "CheckBoxTableViewCell"
+        static let outcomesTableViewCell = "OutcomesTableViewCell"
     }
 }
