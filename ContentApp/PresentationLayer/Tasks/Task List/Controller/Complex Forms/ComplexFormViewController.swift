@@ -32,7 +32,6 @@ class ComplexFormViewController: SystemSearchViewController {
     @IBOutlet weak var heightFooterView: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var outcomeView: UIView!
-    @IBOutlet weak var outcomeViewConstant: NSLayoutConstraint!
     @IBOutlet weak var saveButtonStackView: UIStackView!
     @IBOutlet weak var saveButton: MDCButton!
     @IBOutlet weak var completeButton: MDCButton!
@@ -273,10 +272,10 @@ extension ComplexFormViewController {
     fileprivate func updateUI() {
         if let outcomes = viewModel.formData?.outcomes {
             switch outcomes.count {
-            case 0, 1:
-                oneOutcome()
-            case 2:
-                twoOutcome(outcomes: outcomes)
+            case 0:
+                noOutcome()
+            case 1, 2:
+                oneTwoOutcome(outcomes: outcomes)
             case let count where count > 2:
                 multipleOutcome()
             default:
@@ -286,24 +285,24 @@ extension ComplexFormViewController {
         }
     }
     fileprivate func startOutcome() {
-        outcomeViewConstant.constant = 0
         saveButton.isHidden = true
         completeButton.isHidden = true
         actionButton.isHidden = true
     }
     
-    fileprivate func oneOutcome() {
-        outcomeViewConstant.constant = 70
+    fileprivate func noOutcome() {
         saveButton.isHidden = false
         saveButton.setTitle(LocalizationConstants.Accessibility.startWorkflow, for: .normal)
         saveButton.accessibilityLabel = LocalizationConstants.Accessibility.startWorkflow
         saveButton.accessibilityIdentifier = ""
     }
-    
-    fileprivate func twoOutcome(outcomes: [Outcome]) {
-        outcomeViewConstant.constant = 141
+        
+    fileprivate func oneTwoOutcome(outcomes: [Outcome]) {
         saveButton.isHidden = false
-        completeButton.isHidden = false
+        if outcomes.count == 2 {
+            completeButton.isHidden = false
+        }
+        
         saveButton.setTitle(outcomes.first?.name, for: .normal)
         completeButton.setTitle(outcomes[1].name, for: .normal)
         
@@ -315,7 +314,6 @@ extension ComplexFormViewController {
     }
     
     fileprivate func multipleOutcome() {
-        outcomeViewConstant.constant = 0
         saveButton.isHidden = true
         completeButton.isHidden = true
         actionButton.isHidden = false
