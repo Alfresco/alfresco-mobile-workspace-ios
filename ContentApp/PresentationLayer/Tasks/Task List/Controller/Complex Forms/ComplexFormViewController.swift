@@ -301,15 +301,12 @@ extension ComplexFormViewController {
         saveButton.isHidden = false
         if outcomes.count == 2 {
             completeButton.isHidden = false
+            completeButton.setTitle(outcomes[1].name, for: .normal)
+            completeButton.accessibilityLabel = outcomes[1].name
         }
-        
         saveButton.setTitle(outcomes.first?.name, for: .normal)
-        completeButton.setTitle(outcomes[1].name, for: .normal)
-        
         saveButton.accessibilityLabel = outcomes.first?.name
         saveButton.accessibilityIdentifier = ""
-        
-        completeButton.accessibilityLabel = outcomes[1].name
         completeButton.accessibilityIdentifier = ""
     }
     
