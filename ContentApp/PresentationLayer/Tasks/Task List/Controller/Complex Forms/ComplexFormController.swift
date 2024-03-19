@@ -22,6 +22,7 @@ import AlfrescoContent
 class ComplexFormController: NSObject {
     let viewModel: StartWorkflowViewModel
     var currentTheme: PresentationTheme?
+    lazy var complexFormViewModel = ComplexFormViewModel()
     internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: StartWorkflowViewModel = StartWorkflowViewModel(), currentTheme: PresentationTheme?) {
@@ -111,7 +112,7 @@ class ComplexFormController: NSObject {
         let rowVM = MultiLineTextTableCellViewModel(field: field)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText)
+            self?.updateText(for: field, text: enterText, checkCount: true)
         }
         return rowVM
     }
@@ -121,7 +122,7 @@ class ComplexFormController: NSObject {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .singleLineText)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText)
+            self?.updateText(for: field, text: enterText, checkCount: true)
         }
         return rowVM
     }
@@ -131,7 +132,7 @@ class ComplexFormController: NSObject {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .numberField)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText)
+            self?.updateText(for: field, text: enterText, checkCount: true)
         }
         return rowVM
     }
@@ -141,7 +142,7 @@ class ComplexFormController: NSObject {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .amountField)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText)
+            self?.updateText(for: field, text: enterText, checkCount: true)
         }
         return rowVM
     }
@@ -163,8 +164,7 @@ class ComplexFormController: NSObject {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .dateTime)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            field.enteredValue = enterText
-            self?.checkRequiredTextField()
+            self?.updateText(for: field, text: enterText, checkCount: false)
         }
         return rowVM
     }
@@ -174,8 +174,7 @@ class ComplexFormController: NSObject {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .date)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            field.enteredValue = enterText
-            self?.checkRequiredTextField()
+            self?.updateText(for: field, text: enterText, checkCount: false)
         }
         return rowVM
     }
@@ -185,8 +184,7 @@ class ComplexFormController: NSObject {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .people)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            field.enteredValue = enterText
-            self?.checkRequiredTextField()
+            self?.updateText(for: field, text: enterText, checkCount: false)
         }
         return rowVM
     }
@@ -196,8 +194,7 @@ class ComplexFormController: NSObject {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            field.enteredValue = enterText
-            self?.checkRequiredTextField()
+            self?.updateText(for: field, text: enterText, checkCount: false)
         }
         return rowVM
     }
@@ -207,8 +204,7 @@ class ComplexFormController: NSObject {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .dropDown)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            field.enteredValue = enterText
-            self?.checkRequiredTextField()
+            self?.updateText(for: field, text: enterText, checkCount: false)
         }
         return rowVM
     }
@@ -218,8 +214,7 @@ class ComplexFormController: NSObject {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .radioButton)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            field.enteredValue = enterText
-            self?.checkRequiredTextField()
+            self?.updateText(for: field, text: enterText, checkCount: false)
         }
         return rowVM
     }
@@ -242,38 +237,25 @@ class ComplexFormController: NSObject {
     }
     
     // MARK: - Changed text
-    fileprivate func updateText(for field: Field, text: String) {
+    fileprivate func updateText(for field: Field, text: String, checkCount: Bool) {
         field.enteredValue = text
-        if text.isEmpty || text.count == 1 {
+        if checkCount {
+            if text.isEmpty || text.count == 1 {
+                self.checkRequiredTextField()
+            }
+        } else {
             self.checkRequiredTextField()
         }
     }
     
     fileprivate func checkRequiredTextField() {
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let formFields = self?.viewModel.formFields else {
-                return
-            }
-
-            // Check if all required fields have non-empty entered values
-            let allRequiredFieldsNonEmpty = formFields.allSatisfy { field in
-                if field.type == "boolean" {
-                    // For boolean fields, no need to check if they are required or have non-empty entered values
-                    return true
-                } else {
-                    // For other types of fields, check if they are required and have non-empty entered values
-                    return !field.fieldRequired || !(field.enteredValue?.isEmpty ?? true)
-                }
-            }
-
-            if allRequiredFieldsNonEmpty {
-                // All required fields have non-empty entered values
+        complexFormViewModel.checkRequiredField(formFields: self.viewModel.formFields, completion: {[weak self] value in
+            if value {
                 self?.viewModel.isEnabledButton.value = true
             } else {
-                // At least one required field has an empty entered value
                 self?.viewModel.isEnabledButton.value = false
             }
-        }
+        })
     }
     
 }

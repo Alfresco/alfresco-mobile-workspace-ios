@@ -257,12 +257,10 @@ class ComplexFormViewController: SystemSearchViewController {
     
     // MARK: - Save Button Action
     @IBAction func saveButtonAction(_ sender: Any) {
-        print("Save")
     }
     
     // MARK: - Complete Button Action
     @IBAction func completeButtonAction(_ sender: Any) {
-        print("complete")
     }
     
     // MARK: - Action Button Action
@@ -628,7 +626,6 @@ extension ComplexFormViewController {
                 }
             }
         }
-        //complexFormViewModel.userName = userName
         localViewModel.userName = userName
         localViewModel.didChangeText?(userName)
         reloadTableView(row: tag)
@@ -638,7 +635,6 @@ extension ComplexFormViewController {
         if let groupName = assignee.groupName, !groupName.isEmpty {
             localGroupName = groupName
         }
-        //complexFormViewModel.groupName = localGroupName
         localViewModel.userName = localGroupName
         localViewModel.didChangeText?(localGroupName)
         reloadTableView(row: tag)
