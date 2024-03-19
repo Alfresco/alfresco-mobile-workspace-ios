@@ -36,6 +36,7 @@ class AssigneeTableViewCellViewModel: RowViewModel {
     var currency: String?
     var enableFractions = false
     var fractionLength = 0
+    var didChangeText: ((String?) -> Void)?
     
     var name: String? {
         if fieldRequired {

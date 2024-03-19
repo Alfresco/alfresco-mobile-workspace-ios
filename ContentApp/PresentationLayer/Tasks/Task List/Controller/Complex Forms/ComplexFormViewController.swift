@@ -233,6 +233,19 @@ class ComplexFormViewController: SystemSearchViewController {
             }
         }
         
+        viewModel.isEnabledButton.addObserver { [weak self] (isEnabled) in
+            guard let sSelf = self else { return }
+            if isEnabled {
+                DispatchQueue.main.async {
+                    sSelf.enableOutcome()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    sSelf.disableOutcome()
+                }
+            }
+        }
+        
         /* observing rows */
         viewModel.rowViewModels.addObserver() { [weak self] (rows) in
             guard let sSelf = self else { return }
@@ -284,10 +297,12 @@ extension ComplexFormViewController {
             applyTheme()
         }
     }
+    
     fileprivate func startOutcome() {
         saveButton.isHidden = true
         completeButton.isHidden = true
         actionButton.isHidden = true
+        disableOutcome()
     }
     
     fileprivate func noOutcome() {
@@ -315,6 +330,29 @@ extension ComplexFormViewController {
         completeButton.isHidden = true
         actionButton.isHidden = false
     }
+    
+    fileprivate func enableOutcome() {
+        saveButton.isEnabled = true
+        saveButton.isUserInteractionEnabled = true
+        
+        completeButton.isEnabled = true
+        completeButton.isUserInteractionEnabled = true
+        
+        actionButton.isEnabled = true
+        actionButton.isUserInteractionEnabled = true
+        
+    }
+    
+    fileprivate func disableOutcome() {
+        saveButton.isEnabled = false
+        saveButton.isUserInteractionEnabled = false
+        
+        completeButton.isEnabled = false
+        completeButton.isUserInteractionEnabled = false
+        
+        actionButton.isEnabled = false
+        actionButton.isUserInteractionEnabled = false
+    }
 }
 
 // MARK: - Table View Data Source and Delegates
@@ -329,18 +367,15 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
             complexFormViewModel.selectedDateTimeTextField = (cell as? DatePickerTableViewCell)?.textField
             complexFormViewModel.selectedDateTimeTextField.delegate = self
+            (cell as? DatePickerTableViewCell)?.textField.text = localViewModel.text
         } else {
             complexFormViewModel.selectedDateTextField = (cell as? DatePickerTableViewCell)?.textField
             complexFormViewModel.selectedDateTextField.delegate = self
+            (cell as? DatePickerTableViewCell)?.textField.text = localViewModel.text
         }
     }
     
     fileprivate func configureAssignUserCells(_ localViewModel: AssigneeTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
-        if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
-            (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.userName
-        } else {
-            (cell as? AssigneeTableViewCell)?.viewModel?.userName = complexFormViewModel.groupName
-        }
         (cell as? AssigneeTableViewCell)?.addUserButton.tag = indexPath.row
         (cell as? AssigneeTableViewCell)?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
     }
@@ -396,11 +431,7 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     
     private func assignUserCellHeight(rowViewModel: RowViewModel?) -> CGFloat {
         if let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel {
-            if localViewModel.type.rawValue == ComplexFormFieldType.people.rawValue {
-                return complexFormViewModel.userName?.count ?? 0 > 0 ? 100 : 50.0
-            } else {
-                return complexFormViewModel.groupName?.count ?? 0 > 0 ? 100 : 50.0
-            }
+            return localViewModel.userName?.count ?? 0 > 0 ? 100 : 50.0
         }
         return 0
     }
@@ -450,7 +481,7 @@ extension ComplexFormViewController {
         datePicker.backgroundColor = currentTheme.surfaceColor
         setDatesForDatePicker(rowViewModel: rowViewModel, datePicker: &datePicker)
         
-        datePicker.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight/2.0)
+        datePicker.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight/2.0 + 100)
     }
     
     private func setDatesForDatePicker(rowViewModel: RowViewModel, datePicker: inout UIDatePicker) {
@@ -499,11 +530,15 @@ extension ComplexFormViewController {
                 // Use DateFormatter to format the date and time
                 let date = complexFormViewModel.selectedDateTimeString(for: dateTimePicker.date)
                 complexFormViewModel.selectedDateTimeTextField.text = date
+                localViewModel.text = date
+                localViewModel.didChangeText?(date)
             }
         } else {
             if let dateTimePicker = complexFormViewModel.selectedDateTextField.inputView as? UIDatePicker {
                 let date = complexFormViewModel.selectedDateString(for: dateTimePicker.date)
                 complexFormViewModel.selectedDateTextField.text = date
+                localViewModel.text = date
+                localViewModel.didChangeText?(date)
             }
         }
         
@@ -526,7 +561,10 @@ extension ComplexFormViewController {
             if isBackButtonTapped == false {
                 if let localSelectedChip = selectedChip {
                     guard let sSelf = self else { return }
-                    rowViewModel.text = localSelectedChip.selectedValue ?? ""
+                    if let selectedValue = localSelectedChip.selectedValue {
+                        rowViewModel.text = selectedValue
+                        rowViewModel.didChangeText?(selectedValue)
+                    }
                     sSelf.reloadTableView(row: tag)
                 }
             }
@@ -567,32 +605,38 @@ extension ComplexFormViewController {
             viewController.callBack = { [weak self] (assignee) in
                 guard let sSelf = self else { return }
                 if localViewModel.type.rawValue == ComplexFormFieldType.group.rawValue {
-                    sSelf.updateGroup(with: assignee, tag: sender.tag)
+                    sSelf.updateGroup(with: assignee, tag: sender.tag, localViewModel: localViewModel)
                 } else {
-                    sSelf.updateAssignee(with: assignee, tag: sender.tag)
+                    sSelf.updateAssignee(with: assignee, tag: sender.tag, localViewModel: localViewModel)
                 }
             }
         }
     }
-    private func updateAssignee(with assignee: TaskNodeAssignee, tag: Int) {
+    private func updateAssignee(with assignee: TaskNodeAssignee, tag: Int, localViewModel: AssigneeTableViewCellViewModel) {
+        var userName = ""
         if let apsUserID = UserProfile.apsUserID {
             if assignee.assigneeID == apsUserID {
                 let name = LocalizationConstants.EditTask.meTitle
-                complexFormViewModel.userName = name
+                userName = name
             } else {
                 if let groupName = assignee.groupName, !groupName.isEmpty {
-                    complexFormViewModel.userName = groupName
+                    userName = groupName
                 } else {
-                    complexFormViewModel.userName = assignee.userName
+                    userName = assignee.userName ?? ""
                 }
             }
         }
+        localViewModel.userName = userName
+        localViewModel.didChangeText?(userName)
         reloadTableView(row: tag)
     }
-    private func updateGroup(with assignee: TaskNodeAssignee, tag: Int) {
+    private func updateGroup(with assignee: TaskNodeAssignee, tag: Int, localViewModel: AssigneeTableViewCellViewModel) {
+        var localGroupName = ""
         if let groupName = assignee.groupName, !groupName.isEmpty {
-            complexFormViewModel.groupName = groupName
+            localGroupName = groupName
         }
+        localViewModel.userName = localGroupName
+        localViewModel.didChangeText?(localGroupName)
         reloadTableView(row: tag)
     }
 }
@@ -658,7 +702,9 @@ extension ComplexFormViewController {
     @objc func checkBoxButtonAction(button: UIButton) {
         let rowViewModel = viewModel.rowViewModels.value[button.tag]
         guard let localViewModel = rowViewModel as? CheckBoxTableViewCellViewModel else { return }
-        localViewModel.isSelected = !localViewModel.isSelected
+        let isSelected = !localViewModel.isSelected
+        localViewModel.isSelected = isSelected
+        localViewModel.didChangeValue?(isSelected)
         reloadTableView(row: button.tag)
     }
     

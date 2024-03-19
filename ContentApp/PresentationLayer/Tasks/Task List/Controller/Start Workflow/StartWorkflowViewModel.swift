@@ -37,6 +37,7 @@ class StartWorkflowViewModel: NSObject {
     var didRefreshTaskList: (() -> Void)?
     var formFields = [Field]()
     var formData: StartFormFields?
+    let isEnabledButton = Observable<Bool>(false)
 
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""

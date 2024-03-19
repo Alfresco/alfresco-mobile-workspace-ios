@@ -22,6 +22,7 @@ import AlfrescoContent
 class ComplexFormController: NSObject {
     let viewModel: StartWorkflowViewModel
     var currentTheme: PresentationTheme?
+    lazy var complexFormViewModel = ComplexFormViewModel()
     internal var supportedNodeTypes: [NodeType] = []
 
     init(viewModel: StartWorkflowViewModel = StartWorkflowViewModel(), currentTheme: PresentationTheme?) {
@@ -109,24 +110,40 @@ class ComplexFormController: NSObject {
     // MARK: - Multi Line Text View
     private func multiLineTextCellVM(for field: Field) -> MultiLineTextTableCellViewModel {
         let rowVM = MultiLineTextTableCellViewModel(field: field)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: true)
+        }
         return rowVM
     }
     
     // MARK: - Single Line Text Field
     private func singleLineTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .singleLineText)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: true)
+        }
         return rowVM
     }
     
     // MARK: - Number Text Field
     private func numberTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .numberField)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: true)
+        }
         return rowVM
     }
     
     // MARK: - Amount Text Field
     private func amountTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .amountField)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: true)
+        }
         return rowVM
     }
     
@@ -145,36 +162,60 @@ class ComplexFormController: NSObject {
     // MARK: - Display Date Time
     private func dateTimeCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .dateTime)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
+        }
         return rowVM
     }
     
     // MARK: - Display Date
     private func dateCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .date)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
+        }
         return rowVM
     }
     
     // MARK: - Assignee User
     private func peopleCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .people)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
+        }
         return rowVM
     }
     
     // MARK: - Assignee Group
     private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
+        }
         return rowVM
     }
     
     // MARK: - Drop Down
     private func dropDownCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .dropDown)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
+        }
         return rowVM
     }
     
     // MARK: - Radio Button
     private func radioButtonCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .radioButton)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
+        }
         return rowVM
     }
     
@@ -187,6 +228,34 @@ class ComplexFormController: NSObject {
     // MARK: - CheckBox
     private func checkBoxCellVM(for field: Field) -> CheckBoxTableViewCellViewModel {
         let rowVM = CheckBoxTableViewCellViewModel(field: field, type: .checkbox)
+        rowVM.didChangeValue = { [weak self] (isSelected) in
+            field.enteredValue = String(isSelected ?? Bool())
+            field.selectedValue = isSelected
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
+    
+    // MARK: - Changed text
+    fileprivate func updateText(for field: Field, text: String, checkCount: Bool) {
+        field.enteredValue = text
+        if checkCount {
+            if text.isEmpty || text.count == 1 {
+                self.checkRequiredTextField()
+            }
+        } else {
+            self.checkRequiredTextField()
+        }
+    }
+    
+    fileprivate func checkRequiredTextField() {
+        complexFormViewModel.checkRequiredField(formFields: self.viewModel.formFields, completion: {[weak self] value in
+            if value {
+                self?.viewModel.isEnabledButton.value = true
+            } else {
+                self?.viewModel.isEnabledButton.value = false
+            }
+        })
+    }
+    
 }

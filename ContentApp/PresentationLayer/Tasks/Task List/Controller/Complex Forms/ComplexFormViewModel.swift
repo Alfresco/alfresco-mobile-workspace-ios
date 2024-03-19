@@ -23,8 +23,6 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFields
 class ComplexFormViewModel: NSObject {
     var selectedDateTimeTextField: MDCOutlinedTextField!
     var selectedDateTextField: MDCOutlinedTextField!
-    var userName: String?
-    var groupName: String?
     
     func selectedDateString(for date: Date) -> String {
         let dateFormatter = DateFormatter()
@@ -56,4 +54,20 @@ class ComplexFormViewModel: NSObject {
         return formatter.date(from: dateStr)
     }
     
+    func checkRequiredField(formFields: [Field], completion: @escaping (Bool) -> Void) {
+        DispatchQueue.global(qos: .background).async { [] in
+            // Check if all required fields have non-empty entered values
+            let allRequiredFieldsNonEmpty = formFields.allSatisfy { field in
+                if field.type == "boolean" {
+                    // For boolean fields, no need to check if they are required or have non-empty entered values
+                    return true
+                } else {
+                    // For other types of fields, check if they are required and have non-empty entered values
+                    return !field.fieldRequired || !(field.enteredValue?.isEmpty ?? true)
+                }
+            }
+            // Call the completion handler with the result
+            completion(allRequiredFieldsNonEmpty)
+        }
+    }
 }
