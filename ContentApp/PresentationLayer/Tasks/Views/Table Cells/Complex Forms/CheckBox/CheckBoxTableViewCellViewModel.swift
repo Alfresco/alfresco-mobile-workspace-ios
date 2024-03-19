@@ -39,6 +39,7 @@ class CheckBoxTableViewCellViewModel: RowViewModel {
     var isSelected = false
     var comments: [TaskCommentModel] = []
     var appDefinition: WFlowAppDefinitions?
+    var didChangeValue: ((Bool?) -> Void)?
 
     var image: UIImage? {
         if isSelected {

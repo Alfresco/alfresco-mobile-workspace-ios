@@ -105,8 +105,10 @@ extension SingleLineTextTableViewCell: UITextFieldDelegate {
         
         let newText = (textField.text as? NSString)?.replacingCharacters(in: range, with: string) ?? ""
         viewModel.checkForErrorMessages(for: newText)
+        viewModel.text = newText
         applyTextFieldComponentTheme()
         addAccessibility()
+        viewModel.didChangeText?(newText)
         return true
     }
     
@@ -114,6 +116,7 @@ extension SingleLineTextTableViewCell: UITextFieldDelegate {
         guard let viewModel = self.viewModel else { return true }
         viewModel.checkForErrorMessages(for: "")
         applyTextFieldComponentTheme()
+        viewModel.didChangeText?("")
         return true
     }
     

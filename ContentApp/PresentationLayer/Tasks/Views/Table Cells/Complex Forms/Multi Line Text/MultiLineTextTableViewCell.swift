@@ -93,6 +93,13 @@ extension MultiLineTextTableViewCell: UITextViewDelegate {
         viewModel.checkForErrorMessages(for: newText)
         applyTextViewComponentTheme()
         addAccessibility()
+        viewModel.didChangeText?(newText)
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        guard let viewModel = self.viewModel else { return true }
+        viewModel.didChangeText?("")
         return true
     }
 }

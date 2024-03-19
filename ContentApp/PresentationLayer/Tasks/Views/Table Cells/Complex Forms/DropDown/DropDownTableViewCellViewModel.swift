@@ -38,6 +38,7 @@ class DropDownTableViewCellViewModel: RowViewModel {
     var enableFractions = false
     var fractionLength = 0
     var taskChip: TaskChipItem?
+    var didChangeText: ((String?) -> Void)?
     
     var name: String? {
         if fieldRequired {

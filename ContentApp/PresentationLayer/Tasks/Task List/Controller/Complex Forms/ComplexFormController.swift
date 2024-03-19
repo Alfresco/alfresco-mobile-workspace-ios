@@ -109,24 +109,40 @@ class ComplexFormController: NSObject {
     // MARK: - Multi Line Text View
     private func multiLineTextCellVM(for field: Field) -> MultiLineTextTableCellViewModel {
         let rowVM = MultiLineTextTableCellViewModel(field: field)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText)
+        }
         return rowVM
     }
     
     // MARK: - Single Line Text Field
     private func singleLineTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .singleLineText)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText)
+        }
         return rowVM
     }
     
     // MARK: - Number Text Field
     private func numberTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .numberField)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText)
+        }
         return rowVM
     }
     
     // MARK: - Amount Text Field
     private func amountTextCellVM(for field: Field) -> SingleLineTextTableCellViewModel {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .amountField)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText)
+        }
         return rowVM
     }
     
@@ -145,36 +161,66 @@ class ComplexFormController: NSObject {
     // MARK: - Display Date Time
     private func dateTimeCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .dateTime)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            field.enteredValue = enterText
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
     
     // MARK: - Display Date
     private func dateCellVM(for field: Field) -> DatePickerTableViewCellViewModel {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .date)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            field.enteredValue = enterText
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
     
     // MARK: - Assignee User
     private func peopleCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .people)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            field.enteredValue = enterText
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
     
     // MARK: - Assignee Group
     private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            field.enteredValue = enterText
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
     
     // MARK: - Drop Down
     private func dropDownCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .dropDown)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            field.enteredValue = enterText
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
     
     // MARK: - Radio Button
     private func radioButtonCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .radioButton)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            field.enteredValue = enterText
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
     
@@ -187,6 +233,47 @@ class ComplexFormController: NSObject {
     // MARK: - CheckBox
     private func checkBoxCellVM(for field: Field) -> CheckBoxTableViewCellViewModel {
         let rowVM = CheckBoxTableViewCellViewModel(field: field, type: .checkbox)
+        rowVM.didChangeValue = { [weak self] (isSelected) in
+            field.enteredValue = String(isSelected ?? Bool())
+            field.selectedValue = isSelected
+            self?.checkRequiredTextField()
+        }
         return rowVM
     }
+    
+    // MARK: - Changed text
+    fileprivate func updateText(for field: Field, text: String) {
+        field.enteredValue = text
+        if text.isEmpty || text.count == 1 {
+            self.checkRequiredTextField()
+        }
+    }
+    
+    fileprivate func checkRequiredTextField() {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let formFields = self?.viewModel.formFields else {
+                return
+            }
+
+            // Check if all required fields have non-empty entered values
+            let allRequiredFieldsNonEmpty = formFields.allSatisfy { field in
+                if field.type == "boolean" {
+                    // For boolean fields, no need to check if they are required or have non-empty entered values
+                    return true
+                } else {
+                    // For other types of fields, check if they are required and have non-empty entered values
+                    return !field.fieldRequired || !(field.enteredValue?.isEmpty ?? true)
+                }
+            }
+
+            if allRequiredFieldsNonEmpty {
+                // All required fields have non-empty entered values
+                self?.viewModel.isEnabledButton.value = true
+            } else {
+                // At least one required field has an empty entered value
+                self?.viewModel.isEnabledButton.value = false
+            }
+        }
+    }
+    
 }

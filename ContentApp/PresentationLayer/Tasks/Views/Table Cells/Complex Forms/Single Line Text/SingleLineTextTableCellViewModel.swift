@@ -20,6 +20,8 @@ import UIKit
 import AlfrescoContent
 
 class SingleLineTextTableCellViewModel: RowViewModel {
+    
+    var didChangeText: ((String?) -> Void)?    
     var componentID: String?
     var title: String?
     var placeholder: String?

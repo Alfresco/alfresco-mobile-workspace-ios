@@ -23,8 +23,6 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFields
 class ComplexFormViewModel: NSObject {
     var selectedDateTimeTextField: MDCOutlinedTextField!
     var selectedDateTextField: MDCOutlinedTextField!
-    var userName: String?
-    var groupName: String?
     
     func selectedDateString(for date: Date) -> String {
         let dateFormatter = DateFormatter()

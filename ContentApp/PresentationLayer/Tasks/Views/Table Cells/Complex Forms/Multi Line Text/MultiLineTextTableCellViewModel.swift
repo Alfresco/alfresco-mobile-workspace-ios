@@ -29,6 +29,7 @@ class MultiLineTextTableCellViewModel: RowViewModel {
     var maxLength = 0
     var errorMessage: String?
     var fieldRequired = false
+    var didChangeText: ((String?) -> Void)?  
     
     var name: String? {
         if fieldRequired {
