@@ -146,6 +146,8 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
             AlfrescoLog.debug("Found none")
         case .some(.null):
             AlfrescoLog.debug("Found null")
+        case .some(.bool(_)):
+            AlfrescoLog.debug("Found Bool")
         }
         return (nil, nil)
     }

@@ -229,8 +229,8 @@ class ComplexFormController: NSObject {
     private func checkBoxCellVM(for field: Field) -> CheckBoxTableViewCellViewModel {
         let rowVM = CheckBoxTableViewCellViewModel(field: field, type: .checkbox)
         rowVM.didChangeValue = { [weak self] (isSelected) in
-            field.enteredValue = String(isSelected ?? Bool())
-            field.selectedValue = isSelected
+            guard let checkBoxValue = isSelected else { return }
+            field.value = .bool(checkBoxValue)
             self?.checkRequiredTextField()
         }
         return rowVM
@@ -238,7 +238,7 @@ class ComplexFormController: NSObject {
     
     // MARK: - Changed text
     fileprivate func updateText(for field: Field, text: String, checkCount: Bool) {
-        field.enteredValue = text
+        field.value = .string(text)
         if checkCount {
             if text.isEmpty || text.count == 1 {
                 self.checkRequiredTextField()
