@@ -66,7 +66,6 @@ class ComplexFormViewModel: NSObject {
                     let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
                     return !field.fieldRequired || !(text?.isEmpty ?? true)
                 }
-                
             }
             // Call the completion handler with the result
             completion(allRequiredFieldsNonEmpty)
