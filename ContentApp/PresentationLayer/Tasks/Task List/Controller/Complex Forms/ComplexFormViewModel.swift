@@ -63,7 +63,8 @@ class ComplexFormViewModel: NSObject {
                     return true
                 } else {
                     // For other types of fields, check if they are required and have non-empty entered values
-                    return !field.fieldRequired || !(field.enteredValue?.isEmpty ?? true)
+                    let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+                    return !field.fieldRequired || !(text?.isEmpty ?? true)
                 }
             }
             // Call the completion handler with the result
