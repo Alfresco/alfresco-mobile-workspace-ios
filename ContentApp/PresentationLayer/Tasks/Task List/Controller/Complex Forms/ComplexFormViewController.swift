@@ -548,9 +548,7 @@ extension ComplexFormViewController {
         let rowViewModel = viewModel.rowViewModels.value[sender.tag]
         guard let localViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
         
-        let dateFormatter = ISO8601DateFormatter()
-        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        dateFormatter.timeZone = TimeZone.current
+        let dateFormatter = complexFormViewModel.isoDateFormat()
         
         if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
             if let dateTimePicker = complexFormViewModel.selectedDateTimeTextField.inputView as? UIDatePicker {
@@ -754,7 +752,6 @@ extension ComplexFormViewController {
 
 extension ComplexFormViewController: ActionListViewControllerDelegate {
     func actionListViewController(_ viewController: ActionListViewController, didSelectItem selectedItem: AlfrescoContent.Outcome) {
-        print("Selected item:", selectedItem)
         startWorkflowAPIIntegration()
     }
 }

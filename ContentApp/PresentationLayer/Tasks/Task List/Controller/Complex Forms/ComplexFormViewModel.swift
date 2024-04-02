@@ -27,6 +27,13 @@ class ComplexFormViewModel: NSObject {
     let isLoading = Observable<Bool>(true)
     var formData: StartFormFields?
     
+    func isoDateFormat() -> ISO8601DateFormatter {
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        dateFormatter.timeZone = TimeZone.current
+        return dateFormatter
+    }
+    
     func selectedDateString(for date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MMM-yy"
@@ -62,27 +69,32 @@ class ComplexFormViewModel: NSObject {
             // Check if all required fields have non-empty entered values
             let allRequiredFieldsNonEmpty = formFields.allSatisfy { field in
                 let type = ComplexFormFieldType(rawValue: field.type)
-                if type == .amountField || type == .numberField {
+                switch type {
+                case .amountField, .numberField:
                     let text = ValueUnion.int(field.value?.getIntValue() ?? 0).getIntValue()
                     return !field.fieldRequired || !(text == 0)
-                } else if type == .checkbox {
+                    
+                case .checkbox:
                     // For boolean fields, no need to check if they are required or have non-empty entered values
                     return true
-                } else if type == .radioButton || type == .dropDown {
+                    
+                case .radioButton, .dropDown:
                     if let dictValue = field.value?.getDictValue() {
                         let value = ValueUnion.valueElementDict(dictValue).getDictValue()
                         return !field.fieldRequired || !(value?.name.isEmpty ?? true)
                     } else {
                         return false
                     }
-                } else if type == .people || type == .group {
+                    
+                case .people, .group:
                     if let assignee = field.value?.getAssignee() {
                         let value = ValueUnion.assignee(assignee).getAssignee()
                         return !field.fieldRequired || !(value?.id == -1)
                     } else {
                         return false
                     }
-                } else {
+                    
+                default:
                     // For other types of fields, check if they are required and have non-empty entered values
                     let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
                     return !field.fieldRequired || !(text?.isEmpty ?? true)
@@ -92,6 +104,7 @@ class ComplexFormViewModel: NSObject {
             completion(allRequiredFieldsNonEmpty)
         }
     }
+
 }
 // MARK: - Start Workflow
 extension ComplexFormViewModel {
@@ -121,28 +134,28 @@ extension ComplexFormViewModel {
             let key = field.id
             let type = ComplexFormFieldType(rawValue: field.type)
             var localParams: [String: AnyEncodable]
-            if type == .amountField || type == .numberField {
+            switch type {
+            case .amountField, .numberField:
                 let value = ValueUnion.int(field.value?.getIntValue() ?? 0).getIntValue()
                 localParams = [key: AnyEncodable(value ?? 0)]
-            } else if type == .checkbox {
-                let value = ValueUnion.bool(field.value?.getBoolValue() ?? Bool()).getBoolValue()
-                localParams = [key: AnyEncodable(value ?? Bool())]
-            } else if type == .radioButton || type == .dropDown {
+            case .checkbox:
+                let value = ValueUnion.bool(field.value?.getBoolValue() ?? false).getBoolValue()
+                localParams = [key: AnyEncodable(value ?? false)]
+            case .radioButton, .dropDown:
                 if let dictValue = field.value?.getDictValue() {
                     let value = ValueUnion.valueElementDict(dictValue).getDictValue()
                     localParams = [key: AnyEncodable(value)]
                 } else {
-                    localParams = [String: AnyEncodable]()
+                    localParams = [:]
                 }
-            } else if type == .people || type == .group {
+            case .people, .group:
                 if let assignee = field.value?.getAssignee() {
                     let value = ValueUnion.assignee(assignee).getAssignee()
                     localParams = [key: AnyEncodable(value)]
                 } else {
-                    localParams = [String: AnyEncodable]()
+                    localParams = [:]
                 }
-                
-            } else {
+            default:
                 let value = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
                 localParams = [key: AnyEncodable(value ?? "")]
             }
@@ -153,5 +166,4 @@ extension ComplexFormViewModel {
                                        processDefinitionId: processDefinitionId,
                                        params: params)
     }
-
 }
