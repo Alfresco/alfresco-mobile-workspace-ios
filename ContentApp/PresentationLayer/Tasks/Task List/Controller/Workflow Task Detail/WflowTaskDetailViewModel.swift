@@ -143,7 +143,6 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
         case .valueElementArray(let elements):
             return (nil, elements)
         default:
-            AlfrescoLog.debug("Found none")
             return (nil, nil)
         }
     }
