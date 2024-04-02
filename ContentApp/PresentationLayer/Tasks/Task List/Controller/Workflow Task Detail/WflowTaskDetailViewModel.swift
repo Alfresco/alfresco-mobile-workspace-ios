@@ -144,9 +144,8 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
             return (nil, elements)
         default:
             AlfrescoLog.debug("Found none")
-   
+            return (nil, nil)
         }
-        return (nil, nil)
     }
     
     func getDueDate(for dueDate: String?) -> String? {
