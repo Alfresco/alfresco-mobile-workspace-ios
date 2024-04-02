@@ -38,7 +38,7 @@ class DropDownTableViewCellViewModel: RowViewModel {
     var enableFractions = false
     var fractionLength = 0
     var taskChip: TaskChipItem?
-    var didChangeText: ((String?) -> Void)?
+    var didChangeChip: ((TaskChipItem?) -> Void)?
     
     var name: String? {
         if fieldRequired {
@@ -90,10 +90,10 @@ class DropDownTableViewCellViewModel: RowViewModel {
         self.currency = field.currency
         self.enableFractions = field.enableFractions ?? false
         self.fractionLength = field.fractionLength ?? 0
-        self.taskChip = getTaskChipItem(for: field.options ?? [], name: field.name ?? "")
+        self.taskChip = getTaskChipItem(for: field.options ?? [], name: field.name ?? "", id: field.id)
     }
     
-    private func getTaskChipItem(for options: [Option], name: String) -> TaskChipItem? {
+    private func getTaskChipItem(for options: [Option], name: String, id: String) -> TaskChipItem? {
         var taskOptions = [TaskOptions]()
         for option in options where option.id != "empty" {
             let tOptions = TaskOptions(label: option.name,
@@ -103,7 +103,7 @@ class DropDownTableViewCellViewModel: RowViewModel {
             taskOptions.append(tOptions)
         }
         
-        let chip = TaskChipItem(chipId: 123,
+        let chip = TaskChipItem(chipId: Int(id),
                                      name: name,
                                      selectedValue: nil,
                                      componentType: nil,

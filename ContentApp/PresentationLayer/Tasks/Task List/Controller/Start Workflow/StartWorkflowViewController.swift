@@ -144,8 +144,6 @@ class StartWorkflowViewController: SystemSearchViewController {
     @IBAction func startWorkflowButtonAction(_ sender: Any) {
         if viewModel.isLocalContentAvailable() {
             showUploadingInQueueWarning()
-        } else {
-            startWorkflowAPIIntegration()
         }
     }
     
@@ -155,7 +153,6 @@ class StartWorkflowViewController: SystemSearchViewController {
     
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
             guard let sSelf = self else { return }
-            sSelf.startWorkflowAPIIntegration()
         }
         confirmAction.accessibilityIdentifier = "confirmActionButton"
         
@@ -166,24 +163,6 @@ class StartWorkflowViewController: SystemSearchViewController {
                                        message: message,
                                        actions: [confirmAction, cancelAction],
                                        completionHandler: {})
-    }
-    
-    // MARK: - Start workflow API integration
-    private func startWorkflowAPIIntegration() {        
-        if !viewModel.isAllowedToStartWorkflow() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                Snackbar.display(with: String(format: LocalizationConstants.Workflows.selectAssigneeMessage),
-                                 type: .warning, finish: nil)
-            })
-        } else {
-            viewModel.startWorkflow {[weak self] isError in
-                guard let sSelf = self else { return }
-                if !isError {
-                    sSelf.updateWorkflowsList()
-                    sSelf.backButtonAction()
-                }
-            }
-        }
     }
     
     private func updateWorkflowsList() {

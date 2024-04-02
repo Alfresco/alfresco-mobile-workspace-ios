@@ -19,6 +19,10 @@
 import UIKit
 import AlfrescoContent
 
+protocol ActionListViewControllerDelegate: AnyObject {
+    func actionListViewController(_ viewController: ActionListViewController, didSelectItem selectedItem: Outcome)
+}
+
 class ActionListViewController: SystemThemableViewController {
 
     @IBOutlet weak var baseView: UIView!
@@ -27,6 +31,8 @@ class ActionListViewController: SystemThemableViewController {
     let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 270.0
     var outcomes = [Outcome]()
     let rowViewModels = Observable<[RowViewModel]>([])
+//    var didSelectItem: ((Outcome) -> Void)?
+    weak var delegate: ActionListViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,6 +106,12 @@ class ActionListViewController: SystemThemableViewController {
         let rowVM = OutcomesTableViewCellViewModel(outcome: outcomes)
         return rowVM
     }
+    
+    // Function to handle item selection
+    func handleItemSelection(_ selectedItem: Outcome) {
+        delegate?.actionListViewController(self, didSelectItem: selectedItem)
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - Table View Data Source and Delegates
@@ -117,9 +129,16 @@ extension ActionListViewController: UITableViewDelegate, UITableViewDataSource {
         if let cell = cell as? CellConfigurable {
             cell.setup(viewModel: rowViewModel)
         }
+        (cell as? OutcomesTableViewCell)?.outcomesBtn.tag = indexPath.row
+        (cell as? OutcomesTableViewCell)?.outcomesBtn.addTarget(self, action: #selector(outcomeButtonAction(button:)), for: .touchUpInside)
         applyTheme(cell)
         cell.layoutIfNeeded()
         return cell
+    }
+    
+    @objc func outcomeButtonAction(button: UIButton) {
+        let selectedOutcome = outcomes[button.tag]
+        handleItemSelection(selectedOutcome)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -133,6 +152,7 @@ extension ActionListViewController: UITableViewDelegate, UITableViewDataSource {
         }
         self.view.layoutIfNeeded()
     }
+    
     fileprivate func applyTheme(_ cell: UITableViewCell) {
         if let themeCell = cell as? CellThemeApplier, let theme = coordinatorServices?.themingService {
             themeCell.applyCellTheme(with: theme)

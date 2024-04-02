@@ -142,14 +142,10 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
             return (aString, nil)
         case .valueElementArray(let elements):
             return (nil, elements)
-        case .none:
+        default:
             AlfrescoLog.debug("Found none")
-        case .some(.null):
-            AlfrescoLog.debug("Found null")
-        case .some(.bool(_)):
-            AlfrescoLog.debug("Found Bool")
+            return (nil, nil)
         }
-        return (nil, nil)
     }
     
     func getDueDate(for dueDate: String?) -> String? {

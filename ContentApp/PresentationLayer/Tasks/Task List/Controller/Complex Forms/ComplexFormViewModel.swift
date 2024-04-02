@@ -23,6 +23,16 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFields
 class ComplexFormViewModel: NSObject {
     var selectedDateTimeTextField: MDCOutlinedTextField!
     var selectedDateTextField: MDCOutlinedTextField!
+    var services: CoordinatorServices?
+    let isLoading = Observable<Bool>(true)
+    var formData: StartFormFields?
+    
+    func isoDateFormat() -> ISO8601DateFormatter {
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        dateFormatter.timeZone = TimeZone.current
+        return dateFormatter
+    }
     
     func selectedDateString(for date: Date) -> String {
         let dateFormatter = DateFormatter()
@@ -58,10 +68,33 @@ class ComplexFormViewModel: NSObject {
         DispatchQueue.global(qos: .background).async { [] in
             // Check if all required fields have non-empty entered values
             let allRequiredFieldsNonEmpty = formFields.allSatisfy { field in
-                if field.type == "boolean" {
+                let type = ComplexFormFieldType(rawValue: field.type)
+                switch type {
+                case .amountField, .numberField:
+                    let text = ValueUnion.int(field.value?.getIntValue() ?? 0).getIntValue()
+                    return !field.fieldRequired || !(text == 0)
+                    
+                case .checkbox:
                     // For boolean fields, no need to check if they are required or have non-empty entered values
                     return true
-                } else {
+                    
+                case .radioButton, .dropDown:
+                    if let dictValue = field.value?.getDictValue() {
+                        let value = ValueUnion.valueElementDict(dictValue).getDictValue()
+                        return !field.fieldRequired || !(value?.name.isEmpty ?? true)
+                    } else {
+                        return false
+                    }
+                    
+                case .people, .group:
+                    if let assignee = field.value?.getAssignee() {
+                        let value = ValueUnion.assignee(assignee).getAssignee()
+                        return !field.fieldRequired || !(value?.id == -1)
+                    } else {
+                        return false
+                    }
+                    
+                default:
                     // For other types of fields, check if they are required and have non-empty entered values
                     let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
                     return !field.fieldRequired || !(text?.isEmpty ?? true)
@@ -70,5 +103,67 @@ class ComplexFormViewModel: NSObject {
             // Call the completion handler with the result
             completion(allRequiredFieldsNonEmpty)
         }
+    }
+
+}
+// MARK: - Start Workflow
+extension ComplexFormViewModel {
+    
+    func startWorkflowProcess(for formFields: [Field], name: String, processDefinitionId: String, completionHandler: @escaping (_ isError: Bool) -> Void) {
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: {[weak self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            guard let sSelf = self else { return }
+            let params = sSelf.startWorkFlowParams(for: formFields, name: name, processDefinitionId: processDefinitionId )
+            ProcessAPI.startWorkFlowProcess(params: params) { data, error in
+                sSelf.isLoading.value = false
+                if error == nil {
+                    completionHandler(false)
+                } else {
+                    completionHandler(true)
+                }
+            }
+        })
+    }
+
+    private func startWorkFlowParams(for formFields: [Field], name: String, processDefinitionId: String) -> StartWorkFlowBodyCreate {
+        let name = name
+        let processDefinitionId = processDefinitionId
+        var params = [String: AnyEncodable]()
+        for field in formFields {
+            let key = field.id
+            let type = ComplexFormFieldType(rawValue: field.type)
+            var localParams: [String: AnyEncodable]
+            switch type {
+            case .amountField, .numberField:
+                let value = ValueUnion.int(field.value?.getIntValue() ?? 0).getIntValue()
+                localParams = [key: AnyEncodable(value ?? 0)]
+            case .checkbox:
+                let value = ValueUnion.bool(field.value?.getBoolValue() ?? false).getBoolValue()
+                localParams = [key: AnyEncodable(value ?? false)]
+            case .radioButton, .dropDown:
+                if let dictValue = field.value?.getDictValue() {
+                    let value = ValueUnion.valueElementDict(dictValue).getDictValue()
+                    localParams = [key: AnyEncodable(value)]
+                } else {
+                    localParams = [:]
+                }
+            case .people, .group:
+                if let assignee = field.value?.getAssignee() {
+                    let value = ValueUnion.assignee(assignee).getAssignee()
+                    localParams = [key: AnyEncodable(value)]
+                } else {
+                    localParams = [:]
+                }
+            default:
+                let value = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+                localParams = [key: AnyEncodable(value ?? "")]
+            }
+            // Append localParams to params
+            params.merge(localParams) { (_, new) in new }
+        }
+        return StartWorkFlowBodyCreate(name: name,
+                                       processDefinitionId: processDefinitionId,
+                                       params: params)
     }
 }
