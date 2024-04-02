@@ -51,6 +51,7 @@ class ComplexFormViewController: SystemSearchViewController {
         super.viewDidLoad()
         startOutcome()
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        self.complexFormViewModel.services = coordinatorServices ?? CoordinatorServices()
         viewModel.workflowOperationsModel = WorkflowOperationsModel(services: viewModel.services, tempWorkflowId: viewModel.tempWorkflowId)
         viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
@@ -134,6 +135,25 @@ class ComplexFormViewController: SystemSearchViewController {
     
     @objc private func keyboardWillHide(notification: NSNotification) {
         tableView.contentInset = .zero
+    }
+    
+    // MARK: - Start workflow API integration
+    private func startWorkflowAPIIntegration() {
+        let name = self.viewModel.processDefinition??.name ?? ""
+        let processDefinitionId = self.viewModel.processDefinition??.processId ?? ""
+        self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
+            guard let sSelf = self else { return }
+            if !isError {
+                sSelf.updateWorkflowsList()
+                sSelf.backButtonAction()
+            }
+        })
+    }
+    private func updateWorkflowsList() {
+        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.refreshWorkflows)
+        NotificationCenter.default.post(name: notification,
+                                        object: nil,
+                                        userInfo: nil)
     }
     
     // MARK: - Back button
@@ -257,10 +277,12 @@ class ComplexFormViewController: SystemSearchViewController {
     
     // MARK: - Save Button Action
     @IBAction func saveButtonAction(_ sender: Any) {
+        self.startWorkflowAPIIntegration()
     }
     
     // MARK: - Complete Button Action
     @IBAction func completeButtonAction(_ sender: Any) {
+        self.startWorkflowAPIIntegration()
     }
     
     // MARK: - Action Button Action
@@ -273,6 +295,7 @@ class ComplexFormViewController: SystemSearchViewController {
             if let outcomes = viewModel.formData?.outcomes {
                 viewController.outcomes = outcomes
             }
+            viewController.delegate = self
             self.present(bottomSheet, animated: true, completion: nil)
         }
        
@@ -525,20 +548,28 @@ extension ComplexFormViewController {
         let rowViewModel = viewModel.rowViewModels.value[sender.tag]
         guard let localViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
         
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        dateFormatter.timeZone = TimeZone.current
+        
         if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
             if let dateTimePicker = complexFormViewModel.selectedDateTimeTextField.inputView as? UIDatePicker {
                 // Use DateFormatter to format the date and time
                 let date = complexFormViewModel.selectedDateTimeString(for: dateTimePicker.date)
                 complexFormViewModel.selectedDateTimeTextField.text = date
                 localViewModel.text = date
-                localViewModel.didChangeText?(date)
+                
+                let dateString = dateFormatter.string(from: dateTimePicker.date)
+                localViewModel.didChangeText?(dateString)
             }
         } else {
             if let dateTimePicker = complexFormViewModel.selectedDateTextField.inputView as? UIDatePicker {
                 let date = complexFormViewModel.selectedDateString(for: dateTimePicker.date)
                 complexFormViewModel.selectedDateTextField.text = date
                 localViewModel.text = date
-                localViewModel.didChangeText?(date)
+                
+                let dateString = dateFormatter.string(from: dateTimePicker.date)
+                localViewModel.didChangeText?(dateString)
             }
         }
         
@@ -563,7 +594,7 @@ extension ComplexFormViewController {
                     guard let sSelf = self else { return }
                     if let selectedValue = localSelectedChip.selectedValue {
                         rowViewModel.text = selectedValue
-                        rowViewModel.didChangeText?(selectedValue)
+                        rowViewModel.didChangeChip?(localSelectedChip)
                     }
                     sSelf.reloadTableView(row: tag)
                 }
@@ -627,7 +658,7 @@ extension ComplexFormViewController {
             }
         }
         localViewModel.userName = userName
-        localViewModel.didChangeText?(userName)
+        localViewModel.didChangeAssignee?(assignee)
         reloadTableView(row: tag)
     }
     private func updateGroup(with assignee: TaskNodeAssignee, tag: Int, localViewModel: AssigneeTableViewCellViewModel) {
@@ -636,7 +667,7 @@ extension ComplexFormViewController {
             localGroupName = groupName
         }
         localViewModel.userName = localGroupName
-        localViewModel.didChangeText?(localGroupName)
+        localViewModel.didChangeAssignee?(assignee)
         reloadTableView(row: tag)
     }
 }
@@ -718,5 +749,12 @@ extension ComplexFormViewController {
             let navigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController, animated: true)
         }
+    }
+}
+
+extension ComplexFormViewController: ActionListViewControllerDelegate {
+    func actionListViewController(_ viewController: ActionListViewController, didSelectItem selectedItem: AlfrescoContent.Outcome) {
+        print("Selected item:", selectedItem)
+        startWorkflowAPIIntegration()
     }
 }

@@ -136,20 +136,26 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
         }
     }
     
-    private func parseValueType(for field: Field) -> (stringValue: String?, arrayValue: [ValueElement]?) {
+    private func parseValueType(for field: Field) -> (stringValue: String?, arrayValue: [ValueElement]?, boolValue:Bool?, intValue: Int?, dictValue: DropDownValue?, assignee: TaskAssignee?) {
         switch field.value {
         case .string(let aString):
-            return (aString, nil)
+            return (aString, nil, nil, nil, nil, nil)
         case .valueElementArray(let elements):
-            return (nil, elements)
+            return (nil, elements, nil, nil, nil, nil)
         case .none:
             AlfrescoLog.debug("Found none")
         case .some(.null):
             AlfrescoLog.debug("Found null")
-        case .some(.bool(_)):
-            AlfrescoLog.debug("Found Bool")
+        case .bool(let aBool):
+            return (nil, nil, aBool, nil, nil, nil)
+        case .int(let aInt):
+            return (nil, nil, nil, aInt, nil, nil)
+        case .valueElementDict(let aDict):
+            return (nil, nil, nil, nil, aDict, nil)
+        case .some(.assignee(let assignee)):
+            return (nil, nil, nil, nil, nil, assignee)
         }
-        return (nil, nil)
+        return (nil, nil, nil, nil, nil, nil)
     }
     
     func getDueDate(for dueDate: String?) -> String? {

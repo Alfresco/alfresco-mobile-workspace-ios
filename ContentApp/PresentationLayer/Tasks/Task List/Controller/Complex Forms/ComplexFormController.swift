@@ -182,9 +182,9 @@ class ComplexFormController: NSObject {
     // MARK: - Assignee User
     private func peopleCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .people)
-        rowVM.didChangeText = { [weak self] (text) in
-            guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: false)
+        rowVM.didChangeAssignee = { [weak self] (assignee) in
+            guard let selectedAssignee = assignee else { return }
+            self?.updateAssignee(for: field, assignee: selectedAssignee)
         }
         return rowVM
     }
@@ -192,9 +192,9 @@ class ComplexFormController: NSObject {
     // MARK: - Assignee Group
     private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
-        rowVM.didChangeText = { [weak self] (text) in
-            guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: false)
+        rowVM.didChangeAssignee = { [weak self] (assignee) in
+            guard let selectedAssignee = assignee else { return }
+            self?.updateAssignee(for: field, assignee: selectedAssignee)
         }
         return rowVM
     }
@@ -202,9 +202,9 @@ class ComplexFormController: NSObject {
     // MARK: - Drop Down
     private func dropDownCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .dropDown)
-        rowVM.didChangeText = { [weak self] (text) in
-            guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: false)
+        rowVM.didChangeChip = { [weak self] (taskChip) in
+            guard let selectedChip = taskChip else { return }
+            self?.updateChip(for: field, selectedChip: selectedChip)
         }
         return rowVM
     }
@@ -212,9 +212,9 @@ class ComplexFormController: NSObject {
     // MARK: - Radio Button
     private func radioButtonCellVM(for field: Field) -> DropDownTableViewCellViewModel {
         let rowVM = DropDownTableViewCellViewModel(field: field, type: .radioButton)
-        rowVM.didChangeText = { [weak self] (text) in
-            guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: false)
+        rowVM.didChangeChip = { [weak self] (taskChip) in
+            guard let selectedChip = taskChip else { return }
+            self?.updateChip(for: field, selectedChip: selectedChip)
         }
         return rowVM
     }
@@ -229,16 +229,23 @@ class ComplexFormController: NSObject {
     private func checkBoxCellVM(for field: Field) -> CheckBoxTableViewCellViewModel {
         let rowVM = CheckBoxTableViewCellViewModel(field: field, type: .checkbox)
         rowVM.didChangeValue = { [weak self] (isSelected) in
+            guard let self = self else { return }
             guard let checkBoxValue = isSelected else { return }
             field.value = .bool(checkBoxValue)
-            self?.checkRequiredTextField()
+            self.checkRequiredTextField()
         }
         return rowVM
     }
     
     // MARK: - Changed text
     fileprivate func updateText(for field: Field, text: String, checkCount: Bool) {
-        field.value = .string(text)
+        let type = ComplexFormFieldType(rawValue: field.type)
+        
+        if type == .amountField || type == .numberField {
+            field.value = .int(Int(text) ?? 0)
+        } else {
+            field.value = .string(text)
+        }
         if checkCount {
             if text.isEmpty || text.count == 1 {
                 self.checkRequiredTextField()
@@ -246,6 +253,24 @@ class ComplexFormController: NSObject {
         } else {
             self.checkRequiredTextField()
         }
+    }
+    
+    // MARK: - Update DropDown
+    fileprivate func updateChip(for field: Field, selectedChip: TaskChipItem) {
+        selectedChip.options.filter { $0.isSelected }.forEach { [weak self] option in
+            guard let self = self else { return }
+            let dropDown = DropDownValue(id: option.query ?? "", name: option.value ?? "")
+            field.value = .valueElementDict(dropDown)
+            self.checkRequiredTextField()
+        }
+    }
+    
+    // MARK: - Update Assignee
+    fileprivate func updateAssignee(for field: Field, assignee: TaskNodeAssignee) {
+        
+        let taskAssignee = TaskAssignee(assigneeID: assignee.assigneeID, firstName: assignee.firstName, lastName: assignee.lastName, email: assignee.email, groupName: assignee.groupName, externalId: assignee.externalId, status: assignee.status, parentGroupId: assignee.parentGroupId)
+        field.value = .assignee(taskAssignee)
+        self.checkRequiredTextField()
     }
     
     fileprivate func checkRequiredTextField() {

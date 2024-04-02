@@ -136,7 +136,7 @@ struct TaskNode {
 }
 
 // MARK: Task Assignee
-struct TaskNodeAssignee: Codable {
+public struct TaskNodeAssignee: Codable {
     var assigneeID: Int
     var firstName: String?
     var lastName: String?
@@ -161,6 +161,7 @@ struct TaskNodeAssignee: Codable {
          externalId: String?,
          status: String?,
          parentGroupId: String?) {
+        
         self.assigneeID = assigneeID
         self.firstName = firstName
         self.lastName = lastName
