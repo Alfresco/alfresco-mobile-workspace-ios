@@ -46,6 +46,8 @@ class ComplexFormController: NSObject {
             return HyperlinkTableViewCell.cellIdentifier()
         case is CheckBoxTableViewCellViewModel:
             return CheckBoxTableViewCell.cellIdentifier()
+        case is AddAttachmentComplexTableViewCellViewModel:
+            return AddAttachmentComplexTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -98,6 +100,9 @@ class ComplexFormController: NSObject {
                 rowViewModels.append(cellVM)
             case ComplexFormFieldType.checkbox.rawValue:
                 let cellVM = checkBoxCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.upload.rawValue:
+                let cellVM = attachmentCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
@@ -233,6 +238,16 @@ class ComplexFormController: NSObject {
             guard let checkBoxValue = isSelected else { return }
             field.value = .bool(checkBoxValue)
             self.checkRequiredTextField()
+        }
+        return rowVM
+    }
+    
+    // MARK: - Attachment
+    private func attachmentCellVM(for field: Field) -> AddAttachmentComplexTableViewCellViewModel {
+        let rowVM = AddAttachmentComplexTableViewCellViewModel(field: field, type: .checkbox)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
         }
         return rowVM
     }

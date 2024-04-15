@@ -41,10 +41,10 @@ class ComplexFormViewController: SystemSearchViewController {
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
-    private var dialogTransitionController: MDCDialogTransitionController?
-    private var cameraCoordinator: CameraScreenCoordinator?
-    private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
-    private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    //private var dialogTransitionController: MDCDialogTransitionController?
+    //private var cameraCoordinator: CameraScreenCoordinator?
+    //private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
+    //private var fileManagerCoordinator: FileManagerScreenCoordinator?
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -64,7 +64,7 @@ class ComplexFormViewController: SystemSearchViewController {
         applyLocalization()
         getWorkflowDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
-        self.dialogTransitionController = MDCDialogTransitionController()
+        //self.dialogTransitionController = MDCDialogTransitionController()
 
         if !viewModel.isDetailWorkflow {
             ProfileService.getAPSSource() // to get APS Source
@@ -122,6 +122,8 @@ class ComplexFormViewController: SystemSearchViewController {
         
         self.tableView.register(UINib(nibName: CellConstants.TableCells.checkBoxTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.checkBoxTableViewCell)
         
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.addAttachmentComplexTableViewCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addAttachmentComplexTableViewCell)
+        
     }
     
     @objc private func handleReSignIn(notification: Notification) {
@@ -139,15 +141,19 @@ class ComplexFormViewController: SystemSearchViewController {
     
     // MARK: - Start workflow API integration
     private func startWorkflowAPIIntegration() {
-        let name = self.viewModel.processDefinition??.name ?? ""
-        let processDefinitionId = self.viewModel.processDefinition??.processId ?? ""
-        self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
-            guard let sSelf = self else { return }
-            if !isError {
-                sSelf.updateWorkflowsList()
-                sSelf.backButtonAction()
-            }
-        })
+        if viewModel.isLocalContentAvailable() {
+            showUploadingInQueueWarning()
+        } else {
+            let name = self.viewModel.processDefinition??.name ?? ""
+            let processDefinitionId = self.viewModel.processDefinition??.processId ?? ""
+            self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
+                guard let sSelf = self else { return }
+                if !isError {
+                    sSelf.updateWorkflowsList()
+                    sSelf.backButtonAction()
+                }
+            })
+        }
     }
     private func updateWorkflowsList() {
         let notification = NSNotification.Name(rawValue: KeyConstants.Notification.refreshWorkflows)
@@ -183,6 +189,24 @@ class ComplexFormViewController: SystemSearchViewController {
     
     @objc func backButtonAction() {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    private func showUploadingInQueueWarning() {
+        let title = LocalizationConstants.Workflows.warningTitle
+        let message = LocalizationConstants.Workflows.attachmentInProgressWarning
+    
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
     }
     
     // MARK: - Public Helpers
@@ -420,6 +444,11 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         (cell as? CheckBoxTableViewCell)?.viewAllButton.addTarget(self, action: #selector(viewAllButtonAction(button:)), for: .touchUpInside)
     }
     
+    fileprivate func configureAttachmentCells(_ localViewModel: AddAttachmentComplexTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        (cell as?  AddAttachmentComplexTableViewCell)?.attachmentButton.tag = indexPath.row
+        (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+    }
+    
     fileprivate func applyTheme(_ cell: UITableViewCell) {
         if let themeCell = cell as? CellThemeApplier, let theme = coordinatorServices?.themingService {
             themeCell.applyCellTheme(with: theme)
@@ -437,6 +466,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             configureHyperlinkCells(localViewModel, cell, indexPath)
         } else if cell is CheckBoxTableViewCell, let localViewModel = rowViewModel as? CheckBoxTableViewCellViewModel {
             configureCheckBoxCells(localViewModel, cell, indexPath)
+        } else if cell is AddAttachmentComplexTableViewCell, let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel {
+            configureAttachmentCells(localViewModel, cell, indexPath)
         }
     }
     
@@ -473,6 +504,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         case is AssigneeTableViewCellViewModel:
             return assignUserCellHeight(rowViewModel: rowViewModel)
         case is HyperlinkTableViewCellViewModel:
+            return 100
+        case is AddAttachmentComplexTableViewCellViewModel:
             return 100
         default:
             return UITableView.automaticDimension
@@ -727,6 +760,53 @@ extension ComplexFormViewController {
 }
 // MARK: - CheckBox
 extension ComplexFormViewController {
+    
+    @objc func attachmentButtonAction(button: UIButton) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.attachmentType = .workflow
+            viewController.viewModel.processDefintionTitle = viewModel.processDefintionTitle
+            let rowViewModel = viewModel.rowViewModels.value[button.tag]
+            guard let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
+            viewController.multiSelection = localViewModel.multiSelection
+//            let fieldId = localViewModel.field?.id ?? ""
+//            viewModel.tempWorkflowId = viewModel.tempWorkflowId + "101"
+//            print(viewModel.tempWorkflowId )
+//            viewModel.workflowOperationsModel?.tempWorkflowId = viewModel.tempWorkflowId
+//            viewController.viewModel.tempWorkflowId = viewModel.tempWorkflowId
+//            localViewModel.tempWorkflowId = viewModel.tempWorkflowId
+            viewModel.workflowOperationsModel?.attachments.value = localViewModel.attachments
+            viewController.viewModel.workflowOperationsModel = viewModel.workflowOperationsModel
+            viewController.viewModel.workflowOperationsModel?.attachments.addObserver { [weak self] (attachments) in
+                guard let sSelf = self else { return }
+                sSelf.recievedAttachment(tag: button.tag, attachments: attachments, localViewModel: localViewModel)
+            }
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    func recievedAttachment(tag: Int, attachments: [ListNode], localViewModel: AddAttachmentComplexTableViewCellViewModel) {
+        var guidStr = ""
+        for attachment in attachments {
+            if localViewModel.tempWorkflowId == attachment.parentGuid {
+                if guidStr.isEmpty {
+                    guidStr = attachment.guid
+                } else {
+                    // Append the new attachment's guid with a comma separator
+                    guidStr += ",\(attachment.guid)"
+                }
+            } else {
+                print("Wrong attachment")
+                break
+            }
+        }
+        if !guidStr.isEmpty {
+            localViewModel.attachments = attachments
+            localViewModel.didChangeText?(guidStr)
+            self.reloadTableView(row: tag)
+        }
+       
+    }
     
     @objc func checkBoxButtonAction(button: UIButton) {
         let rowViewModel = viewModel.rowViewModels.value[button.tag]

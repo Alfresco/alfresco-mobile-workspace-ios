@@ -86,8 +86,7 @@ class StartWorkflowViewModel: NSObject {
     }
     
     var attachmentsCount: String? {
-        let count = workflowOperationsModel?.attachments.value.count ?? 0
-        if count > 1 {
+        if let count = workflowOperationsModel?.attachments.value.count, !(workflowOperationsModel?.attachments.value.isEmpty ?? Bool()) {
             return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, count)
         }
         return nil

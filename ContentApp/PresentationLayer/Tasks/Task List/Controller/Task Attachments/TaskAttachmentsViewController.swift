@@ -31,6 +31,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    var multiSelection = true
 
     // MARK: - View did load
 
@@ -66,15 +67,21 @@ class TaskAttachmentsViewController: SystemSearchViewController {
 
     private func checkForAddAttachmentButton() {
         if viewModel.isWorkflowTaskAttachments {
-            addAttachmentButton.isHidden = true
-            tableView.contentInset.bottom = 0
+            self.hideAddAttachmentButton()
         } else if viewModel.isTaskCompleted && viewModel.attachmentType == .task {
-            addAttachmentButton.isHidden = true
-            tableView.contentInset.bottom = 0
+            self.hideAddAttachmentButton()
         } else {
-            addAttachmentButton.isHidden = false
-            tableView.contentInset.bottom = 90
+            self.showAddAttachmentButton()
         }
+    }
+    private func showAddAttachmentButton() {
+        addAttachmentButton.isHidden = false
+        tableView.contentInset.bottom = 90
+    }
+    
+    private func hideAddAttachmentButton() {
+        addAttachmentButton.isHidden = true
+        tableView.contentInset.bottom = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,6 +93,18 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.isHidden = false
+    }
+    
+    private func checkAddAttachButton() {
+        if viewModel.attachmentType == .workflow {
+            if !multiSelection {
+                if viewModel.attachmentsCount?.isEmpty != nil {
+                    self.hideAddAttachmentButton()
+                } else {
+                    self.showAddAttachmentButton()
+                }
+            }
+        }
     }
     
     func updateTheme() {
@@ -113,6 +132,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.attachedFilesTitle
         attachmentsCountLabel.text = viewModel.attachmentsCount
+        checkAddAttachButton()
     }
     
     func registerCells() {
@@ -289,7 +309,9 @@ extension TaskAttachmentsViewController {
                 DispatchQueue.main.async {
                     self.applyLocalization()
                 }
-                popToPreviousController(attachments: attachments)
+                if viewModel.attachmentType != .workflow {
+                    popToPreviousController(attachments: attachments)
+                }
             }
         }
     }
@@ -370,6 +392,7 @@ extension TaskAttachmentsViewController {
                 let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
                                                                 parentListNode: workflowNode(),
                                                                 attachmentType: .workflow)
+                coordinator.multiSelection = multiSelection
                 coordinator.start()
                 photoLibraryCoordinator = coordinator
                 coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
@@ -422,6 +445,7 @@ extension TaskAttachmentsViewController {
                 let coordinator = FileManagerScreenCoordinator(with: presenter,
                                                                parentListNode: workflowNode(),
                                                                attachmentType: .workflow)
+                coordinator.multiSelection = multiSelection
                 coordinator.start()
                 fileManagerCoordinator = coordinator
                 coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in

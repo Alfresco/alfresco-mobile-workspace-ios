@@ -94,6 +94,9 @@
 		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
 		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
 		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
+		74D4D9272BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */; };
+		74D4D9282BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */; };
+		74D4D92A2BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */; };
 		A24BD3F41371BDA3E3A64E53 /* Pods_ContentApp_ContentAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */; };
 		B5E392CD597158BADA51B20F /* EntityInfo-ContentApp.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */; };
 		B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
@@ -921,6 +924,9 @@
 		74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
 		74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewModel.swift; sourceTree = "<group>"; };
+		74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCell.swift; sourceTree = "<group>"; };
+		74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttachmentComplexTableViewCell.xib; sourceTree = "<group>"; };
+		74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		978127C511FEA1D69B063806 /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A230D94AA20A969ED5B23885 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp_ContentAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1526,6 +1532,7 @@
 		471993AC2B3016A000F21CBA /* Complex Forms */ = {
 			isa = PBXGroup;
 			children = (
+				74D4D9242BBD1E8B00AD93CD /* AddAttachmentComplex */,
 				742063992B9AF5010007653B /* Outcomes */,
 				748393582B8DD71E008C2DC7 /* CheckBox */,
 				74731C2A2B875BA300828167 /* Hyperlink */,
@@ -1788,6 +1795,16 @@
 				74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */,
 			);
 			path = People;
+			sourceTree = "<group>";
+		};
+		74D4D9242BBD1E8B00AD93CD /* AddAttachmentComplex */ = {
+			isa = PBXGroup;
+			children = (
+				74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */,
+				74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */,
+				74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */,
+			);
+			path = AddAttachmentComplex;
 			sourceTree = "<group>";
 		};
 		B91A5E46247825CF0063E938 /* ServiceRepository */ = {
@@ -4114,6 +4131,7 @@
 				7420639D2B9AF5210007653B /* OutcomesTableViewCell.xib in Resources */,
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
 				47CA83A22A57F15C0081A000 /* MultipleSelectionHeaderView.xib in Resources */,
+				74D4D9282BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib in Resources */,
 				C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */,
 				C9AF1B0D28DEDB710020D36A /* TaskAssigneeTableViewCell.xib in Resources */,
 				B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */,
@@ -4816,6 +4834,7 @@
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
 				E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */,
 				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
+				74D4D92A2BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift in Sources */,
 				C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */,
 				47CA83A42A57F16A0081A000 /* MultipleSelectionHeaderView.swift in Sources */,
 				E3FADB9D2538703000BA6F9B /* ActionMenuCollectionViewCell.swift in Sources */,
@@ -4976,6 +4995,7 @@
 				4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */,
 				F1B020B7261AF83B007799B2 /* PreviewViewController.swift in Sources */,
 				47B782492A5E83360075BE39 /* MultipleFileActionMenuScreenCoordinator.swift in Sources */,
+				74D4D9272BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift in Sources */,
 				B9A8E26924CEAC2F00ED9C3B /* ListComponentViewController.swift in Sources */,
 				B9E7D60924911F190056292B /* AccountService.swift in Sources */,
 				E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */,

@@ -42,6 +42,7 @@ class PhotoGalleryViewController: UIViewController {
             uploadButton.isEnabled = enableUploadButton
         }
     }
+    var multiSelection = true
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -67,6 +68,10 @@ class PhotoGalleryViewController: UIViewController {
     }
     
     @IBAction func uploadButtonTapped(_ sender: UIButton) {
+        self.uploadAssets()
+    }
+    
+    private func uploadAssets() {
         photoGalleryDataSource?.fetchSelectedAssets(for: cameraDelegate)
         self.dismiss(animated: true, completion: nil)
     }
@@ -182,6 +187,9 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
             dataSource.markAssetsAs(enabled: true, for: indexPath)
             enableUploadButton = true
             cell.assetImageView.accessibilityTraits = .selected
+            if  multiSelection == false {
+                self.uploadAssets()
+            }
         }
     }
     

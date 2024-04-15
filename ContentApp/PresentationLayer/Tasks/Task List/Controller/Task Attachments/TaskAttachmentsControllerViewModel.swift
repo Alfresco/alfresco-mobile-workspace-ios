@@ -28,7 +28,7 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
             }
         } else if attachmentType == .workflow {
             let attachments = workflowOperationsModel?.attachments.value ?? []
-            if attachments.count > 1 {
+            if !attachments.isEmpty {
                 return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count)
             }
         }

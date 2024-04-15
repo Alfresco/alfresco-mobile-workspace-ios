@@ -65,7 +65,10 @@ class ComplexFormViewModel: NSObject {
     }
     
     func checkRequiredField(formFields: [Field], completion: @escaping (Bool) -> Void) {
-        DispatchQueue.global(qos: .background).async { [] in
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            
+            guard let sself = self else { return } // Unwrap weak self
+
             // Check if all required fields have non-empty entered values
             let allRequiredFieldsNonEmpty = formFields.allSatisfy { field in
                 let type = ComplexFormFieldType(rawValue: field.type)
@@ -104,8 +107,8 @@ class ComplexFormViewModel: NSObject {
             completion(allRequiredFieldsNonEmpty)
         }
     }
-
 }
+
 // MARK: - Start Workflow
 extension ComplexFormViewModel {
     
