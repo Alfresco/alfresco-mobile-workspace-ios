@@ -46,7 +46,6 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         controller.registerEvents()
         progressView.progress = 0
         progressView.mode = .indeterminate
-        applyLocalization()
         addRefreshControl()
         registerCells()
         addAccessibility()
@@ -92,6 +91,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         updateTheme()
+        applyLocalization()
     }
     
     override func viewDidAppear(_ animated: Bool) {
