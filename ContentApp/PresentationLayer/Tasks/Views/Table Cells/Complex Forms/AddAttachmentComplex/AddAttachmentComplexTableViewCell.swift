@@ -41,11 +41,15 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
         guard let viewModel = viewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
         self.viewModel = viewModel
         titleLabel.text = viewModel.name
-        if !viewModel.attachments.isEmpty {
-            let count = viewModel.attachments.count
-            attachmentCount.text = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, count)
+        if viewModel.isFolder {
+            attachmentCount.text = LocalizationConstants.Workflows.noFolderAttached
         } else {
-            attachmentCount.text = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+            if !viewModel.attachments.isEmpty {
+                let count = viewModel.attachments.count
+                attachmentCount.text = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, count)
+            } else {
+                attachmentCount.text = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+            }
         }
         addAccessibility()
     }
@@ -55,10 +59,16 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
         titleLabel.accessibilityLabel = ""
         titleLabel.accessibilityValue = ""
         titleLabel.accessibilityIdentifier = "\(String(describing: self.titleLabel.text))"
-
-        attachmentCount.accessibilityIdentifier = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
-        attachmentCount.accessibilityLabel = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
-        attachmentCount.accessibilityValue = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+        
+        if (self.viewModel?.isFolder != nil) {
+            attachmentCount.accessibilityIdentifier = LocalizationConstants.Workflows.noFolderAttached
+            attachmentCount.accessibilityLabel = LocalizationConstants.Workflows.noFolderAttached
+            attachmentCount.accessibilityValue = LocalizationConstants.Workflows.noFolderAttached
+        } else {
+            attachmentCount.accessibilityIdentifier = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+            attachmentCount.accessibilityLabel = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+            attachmentCount.accessibilityValue = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+        }
         
         attachmentButton.accessibilityLabel = ""
         attachmentButton.accessibilityHint = ""

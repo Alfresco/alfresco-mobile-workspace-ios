@@ -446,7 +446,12 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     
     fileprivate func configureAttachmentCells(_ localViewModel: AddAttachmentComplexTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
         (cell as?  AddAttachmentComplexTableViewCell)?.attachmentButton.tag = indexPath.row
-        (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+        if localViewModel.isFolder {
+            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentFolderButtonAction(button:)), for: .touchUpInside)
+        } else {
+            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+        }
+     
     }
     
     fileprivate func applyTheme(_ cell: UITableViewCell) {
@@ -506,7 +511,7 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         case is HyperlinkTableViewCellViewModel:
             return 100
         case is AddAttachmentComplexTableViewCellViewModel:
-            return 100
+            return 80
         default:
             return UITableView.automaticDimension
         }
@@ -800,6 +805,9 @@ extension ComplexFormViewController {
         rowViewModel.didChangeText?(guidStr)
         reloadTableView(row: tag)
         
+    }
+    
+    @objc func attachmentFolderButtonAction(button: UIButton) {
     }
 
     @objc func checkBoxButtonAction(button: UIButton) {

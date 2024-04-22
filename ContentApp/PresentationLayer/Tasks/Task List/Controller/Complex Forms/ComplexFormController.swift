@@ -104,6 +104,9 @@ class ComplexFormController: NSObject {
             case ComplexFormFieldType.upload.rawValue:
                 let cellVM = attachmentCellVM(for: field)
                 rowViewModels.append(cellVM)
+            case ComplexFormFieldType.selectfolder.rawValue:
+                let cellVM = attachmentCellVM(for: field)
+                rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
             }
@@ -117,7 +120,7 @@ class ComplexFormController: NSObject {
         let rowVM = MultiLineTextTableCellViewModel(field: field)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: true)
+            self?.updateText(for: field, text: enterText)
         }
         return rowVM
     }
@@ -127,7 +130,7 @@ class ComplexFormController: NSObject {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .singleLineText)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: true)
+            self?.updateText(for: field, text: enterText)
         }
         return rowVM
     }
@@ -137,7 +140,7 @@ class ComplexFormController: NSObject {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .numberField)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: true)
+            self?.updateText(for: field, text: enterText)
         }
         return rowVM
     }
@@ -147,7 +150,7 @@ class ComplexFormController: NSObject {
         let rowVM = SingleLineTextTableCellViewModel(field: field, type: .amountField)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: true)
+            self?.updateText(for: field, text: enterText)
         }
         return rowVM
     }
@@ -169,7 +172,7 @@ class ComplexFormController: NSObject {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .dateTime)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: false)
+            self?.updateText(for: field, text: enterText)
         }
         return rowVM
     }
@@ -179,7 +182,7 @@ class ComplexFormController: NSObject {
         let rowVM = DatePickerTableViewCellViewModel(field: field, type: .date)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: false)
+            self?.updateText(for: field, text: enterText)
         }
         return rowVM
     }
@@ -247,13 +250,13 @@ class ComplexFormController: NSObject {
         let rowVM = AddAttachmentComplexTableViewCellViewModel(field: field, type: .checkbox)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
-            self?.updateText(for: field, text: enterText, checkCount: false)
+            self?.updateText(for: field, text: enterText)
         }
         return rowVM
     }
     
     // MARK: - Changed text
-    fileprivate func updateText(for field: Field, text: String, checkCount: Bool) {
+    fileprivate func updateText(for field: Field, text: String) {
         let type = ComplexFormFieldType(rawValue: field.type)
         
         if type == .amountField || type == .numberField {

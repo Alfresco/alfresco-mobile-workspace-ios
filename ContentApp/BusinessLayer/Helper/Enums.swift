@@ -50,4 +50,5 @@ enum ComplexFormFieldType: String {
     case checkbox = "boolean"
     case outcomes = "outcomes"
     case upload = "upload"
+    case selectfolder = "select-folder"
 }
