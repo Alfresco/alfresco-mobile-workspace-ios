@@ -26,7 +26,16 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
     var didChangeText: ((String?) -> Void)?
     var multiSelection = false
     var field: Field?
-    var tempWorkflowId: String?
+    var tempWorkflowId: String = ""
+    var fieldRequired = false
+    
+    var name: String? {
+        if fieldRequired {
+            return String(format: "%@*", title ?? "")
+        } else {
+            return title
+        }
+    }
     
     func cellIdentifier() -> String {
         return "AddAttachmentComplexTableViewCell"
@@ -37,5 +46,6 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
         self.title = field.name
         let multiSelection = ((field.params?.multipal) != nil)
         self.multiSelection = multiSelection
+        self.fieldRequired = field.fieldRequired
     }
 }

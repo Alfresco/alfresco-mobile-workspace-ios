@@ -40,7 +40,7 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
         self.viewModel = viewModel
-        titleLabel.text = viewModel.title
+        titleLabel.text = viewModel.name
         if !viewModel.attachments.isEmpty {
             let count = viewModel.attachments.count
             attachmentCount.text = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, count)

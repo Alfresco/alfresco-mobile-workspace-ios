@@ -75,7 +75,7 @@ class ComplexFormViewModel: NSObject {
                 switch type {
                 case .amountField, .numberField:
                     let text = ValueUnion.int(field.value?.getIntValue() ?? 0).getIntValue()
-                    return !field.fieldRequired || !(text == 0)
+                    return !field.fieldRequired || sself.checkIntegerValue(minValue: field.minValue ?? "", maxValue: field.maxValue ?? "", text: String(text ?? 0))
                     
                 case .checkbox:
                     // For boolean fields, no need to check if they are required or have non-empty entered values
@@ -97,15 +97,65 @@ class ComplexFormViewModel: NSObject {
                         return false
                     }
                     
+                case .upload:
+                    let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+                    return sself.checkAttachFiles(text: text, field: field)
+
                 default:
                     // For other types of fields, check if they are required and have non-empty entered values
                     let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
-                    return !field.fieldRequired || !(text?.isEmpty ?? true)
+                    return !field.fieldRequired || sself.checkErrorForStringValue(minLength: field.minLength, maxLength: field.maxLength, text: text ?? "")
                 }
             }
             // Call the completion handler with the result
             completion(allRequiredFieldsNonEmpty)
         }
+    }
+    
+    private func checkAttachFiles(text: String?, field: Field) -> Bool {
+        // Split text by comma and remove empty values
+        let values = text?.split(separator: ",").filter { !$0.isEmpty }
+
+        if field.fieldRequired {
+            // If field is required, check if any non-zero value is present
+            if let nonZeroValues = values?.filter({ $0 != "0" }), !nonZeroValues.isEmpty {
+                // At least one non-zero value is found
+                return true
+            } else {
+                // No non-zero value found, or text is empty
+                return false
+            }
+        } else {
+            // If field is not required, return true if any non-empty value is present
+            return true
+        }
+    }
+    
+    private func checkErrorForStringValue(minLength: Int, maxLength: Int, text: String) -> Bool {
+        let numberOfChars = text.count
+        
+        // Check if maxLength is 0 (indicating no maximum length)
+        if maxLength == 0 {
+            return numberOfChars > 0
+        }
+        
+        // Check if numberOfChars is within the specified range
+        return numberOfChars >= minLength && numberOfChars <= maxLength
+    }
+
+    private func checkIntegerValue(minValue: String, maxValue: String, text: String) -> Bool {
+        if !minValue.isEmpty {
+            if text.isEmpty {
+                return true
+            } else if (Int(text) ?? 0) < (Int(minValue) ?? 0) {
+               return false
+            } else if (Int(text) ?? 0) > (Int(maxValue) ?? 0) {
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
     }
 }
 

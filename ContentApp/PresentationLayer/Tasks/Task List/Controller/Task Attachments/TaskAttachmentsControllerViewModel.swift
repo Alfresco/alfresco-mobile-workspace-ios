@@ -27,7 +27,8 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
                 return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.value.count)
             }
         } else if attachmentType == .workflow {
-            let attachments = workflowOperationsModel?.attachments.value ?? []
+            let localAttachments = workflowOperationsModel?.attachments.value ?? []
+            let attachments = localAttachments.filter { $0.parentGuid == tempWorkflowId }
             if !attachments.isEmpty {
                 return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count)
             }
@@ -40,4 +41,8 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
     var processDefintionTitle: String = ""
     var workflowOperationsModel: WorkflowOperationsModel?
     var isWorkflowTaskAttachments = false
+    
+    func emptyList() -> EmptyListProtocol {
+        return EmptyAttachFiles()
+    }
 }

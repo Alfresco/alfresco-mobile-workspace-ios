@@ -25,6 +25,10 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var attachmentsCountLabel: UILabel!
     @IBOutlet weak var addAttachmentButton: MDCFloatingButton!
+    @IBOutlet weak var emptyListImageView: UIImageView!
+    @IBOutlet weak var emptyListView: UIView!
+    @IBOutlet weak var emptyListTitle: UILabel!
+    @IBOutlet weak var emptyListSubtitle: UILabel!
     var refreshControl: UIRefreshControl?
     var viewModel: TaskAttachmentsControllerViewModel { return controller.viewModel }
     lazy var controller: TaskAttachmentsController = { return TaskAttachmentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -37,7 +41,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        emptyListView.isHidden = true
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         controller.registerEvents()
         progressView.progress = 0
@@ -133,6 +137,22 @@ class TaskAttachmentsViewController: SystemSearchViewController {
         self.title = LocalizationConstants.Tasks.attachedFilesTitle
         attachmentsCountLabel.text = viewModel.attachmentsCount
         checkAddAttachButton()
+        showHideEmptyView()
+    }
+    
+    private func showHideEmptyView() {
+        if viewModel.attachmentType == .workflow {
+            var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+            if !attachments.isEmpty {
+                emptyListView.isHidden = true
+            } else {
+                emptyListView.isHidden = false
+                let emptyList = viewModel.emptyList()
+                emptyListImageView.image = emptyList.icon
+                emptyListTitle.text = emptyList.title
+                emptyListSubtitle.text = emptyList.description
+            }
+        }
     }
     
     func registerCells() {
@@ -162,6 +182,11 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        emptyListView.backgroundColor = currentTheme.surfaceColor
+        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        emptyListTitle.textAlignment = .center
+        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
+        emptyListSubtitle.textAlignment = .center
         attachmentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         refreshControl?.tintColor = currentTheme.primaryT1Color
         addAttachmentButton.backgroundColor = currentTheme.primaryT1Color

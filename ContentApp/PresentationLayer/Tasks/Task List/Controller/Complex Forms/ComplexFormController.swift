@@ -261,13 +261,7 @@ class ComplexFormController: NSObject {
         } else {
             field.value = .string(text)
         }
-        if checkCount {
-            if text.isEmpty || text.count == 1 {
-                self.checkRequiredTextField()
-            }
-        } else {
-            self.checkRequiredTextField()
-        }
+        self.checkRequiredTextField()
     }
     
     // MARK: - Update DropDown

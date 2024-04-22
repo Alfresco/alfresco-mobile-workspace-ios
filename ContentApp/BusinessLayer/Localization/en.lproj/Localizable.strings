@@ -444,6 +444,7 @@
 "release-title" = "Release";
 "created_date" = "Created Date";
 "actions" = "Actions";
+"empty-attachFiles-description" = "Looks like you haven’t added any files yet.";
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";

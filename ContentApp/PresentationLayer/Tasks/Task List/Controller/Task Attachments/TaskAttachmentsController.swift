@@ -71,8 +71,9 @@ class TaskAttachmentsController: NSObject {
                     guard let sSelf = self else { return }
                     sSelf.viewModel.didSelectDeleteAttachment?(attachment)
                 }
-                
-                rowVMs.append(rowVM)
+                if attachment.parentGuid == viewModel.tempWorkflowId {
+                    rowVMs.append(rowVM)
+                }
             }
         }
         return rowVMs
@@ -99,7 +100,10 @@ extension TaskAttachmentsController: EventObservable {
     func handleSyncStatus(event: SyncStatusEvent) {
         if viewModel.isWorkflowTaskAttachments { return }
         if viewModel.attachmentType == .workflow {
-            self.buildViewModel()
+            let eventNode = event.node
+            if viewModel.tempWorkflowId == eventNode.parentGuid {
+                self.buildViewModel()
+            }
         } else {
             var attachments = viewModel.attachments.value
             let eventNode = event.node

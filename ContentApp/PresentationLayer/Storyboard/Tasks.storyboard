@@ -1629,6 +1629,52 @@
                                     <outlet property="delegate" destination="xRV-ln-mE9" id="OKb-GB-Erk"/>
                                 </connections>
                             </tableView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="szB-gS-a3t" userLabel="EmptyListView">
+                                <rect key="frame" x="0.0" y="73" width="414" height="749"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CaL-Ny-gQF">
+                                        <rect key="frame" x="175" y="230.5" width="64" height="88"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="emptyListImageView">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="64" id="GDc-Tg-kKX"/>
+                                            <constraint firstAttribute="height" constant="88" id="wWX-80-eLf"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5pX-1t-C6Z">
+                                        <rect key="frame" x="30" y="334.5" width="354" height="33.5"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="emptyListTitleLabel">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VND-Kx-wx9">
+                                        <rect key="frame" x="30" y="376" width="354" height="41"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="emptyListSubtitleLabel">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <string key="text">We can’t find what
+ you’re looking for</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="5pX-1t-C6Z" firstAttribute="leading" secondItem="szB-gS-a3t" secondAttribute="leading" constant="30" id="8wV-Jj-oX9"/>
+                                    <constraint firstItem="VND-Kx-wx9" firstAttribute="top" secondItem="5pX-1t-C6Z" secondAttribute="bottom" constant="8" id="RRu-AS-vtl"/>
+                                    <constraint firstItem="CaL-Ny-gQF" firstAttribute="centerY" secondItem="szB-gS-a3t" secondAttribute="centerY" constant="-100" id="UEn-uv-cnd"/>
+                                    <constraint firstItem="VND-Kx-wx9" firstAttribute="leading" secondItem="5pX-1t-C6Z" secondAttribute="leading" id="VI6-YU-zK0"/>
+                                    <constraint firstItem="VND-Kx-wx9" firstAttribute="trailing" secondItem="5pX-1t-C6Z" secondAttribute="trailing" id="a0G-Gn-a9s"/>
+                                    <constraint firstItem="5pX-1t-C6Z" firstAttribute="top" secondItem="CaL-Ny-gQF" secondAttribute="bottom" constant="16" id="hv2-gO-qsR"/>
+                                    <constraint firstItem="CaL-Ny-gQF" firstAttribute="centerX" secondItem="szB-gS-a3t" secondAttribute="centerX" id="mSo-je-Eb5"/>
+                                    <constraint firstAttribute="trailing" secondItem="5pX-1t-C6Z" secondAttribute="trailing" constant="30" id="uRu-9R-gAo"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="24p-SL-HP4" userLabel="addAttachmentButton" customClass="MDCFloatingButton">
                                 <rect key="frame" x="342" y="783" width="56" height="56"/>
                                 <accessibility key="accessibilityConfiguration" identifier="createButton">
@@ -1650,8 +1696,12 @@
                             <constraint firstItem="Wg1-6W-0Yx" firstAttribute="top" secondItem="Ysd-sx-pNT" secondAttribute="top" id="1I1-99-Pb4"/>
                             <constraint firstItem="LOx-p6-ZdA" firstAttribute="leading" secondItem="Ysd-sx-pNT" secondAttribute="leading" id="2ug-BJ-CMx"/>
                             <constraint firstItem="wW7-P7-lyf" firstAttribute="top" secondItem="LOx-p6-ZdA" secondAttribute="bottom" constant="10" id="4A3-wZ-ECW"/>
+                            <constraint firstItem="szB-gS-a3t" firstAttribute="top" secondItem="Wg1-6W-0Yx" secondAttribute="bottom" constant="23" id="6Bv-Jb-RjG"/>
+                            <constraint firstItem="szB-gS-a3t" firstAttribute="trailing" secondItem="Ysd-sx-pNT" secondAttribute="trailing" id="ApM-G4-59z"/>
                             <constraint firstItem="wW7-P7-lyf" firstAttribute="leading" secondItem="Ysd-sx-pNT" secondAttribute="leading" id="Cnf-uA-9fl"/>
                             <constraint firstItem="LOx-p6-ZdA" firstAttribute="trailing" secondItem="Ysd-sx-pNT" secondAttribute="trailing" id="Eff-OI-SB9"/>
+                            <constraint firstItem="szB-gS-a3t" firstAttribute="leading" secondItem="Ysd-sx-pNT" secondAttribute="leading" id="R1O-X4-6gC"/>
+                            <constraint firstItem="Ysd-sx-pNT" firstAttribute="bottom" secondItem="szB-gS-a3t" secondAttribute="bottom" constant="40" id="TWp-Kr-nVl"/>
                             <constraint firstItem="wW7-P7-lyf" firstAttribute="trailing" secondItem="Ysd-sx-pNT" secondAttribute="trailing" id="aPe-Ch-Fae"/>
                             <constraint firstItem="Ysd-sx-pNT" firstAttribute="bottom" secondItem="24p-SL-HP4" secondAttribute="bottom" constant="23" id="fiU-cW-ULY"/>
                             <constraint firstItem="Wg1-6W-0Yx" firstAttribute="leading" secondItem="qtm-Mg-43U" secondAttribute="leading" id="hXm-q5-wu3"/>
@@ -1664,6 +1714,10 @@
                     <connections>
                         <outlet property="addAttachmentButton" destination="24p-SL-HP4" id="ACY-KN-Faj"/>
                         <outlet property="attachmentsCountLabel" destination="uYB-Mf-POj" id="FYw-J0-zQt"/>
+                        <outlet property="emptyListImageView" destination="CaL-Ny-gQF" id="KMp-mK-V3l"/>
+                        <outlet property="emptyListSubtitle" destination="VND-Kx-wx9" id="aA2-uS-Xfo"/>
+                        <outlet property="emptyListTitle" destination="5pX-1t-C6Z" id="JAG-k8-STr"/>
+                        <outlet property="emptyListView" destination="szB-gS-a3t" id="ymv-Wc-1Xv"/>
                         <outlet property="progressView" destination="Wg1-6W-0Yx" id="K64-Ng-9AX"/>
                         <outlet property="tableView" destination="wW7-P7-lyf" id="hIp-hy-jtY"/>
                     </connections>

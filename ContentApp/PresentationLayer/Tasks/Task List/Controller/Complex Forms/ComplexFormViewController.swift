@@ -41,10 +41,6 @@ class ComplexFormViewController: SystemSearchViewController {
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
-    //private var dialogTransitionController: MDCDialogTransitionController?
-    //private var cameraCoordinator: CameraScreenCoordinator?
-    //private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
-    //private var fileManagerCoordinator: FileManagerScreenCoordinator?
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -64,7 +60,6 @@ class ComplexFormViewController: SystemSearchViewController {
         applyLocalization()
         getWorkflowDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
-        //self.dialogTransitionController = MDCDialogTransitionController()
 
         if !viewModel.isDetailWorkflow {
             ProfileService.getAPSSource() // to get APS Source
@@ -78,14 +73,13 @@ class ComplexFormViewController: SystemSearchViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+        controller.buildViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
         updateTheme()
-        controller.buildViewModel()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -144,17 +138,22 @@ class ComplexFormViewController: SystemSearchViewController {
         if viewModel.isLocalContentAvailable() {
             showUploadingInQueueWarning()
         } else {
-            let name = self.viewModel.processDefinition??.name ?? ""
-            let processDefinitionId = self.viewModel.processDefinition??.processId ?? ""
-            self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
-                guard let sSelf = self else { return }
-                if !isError {
-                    sSelf.updateWorkflowsList()
-                    sSelf.backButtonAction()
-                }
-            })
+            startWorkFlowAction()
         }
     }
+    
+    private func startWorkFlowAction() {
+        let name = self.viewModel.processDefinition??.name ?? ""
+        let processDefinitionId = self.viewModel.processDefinition??.processId ?? ""
+        self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
+            guard let sSelf = self else { return }
+            if !isError {
+                sSelf.updateWorkflowsList()
+                sSelf.backButtonAction()
+            }
+        })
+    }
+    
     private func updateWorkflowsList() {
         let notification = NSNotification.Name(rawValue: KeyConstants.Notification.refreshWorkflows)
         NotificationCenter.default.post(name: notification,
@@ -197,6 +196,7 @@ class ComplexFormViewController: SystemSearchViewController {
     
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
             guard let sSelf = self else { return }
+            sSelf.startWorkFlowAction()
         }
         confirmAction.accessibilityIdentifier = "confirmActionButton"
         
@@ -764,50 +764,44 @@ extension ComplexFormViewController {
     @objc func attachmentButtonAction(button: UIButton) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
-            viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.attachmentType = .workflow
-            viewController.viewModel.processDefintionTitle = viewModel.processDefintionTitle
             let rowViewModel = viewModel.rowViewModels.value[button.tag]
             guard let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.attachmentType = .workflow
+            let fieldId = viewModel.tempWorkflowId + (localViewModel.field?.id ?? "")
+            if localViewModel.tempWorkflowId.isEmpty {
+                localViewModel.tempWorkflowId = fieldId
+            }
+            viewController.viewModel.tempWorkflowId = fieldId
+            viewModel.workflowOperationsModel?.tempWorkflowId = fieldId
+            viewController.viewModel.processDefintionTitle = viewModel.processDefintionTitle
             viewController.multiSelection = localViewModel.multiSelection
-//            let fieldId = localViewModel.field?.id ?? ""
-//            viewModel.tempWorkflowId = viewModel.tempWorkflowId + "101"
-//            print(viewModel.tempWorkflowId )
-//            viewModel.workflowOperationsModel?.tempWorkflowId = viewModel.tempWorkflowId
-//            viewController.viewModel.tempWorkflowId = viewModel.tempWorkflowId
-//            localViewModel.tempWorkflowId = viewModel.tempWorkflowId
             viewModel.workflowOperationsModel?.attachments.value = localViewModel.attachments
             viewController.viewModel.workflowOperationsModel = viewModel.workflowOperationsModel
             viewController.viewModel.workflowOperationsModel?.attachments.addObserver { [weak self] (attachments) in
                 guard let sSelf = self else { return }
-                sSelf.recievedAttachment(tag: button.tag, attachments: attachments, localViewModel: localViewModel)
+                sSelf.receivedAttachment(tag: button.tag, attachments: attachments, rowViewModel: localViewModel)
             }
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    func recievedAttachment(tag: Int, attachments: [ListNode], localViewModel: AddAttachmentComplexTableViewCellViewModel) {
-        var guidStr = ""
-        for attachment in attachments {
-            if localViewModel.tempWorkflowId == attachment.parentGuid {
-                if guidStr.isEmpty {
-                    guidStr = attachment.guid
-                } else {
-                    // Append the new attachment's guid with a comma separator
-                    guidStr += ",\(attachment.guid)"
-                }
-            } else {
-                print("Wrong attachment")
-                break
-            }
-        }
-        if !guidStr.isEmpty {
-            localViewModel.attachments = attachments
-            localViewModel.didChangeText?(guidStr)
-            self.reloadTableView(row: tag)
-        }
-       
-    }
     
+    func receivedAttachment(tag: Int, attachments: [ListNode], rowViewModel: AddAttachmentComplexTableViewCellViewModel) {
+        
+        var guidStr = ""
+        var localAttachments = [ListNode]()
+        
+        for attachment in attachments where rowViewModel.tempWorkflowId == attachment.parentGuid {
+            localAttachments.append(attachment)
+            guidStr.isEmpty ? (guidStr = attachment.guid) : (guidStr += ",\(attachment.guid)")
+        }
+
+        rowViewModel.attachments = localAttachments
+        rowViewModel.didChangeText?(guidStr)
+        reloadTableView(row: tag)
+        
+    }
+
     @objc func checkBoxButtonAction(button: UIButton) {
         let rowViewModel = viewModel.rowViewModels.value[button.tag]
         guard let localViewModel = rowViewModel as? CheckBoxTableViewCellViewModel else { return }
