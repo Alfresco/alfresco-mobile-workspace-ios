@@ -24,6 +24,7 @@ class FileManagerViewController: UIViewController {
     weak var fileManagerDelegate: FileManagerAssetDelegate?
     var fileManagerDataSource: FileManagerDataSource?
     var attachmentType: AttachmentType = .content
+    var multiSelection = true
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -47,7 +48,7 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
     func showDocumentPicker() {
         let supportedTypes: [UTType] = [UTType.image, UTType.package, UTType.text, UTType.appleProtectedMPEG4Video, UTType.appleArchive, UTType.audio, UTType.content]
         let pickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes, asCopy: true)
-        pickerViewController.allowsMultipleSelection = true
+        pickerViewController.allowsMultipleSelection = multiSelection
         pickerViewController.delegate = self
         pickerViewController.modalPresentationStyle = .fullScreen
         self.present(pickerViewController, animated: false)

@@ -46,6 +46,8 @@ class ComplexFormController: NSObject {
             return HyperlinkTableViewCell.cellIdentifier()
         case is CheckBoxTableViewCellViewModel:
             return CheckBoxTableViewCell.cellIdentifier()
+        case is AddAttachmentComplexTableViewCellViewModel:
+            return AddAttachmentComplexTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -98,6 +100,9 @@ class ComplexFormController: NSObject {
                 rowViewModels.append(cellVM)
             case ComplexFormFieldType.checkbox.rawValue:
                 let cellVM = checkBoxCellVM(for: field)
+                rowViewModels.append(cellVM)
+            case ComplexFormFieldType.upload.rawValue:
+                let cellVM = attachmentCellVM(for: field)
                 rowViewModels.append(cellVM)
             default:
                 AlfrescoLog.debug("No matching field")
@@ -237,6 +242,16 @@ class ComplexFormController: NSObject {
         return rowVM
     }
     
+    // MARK: - Attachment
+    private func attachmentCellVM(for field: Field) -> AddAttachmentComplexTableViewCellViewModel {
+        let rowVM = AddAttachmentComplexTableViewCellViewModel(field: field, type: .checkbox)
+        rowVM.didChangeText = { [weak self] (text) in
+            guard let enterText = text else { return }
+            self?.updateText(for: field, text: enterText, checkCount: false)
+        }
+        return rowVM
+    }
+    
     // MARK: - Changed text
     fileprivate func updateText(for field: Field, text: String, checkCount: Bool) {
         let type = ComplexFormFieldType(rawValue: field.type)
@@ -246,13 +261,7 @@ class ComplexFormController: NSObject {
         } else {
             field.value = .string(text)
         }
-        if checkCount {
-            if text.isEmpty || text.count == 1 {
-                self.checkRequiredTextField()
-            }
-        } else {
-            self.checkRequiredTextField()
-        }
+        self.checkRequiredTextField()
     }
     
     // MARK: - Update DropDown

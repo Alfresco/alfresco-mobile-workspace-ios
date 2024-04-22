@@ -25,18 +25,23 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var attachmentsCountLabel: UILabel!
     @IBOutlet weak var addAttachmentButton: MDCFloatingButton!
+    @IBOutlet weak var emptyListImageView: UIImageView!
+    @IBOutlet weak var emptyListView: UIView!
+    @IBOutlet weak var emptyListTitle: UILabel!
+    @IBOutlet weak var emptyListSubtitle: UILabel!
     var refreshControl: UIRefreshControl?
     var viewModel: TaskAttachmentsControllerViewModel { return controller.viewModel }
     lazy var controller: TaskAttachmentsController = { return TaskAttachmentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    var multiSelection = true
 
     // MARK: - View did load
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        emptyListView.isHidden = true
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         controller.registerEvents()
         progressView.progress = 0
@@ -66,15 +71,21 @@ class TaskAttachmentsViewController: SystemSearchViewController {
 
     private func checkForAddAttachmentButton() {
         if viewModel.isWorkflowTaskAttachments {
-            addAttachmentButton.isHidden = true
-            tableView.contentInset.bottom = 0
+            self.hideAddAttachmentButton()
         } else if viewModel.isTaskCompleted && viewModel.attachmentType == .task {
-            addAttachmentButton.isHidden = true
-            tableView.contentInset.bottom = 0
+            self.hideAddAttachmentButton()
         } else {
-            addAttachmentButton.isHidden = false
-            tableView.contentInset.bottom = 90
+            self.showAddAttachmentButton()
         }
+    }
+    private func showAddAttachmentButton() {
+        addAttachmentButton.isHidden = false
+        tableView.contentInset.bottom = 90
+    }
+    
+    private func hideAddAttachmentButton() {
+        addAttachmentButton.isHidden = true
+        tableView.contentInset.bottom = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,6 +97,18 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.isHidden = false
+    }
+    
+    private func checkAddAttachButton() {
+        if viewModel.attachmentType == .workflow {
+            if !multiSelection {
+                if viewModel.attachmentsCount?.isEmpty != nil {
+                    self.hideAddAttachmentButton()
+                } else {
+                    self.showAddAttachmentButton()
+                }
+            }
+        }
     }
     
     func updateTheme() {
@@ -113,6 +136,23 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.attachedFilesTitle
         attachmentsCountLabel.text = viewModel.attachmentsCount
+        checkAddAttachButton()
+        showHideEmptyView()
+    }
+    
+    private func showHideEmptyView() {
+        if viewModel.attachmentType == .workflow {
+            var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+            if !attachments.isEmpty {
+                emptyListView.isHidden = true
+            } else {
+                emptyListView.isHidden = false
+                let emptyList = viewModel.emptyList()
+                emptyListImageView.image = emptyList.icon
+                emptyListTitle.text = emptyList.title
+                emptyListSubtitle.text = emptyList.description
+            }
+        }
     }
     
     func registerCells() {
@@ -142,6 +182,11 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        emptyListView.backgroundColor = currentTheme.surfaceColor
+        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        emptyListTitle.textAlignment = .center
+        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
+        emptyListSubtitle.textAlignment = .center
         attachmentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         refreshControl?.tintColor = currentTheme.primaryT1Color
         addAttachmentButton.backgroundColor = currentTheme.primaryT1Color
@@ -289,7 +334,9 @@ extension TaskAttachmentsViewController {
                 DispatchQueue.main.async {
                     self.applyLocalization()
                 }
-                popToPreviousController(attachments: attachments)
+                if viewModel.attachmentType != .workflow {
+                    popToPreviousController(attachments: attachments)
+                }
             }
         }
     }
@@ -370,6 +417,7 @@ extension TaskAttachmentsViewController {
                 let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
                                                                 parentListNode: workflowNode(),
                                                                 attachmentType: .workflow)
+                coordinator.multiSelection = multiSelection
                 coordinator.start()
                 photoLibraryCoordinator = coordinator
                 coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in
@@ -422,6 +470,7 @@ extension TaskAttachmentsViewController {
                 let coordinator = FileManagerScreenCoordinator(with: presenter,
                                                                parentListNode: workflowNode(),
                                                                attachmentType: .workflow)
+                coordinator.multiSelection = multiSelection
                 coordinator.start()
                 fileManagerCoordinator = coordinator
                 coordinator.didSelectAttachment = { [weak self] (uploadTransfers) in

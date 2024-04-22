@@ -25,6 +25,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     private var galleryDataSource: PhotoGalleryDataSource?
     var attachmentType: AttachmentType
     var didSelectAttachment: (([UploadTransfer]) -> Void)?
+    var multiSelection = true
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
@@ -38,6 +39,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
         let viewController = PhotoGalleryViewController.instantiateViewController()
         viewController.cameraDelegate = self
         viewController.modalPresentationStyle = .fullScreen
+        viewController.multiSelection = multiSelection
 
         requestAuthorizationPhotoLibraryUsage { [weak self] (granted) in
             if granted {

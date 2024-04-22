@@ -49,4 +49,5 @@ enum ComplexFormFieldType: String {
     case hyperlink = "hyperlink"
     case checkbox = "boolean"
     case outcomes = "outcomes"
+    case upload = "upload"
 }
