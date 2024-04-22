@@ -781,7 +781,6 @@ extension ComplexFormViewController {
             viewModel.workflowOperationsModel?.tempWorkflowId = fieldId
             viewController.viewModel.processDefintionTitle = viewModel.processDefintionTitle
             viewController.multiSelection = localViewModel.multiSelection
-            viewModel.workflowOperationsModel?.attachments.value = localViewModel.attachments
             viewController.viewModel.workflowOperationsModel = viewModel.workflowOperationsModel
             viewController.viewModel.workflowOperationsModel?.attachments.addObserver { [weak self] (attachments) in
                 guard let sSelf = self else { return }
