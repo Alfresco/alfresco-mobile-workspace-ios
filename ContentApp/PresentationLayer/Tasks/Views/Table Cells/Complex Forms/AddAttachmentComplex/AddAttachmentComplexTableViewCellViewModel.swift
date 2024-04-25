@@ -28,6 +28,8 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
     var field: Field?
     var tempWorkflowId: String = ""
     var fieldRequired = false
+    var isFolder = false
+    var folderId = ""
     
     var name: String? {
         if fieldRequired {
@@ -47,5 +49,9 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
         let multiSelection = ((field.params?.multipal) != nil)
         self.multiSelection = multiSelection
         self.fieldRequired = field.fieldRequired
+        let type = field.type
+        if type == ComplexFormFieldType.selectfolder.rawValue {
+            isFolder = true
+        }
     }
 }

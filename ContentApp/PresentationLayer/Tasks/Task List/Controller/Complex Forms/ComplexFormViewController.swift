@@ -38,6 +38,8 @@ class ComplexFormViewController: SystemSearchViewController {
     @IBOutlet weak var actionButton: MDCFloatingButton!
     lazy var complexFormViewModel = ComplexFormViewModel()
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
+    private var recentViewController: ListViewController?
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -446,7 +448,12 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     
     fileprivate func configureAttachmentCells(_ localViewModel: AddAttachmentComplexTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
         (cell as?  AddAttachmentComplexTableViewCell)?.attachmentButton.tag = indexPath.row
-        (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+        if localViewModel.isFolder {
+            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentFolderButtonAction(button:)), for: .touchUpInside)
+        } else {
+            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+        }
+     
     }
     
     fileprivate func applyTheme(_ cell: UITableViewCell) {
@@ -506,7 +513,7 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         case is HyperlinkTableViewCellViewModel:
             return 100
         case is AddAttachmentComplexTableViewCellViewModel:
-            return 100
+            return 80
         default:
             return UITableView.automaticDimension
         }
@@ -799,6 +806,23 @@ extension ComplexFormViewController {
         rowViewModel.didChangeText?(guidStr)
         reloadTableView(row: tag)
         
+    }
+    
+    @objc func attachmentFolderButtonAction(button: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[button.tag]
+        guard let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
+        appDelegate()?.isAPSAttachmentFlow = true
+        let controller = FilesandFolderListViewController.instantiateViewController()
+        controller.sourceNodeToMove = [ListNode]()
+        let navController = UINavigationController(rootViewController: controller)
+        self.navigationController?.present(navController, animated: true)
+        filesAndFolderViewController = controller
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId in
+            guard let sSelf = self else { return }
+            localViewModel.folderId = folderId ?? ""
+            localViewModel.didChangeText?(folderId ?? "")
+            sSelf.reloadTableView(row: button.tag)
+        }
     }
 
     @objc func checkBoxButtonAction(button: UIButton) {

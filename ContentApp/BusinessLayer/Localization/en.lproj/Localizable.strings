@@ -445,6 +445,9 @@
 "created_date" = "Created Date";
 "actions" = "Actions";
 "empty-attachFiles-description" = "Looks like you haven’t added any files yet.";
+"no-folder-attached" = "No Folder Attached";
+"multiple-folder" = "%d Folder";
+"select" = "Select";
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";
