@@ -169,7 +169,7 @@ extension OfflineFolderChildrenScreenCoordinator: NodeActionMoveDelegate {
         let navController = UINavigationController(rootViewController: controller)
         navigationViewController.present(navController, animated: true)
         filesAndFolderViewController = controller
-        filesAndFolderViewController?.didSelectDismissAction = {[weak self] in
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId in
             guard let sSelf = self else { return }
             sSelf.offlineFolderChildrenViewController?.listController?.resetMultipleSelectionView()
         }

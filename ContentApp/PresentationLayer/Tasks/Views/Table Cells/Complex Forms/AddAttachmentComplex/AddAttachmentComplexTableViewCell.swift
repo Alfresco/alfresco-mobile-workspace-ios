@@ -42,7 +42,12 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
         self.viewModel = viewModel
         titleLabel.text = viewModel.name
         if viewModel.isFolder {
-            attachmentCount.text = LocalizationConstants.Workflows.noFolderAttached
+            if !viewModel.folderId.isEmpty {
+                let folderText = String(format: LocalizationConstants.Workflows.multipleFolder, 1)
+                attachmentCount.text = folderText
+            } else {
+                attachmentCount.text = LocalizationConstants.Workflows.noFolderAttached
+            }
         } else {
             if !viewModel.attachments.isEmpty {
                 let count = viewModel.attachments.count
@@ -60,7 +65,7 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
         titleLabel.accessibilityValue = ""
         titleLabel.accessibilityIdentifier = "\(String(describing: self.titleLabel.text))"
         
-        if (self.viewModel?.isFolder != nil) {
+        if self.viewModel?.isFolder != nil {
             attachmentCount.accessibilityIdentifier = LocalizationConstants.Workflows.noFolderAttached
             attachmentCount.accessibilityLabel = LocalizationConstants.Workflows.noFolderAttached
             attachmentCount.accessibilityValue = LocalizationConstants.Workflows.noFolderAttached

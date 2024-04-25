@@ -142,8 +142,10 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     
     private func showHideEmptyView() {
         if viewModel.attachmentType == .workflow {
-            var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
-            if !attachments.isEmpty {
+            let attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+            let localAttachments = attachments.filter { $0.parentGuid == viewModel.tempWorkflowId }
+
+            if !localAttachments.isEmpty {
                 emptyListView.isHidden = true
             } else {
                 emptyListView.isHidden = false
@@ -152,6 +154,7 @@ class TaskAttachmentsViewController: SystemSearchViewController {
                 emptyListTitle.text = emptyList.title
                 emptyListSubtitle.text = emptyList.description
             }
+
         }
     }
     

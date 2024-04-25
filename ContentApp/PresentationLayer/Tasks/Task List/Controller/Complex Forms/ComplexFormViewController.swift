@@ -38,6 +38,8 @@ class ComplexFormViewController: SystemSearchViewController {
     @IBOutlet weak var actionButton: MDCFloatingButton!
     lazy var complexFormViewModel = ComplexFormViewModel()
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var filesAndFolderViewController: FilesandFolderListViewController?
+    private var recentViewController: ListViewController?
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
@@ -807,6 +809,20 @@ extension ComplexFormViewController {
     }
     
     @objc func attachmentFolderButtonAction(button: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[button.tag]
+        guard let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
+        appDelegate()?.isAPSAttachmentFlow = true
+        let controller = FilesandFolderListViewController.instantiateViewController()
+        controller.sourceNodeToMove = [ListNode]()
+        let navController = UINavigationController(rootViewController: controller)
+        self.navigationController?.present(navController, animated: true)
+        filesAndFolderViewController = controller
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId in
+            guard let sSelf = self else { return }
+            localViewModel.folderId = folderId ?? ""
+            localViewModel.didChangeText?(folderId ?? "")
+            sSelf.reloadTableView(row: button.tag)
+        }
     }
 
     @objc func checkBoxButtonAction(button: UIButton) {

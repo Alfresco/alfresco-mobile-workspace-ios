@@ -29,6 +29,7 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
     var tempWorkflowId: String = ""
     var fieldRequired = false
     var isFolder = false
+    var folderId = ""
     
     var name: String? {
         if fieldRequired {
