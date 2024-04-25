@@ -58,6 +58,7 @@ class ListComponentViewController: SystemThemableViewController {
     var navigationViewController: UINavigationController?
     var multipleSelectionHeader: MultipleSelectionHeaderView? = .fromNib()
     var folderId = ""
+    var isAPSAttachmentFlow = false
     
     // MARK: - View Life Cycle
     
@@ -89,6 +90,7 @@ class ListComponentViewController: SystemThemableViewController {
         listActionButton.setTitle(viewModel.listActionTitle(), for: .normal)
         listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
         if let isAttachment = appDelegate()?.isAPSAttachmentFlow, isAttachment {
+            isAPSAttachmentFlow = isAttachment
             createButton.isHidden = isAttachment
             moveFilesBottomView.isHidden = isAttachment
         } else {
@@ -140,7 +142,7 @@ class ListComponentViewController: SystemThemableViewController {
     
     // MARK: - Move files
     @IBAction func moveFilesButtonAction(_ sender: Any) {
-        if let isAttachment = appDelegate()?.isAPSAttachmentFlow, isAttachment {
+        if isAPSAttachmentFlow {
             triggerMoveNotifyService(folderId: folderId)
         } else {
             guard let source = self.sourceNodeToMove, let destination = self.destinationNodeToMove else { return }
@@ -229,7 +231,7 @@ class ListComponentViewController: SystemThemableViewController {
         moveFilesBottomView.backgroundColor = currentTheme.surfaceColor
         moveFilesButton.applyContainedTheme(withScheme: buttonScheme)
         moveFilesButton.isUppercaseTitle = false
-        if let isAttachment = appDelegate()?.isAPSAttachmentFlow, isAttachment {
+        if isAPSAttachmentFlow {
             moveFilesButton.setTitle(LocalizationConstants.Workflows.select, for: .normal)
         } else {
             moveFilesButton.setTitle(LocalizationConstants.Buttons.moveHere, for: .normal)
@@ -475,12 +477,12 @@ extension ListComponentViewController: ListPageControllerDelegate {
         } else {
             listActionButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
         }
-        if let isAttachment = appDelegate()?.isAPSAttachmentFlow, isAttachment {
-            createButton.isHidden = isAttachment
+        if isAPSAttachmentFlow {
+            createButton.isHidden = isAPSAttachmentFlow
             let createdByUserId = source?.createdByUser._id
             if createdByUserId != nil {
                 if createdByUserId == "System" {
-                    moveFilesBottomView.isHidden = isAttachment
+                    moveFilesBottomView.isHidden = isAPSAttachmentFlow
                 } else {
                     folderId = source?._id ?? ""
                     moveFilesBottomView.isHidden = false
