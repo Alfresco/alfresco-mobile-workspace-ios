@@ -108,22 +108,25 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
         coordinatorServices.locationService?.stopUpdatingLocation()
         
         var isFileSizeExcceds = false
-        if attachmentType == .task {
+        
+        if attachmentType == .task || attachmentType == .workflow {
+            let fileLimit = attachmentType == .task ? KeyConstants.FileSize.taskFileSize : KeyConstants.FileSize.workflowFileSize
             for capturedAsset in capturedAssets {
                 let assetURL = URL(fileURLWithPath: capturedAsset.path)
-                if assetURL.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
+                if assetURL.fileSizeInMB() > fileLimit {
                     isFileSizeExcceds = true
                     break
                 }
             }
+            if isFileSizeExcceds { // show error about maximum file size
+                DispatchQueue.main.async {
+                    self.showErrorMaximumFileSizeExcceds(fileLimit: fileLimit)
+                }
+                return
+            }
         }
         
-        if isFileSizeExcceds { // show error about maximum file size
-            DispatchQueue.main.async {
-                self.showErrorMaximumFileSizeExcceds()
-            }
-            return
-        }
+        
         
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier,
               let mediaPath = mediaFilesFolderPath else { return }
@@ -176,9 +179,8 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
         }
     }
     
-    private func showErrorMaximumFileSizeExcceds() {
-        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, KeyConstants.FileSize.taskFileSize )
-
+    private func showErrorMaximumFileSizeExcceds(fileLimit: Double) {
+        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, fileLimit)
         Snackbar.display(with: errorMessage,
                          type: .error,
                          presentationHostViewOverride: self.presenter.viewControllers.last?.view,
