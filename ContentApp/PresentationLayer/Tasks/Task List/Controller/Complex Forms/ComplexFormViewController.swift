@@ -625,22 +625,15 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     
     fileprivate func configureAttachmentCells(_ localViewModel: AddAttachmentComplexTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
 
-        (cell as?  AddAttachmentComplexTableViewCell)?.attachmentButton.tag = indexPath.row
-        if localViewModel.isFolder {
-            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentFolderButtonAction(button:)), for: .touchUpInside)
-        } else {
-            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+            let attachCell = cell as? AddAttachmentComplexTableViewCell
+            attachCell?.attachmentButton.tag = indexPath.row
+            attachCell?.attachmentButton.addTarget(self, action: localViewModel.isFolder ?  #selector(attachmentFolderButtonAction(button:)): #selector(attachmentButtonAction(button:)), for: .touchUpInside)
         }
-    }
-    
+        
     fileprivate func configureDisplayCells(_ localViewModel: SingleLineTextTableCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        
         (cell as?  SingleLineTextTableViewCell)?.selectButton.tag = indexPath.row
         (cell as?  SingleLineTextTableViewCell)?.selectButton.addTarget(self, action: #selector(viewAllAttachments(button:)), for: .touchUpInside)
-
-        let attachCell = cell as? AddAttachmentComplexTableViewCell
-        attachCell?.attachmentButton.tag = indexPath.row
-        attachCell?.attachmentButton.addTarget(self, action:localViewModel.isFolder ?  #selector(attachmentFolderButtonAction(button:)): #selector(attachmentButtonAction(button:)), for: .touchUpInside)
-
     }
     
     fileprivate func applyTheme(_ cell: UITableViewCell) {
