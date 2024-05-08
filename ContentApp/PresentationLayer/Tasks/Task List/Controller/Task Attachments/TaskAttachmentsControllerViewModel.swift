@@ -41,6 +41,7 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
     var processDefintionTitle: String = ""
     var workflowOperationsModel: WorkflowOperationsModel?
     var isWorkflowTaskAttachments = false
+    var isDetailWorkflow = false
     
     func emptyList() -> EmptyListProtocol {
         return EmptyAttachFiles()

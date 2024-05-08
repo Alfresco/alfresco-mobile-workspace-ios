@@ -171,45 +171,4 @@ class WflowTaskDetailViewModel: TaskPropertiesViewModel {
             return false
         }
     }
-    
-    // MARK: - Approve/Reject Task
-    func approveRejectTask(completionHandler: @escaping (_ error: Error?) -> Void) {
-        
-        guard services?.connectivityService?.hasInternetConnection() == true else { return }
-        self.isLoading.value = true
-        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            
-            let params = SaveFormParams(status: self.selectedStatus, comment: self.comment)
-            TasksAPI.approveOrRejectTaskForm(taskId: self.taskId, params: params, outcome: self.selectedOutcome) {[weak self] data, error in
-                guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
-
-                if data != nil {
-                    completionHandler(nil)
-                } else {
-                    completionHandler(error)
-                }
-            }
-        })
-    }
-    
-    // MARK: - Claim / Unclaim Task
-
-    func claimUnclaimTask(isClaim: Bool, completionHandler: @escaping (_ error: Error?) -> Void) {
-        guard services?.connectivityService?.hasInternetConnection() == true else { return }
-        self.isLoading.value = true
-        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            TasksAPI.claimOrUnclaimTask(taskId: self.taskId, isClaimTask: isClaim) {[weak self] data, error in
-                guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
-                if data != nil {
-                    completionHandler(nil)
-                } else {
-                    completionHandler(error)
-                }
-            }
-        })
-    }
 }

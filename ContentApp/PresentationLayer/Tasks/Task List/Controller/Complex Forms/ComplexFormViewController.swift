@@ -43,6 +43,9 @@ class ComplexFormViewController: SystemSearchViewController {
     
     var viewModel: StartWorkflowViewModel { return controller.viewModel }
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
+    private var saveId = 1045
+    private var completeId = 1046
+    private var completeString = "Complete"
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -62,8 +65,9 @@ class ComplexFormViewController: SystemSearchViewController {
         applyLocalization()
         getWorkflowDetails()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
-
-        if !viewModel.isDetailWorkflow {
+        if viewModel.isDetailWorkflow {
+            infoButton()
+        } else {
             ProfileService.getAPSSource() // to get APS Source
         }
         
@@ -76,6 +80,10 @@ class ComplexFormViewController: SystemSearchViewController {
        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         controller.buildViewModel()
+        if viewModel.isShowDoneCompleteBtn {
+            saveButton.isHidden = true
+            completeButton.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,24 +144,60 @@ class ComplexFormViewController: SystemSearchViewController {
     }
     
     // MARK: - Start workflow API integration
-    private func startWorkflowAPIIntegration() {
+    private func startWorkflowAPIIntegration(name: String, id: Int) {
         if viewModel.isLocalContentAvailable() {
-            showUploadingInQueueWarning()
+            showUploadingInQueueWarning(name: name, id: id)
         } else {
-            startWorkFlowAction()
+            startWorkFlowAction(name: name, id: id)
         }
     }
     
-    private func startWorkFlowAction() {
-        let name = self.viewModel.processDefinition??.name ?? ""
-        let processDefinitionId = self.viewModel.processDefinition??.processId ?? ""
-        self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
+    private func startWorkFlowAction(name: String, id: Int) {
+        if viewModel.isDetailWorkflow {
+            if name == LocalizationConstants.General.save && id == saveId {
+                saveWorkflowAction()
+            } else {
+                taskFormWorkflowAction(outcome: name)
+            }
+        } else {
+            let name = self.viewModel.processDefinition??.name ?? ""
+            let processDefinitionId = self.viewModel.processDefinition??.processId ?? ""
+            self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
+                guard let sSelf = self else { return }
+                if !isError {
+                    sSelf.updateWorkflowsList()
+                    sSelf.backButtonAction()
+                }
+            })
+        }
+    }
+    private func taskFormWorkflowAction(outcome: String) {
+        let taskId = self.viewModel.taskId
+        self.complexFormViewModel.saveTaskMethod(for: self.viewModel.formFields, taskId: taskId, outcome: outcome, completionHandler: { [weak self] isError in
             guard let sSelf = self else { return }
             if !isError {
-                sSelf.updateWorkflowsList()
+                sSelf.updateTaskList()
                 sSelf.backButtonAction()
             }
         })
+    }
+    
+    private func saveWorkflowAction() {
+        let taskId = self.viewModel.taskId
+        self.complexFormViewModel.saveTaskFormMethod(for: self.viewModel.formFields, taskId: taskId, completionHandler: { [weak self] isError in
+            guard let sSelf = self else { return }
+            if !isError {
+                sSelf.updateTaskList()
+                sSelf.backButtonAction()
+            }
+        })
+    }
+    
+    private func updateTaskList() {
+        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.refreshTaskList)
+        NotificationCenter.default.post(name: notification,
+                                        object: nil,
+                                        userInfo: nil)
     }
     
     private func updateWorkflowsList() {
@@ -186,19 +230,57 @@ class ComplexFormViewController: SystemSearchViewController {
         let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
         currHeight?.isActive = true
         self.navigationItem.leftBarButtonItem = searchBarButtonItem
+        
     }
     
     @objc func backButtonAction() {
         self.navigationController?.popViewController(animated: true)
     }
     
-    private func showUploadingInQueueWarning() {
+    private func infoButton() {
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        let infoButton = UIButton(type: .custom)
+        infoButton.accessibilityIdentifier = "infoButton"
+        infoButton.frame = CGRect(x: 0.0, y: 0.0,
+                                    width: 30.0,
+                                    height: 30.0)
+        infoButton.imageView?.contentMode = .scaleAspectFill
+        infoButton.layer.masksToBounds = true
+        infoButton.addTarget(self,
+                               action: #selector(infoButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        infoButton.setImage(UIImage(named: "ic-info"),
+                              for: .normal)
+
+        let rightBarButtonItem = UIBarButtonItem(customView: infoButton)
+        rightBarButtonItem.accessibilityIdentifier = "infoBarButton"
+        rightBarButtonItem.accessibilityLabel = LocalizationConstants.Workflows.info
+        let currWidth = rightBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 30.0)
+        currWidth?.isActive = true
+        let currHeight = rightBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
+        currHeight?.isActive = true
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    @objc func infoButtonTapped() {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.task = viewModel.task
+            viewController.viewModel.isOpenAfterTaskCreation = false
+            viewController.viewModel.isEditTask = false
+            viewController.viewModel.isComplexForm = true
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    private func showUploadingInQueueWarning(name: String, id: Int) {
         let title = LocalizationConstants.Workflows.warningTitle
         let message = LocalizationConstants.Workflows.attachmentInProgressWarning
     
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
             guard let sSelf = self else { return }
-            sSelf.startWorkFlowAction()
+            sSelf.startWorkFlowAction(name: name, id: id)
         }
         confirmAction.accessibilityIdentifier = "confirmActionButton"
         
@@ -224,11 +306,20 @@ class ComplexFormViewController: SystemSearchViewController {
     
     // MARK: - Workflow details
     private func getWorkflowDetails() {
-        if viewModel.isDetailWorkflow { return }
-        viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
-            guard let sSelf = self else { return }
-            sSelf.tableView.reloadData()
-            sSelf.getFormFields()
+        if viewModel.isDetailWorkflow {
+            viewModel.workflowTaskDetails { [weak self] error in
+                guard let sSelf = self else { return }
+                sSelf.tableView.reloadData()
+                sSelf.controller.buildViewModel()
+                sSelf.updateUI()
+                sSelf.controller.checkRequiredTextField()
+            }
+        } else {
+            viewModel.fetchProcessDefinition {[weak self] processDefinition, error in
+                guard let sSelf = self else { return }
+                sSelf.tableView.reloadData()
+                sSelf.getFormFields()
+            }
         }
     }
     
@@ -237,6 +328,7 @@ class ComplexFormViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             sSelf.controller.buildViewModel()
             sSelf.updateUI()
+            sSelf.controller.checkRequiredTextField()
         }
     }
     
@@ -302,13 +394,13 @@ class ComplexFormViewController: SystemSearchViewController {
     }
     
     // MARK: - Save Button Action
-    @IBAction func saveButtonAction(_ sender: Any) {
-        self.startWorkflowAPIIntegration()
+    @IBAction func saveButtonAction(_ sender: UIButton) {
+        self.startWorkflowAPIIntegration(name: sender.titleLabel?.text ?? "", id: saveId)
     }
     
     // MARK: - Complete Button Action
-    @IBAction func completeButtonAction(_ sender: Any) {
-        self.startWorkflowAPIIntegration()
+    @IBAction func completeButtonAction(_ sender: UIButton) {
+        self.startWorkflowAPIIntegration(name: completeString, id: completeId)
     }
     
     // MARK: - Action Button Action
@@ -318,7 +410,12 @@ class ComplexFormViewController: SystemSearchViewController {
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
             bottomSheet.dismissOnDraggingDownSheet = false
             viewController.coordinatorServices = coordinatorServices
-            if let outcomes = viewModel.formData?.outcomes {
+            if var outcomes = viewModel.formData?.outcomes {
+                if viewModel.isDetailWorkflow {
+                    if let newOutcome = self.createOutcome() {
+                        outcomes.insert(newOutcome, at: 0)
+                    }
+                }
                 viewController.outcomes = outcomes
             }
             viewController.delegate = self
@@ -332,18 +429,27 @@ class ComplexFormViewController: SystemSearchViewController {
 extension ComplexFormViewController {
     
     fileprivate func updateUI() {
-        if let outcomes = viewModel.formData?.outcomes {
-            switch outcomes.count {
-            case 0:
-                noOutcome()
-            case 1, 2:
-                oneTwoOutcome(outcomes: outcomes)
-            case let count where count > 2:
-                multipleOutcome()
-            default:
-                break
+        if viewModel.isDetailWorkflow {
+            if viewModel.isShowDoneCompleteBtn {
+                saveButton.isHidden = true
+                completeButton.isHidden = true
+            } else {
+                detailOutcome()
             }
-            applyTheme()
+        } else {
+            if let outcomes = viewModel.formData?.outcomes {
+                switch outcomes.count {
+                case 0:
+                    noOutcome()
+                case 1, 2:
+                    oneTwoOutcome(outcomes: outcomes)
+                case let count where count > 2:
+                    multipleOutcome()
+                default:
+                    break
+                }
+                applyTheme()
+            }
         }
     }
     
@@ -402,6 +508,66 @@ extension ComplexFormViewController {
         actionButton.isEnabled = false
         actionButton.isUserInteractionEnabled = false
     }
+    
+    fileprivate func detailOutcome() {
+        if let outcomes = viewModel.formData?.outcomes {
+            switch outcomes.count {
+            case 0, 1:
+                noDetailOutcome(outcomes: outcomes)
+            case let count where count > 1:
+                multipleOutcome()
+            default:
+                break
+            }
+            applyTheme()
+        }
+    }
+    
+    fileprivate func noDetailOutcome(outcomes: [Outcome]) {
+        saveButton.isHidden = false
+        saveButton.setTitle(LocalizationConstants.General.save, for: .normal)
+        saveButton.accessibilityLabel = LocalizationConstants.General.save
+        saveButton.accessibilityIdentifier = ""
+        
+        completeButton.isHidden = false
+        completeButton.accessibilityIdentifier = ""
+        
+        if outcomes.isEmpty {
+            completeButton.setTitle(LocalizationConstants.Workflows.complete, for: .normal)
+            completeButton.accessibilityLabel = LocalizationConstants.Workflows.complete
+        } else {
+            let title = outcomes.first?.name
+            completeButton.setTitle(title, for: .normal)
+            completeButton.accessibilityLabel = title
+        }
+    }
+    
+    // Create Save Outcome
+    fileprivate func createOutcome() -> Outcome? {
+        // Example JSON data
+        let jsonString = """
+        {
+            "id": \(saveId),
+            "name": "\(LocalizationConstants.General.save)"
+        }
+        """
+        
+        // Initialize JSONDecoder
+        let decoder = JSONDecoder()
+        
+        // Convert JSON string to Data
+        guard let jsonData = jsonString.data(using: .utf8) else {
+            return nil
+        }
+
+        do {
+            // Decode Outcome from JSON data
+            let outcome = try decoder.decode(Outcome.self, from: jsonData)
+            return outcome
+        } catch {
+            return nil
+        }
+    }
 }
 
 // MARK: - Table View Data Source and Delegates
@@ -412,16 +578,27 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     fileprivate func configureDatePickerCells(_ localViewModel: DatePickerTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
-        (cell as? DatePickerTableViewCell)?.textField.tag = indexPath.row
+        var datePicker = UIDatePicker()
         if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
-            complexFormViewModel.selectedDateTimeTextField = (cell as? DatePickerTableViewCell)?.textField
-            complexFormViewModel.selectedDateTimeTextField.delegate = self
-            (cell as? DatePickerTableViewCell)?.textField.text = localViewModel.text
+            datePicker.datePickerMode = .dateAndTime
         } else {
-            complexFormViewModel.selectedDateTextField = (cell as? DatePickerTableViewCell)?.textField
-            complexFormViewModel.selectedDateTextField.delegate = self
-            (cell as? DatePickerTableViewCell)?.textField.text = localViewModel.text
+            datePicker.datePickerMode = .date
         }
+        datePicker.tag = indexPath.row
+        self.datePickerConfiguration(datePicker: datePicker, rowViewModel: localViewModel)
+        self.setDatesForDatePicker(rowViewModel: localViewModel, datePicker: &datePicker)
+        (cell as? DatePickerTableViewCell)?.textField.inputView = datePicker
+        (cell as? DatePickerTableViewCell)?.textField.text = localViewModel.text
+        let toolBar = getToolBar(tag: indexPath.row, for: datePicker)
+        (cell as? DatePickerTableViewCell)?.textField.inputAccessoryView = toolBar
+    }
+    
+    fileprivate func datePickerConfiguration(datePicker: UIDatePicker, rowViewModel: RowViewModel) {
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        datePicker.preferredDatePickerStyle = .inline
+        datePicker.backgroundColor = currentTheme.surfaceColor
+        datePicker.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight/2.0 + 100)
+        guard let rowViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
     }
     
     fileprivate func configureAssignUserCells(_ localViewModel: AssigneeTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
@@ -447,9 +624,23 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     fileprivate func configureAttachmentCells(_ localViewModel: AddAttachmentComplexTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+
+        (cell as?  AddAttachmentComplexTableViewCell)?.attachmentButton.tag = indexPath.row
+        if localViewModel.isFolder {
+            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentFolderButtonAction(button:)), for: .touchUpInside)
+        } else {
+            (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+        }
+    }
+    
+    fileprivate func configureDisplayCells(_ localViewModel: SingleLineTextTableCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        (cell as?  SingleLineTextTableViewCell)?.selectButton.tag = indexPath.row
+        (cell as?  SingleLineTextTableViewCell)?.selectButton.addTarget(self, action: #selector(viewAllAttachments(button:)), for: .touchUpInside)
+
         let attachCell = cell as? AddAttachmentComplexTableViewCell
         attachCell?.attachmentButton.tag = indexPath.row
         attachCell?.attachmentButton.addTarget(self, action:localViewModel.isFolder ?  #selector(attachmentFolderButtonAction(button:)): #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+
     }
     
     fileprivate func applyTheme(_ cell: UITableViewCell) {
@@ -471,6 +662,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             configureCheckBoxCells(localViewModel, cell, indexPath)
         } else if cell is AddAttachmentComplexTableViewCell, let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel {
             configureAttachmentCells(localViewModel, cell, indexPath)
+        } else if cell is SingleLineTextTableViewCell, let localViewModel = rowViewModel as? SingleLineTextTableCellViewModel {
+            configureDisplayCells(localViewModel, cell, indexPath)
         }
     }
     
@@ -522,26 +715,6 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
 }
 // MARK: - Date Picker
 extension ComplexFormViewController {
-    func showDatePicker(tag: Int, rowViewModel: RowViewModel) {
-        var datePicker = UIDatePicker()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        guard let rowViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
-        if rowViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
-            datePicker.datePickerMode = .dateAndTime
-            complexFormViewModel.selectedDateTimeTextField.inputView = datePicker
-            complexFormViewModel.selectedDateTimeTextField.inputAccessoryView = getToolBar(tag: tag)
-        } else {
-            datePicker.datePickerMode = .date
-            complexFormViewModel.selectedDateTextField.inputView = datePicker
-            complexFormViewModel.selectedDateTextField.inputAccessoryView = getToolBar(tag: tag)
-        }
-        
-        datePicker.preferredDatePickerStyle = .inline
-        datePicker.backgroundColor = currentTheme.surfaceColor
-        setDatesForDatePicker(rowViewModel: rowViewModel, datePicker: &datePicker)
-        
-        datePicker.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight/2.0 + 100)
-    }
     
     private func setDatesForDatePicker(rowViewModel: RowViewModel, datePicker: inout UIDatePicker) {
         
@@ -563,14 +736,37 @@ extension ComplexFormViewController {
         
         datePicker.minimumDate = minimumDate
         datePicker.maximumDate = maximumDate
-        datePicker.date = date
+        let text = rowViewModel.text ?? ""
+        if !text.isEmpty {
+            let type = rowViewModel.type
+            // Create a date formatter for your custom date
+            let dateFormatter = DateFormatter()
+            if type == .date {
+                dateFormatter.dateFormat = "dd-MM-yyyy"
+            } else {
+                dateFormatter.dateFormat = "dd-MMM-yyyy hh:mm a"
+            }
+            datePicker.timeZone = TimeZone.current
+            // Convert your custom date string to a Date object
+            if let customDate = dateFormatter.date(from: text) {
+                // Set the UIDatePicker's initial date
+                datePicker.setDate(customDate, animated: true)
+            } else {
+                datePicker.date = date
+            }
+        } else {
+            datePicker.date = date
+        }
+        
     }
-    
-    func getToolBar(tag: Int) -> UIToolbar {
+        
+    func getToolBar(tag: Int, for datePicker: UIDatePicker) -> UIToolbar {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: 44.0))
         let cancelButton = UIBarButtonItem(title: LocalizationConstants.General.cancel, style: .plain, target: self, action: #selector(self.dismissToolBar))
         let doneButton = UIBarButtonItem(title: LocalizationConstants.General.done, style: .done, target: self, action: #selector(self.handleDatePicker))
         doneButton.tag = tag
+        doneButton.accessibilityIdentifier = "DoneButton"
+        cancelButton.accessibilityIdentifier = "CancelButton"
         let flexibleButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         toolBar.setItems([cancelButton, flexibleButton, doneButton], animated: false)
         return toolBar
@@ -580,34 +776,30 @@ extension ComplexFormViewController {
         self.view.endEditing(true)
     }
     
-    @objc func handleDatePicker(sender: UIButton) {
+    @objc func handleDatePicker(sender: UIBarButtonItem) {
         let rowViewModel = viewModel.rowViewModels.value[sender.tag]
         guard let localViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
-        
         let dateFormatter = complexFormViewModel.isoDateFormat()
         
-        if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
-            if let dateTimePicker = complexFormViewModel.selectedDateTimeTextField.inputView as? UIDatePicker {
-                // Use DateFormatter to format the date and time
-                let date = complexFormViewModel.selectedDateTimeString(for: dateTimePicker.date)
-                complexFormViewModel.selectedDateTimeTextField.text = date
-                localViewModel.text = date
-                
-                let dateString = dateFormatter.string(from: dateTimePicker.date)
-                localViewModel.didChangeText?(dateString)
-            }
-        } else {
-            if let dateTimePicker = complexFormViewModel.selectedDateTextField.inputView as? UIDatePicker {
-                let date = complexFormViewModel.selectedDateString(for: dateTimePicker.date)
-                complexFormViewModel.selectedDateTextField.text = date
-                localViewModel.text = date
-                
-                let dateString = dateFormatter.string(from: dateTimePicker.date)
-                localViewModel.didChangeText?(dateString)
-            }
-        }
+        let cellIndex = sender.tag
+        guard let cell = tableView.cellForRow(at: IndexPath(row: cellIndex, section: 0)) as? DatePickerTableViewCell else { return }
+        let datePicker = cell.textField.inputView as? UIDatePicker
+        guard let selectedDate = datePicker?.date else { return }
         
-        self.view.endEditing(true)
+        var formattedDate = ""
+        if localViewModel.type.rawValue == ComplexFormFieldType.dateTime.rawValue {
+             formattedDate = complexFormViewModel.selectedDateTimeString(for: selectedDate)
+        } else {
+             formattedDate = complexFormViewModel.selectedDateString(for: selectedDate)
+        }
+        let dateString = dateFormatter.string(from: selectedDate)
+        localViewModel.didChangeText?(dateString)
+        
+        localViewModel.text = formattedDate
+        cell.textField.text = formattedDate
+        
+        // Dismiss the keyboard
+        view.endEditing(true)
     }
 }
 
@@ -642,9 +834,7 @@ extension ComplexFormViewController {
 extension ComplexFormViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         let rowViewModel = viewModel.rowViewModels.value[textField.tag]
-        if let rowViewModel = rowViewModel as? DatePickerTableViewCellViewModel {
-            showDatePicker(tag: textField.tag, rowViewModel: rowViewModel)
-        } else if let rowViewModel = rowViewModel as? DropDownTableViewCellViewModel {
+        if let rowViewModel = rowViewModel as? DropDownTableViewCellViewModel {
             textField.resignFirstResponder()
             showDropDown(tag: textField.tag, rowViewModel: rowViewModel)
         }
@@ -775,6 +965,16 @@ extension ComplexFormViewController {
             if localViewModel.tempWorkflowId.isEmpty {
                 localViewModel.tempWorkflowId = fieldId
             }
+            if viewModel.isDetailWorkflow {
+                if localViewModel.isComplexFirstTime {
+                    for attachment in localViewModel.attachments {
+                        attachment.parentGuid = fieldId
+                    }
+                    viewModel.workflowOperationsModel?.attachments.value = localViewModel.attachments
+                    localViewModel.isComplexFirstTime = false
+                }
+                viewController.viewModel.isDetailWorkflow = viewModel.isDetailWorkflow
+            }
             viewController.viewModel.tempWorkflowId = fieldId
             viewModel.workflowOperationsModel?.tempWorkflowId = fieldId
             viewController.viewModel.processDefintionTitle = viewModel.processDefintionTitle
@@ -845,10 +1045,26 @@ extension ComplexFormViewController {
             self.present(navigationController, animated: true)
         }
     }
+    
+    @objc func viewAllAttachments(button: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[button.tag]
+        guard let localViewModel = rowViewModel as? SingleLineTextTableCellViewModel else { return }
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.isWorkflowTaskAttachments = true
+            viewController.viewModel.attachments = Observable<[ListNode]>(localViewModel.attachments)
+            viewController.viewModel.task = viewModel.task
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+
 }
 
 extension ComplexFormViewController: ActionListViewControllerDelegate {
     func actionListViewController(_ viewController: ActionListViewController, didSelectItem selectedItem: AlfrescoContent.Outcome) {
-        startWorkflowAPIIntegration()
+        let name = selectedItem.name
+        let id = selectedItem.id ?? 0
+        startWorkflowAPIIntegration(name: name, id: id)
     }
 }

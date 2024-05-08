@@ -62,11 +62,11 @@ class CheckBoxTableViewCellViewModel: RowViewModel {
     }
     
     init(field: Field, type: ComplexFormFieldType) {
-        let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let isSelected = ValueUnion.bool(field.value?.getBoolValue() ?? Bool()).getBoolValue()
+        self.isSelected = isSelected ?? Bool()
         self.componentID = field.id
         self.title = field.name
         self.placeholder = field.placeholder
-        self.text = text
         self.readOnly = field.readOnly
         self.type = type
         self.minLength = field.minLength

@@ -90,17 +90,30 @@ class DropDownTableViewCellViewModel: RowViewModel {
         self.currency = field.currency
         self.enableFractions = field.enableFractions ?? false
         self.fractionLength = field.fractionLength ?? 0
-        self.taskChip = getTaskChipItem(for: field.options ?? [], name: field.name ?? "", id: field.id)
+        var isUpdateDropDown = false
+        if (text?.count ?? 0) > 0 {
+            if (field.value?.getDictValue() == nil) {
+                isUpdateDropDown = true
+            }
+        }
+        self.taskChip = getTaskChipItem(for: field.options ?? [], name: field.name ?? "", id: field.id, text: text ?? "", isUpdateDropDown: isUpdateDropDown, field: field)
     }
     
-    private func getTaskChipItem(for options: [Option], name: String, id: String) -> TaskChipItem? {
+    private func getTaskChipItem(for options: [Option], name: String, id: String, text: String, isUpdateDropDown: Bool, field: Field) -> TaskChipItem? {
         var taskOptions = [TaskOptions]()
+       
         for option in options where option.id != "empty" {
             let tOptions = TaskOptions(label: option.name,
                                             query: option.id,
                                             value: option.name,
                                             accessibilityIdentifier: option.name)
             taskOptions.append(tOptions)
+            if isUpdateDropDown {
+                if text == option.name {
+                    let dropDown = DropDownValue(id: option.id, name: option.name)
+                    field.value = .valueElementDict(dropDown)
+                }
+            }
         }
         
         let chip = TaskChipItem(chipId: Int(id),
@@ -114,31 +127,4 @@ class DropDownTableViewCellViewModel: RowViewModel {
         return chip
     }
 
-    private func checkErrorForStringValue(text: String) {
-        let numberOfChars = text.count
-        if maxLength == 0 {
-            errorMessage = nil
-        } else if numberOfChars < minLength {
-            errorMessage = "Enter atleast \(minLength) characters"
-        } else if numberOfChars > maxLength {
-            errorMessage = "Enter maximum \(maxLength) characters"
-        } else {
-            errorMessage = nil
-        }
-    }
-    
-    private func checkErrorForIntegerValue(text: String) {
-        guard let maximumValue = maxValue, let minimumValue = minValue else { return }
-        if !minimumValue.isEmpty {
-            if text.isEmpty {
-                errorMessage = nil
-            } else if (Int(text) ?? 0) < (Int(minimumValue) ?? 0) {
-                errorMessage = "Can't be less than \(minimumValue)"
-            } else if (Int(text) ?? 0) > (Int(maximumValue) ?? 0) {
-                errorMessage = "Can't be greater than \(maximumValue)"
-            } else {
-                errorMessage = nil
-            }
-        }
-    }
 }

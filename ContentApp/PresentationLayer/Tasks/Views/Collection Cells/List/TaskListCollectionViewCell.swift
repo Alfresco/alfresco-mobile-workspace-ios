@@ -63,8 +63,11 @@ class TaskListCollectionViewCell: ListSelectableCell {
     func setupData(for task: TaskNode?) {
         guard let task = task, let currentTheme = currentTheme else { return }
         viewModel.task = task
-        
-        title.text = viewModel.taskName
+        var taskName = viewModel.taskName ?? ""
+        if taskName.isEmpty {
+            taskName = LocalizationConstants.Workflows.noName
+        }
+        title.text = taskName
         subtitle.text = viewModel.userName
         dateLabel.text = viewModel.getCreatedDate(for: viewModel.createdDate)
         

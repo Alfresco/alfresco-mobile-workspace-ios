@@ -75,7 +75,17 @@ class DatePickerTableViewCellViewModel: RowViewModel {
         self.componentID = field.id
         self.title = field.name
         self.placeholder = field.placeholder
-        self.text = text
+        var textString = text ?? ""
+        // Check if text is not empty
+        if !textString.isEmpty {
+            // Determine date format based on field type
+            let dateTime = type == .date ? false : true
+            // Format date string if necessary
+            let formattedText = DateFormatterUtility.formattedDateString(from: textString, dateTime: dateTime)
+            // Update text string with formatted date
+            textString = formattedText
+        }
+        self.text = textString
         self.readOnly = field.readOnly
         self.type = type
         self.minLength = field.minLength

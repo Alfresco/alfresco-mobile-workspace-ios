@@ -424,6 +424,9 @@ struct LocalizationConstants {
         static let noFolderAttached = NSLocalizedString("no-folder-attached", comment: "")
         static let multipleFolder = NSLocalizedString("multiple-folder", comment: "")
         static let select = NSLocalizedString("select", comment: "")
+        static let info = NSLocalizedString("info", comment: "")
+        static let complete = NSLocalizedString("complete", comment: "")
+        static let noName = NSLocalizedString("no-name", comment: "")
     }
     
     struct MultipleFilesSelection {

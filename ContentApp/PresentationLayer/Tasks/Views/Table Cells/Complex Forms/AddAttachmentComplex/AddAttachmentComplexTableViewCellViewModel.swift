@@ -30,6 +30,7 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
     var fieldRequired = false
     var isFolder = false
     var folderId = ""
+    var isComplexFirstTime = false
     var folderName = ""
     
     var name: String? {
@@ -44,7 +45,20 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
         return "AddAttachmentComplexTableViewCell"
     }
     
-    init(field: Field, type: ComplexFormFieldType) {
+    init(field: Field, type: ComplexFormFieldType, isComplexFirstTime: Bool) {
+        if let assignee = field.value?.getValueElementArray() {
+            let localAttachments = TaskAttachmentOperations.processWorkflowAttachments(for: assignee, taskId: "")
+            self.attachments = localAttachments
+            var guidStr = ""
+            if isComplexFirstTime {
+                for attachment in attachments {
+                    attachment.syncStatus = .synced
+                    guidStr.isEmpty ? (guidStr = attachment.guid) : (guidStr += ",\(attachment.guid)")
+                }
+                field.value = .string(guidStr)
+                self.isComplexFirstTime = isComplexFirstTime
+            }
+        }
         self.field = field
         self.title = field.name
         let multiSelection = ((field.params?.multipal) != nil)
