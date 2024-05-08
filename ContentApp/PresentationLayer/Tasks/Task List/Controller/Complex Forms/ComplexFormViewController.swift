@@ -819,9 +819,11 @@ extension ComplexFormViewController {
         filesAndFolderViewController = controller
         filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId in
             guard let sSelf = self else { return }
-            localViewModel.folderId = folderId ?? ""
-            localViewModel.didChangeText?(folderId ?? "")
-            sSelf.reloadTableView(row: button.tag)
+            if let folderIdVal = folderId, !folderIdVal.isEmpty {
+                localViewModel.folderId = folderIdVal
+                localViewModel.didChangeText?(folderIdVal)
+                sSelf.reloadTableView(row: button.tag)
+            }
         }
     }
 
