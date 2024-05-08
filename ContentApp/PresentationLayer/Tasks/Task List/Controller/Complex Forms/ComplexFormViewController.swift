@@ -818,6 +818,7 @@ extension ComplexFormViewController {
             if let folderIdVal = folderId, !folderIdVal.isEmpty {
                 localViewModel.folderId = folderIdVal
                 localViewModel.folderName = folderName ?? ""
+                
                 localViewModel.didChangeText?(folderIdVal)
                 sSelf.reloadTableView(row: button.tag)
             }
