@@ -38,6 +38,13 @@ class StartWorkflowViewModel: NSObject {
     var formFields = [Field]()
     var formData: StartFormFields?
     let isEnabledButton = Observable<Bool>(false)
+    var task: TaskNode?
+    var isShowDoneCompleteBtn = false
+    var isComplexFirstTime = false
+    
+    var taskId: String {
+        return task?.taskID ?? ""
+    }
 
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
@@ -98,12 +105,13 @@ class StartWorkflowViewModel: NSObject {
     
     var screenTitle: String? {
         if isDetailWorkflow {
-            return LocalizationConstants.Workflows.workflowTitle
+            let name = task?.name ?? ""
+            return name.isEmpty ? LocalizationConstants.Workflows.noName : LocalizationConstants.Workflows.workflowTitle
         } else {
             return LocalizationConstants.Accessibility.startWorkflow
         }
     }
-    
+
     // MARK: - Get Due date
     func getDueDate(for dueDate: Date?) -> String? {
         if let dueDate = dueDate?.dateString(format: "dd MMM yyyy") {
@@ -137,13 +145,40 @@ class StartWorkflowViewModel: NSObject {
         })
     }
     
+    // MARK: - Workflow Task details
+
+    func workflowTaskDetails(completionHandler: @escaping (_ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            TasksAPI.getTaskForm(taskId: self.taskId) {[weak self] data, fields, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+
+                if data != nil {
+                    sSelf.formData = data
+                    sSelf.formFields = fields
+                    completionHandler(nil)
+                } else {
+                    completionHandler(error)
+                }
+            }
+        })
+    }
+    
     // MARK: - Check Assignee type
     func getFormFields(completionHandler: @escaping (_ error: Error?) -> Void) {
         
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let name = self.processDefinition??.processId ?? ""
+            var name = ""
+            if isDetailWorkflow {
+                name = self.formData?.processDefinitionID ?? ""
+            } else {
+                name = self.processDefinition??.processId ?? ""
+            }
             
             ProcessAPI.formFields(name: name) {[weak self] data, fields, error in
                 guard let sSelf = self else { return }

@@ -211,11 +211,6 @@ class WflowTaskDetailViewController: SystemSearchViewController {
     }
     
     private func callAPIToApproveRejectTask() {
-        viewModel.approveRejectTask { error in
-            if error == nil {
-                self.backAndRefreshAction(isRefreshList: true)
-            }
-        }
     }
     
     // MARK: - Set up Bindings
@@ -491,20 +486,8 @@ extension WflowTaskDetailViewController {
     }
 
     @objc func releaseTaskButtonAction() {
-        viewModel.claimUnclaimTask(isClaim: false) { [weak self] error in
-            guard let sSelf = self else { return }
-            if error == nil {
-                sSelf.backAndRefreshAction(isRefreshList: true)
-            }
-        }
     }
     
     @IBAction func claimTaskButtonAction(_ sender: Any) {
-        viewModel.claimUnclaimTask(isClaim: true) { [weak self] error in
-            guard let sSelf = self else { return }
-            if error == nil {
-                sSelf.backAndRefreshAction(isRefreshList: true)
-            }
-        }
     }
 }

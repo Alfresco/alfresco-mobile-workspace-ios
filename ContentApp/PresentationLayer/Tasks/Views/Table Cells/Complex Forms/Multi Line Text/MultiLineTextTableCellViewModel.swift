@@ -55,7 +55,7 @@ class MultiLineTextTableCellViewModel: RowViewModel {
     }
     
     func checkForErrorMessages(for text: String) {
-
+        guard maxLength != 0 else { return }
         let numberOfChars = text.count
         if numberOfChars < minLength {
             errorMessage = "Enter atleast \(minLength) characters"

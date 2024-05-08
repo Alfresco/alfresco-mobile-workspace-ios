@@ -247,7 +247,7 @@ class ComplexFormController: NSObject {
     
     // MARK: - Attachment
     private func attachmentCellVM(for field: Field) -> AddAttachmentComplexTableViewCellViewModel {
-        let rowVM = AddAttachmentComplexTableViewCellViewModel(field: field, type: .checkbox)
+        let rowVM = AddAttachmentComplexTableViewCellViewModel(field: field, type: .checkbox, isComplexFirstTime: viewModel.isComplexFirstTime)
         rowVM.didChangeText = { [weak self] (text) in
             guard let enterText = text else { return }
             self?.updateText(for: field, text: enterText)
@@ -285,7 +285,7 @@ class ComplexFormController: NSObject {
         self.checkRequiredTextField()
     }
     
-    fileprivate func checkRequiredTextField() {
+    func checkRequiredTextField() {
         complexFormViewModel.checkRequiredField(formFields: self.viewModel.formFields, completion: {[weak self] value in
             if value {
                 self?.viewModel.isEnabledButton.value = true
@@ -294,5 +294,4 @@ class ComplexFormController: NSObject {
             }
         })
     }
-    
 }

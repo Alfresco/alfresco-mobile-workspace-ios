@@ -31,12 +31,21 @@
                                     <outlet property="delegate" destination="-1" id="jOV-7w-OCE"/>
                                 </connections>
                             </textField>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jZs-8W-bw6">
+                                <rect key="frame" x="20" y="10" width="426" height="120"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="dsk-t7-3i9" firstAttribute="leading" secondItem="nVB-Oa-rpU" secondAttribute="leading" constant="20" id="A1e-V6-rSu"/>
                             <constraint firstItem="dsk-t7-3i9" firstAttribute="top" secondItem="nVB-Oa-rpU" secondAttribute="top" constant="10" id="AAN-VZ-PJc"/>
+                            <constraint firstItem="jZs-8W-bw6" firstAttribute="bottom" secondItem="dsk-t7-3i9" secondAttribute="bottom" id="CKA-x0-HKK"/>
                             <constraint firstAttribute="trailing" secondItem="dsk-t7-3i9" secondAttribute="trailing" constant="20" id="EjZ-Yg-ZPf"/>
+                            <constraint firstItem="jZs-8W-bw6" firstAttribute="leading" secondItem="dsk-t7-3i9" secondAttribute="leading" id="Ufi-cF-cGr"/>
+                            <constraint firstItem="jZs-8W-bw6" firstAttribute="trailing" secondItem="dsk-t7-3i9" secondAttribute="trailing" id="awc-T7-yz3"/>
+                            <constraint firstItem="jZs-8W-bw6" firstAttribute="top" secondItem="dsk-t7-3i9" secondAttribute="top" id="f4v-fe-QOj"/>
                             <constraint firstAttribute="bottom" secondItem="dsk-t7-3i9" secondAttribute="bottom" constant="10" id="g17-gp-qyI"/>
                         </constraints>
                     </view>
@@ -52,6 +61,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="baseView" destination="nVB-Oa-rpU" id="sWt-hS-zDd"/>
+                <outlet property="selectButton" destination="jZs-8W-bw6" id="i5D-71-ZgH"/>
                 <outlet property="textField" destination="dsk-t7-3i9" id="f5q-tQ-3uf"/>
             </connections>
             <point key="canvasLocation" x="213.74045801526717" y="-19.014084507042256"/>

@@ -74,10 +74,29 @@ class AssigneeTableViewCellViewModel: RowViewModel {
     
     init(field: Field, type: ComplexFormFieldType) {
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        var localUserName = ""
+        if let assignee = field.value?.getAssignee() {
+            if let apsUserID = UserProfile.apsUserID {
+                if assignee.id == apsUserID {
+                    let name = LocalizationConstants.EditTask.meTitle
+                    localUserName = name
+                } else {
+                    if let groupName = assignee.groupName, !groupName.isEmpty {
+                        localUserName = groupName
+                    } else {
+                        localUserName = assignee.userName ?? ""
+                    }
+                }
+            }
+        }
+        if !localUserName.isEmpty {
+            self.userName = localUserName
+        } else {
+            self.text = text
+        }
         self.componentID = field.id
         self.title = field.name
         self.placeholder = field.placeholder
-        self.text = text
         self.readOnly = field.readOnly
         self.type = type
         self.minLength = field.minLength 

@@ -23,6 +23,7 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable, CellThemeA
 
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var textField: MDCOutlinedTextField!
+    @IBOutlet weak var selectButton: UIButton!
     var viewModel: SingleLineTextTableCellViewModel?
     var service: MaterialDesignThemingService?
 
@@ -46,6 +47,10 @@ class SingleLineTextTableViewCell: UITableViewCell, CellConfigurable, CellThemeA
         textField.keyboardType = viewModel.keyboardType
         textField.leadingViewMode = .always
         textField.isUserInteractionEnabled = !viewModel.readOnly
+        let isHiddenSelectBtn = viewModel.isHiddenSelectBtn
+        selectButton.isHidden = isHiddenSelectBtn
+        selectButton.setTitle("", for: .normal)
+
         addAccessibility()
     }
     

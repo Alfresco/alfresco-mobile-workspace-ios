@@ -94,6 +94,7 @@
 		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
 		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
 		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
+		74A97F7C2BE2A49600A0931D /* DateFormatterUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A97F7B2BE2A49600A0931D /* DateFormatterUtility.swift */; };
 		74D4D9272BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */; };
 		74D4D9282BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */; };
 		74D4D92A2BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */; };
@@ -924,6 +925,7 @@
 		74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCell.swift; sourceTree = "<group>"; };
 		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
 		74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewModel.swift; sourceTree = "<group>"; };
+		74A97F7B2BE2A49600A0931D /* DateFormatterUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterUtility.swift; sourceTree = "<group>"; };
 		74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCell.swift; sourceTree = "<group>"; };
 		74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttachmentComplexTableViewCell.xib; sourceTree = "<group>"; };
 		74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -1785,6 +1787,14 @@
 				74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */,
 			);
 			path = "Date Picker";
+			sourceTree = "<group>";
+		};
+		74A97F7A2BE2A45700A0931D /* DateFormatterUtility */ = {
+			isa = PBXGroup;
+			children = (
+				74A97F7B2BE2A49600A0931D /* DateFormatterUtility.swift */,
+			);
+			path = DateFormatterUtility;
 			sourceTree = "<group>";
 		};
 		74AA1B7C2B6CC0D500F32403 /* People */ = {
@@ -2695,6 +2705,7 @@
 		C983A274287EDEC200CEDCAB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				74A97F7A2BE2A45700A0931D /* DateFormatterUtility */,
 				47DC693729D02BC50092A362 /* Workflow Node */,
 				47F5A6E729DEA4DD00073D7F /* WFlowAppDefinitions */,
 				47FBDF6629E5392F00EE56AC /* WFlow Process Definition */,
@@ -5010,6 +5021,7 @@
 				C9CFA5EB289C48940097E581 /* TaskDetailController.swift in Sources */,
 				47DC693B29D02BE70092A362 /* WorkflowNodeOperations.swift in Sources */,
 				C9205C7B28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift in Sources */,
+				74A97F7C2BE2A49600A0931D /* DateFormatterUtility.swift in Sources */,
 				E3208D372541C4E8005DAFB4 /* UIView+RoundCorners.swift in Sources */,
 				C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */,
 				E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */,

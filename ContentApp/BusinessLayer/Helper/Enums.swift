@@ -52,3 +52,15 @@ enum ComplexFormFieldType: String {
     case upload = "upload"
     case selectfolder = "select-folder"
 }
+
+// MARK: - Field type
+enum FieldType: String, Codable {
+    case date = "date"
+    case dateTime = "datetime"
+    case integer = "integer"
+    case amount = "amount"
+    case bool = "boolean"
+    case string = "string"
+    case people = "people"
+    case upload = "upload"
+}

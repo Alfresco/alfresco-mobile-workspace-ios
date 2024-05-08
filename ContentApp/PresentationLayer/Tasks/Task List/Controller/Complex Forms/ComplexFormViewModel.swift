@@ -36,13 +36,13 @@ class ComplexFormViewModel: NSObject {
     
     func selectedDateString(for date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MMM-yy"
+        dateFormatter.dateFormat = "dd-MMM-yyyy"
         return dateFormatter.string(from: date)
     }
     
     func selectedDateTimeString(for date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MMM-yy HH:mm:ss"
+        dateFormatter.dateFormat = "dd-MMM-yyyy hh:mm a"
         return dateFormatter.string(from: date)
     }
     func convertStringToDateTime(dateStr: String) -> Date? {
@@ -68,6 +68,11 @@ class ComplexFormViewModel: NSObject {
         DispatchQueue.global(qos: .background).async { [weak self] in
             
             guard let sself = self else { return } // Unwrap weak self
+            
+            if formFields.isEmpty {
+                completion(false) // Return false if formFields is empty
+                return
+            }
 
             // Check if all required fields have non-empty entered values
             let allRequiredFieldsNonEmpty = formFields.allSatisfy { field in
@@ -82,20 +87,10 @@ class ComplexFormViewModel: NSObject {
                     return true
                     
                 case .radioButton, .dropDown:
-                    if let dictValue = field.value?.getDictValue() {
-                        let value = ValueUnion.valueElementDict(dictValue).getDictValue()
-                        return !field.fieldRequired || !(value?.name.isEmpty ?? true)
-                    } else {
-                        return false
-                    }
+                    return !field.fieldRequired || sself.checkDropDown(field: field)
                     
                 case .people, .group:
-                    if let assignee = field.value?.getAssignee() {
-                        let value = ValueUnion.assignee(assignee).getAssignee()
-                        return !field.fieldRequired || !(value?.id == -1)
-                    } else {
-                        return false
-                    }
+                    return !field.fieldRequired || sself.checkAssignee(field: field)
                     
                 case .upload:
                     let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
@@ -110,6 +105,22 @@ class ComplexFormViewModel: NSObject {
             // Call the completion handler with the result
             completion(allRequiredFieldsNonEmpty)
         }
+    }
+    
+    private func checkDropDown(field: Field) -> Bool {
+        guard let dictValue = field.value?.getDictValue(),
+              let value = ValueUnion.valueElementDict(dictValue).getDictValue() else {
+            return false
+        }
+        return !field.fieldRequired || !(value.name.isEmpty)
+    }
+
+    private func checkAssignee(field: Field) -> Bool {
+        guard let assignee = field.value?.getAssignee(),
+              let value = ValueUnion.assignee(assignee).getAssignee() else {
+            return false
+        }
+        return !field.fieldRequired || !(value.id == -1)
     }
     
     private func checkAttachFiles(text: String?, field: Field) -> Bool {
@@ -199,7 +210,8 @@ extension ComplexFormViewModel {
                     let value = ValueUnion.valueElementDict(dictValue).getDictValue()
                     localParams = [key: AnyEncodable(value)]
                 } else {
-                    localParams = [:]
+                    let value = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+                    localParams = [key: AnyEncodable(value ?? "")]
                 }
             case .people, .group:
                 if let assignee = field.value?.getAssignee() {
@@ -219,4 +231,91 @@ extension ComplexFormViewModel {
                                        processDefinitionId: processDefinitionId,
                                        params: params)
     }
+    
+    // MARK: - Save Form
+    func saveTaskFormMethod(for formFields: [Field], taskId: String, completionHandler: @escaping (_ isError: Bool) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: {[weak self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            guard let sSelf = self else { return }
+            let params = sSelf.saveFormParams(for: formFields, outcome: "")
+            TasksAPI.saveTaskForm(taskId: taskId, params: params) { data, error in
+                
+                if data != nil {
+                    completionHandler(false)
+                } else {
+                    completionHandler(true)
+                }
+            }
+        })
+    }
+    
+    private func saveFormParams(for formFields: [Field], outcome: String) -> SaveTaskParams {
+
+        var params = [String: AnyEncodable]()
+        for field in formFields {
+            let key = field.id
+            let type = ComplexFormFieldType(rawValue: field.type)
+            var localParams: [String: AnyEncodable]
+            switch type {
+            case .amountField, .numberField:
+                let value = ValueUnion.int(field.value?.getIntValue() ?? 0).getIntValue()
+                localParams = [key: AnyEncodable(value ?? 0)]
+            case .checkbox:
+                let value = ValueUnion.bool(field.value?.getBoolValue() ?? false).getBoolValue()
+                localParams = [key: AnyEncodable(value ?? false)]
+            case .radioButton, .dropDown:
+                if let dictValue = field.value?.getDictValue() {
+                    let value = ValueUnion.valueElementDict(dictValue).getDictValue()
+                    localParams = [key: AnyEncodable(value)]
+                } else {
+                    localParams = [:]
+                }
+            case .people, .group:
+                if let assignee = field.value?.getAssignee() {
+                    let value = ValueUnion.assignee(assignee).getAssignee()
+                    localParams = [key: AnyEncodable(value)]
+                } else {
+                    localParams = [:]
+                }
+            case .displayText, .displayValue:
+                localParams = [:]
+            default:
+                let value = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+                localParams = [key: AnyEncodable(value ?? "")]
+            }
+            // Append localParams to params
+            if !localParams.isEmpty {
+                params.merge(localParams) { (_, new) in new }
+            }
+        }
+        if outcome.isEmpty {
+            return SaveTaskParams(outcome: nil, params: params)
+        }
+        return SaveTaskParams(outcome: outcome, params: params)
+    }
+    
+    // MARK: - Save task
+    func saveTaskMethod(for formFields: [Field], taskId: String, outcome: String, completionHandler: @escaping (_ isError: Bool) -> Void) {
+        
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: {[weak self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            guard let sSelf = self else { return }
+            let params = sSelf.saveFormParams(for: formFields, outcome: outcome)
+            TasksAPI.outcomeTaskForm(taskId: taskId, params: params) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+
+                if data != nil {
+                    completionHandler(false)
+                } else {
+                    completionHandler(true)
+                }
+            }
+        })
+    }
+    
 }

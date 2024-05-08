@@ -448,6 +448,9 @@
 "no-folder-attached" = "No Folder Attached";
 "multiple-folder" = "%d Folder";
 "select" = "Select";
+"info" = "Information";
+"complete" = "Complete";
+"no-name" = "No Name";
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";

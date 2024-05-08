@@ -37,6 +37,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var currency: String?
     var enableFractions = false
     var fractionLength = 0
+    var isHiddenSelectBtn = true
+    var attachments = [ListNode]()
     
     var name: String? {
         if fieldRequired {
@@ -74,10 +76,41 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     
     init(field: Field, type: ComplexFormFieldType) {
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
+        let parmsType = field.params?.field?.type ?? ""
+        
+        var stringText = ""
+        switch type {
+        case .displayText, .displayValue:
+            if let fieldType = FieldType(rawValue: parmsType) {
+                switch fieldType {
+                case .date:
+                    stringText = DateFormatterUtility.formattedDateString(from: text ?? "", dateTime: false)
+                case .dateTime:
+                    stringText = DateFormatterUtility.formattedDateString(from: text ?? "", dateTime: true)
+                case .integer, .amount:
+                    let intText = ValueUnion.int(field.value?.getIntValue() ?? 0).getIntValue()
+                    stringText = String(intText ?? 0)
+                case .bool:
+                    let boolText = ValueUnion.bool(field.value?.getBoolValue() ?? false).getBoolValue()
+                    stringText = String(boolText ?? false)
+                case .string:
+                    stringText = text ?? ""
+                case .people:
+                    stringText = Self.getUserName(field: field)
+                case .upload:
+                    stringText = Self.getAttachmentsCount(for: field, attachments: &attachments, isHiddenSelectBtn: &isHiddenSelectBtn)
+                }
+            } else {
+                stringText = text ?? ""
+            }
+        default:
+            stringText = text ?? ""
+        }
+        
+        self.text = stringText
         self.componentID = field.id
+        self.placeholder = field.name
         self.title = field.name
-        self.placeholder = field.placeholder
-        self.text = text
         self.type = type
         self.readOnly = ComplexFormFieldType.displayText.rawValue == type.rawValue || ComplexFormFieldType.displayValue.rawValue == type.rawValue
         self.minLength = field.minLength
@@ -88,6 +121,39 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         self.currency = field.currency
         self.enableFractions = field.enableFractions ?? false
         self.fractionLength = field.fractionLength ?? 0
+    }
+    
+    static private func getUserName(field: Field) -> String {
+        var localUserName = ""
+        if let assignee = field.value?.getAssignee() {
+            if let apsUserID = UserProfile.apsUserID {
+                if assignee.id == apsUserID {
+                    let name = LocalizationConstants.EditTask.meTitle
+                    localUserName = name
+                } else {
+                    if let groupName = assignee.groupName, !groupName.isEmpty {
+                        localUserName = groupName
+                    } else {
+                        localUserName = assignee.userName ?? ""
+                    }
+                }
+            }
+        }
+        return localUserName
+    }
+    
+    static func getAttachmentsCount(for field: Field, attachments: inout [ListNode], isHiddenSelectBtn: inout Bool) -> String {
+        if let assignee = field.value?.getValueElementArray() {
+            attachments = TaskAttachmentOperations.processWorkflowAttachments(for: assignee, taskId: "")
+            if (attachments.count) > 0 {
+                isHiddenSelectBtn = false
+                return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, assignee.count)
+            } else {
+                isHiddenSelectBtn = true
+                return String(format: LocalizationConstants.Tasks.noAttachedFilesPlaceholder)
+            }
+        }
+        return ""
     }
 
     func checkForErrorMessages(for text: String) {

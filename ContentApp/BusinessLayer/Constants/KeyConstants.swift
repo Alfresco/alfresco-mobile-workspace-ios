@@ -53,6 +53,7 @@ struct KeyConstants {
         static let internetCheck = "kInternetCheckNotification"
         static let bannerQueryParam = "mobileapps=true"
         static let refreshWorkflows = "kRefreshWorkflowsNotification"
+        static let refreshTaskList = "kRefreshTaskListNotification"
     }
     
     struct AdvanceSearch {
