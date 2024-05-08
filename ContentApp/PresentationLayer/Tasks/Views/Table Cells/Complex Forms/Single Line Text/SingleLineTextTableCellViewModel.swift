@@ -118,9 +118,9 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         if !minimumValue.isEmpty {
             if text.isEmpty {
                 errorMessage = nil
-            } else if (Int(text) ?? 0) < (Int(minimumValue) ?? 0) {
+            } else if (text.count ) < (Int(minimumValue) ?? 0) {
                 errorMessage = "Can't be less than \(minimumValue)"
-            } else if (Int(text) ?? 0) > (Int(maximumValue) ?? 0) {
+            } else if (text.count) > (Int(maximumValue) ?? 0) {
                 errorMessage = "Can't be greater than \(maximumValue)"
             } else {
                 errorMessage = nil
