@@ -25,6 +25,7 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var attachmentCount: UILabel!
     @IBOutlet weak var attachmentButton: UIButton!
+    @IBOutlet weak var removeAttachmentButton: UIButton!
     var viewModel: AddAttachmentComplexTableViewCellViewModel?
     var service: MaterialDesignThemingService?
     
@@ -37,16 +38,25 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
         attachmentButton.isAccessibilityElement = true
     }
     
+    @IBAction func actionRemoveFolder(_ sender: Any) {
+        guard let viewModel = viewModel else { return }
+        self.viewModel = viewModel
+        self.viewModel?.folderName = ""
+        self.viewModel?.folderId = ""
+        setup(viewModel: viewModel)
+    }
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
         self.viewModel = viewModel
         titleLabel.text = viewModel.name
         if viewModel.isFolder {
-            if !viewModel.folderId.isEmpty {
-                let folderText = String(format: LocalizationConstants.Workflows.multipleFolder, 1)
-                attachmentCount.text = folderText
+            
+            if !viewModel.folderName.isEmpty {
+                attachmentCount.text = viewModel.folderName
+                removeAttachmentButton.isHidden = false
             } else {
                 attachmentCount.text = LocalizationConstants.Workflows.noFolderAttached
+                removeAttachmentButton.isHidden = true
             }
         } else {
             if !viewModel.attachments.isEmpty {
@@ -58,6 +68,8 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
         }
         addAccessibility()
     }
+    
+    
     
     private func addAccessibility() {
         titleLabel.accessibilityTraits = .staticText

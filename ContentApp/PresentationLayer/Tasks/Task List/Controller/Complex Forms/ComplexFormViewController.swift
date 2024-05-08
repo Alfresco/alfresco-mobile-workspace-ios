@@ -624,6 +624,7 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     fileprivate func configureAttachmentCells(_ localViewModel: AddAttachmentComplexTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+
         (cell as?  AddAttachmentComplexTableViewCell)?.attachmentButton.tag = indexPath.row
         if localViewModel.isFolder {
             (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentFolderButtonAction(button:)), for: .touchUpInside)
@@ -635,6 +636,11 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     fileprivate func configureDisplayCells(_ localViewModel: SingleLineTextTableCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
         (cell as?  SingleLineTextTableViewCell)?.selectButton.tag = indexPath.row
         (cell as?  SingleLineTextTableViewCell)?.selectButton.addTarget(self, action: #selector(viewAllAttachments(button:)), for: .touchUpInside)
+
+        let attachCell = cell as? AddAttachmentComplexTableViewCell
+        attachCell?.attachmentButton.tag = indexPath.row
+        attachCell?.attachmentButton.addTarget(self, action:localViewModel.isFolder ?  #selector(attachmentFolderButtonAction(button:)): #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+
     }
     
     fileprivate func applyTheme(_ cell: UITableViewCell) {
@@ -1007,11 +1013,15 @@ extension ComplexFormViewController {
         let navController = UINavigationController(rootViewController: controller)
         self.navigationController?.present(navController, animated: true)
         filesAndFolderViewController = controller
-        filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId in
+        filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId, folderName in
             guard let sSelf = self else { return }
-            localViewModel.folderId = folderId ?? ""
-            localViewModel.didChangeText?(folderId ?? "")
-            sSelf.reloadTableView(row: button.tag)
+            if let folderIdVal = folderId, !folderIdVal.isEmpty {
+                localViewModel.folderId = folderIdVal
+                localViewModel.folderName = folderName ?? ""
+                
+                localViewModel.didChangeText?(folderIdVal)
+                sSelf.reloadTableView(row: button.tag)
+            }
         }
     }
 

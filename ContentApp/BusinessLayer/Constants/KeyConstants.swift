@@ -85,5 +85,6 @@ struct KeyConstants {
     
     struct FileSize {
         static let taskFileSize = 100.0
+        static let workflowFileSize = 10.0
     }
 }

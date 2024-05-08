@@ -131,9 +131,9 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         displaySnackbar(with: snackBarMessage, type: .approve)
     }
     
-    @objc func triggerMoveNotifyService(folderId: String) {
+    @objc func triggerMoveNotifyService(folderId: String, folderName: String) {
         let notificationName = Notification.Name(rawValue: KeyConstants.Notification.moveFileFolderFinished)
-        let notification = Notification(name: notificationName, object: nil, userInfo: ["id": folderId])
+        let notification = Notification(name: notificationName, object: nil, userInfo: ["id": folderId, "name": folderName])
         NotificationCenter.default.post(notification)
     }
 
