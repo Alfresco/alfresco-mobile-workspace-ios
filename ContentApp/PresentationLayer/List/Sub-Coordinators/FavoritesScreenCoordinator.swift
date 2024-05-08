@@ -181,7 +181,7 @@ extension FavoritesScreenCoordinator: NodeActionMoveDelegate {
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
             filesAndFolderViewController = controller
-            filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId in
+            filesAndFolderViewController?.didSelectDismissAction = {[weak self] folderId, folderName in
                 guard let sSelf = self else { return }
                 sSelf.favoritesViewController?.folderAndFilesViewController?.resetMultipleSelectionView()
             }

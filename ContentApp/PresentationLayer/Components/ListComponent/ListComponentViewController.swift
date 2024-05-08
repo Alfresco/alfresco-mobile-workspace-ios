@@ -143,7 +143,7 @@ class ListComponentViewController: SystemThemableViewController {
     // MARK: - Move files
     @IBAction func moveFilesButtonAction(_ sender: Any) {
         if isAPSAttachmentFlow {
-            triggerMoveNotifyService(folderId: folderId)
+            triggerMoveNotifyService(folderId: folderId, folderName: destinationNodeToMove?.title ?? "")
         } else {
             guard let source = self.sourceNodeToMove, let destination = self.destinationNodeToMove else { return }
             let menu = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder,
@@ -153,7 +153,7 @@ class ListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func cancelMoveButtonAction(_ sender: Any) {
-        triggerMoveNotifyService(folderId: "")
+        triggerMoveNotifyService(folderId: "", folderName: "")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -231,11 +231,8 @@ class ListComponentViewController: SystemThemableViewController {
         moveFilesBottomView.backgroundColor = currentTheme.surfaceColor
         moveFilesButton.applyContainedTheme(withScheme: buttonScheme)
         moveFilesButton.isUppercaseTitle = false
-        if isAPSAttachmentFlow {
-            moveFilesButton.setTitle(LocalizationConstants.Workflows.select, for: .normal)
-        } else {
-            moveFilesButton.setTitle(LocalizationConstants.Buttons.moveHere, for: .normal)
-        }
+        let buttonTitle = isAPSAttachmentFlow ? LocalizationConstants.Workflows.select : LocalizationConstants.Buttons.moveHere
+        moveFilesButton.setTitle(buttonTitle, for: .normal)
         moveFilesButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         moveFilesButton.setShadowColor(.clear, for: .normal)
         

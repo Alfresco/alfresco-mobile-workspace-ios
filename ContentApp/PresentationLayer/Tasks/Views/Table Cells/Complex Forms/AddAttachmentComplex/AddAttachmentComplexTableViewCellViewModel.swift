@@ -30,6 +30,7 @@ class AddAttachmentComplexTableViewCellViewModel: RowViewModel {
     var fieldRequired = false
     var isFolder = false
     var folderId = ""
+    var folderName = ""
     
     var name: String? {
         if fieldRequired {
