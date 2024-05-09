@@ -406,7 +406,7 @@
 "workflow-title" = "Workflow";
 "individual-title" = "Individuel";
 "group-title" = "Groupe";
-"warning-message-uploading-in-progress" = "L'importation est actuellement en cours. Voulez-vous continuer sans importer ?";
+"warning-message-uploading-in-progress" = "Chargement en cours. Souhaitez-vous continuer sans charger ?";
 "search-user" = "Rechercher des utilisateurs";
 "search-group" = "Groupe de recherche";
 "warning-title" = "Avertissement";
@@ -447,3 +447,4 @@
 "dialog-multi-delete-message" = "%d éléments seront définitivement supprimés.";
 "multiple-selected-items-count" = "%d Sélectionné";
 "check-box-multi-select" = "Case à cocher";
+"maximum-items-selection-message" = "%d éléments maximum peuvent être sélectionnés";

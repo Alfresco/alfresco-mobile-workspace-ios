@@ -44,7 +44,7 @@ class DatePickerTableViewCell: UITableViewCell, CellConfigurable, CellThemeAppli
         textField.placeholder = viewModel.placeholder
         textField.keyboardType = viewModel.keyboardType
         textField.leadingViewMode = .always
-        textField.trailingView = UIImageView(image: UIImage(named: "calendar-icon"))
+        textField.trailingView = UIImageView(image: UIImage(named: "ic-calender"))
         addAccessibility()
     }
     

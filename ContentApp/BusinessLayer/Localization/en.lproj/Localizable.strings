@@ -451,6 +451,11 @@
 "info" = "Information";
 "complete" = "Complete";
 "no-name" = "No Name";
+"enter-atleast-characters" = "Enter atleast %d characters";
+"enter-maximum-characters" = "Enter maximum %d characters";
+"cannot-be-less-than" = "Can't be less than %@";
+"cannot-be-greater-than" = "Can't be greater than %@";
+"use-a-different-number-format" = "Use a different number format";
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";
