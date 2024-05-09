@@ -427,6 +427,11 @@ struct LocalizationConstants {
         static let info = NSLocalizedString("info", comment: "")
         static let complete = NSLocalizedString("complete", comment: "")
         static let noName = NSLocalizedString("no-name", comment: "")
+        static let enterAtleastCharacters = NSLocalizedString("enter-atleast-characters", comment: "")
+        static let enterMaximumCharacters = NSLocalizedString("enter-maximum-characters", comment: "")
+        static let cannotBeLessThan = NSLocalizedString("cannot-be-less-than", comment: "")
+        static let cannotBeGreaterThan = NSLocalizedString("cannot-be-greater-than", comment: "")
+        static let useADifferentNumberFormat = NSLocalizedString("use-a-different-number-format", comment: "")
     }
     
     struct MultipleFilesSelection {

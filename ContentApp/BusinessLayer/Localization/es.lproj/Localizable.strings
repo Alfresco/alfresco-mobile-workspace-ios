@@ -72,7 +72,7 @@
 "sync-failed" = "Error al sincronizar";
 
 // MARK: - Tabs Titles
-"settings" = "﻿Ajustes";
+"settings" = "?Ajustes";
 "recent" = "Reciente";
 "favorites" = "Favoritos";
 "browse" = "Explorar";
@@ -447,3 +447,4 @@
 "dialog-multi-delete-message" = "%d elementos serán eliminados permanentemente.";
 "multiple-selected-items-count" = "%d Seleccionado";
 "check-box-multi-select" = "Casilla de verificación";
+"maximum-items-selection-message" = "Solo se puede seleccionar un máximo de %d elementos";

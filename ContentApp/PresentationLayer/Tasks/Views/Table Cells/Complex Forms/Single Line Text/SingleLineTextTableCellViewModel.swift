@@ -171,9 +171,11 @@ class SingleLineTextTableCellViewModel: RowViewModel {
         if maxLength == 0 {
             errorMessage = nil
         } else if numberOfChars < minLength {
-            errorMessage = "Enter atleast \(minLength) characters"
+            errorMessage = String(format: LocalizationConstants.Workflows.enterAtleastCharacters,
+                                  minLength)
         } else if numberOfChars > maxLength {
-            errorMessage = "Enter maximum \(maxLength) characters"
+            errorMessage = String(format: LocalizationConstants.Workflows.enterMaximumCharacters,
+                                  maxLength)
         } else {
             errorMessage = nil
         }
@@ -185,9 +187,9 @@ class SingleLineTextTableCellViewModel: RowViewModel {
             if text.isEmpty {
                 errorMessage = nil
             } else if (text.count ) < (Int(minimumValue) ?? 0) {
-                errorMessage = "Can't be less than \(minimumValue)"
+                errorMessage = String(format: LocalizationConstants.Workflows.cannotBeLessThan, minimumValue)
             } else if (text.count) > (Int(maximumValue) ?? 0) {
-                errorMessage = "Can't be greater than \(maximumValue)"
+                errorMessage = String(format: LocalizationConstants.Workflows.cannotBeGreaterThan, maximumValue)
             } else {
                 errorMessage = nil
             }
@@ -200,9 +202,9 @@ class SingleLineTextTableCellViewModel: RowViewModel {
             if text.isEmpty {
                 errorMessage = nil
             } else if (Float(text) ?? 0) < (Float(minimumValue) ?? 0) {
-                errorMessage = "Can't be less than \(minimumValue)"
+                errorMessage = String(format: LocalizationConstants.Workflows.cannotBeLessThan, minimumValue)
             } else if (Float(text) ?? 0) > (Float(maximumValue) ?? 0) {
-                errorMessage = "Can't be greater than \(maximumValue)"
+                errorMessage = String(format: LocalizationConstants.Workflows.cannotBeGreaterThan, maximumValue)
             } else {
                 errorMessage = nil
             }
@@ -212,11 +214,11 @@ class SingleLineTextTableCellViewModel: RowViewModel {
             let textArray = text.components(separatedBy: ".")
             let count = textArray.count - 1
             if count > 1 {
-                errorMessage = "Use a different number format"
+                errorMessage = LocalizationConstants.Workflows.useADifferentNumberFormat
             } else if textArray.count > 1 {
                 let valueAfterDecimal = textArray[1].count
                 if fractionLength != 0 && valueAfterDecimal > fractionLength {
-                    errorMessage = "Use a different number format"
+                    errorMessage = LocalizationConstants.Workflows.useADifferentNumberFormat
                 }
             }
         }
