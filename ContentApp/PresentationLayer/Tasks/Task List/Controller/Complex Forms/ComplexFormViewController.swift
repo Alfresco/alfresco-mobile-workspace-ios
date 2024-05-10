@@ -55,6 +55,9 @@ class ComplexFormViewController: SystemSearchViewController {
         self.complexFormViewModel.services = coordinatorServices ?? CoordinatorServices()
         viewModel.workflowOperationsModel = WorkflowOperationsModel(services: viewModel.services, tempWorkflowId: viewModel.tempWorkflowId)
         viewModel.workflowOperationsModel?.attachments.value = viewModel.selectedAttachments
+        if viewModel.isAttachment {
+            linkContent()
+        }
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
         self.navigationItem.setHidesBackButton(true, animated: true)
         addBackButton()
@@ -191,6 +194,28 @@ class ComplexFormViewController: SystemSearchViewController {
                 sSelf.backButtonAction()
             }
         })
+    }
+    
+    // MARK: - Link content
+    private func linkContent() {
+        if viewModel.isDetailWorkflow { return }
+        for node in viewModel.selectedAttachments {
+            viewModel.linkContentToAPS(node: node) { [weak self] node, error in
+                guard let sSelf = self else { return }
+                if let node = node {
+                    sSelf.updateListNodeForLinkContent(node: node)
+                }
+            }
+        }
+    }
+    
+    private func updateListNodeForLinkContent(node: ListNode) {
+        var attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        if let index = attachments.firstIndex(where: {$0.guid == node.parentGuid}) {
+            attachments[index] = node
+            viewModel.workflowOperationsModel?.attachments.value = attachments
+            controller.buildViewModel()
+        }
     }
     
     private func updateTaskList() {
@@ -625,9 +650,8 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
     
     fileprivate func configureAttachmentCells(_ localViewModel: AddAttachmentComplexTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
 
-            let attachCell = cell as? AddAttachmentComplexTableViewCell
-            attachCell?.attachmentButton.tag = indexPath.row
-            attachCell?.attachmentButton.addTarget(self, action: localViewModel.isFolder ?  #selector(attachmentFolderButtonAction(button:)): #selector(attachmentButtonAction(button:)), for: .touchUpInside)
+        (cell as?  AddAttachmentComplexTableViewCell)?.attachmentButton.tag = indexPath.row
+        (cell as? AddAttachmentComplexTableViewCell)?.attachmentButton.addTarget(self, action: #selector(attachmentAction(button:)), for: .touchUpInside)
         }
         
     fileprivate func configureDisplayCells(_ localViewModel: SingleLineTextTableCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
@@ -947,18 +971,26 @@ extension ComplexFormViewController {
 // MARK: - CheckBox
 extension ComplexFormViewController {
     
-    @objc func attachmentButtonAction(button: UIButton) {
+    @objc func attachmentAction(button: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[button.tag]
+        guard let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
+        if localViewModel.isFolder {
+            self.attachmentFolderButtonAction(button: button, localViewModel: localViewModel)
+        } else {
+            self.attachmentButtonAction(button: button, localViewModel: localViewModel)
+        }
+    }
+    
+    private func attachmentButtonAction(button: UIButton, localViewModel: AddAttachmentComplexTableViewCellViewModel) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
-            let rowViewModel = viewModel.rowViewModels.value[button.tag]
-            guard let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.attachmentType = .workflow
             let fieldId = viewModel.tempWorkflowId + (localViewModel.field?.id ?? "")
             if localViewModel.tempWorkflowId.isEmpty {
                 localViewModel.tempWorkflowId = fieldId
             }
-            if viewModel.isDetailWorkflow {
+            if viewModel.isDetailWorkflow || viewModel.isAttachment {
                 if localViewModel.isComplexFirstTime {
                     for attachment in localViewModel.attachments {
                         attachment.parentGuid = fieldId
@@ -997,9 +1029,7 @@ extension ComplexFormViewController {
         
     }
     
-    @objc func attachmentFolderButtonAction(button: UIButton) {
-        let rowViewModel = viewModel.rowViewModels.value[button.tag]
-        guard let localViewModel = rowViewModel as? AddAttachmentComplexTableViewCellViewModel else { return }
+    private func attachmentFolderButtonAction(button: UIButton, localViewModel: AddAttachmentComplexTableViewCellViewModel) {
         appDelegate()?.isAPSAttachmentFlow = true
         let controller = FilesandFolderListViewController.instantiateViewController()
         controller.sourceNodeToMove = [ListNode]()

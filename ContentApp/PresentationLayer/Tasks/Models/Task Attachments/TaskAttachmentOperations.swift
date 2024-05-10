@@ -61,4 +61,11 @@ class TaskAttachmentOperations: NSObject {
         }
         return nodes
     }
+    
+    static func processWorkflowAttachmentszFromValueElement(for taskAttachment: ListNode, taskId: String) -> ValueElement {
+            
+        let createdBy = CreatedBy(id: Int(taskAttachment.id), firstName: taskAttachment.firstName ?? "", lastName: taskAttachment.lastName ?? "", email: taskAttachment.email ?? "")
+            
+        return  ValueElement(id: Int(taskAttachment.guid) ?? 0, name: taskAttachment.title, created: "", createdBy: createdBy, relatedContent: false, contentAvailable: false, link: false, mimeType: taskAttachment.mimeType ?? "", simpleType: "", previewStatus: "", thumbnailStatus: "")
+    }
 }
