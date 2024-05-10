@@ -41,6 +41,7 @@ class StartWorkflowViewModel: NSObject {
     var task: TaskNode?
     var isShowDoneCompleteBtn = false
     var isComplexFirstTime = false
+    var isAttachment = false
     
     var taskId: String {
         return task?.taskID ?? ""
