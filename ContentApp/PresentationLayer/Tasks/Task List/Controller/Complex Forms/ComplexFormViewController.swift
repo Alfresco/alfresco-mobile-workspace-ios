@@ -623,12 +623,14 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         datePicker.preferredDatePickerStyle = .inline
         datePicker.backgroundColor = currentTheme.surfaceColor
         datePicker.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: UIConstants.ScreenHeight/2.0 + 100)
-        guard let rowViewModel = rowViewModel as? DatePickerTableViewCellViewModel else { return }
     }
     
     fileprivate func configureAssignUserCells(_ localViewModel: AssigneeTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
-        (cell as? AssigneeTableViewCell)?.addUserButton.tag = indexPath.row
-        (cell as? AssigneeTableViewCell)?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
+        let assigneeCell = cell as? AssigneeTableViewCell
+        assigneeCell?.addUserButton.tag = indexPath.row
+        assigneeCell?.addUserButton.addTarget(self, action: #selector(addAssigneeAction(sender:)), for: .touchUpInside)
+        assigneeCell?.deleteButton.tag = indexPath.row
+        assigneeCell?.deleteButton.addTarget(self, action: #selector(deleteAssigneeButtonAction(sender:)), for: .touchUpInside)
     }
     
     fileprivate func configureDropDownCells(_ localViewModel: DropDownTableViewCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
@@ -860,6 +862,14 @@ extension ComplexFormViewController: UITextFieldDelegate {
 
 // MARK: - Add Assignee
 extension ComplexFormViewController {
+    
+    @objc func deleteAssigneeButtonAction(sender: UIButton) {
+        let rowViewModel = viewModel.rowViewModels.value[sender.tag]
+        guard let localViewModel = rowViewModel as? AssigneeTableViewCellViewModel else { return }
+        localViewModel.userName = ""
+        localViewModel.didChangeAssignee?(nil)
+        reloadTableView(row: sender.tag)
+    }
     
     @objc func addAssigneeAction(sender: UIButton) {
         let rowViewModel = viewModel.rowViewModels.value[sender.tag]

@@ -239,8 +239,11 @@ class ComplexFormController: NSObject {
     private func peopleCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .people)
         rowVM.didChangeAssignee = { [weak self] (assignee) in
-            guard let selectedAssignee = assignee else { return }
-            self?.updateAssignee(for: field, assignee: selectedAssignee)
+            if let selectedAssignee = assignee {
+                self?.updateAssignee(for: field, assignee: selectedAssignee)
+            } else {
+                self?.deleteAssignee(for: field)
+            }
         }
         return rowVM
     }
@@ -249,8 +252,11 @@ class ComplexFormController: NSObject {
     private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
         rowVM.didChangeAssignee = { [weak self] (assignee) in
-            guard let selectedAssignee = assignee else { return }
-            self?.updateAssignee(for: field, assignee: selectedAssignee)
+            if let selectedAssignee = assignee {
+                self?.updateAssignee(for: field, assignee: selectedAssignee)
+            } else {
+                self?.deleteAssignee(for: field)
+            }
         }
         return rowVM
     }
@@ -327,9 +333,14 @@ class ComplexFormController: NSObject {
     
     // MARK: - Update Assignee
     fileprivate func updateAssignee(for field: Field, assignee: TaskNodeAssignee) {
-        
+
         let taskAssignee = TaskAssignee(assigneeID: assignee.assigneeID, firstName: assignee.firstName, lastName: assignee.lastName, email: assignee.email, groupName: assignee.groupName, externalId: assignee.externalId, status: assignee.status, parentGroupId: assignee.parentGroupId)
         field.value = .assignee(taskAssignee)
+        self.checkRequiredTextField()
+    }
+    
+    fileprivate func deleteAssignee(for field: Field) {
+        field.value = nil
         self.checkRequiredTextField()
     }
     
