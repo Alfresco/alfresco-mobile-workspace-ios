@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Si è verificato un problema. Per assistenza, contatta il tuo amministratore. Codice errore: %d";
+"error-generic" = "Si è verificato un problema. Per assistenza, contatta il tuo amministratore";
 "error-login-alfresco-url" = "Non è stato trovato alcun servizio di autenticazione all'URL di Alfresco specificato.";
 "error-login-check-connect-url" = "Verifica l'URL di connessione.";
 "error-login-wrong-credential" = "Nome utente o password non corretti.";

@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Etwas ist schiefgelaufen. Kontaktieren Sie Ihren Administrator für Hilfe. Fehlercode: %d";
+"error-generic" = "Etwas ist schiefgelaufen. Kontaktieren Sie Ihren Administrator für Hilfe";
 "error-login-alfresco-url" = "An der angegebenen Alfresco-URL kann kein Authentifizierungsdienst gefunden werden.";
 "error-login-check-connect-url" = "Überprüfen Sie die URL unter \"Verbinden mit\".";
 "error-login-wrong-credential" = "Benutzername oder Passwort falsch.";

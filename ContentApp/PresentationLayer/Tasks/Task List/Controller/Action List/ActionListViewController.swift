@@ -31,7 +31,6 @@ class ActionListViewController: SystemThemableViewController {
     let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 270.0
     var outcomes = [Outcome]()
     let rowViewModels = Observable<[RowViewModel]>([])
-//    var didSelectItem: ((Outcome) -> Void)?
     weak var delegate: ActionListViewControllerDelegate?
     
     override func viewDidLoad() {

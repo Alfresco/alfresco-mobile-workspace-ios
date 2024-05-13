@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Er is iets fout gegaan. Neem contact op met uw beheerder voor hulp. Foutcode: %d";
+"error-generic" = "Er is iets fout gegaan. Neem contact op met uw beheerder voor hulp";
 "error-login-alfresco-url" = "Kan geen verificatieservice vinden op de opgegeven Alfresco-URL.";
 "error-login-check-connect-url" = "Controleer de URL waarmee u verbinding wilt maken.";
 "error-login-wrong-credential" = "Onjuiste gebruikersnaam of wachtwoord opgegeven.";
