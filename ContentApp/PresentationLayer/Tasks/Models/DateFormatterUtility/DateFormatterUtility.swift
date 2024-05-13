@@ -19,17 +19,25 @@
 import Foundation
 
 struct DateFormatterUtility {
+    enum possibleDateFormat: String {
+        case yyyMMddTHHmmssSSSZ = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        case yyyyMMddTHHmmssZ = "yyyy-MM-dd'T'HH:mm:ssZ"
+        case ddMMMyyyyhhmma = "dd-MMM-yyyy hh:mm a"
+        case ddMMyyyy = "dd-MM-yyyy"
+        case ddMMMyyyy = "dd-MMM-yyyy"
+        case yyyyMMddTHHmmssSSSZ2 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    }
     static func formattedDateString(from dateString: String, dateTime: Bool) -> String {
         let dateFormatterWithMilliseconds = DateFormatter()
-        dateFormatterWithMilliseconds.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatterWithMilliseconds.dateFormat = possibleDateFormat.yyyMMddTHHmmssSSSZ.rawValue
         dateFormatterWithMilliseconds.timeZone = TimeZone(abbreviation: "UTC")
         
         let dateFormatterWithoutMilliseconds = DateFormatter()
-        dateFormatterWithoutMilliseconds.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        dateFormatterWithoutMilliseconds.dateFormat = possibleDateFormat.yyyyMMddTHHmmssZ.rawValue
         dateFormatterWithoutMilliseconds.timeZone = TimeZone(abbreviation: "UTC")
         
         let outputDateFormatter = DateFormatter()
-        outputDateFormatter.dateFormat = dateTime ? "dd-MMM-yyyy hh:mm a" : "dd-MM-yyyy"
+        outputDateFormatter.dateFormat = dateTime ? possibleDateFormat.ddMMMyyyyhhmma.rawValue : possibleDateFormat.ddMMyyyy.rawValue
         outputDateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         
         if let dateWithMilliseconds = dateFormatterWithMilliseconds.date(from: dateString) {
@@ -39,5 +47,10 @@ struct DateFormatterUtility {
         } else {
             return ""
         }
+    }
+    static func dateToString(with format: possibleDateFormat, and dateValue: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format.rawValue
+        return dateFormatter.string(from: dateValue)
     }
 }

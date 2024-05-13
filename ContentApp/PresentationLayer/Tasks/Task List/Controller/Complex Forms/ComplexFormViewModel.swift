@@ -35,23 +35,18 @@ class ComplexFormViewModel: NSObject {
     }
     
     func selectedDateString(for date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MMM-yyyy"
-        return dateFormatter.string(from: date)
+        return DateFormatterUtility.dateToString(with: DateFormatterUtility.possibleDateFormat.ddMMMyyyy, and: date)
     }
     
     func selectedDateTimeString(for date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MMM-yyyy hh:mm a"
-        return dateFormatter.string(from: date)
+        return DateFormatterUtility.dateToString(with: DateFormatterUtility.possibleDateFormat.ddMMMyyyyhhmma, and: date)
     }
     func convertStringToDateTime(dateStr: String) -> Date? {
-        let newDate = dateStr.toDate(withFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        let newDate = dateStr.toDate(withFormat: DateFormatterUtility.possibleDateFormat.yyyyMMddTHHmmssSSSZ2.rawValue)
         return newDate
     }
     func convertStringToDate(dateStr: String) -> Date? {
-        // Create an instance of DateFormatter
-        let newDate = dateStr.toDate(withFormat: "dd-MM-yyyy")
+        let newDate = dateStr.toDate(withFormat: DateFormatterUtility.possibleDateFormat.ddMMyyyy.rawValue)
         return newDate
     }
     
