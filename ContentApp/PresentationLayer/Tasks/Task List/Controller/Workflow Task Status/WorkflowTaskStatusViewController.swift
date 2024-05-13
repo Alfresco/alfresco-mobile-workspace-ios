@@ -171,22 +171,6 @@ class WorkflowTaskStatusViewController: SystemSearchViewController {
         self.view.endEditing(true)
         selectStatusButton.isUserInteractionEnabled = false
         commentField.isUserInteractionEnabled = false
-        let name = viewModel.selectedWorkflowStatusOption?.name ?? ""
-        let optionId = viewModel.selectedWorkflowStatusOption?.optionId ?? ""
-
-        if let index = viewModel.workflowStatusOptions.firstIndex(where: {($0.name == name && $0.id == optionId)}) {
-            let status = viewModel.workflowStatusOptions[index]
-            let comment = commentField.textView.text.trimmingCharacters(in: .whitespacesAndNewlines)
-            viewModel.saveStatusAndComment(status: status, comment: comment) { [weak self] error in
-                guard let sSelf = self else { return }
-                sSelf.selectStatusButton.isUserInteractionEnabled = true
-                sSelf.commentField.isUserInteractionEnabled = true
-                sSelf.viewModel.didSaveStatusAndComment?(status, comment)
-                sSelf.backButtonAction()
-            }
-        } else {
-            Snackbar.display(with: LocalizationConstants.Workflows.selectStatusMessage, type: .error, finish: nil)
-        }
     }
     
     // MARK: - Loader

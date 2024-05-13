@@ -35,6 +35,18 @@ class StartWorkflowViewModel: NSObject {
     var selectedAttachments = [ListNode]()
     var workflowDetailTasks = [TaskNode]()
     var didRefreshTaskList: (() -> Void)?
+    var formFields = [Field]()
+    var formData: StartFormFields?
+    let isEnabledButton = Observable<Bool>(false)
+    var task: TaskNode?
+    var isShowDoneCompleteBtn = false
+    var isComplexFirstTime = false
+    var isAssigneeAndLoggedInSame = false
+    var isClaimProcess = false
+    var isAttachment = false
+    var taskId: String {
+        return task?.taskID ?? ""
+    }
 
     var processDefintionTitle: String {
         return appDefinition?.name ?? ""
@@ -67,6 +79,7 @@ class StartWorkflowViewModel: NSObject {
     var userName: String? {
         if isAllowedToEditAssignee {
             let apsUserID = UserProfile.apsUserID
+            isAssigneeAndLoggedInSame = apsUserID == assigneeUserId
             if apsUserID == assigneeUserId && isSingleReviewer {
                 return LocalizationConstants.EditTask.meTitle
             } else if let groupName = assignee?.groupName, !groupName.isEmpty {
@@ -83,8 +96,7 @@ class StartWorkflowViewModel: NSObject {
     }
     
     var attachmentsCount: String? {
-        let count = workflowOperationsModel?.attachments.value.count ?? 0
-        if count > 1 {
+        if let count = workflowOperationsModel?.attachments.value.count, !(workflowOperationsModel?.attachments.value.isEmpty ?? Bool()) {
             return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, count)
         }
         return nil
@@ -96,12 +108,17 @@ class StartWorkflowViewModel: NSObject {
     
     var screenTitle: String? {
         if isDetailWorkflow {
-            return LocalizationConstants.Workflows.workflowTitle
+            if task != nil {
+                let name = task?.name ?? ""
+                return name.isEmpty ? LocalizationConstants.Workflows.noName : name
+            } else {
+                return LocalizationConstants.Workflows.workflowTitle
+            }
         } else {
             return LocalizationConstants.Accessibility.startWorkflow
         }
     }
-    
+
     // MARK: - Get Due date
     func getDueDate(for dueDate: Date?) -> String? {
         if let dueDate = dueDate?.dateString(format: "dd MMM yyyy") {
@@ -135,19 +152,76 @@ class StartWorkflowViewModel: NSObject {
         })
     }
     
+    // MARK: - Workflow Task details
+
+    func workflowTaskDetails(completionHandler: @escaping (_ error: Error?) -> Void) {
+        guard services?.connectivityService?.hasInternetConnection() == true else { return }
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            var grpError: Error? = nil
+            let group = DispatchGroup()
+            group.enter()
+            
+            TasksAPI.getTasksDetails(with: sSelf.taskId) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                if data != nil {
+                    let taskNodes = TaskNodeOperations.processNodes(for: [data!])
+                    if !taskNodes.isEmpty {
+                        sSelf.task = taskNodes.first
+                        sSelf.isAssigneeAndLoggedInSame = sSelf.task?.assignee?.assigneeID == UserProfile.apsUserID
+                        sSelf.isClaimProcess = sSelf.task?.memberOfCandidateGroup == true && !sSelf.isAssigneeAndLoggedInSame
+
+                    }
+                    
+                } else {
+                    grpError = error
+                }
+                group.leave()
+            }
+            group.enter()
+            TasksAPI.getTaskForm(taskId: sSelf.taskId) { data, fields, error in
+                if data != nil {
+                    sSelf.formData = data
+                    sSelf.formFields = fields
+                }
+                group.leave()
+            }
+            group.notify(queue: .main) {
+                sSelf.isLoading.value = false
+                completionHandler(grpError)
+            }
+        })
+    }
+    
+    func claimOrUnclaimTask(taskId: String, isClaimTask: Bool, completionHandler: @escaping (_ error: Error?) -> Void) {
+        self.isLoading.value = true
+        TasksAPI.claimOrUnclaimTask(taskId: taskId, isClaimTask: isClaimTask) { data, error in
+            completionHandler(error)
+            self.isLoading.value = false
+        }
+    }
+    
     // MARK: - Check Assignee type
-    func getFormFieldsToCheckAssigneeType(completionHandler: @escaping (_ error: Error?) -> Void) {
+    func getFormFields(completionHandler: @escaping (_ error: Error?) -> Void) {
         
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { [self] authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let name = self.processDefinition??.processId ?? ""
+            var name = ""
+            if isDetailWorkflow {
+                name = self.formData?.processDefinitionID ?? ""
+            } else {
+                name = self.processDefinition??.processId ?? ""
+            }
             
             ProcessAPI.formFields(name: name) {[weak self] data, fields, error in
                 guard let sSelf = self else { return }
                 sSelf.isLoading.value = false
                 sSelf.isAllowedToEditAssignee = true
-                
+                sSelf.formFields = fields
+                sSelf.formData = data
                 if data != nil && !fields.isEmpty {
                     for field in fields {
                         if field.id == "reviewer" {
@@ -208,91 +282,6 @@ extension StartWorkflowViewModel {
             return true
         }
         return false
-    }
-}
-
-// MARK: - Start Workflow
-extension StartWorkflowViewModel {
-    
-    func isAllowedToStartWorkflow() -> Bool {
-        if assigneeUserId >= 0 {
-            return true
-        }
-        return false
-    }
-    
-    func startWorkflow(completionHandler: @escaping (_ isError: Bool) -> Void) {
-        self.isLoading.value = true
-        services?.accountService?.getSessionForCurrentAccount(completionHandler: {[weak self] authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            guard let sSelf = self else { return }
-            let params = sSelf.startProcessParams()
-            ProcessAPI.startProcess(params: params) { data, error in
-                sSelf.isLoading.value = false
-                if error == nil {
-                    completionHandler(false)
-                } else {
-                    completionHandler(true)
-                }
-            }
-        })
-    }
-    
-    private func startProcessParams() -> StartProcessBodyCreate {
-        let priority = String(format: "%@", taskPriority.rawValue)
-        var dateString = dueDate?.dateString(format: "yyyy-MM-dd") ?? ""
-        if !dateString.isEmpty {
-            dateString = String(format: "%@T00:00:00Z", dateString)
-        }
-        let attachIds = attachmentIds()        
-        let params = StartProcessParams(message: appDefinition?.description ?? "",
-                                        dueDate: dateString,
-                                        attachmentIds: attachIds,
-                                        priority: priority,
-                                        reviewer: reviewer().singleReviewer,
-                                        reviewgroups: reviewer().groupReviewer,
-                                        sendemailnotifications: false)
-        
-        let processDefinitionId = self.processDefinition??.processId ?? ""
-        return StartProcessBodyCreate(name: appDefinition?.name ?? "",
-                                      processDefinitionId: processDefinitionId,
-                                      params: params)
-    }
-    
-    private func attachmentIds() -> String {
-        var attachIds = ""
-        let attachments = workflowOperationsModel?.attachments.value ?? []
-        for attachment in attachments where attachment.syncStatus == .synced {
-            if !attachIds.isEmpty {
-                attachIds = String(format: "%@,", attachIds)
-            }
-            
-            let guid = attachment.guid
-            if !guid.isEmpty {
-                attachIds = String(format: "%@%@", attachIds, guid)
-            }
-        }
-        
-        return attachIds
-    }
-    
-    private func reviewer() -> (singleReviewer: ReviewerParams?, groupReviewer: GroupReviewerParams?) {
-        
-        if isSingleReviewer {
-            let reviewer = ReviewerParams(email: assignee?.email ?? "",
-                                          firstName: assignee?.firstName ?? "",
-                                          lastName: assignee?.lastName ?? "",
-                                          id: assigneeUserId)
-            return (reviewer, nil)
-        } else {
-            let reviewer = GroupReviewerParams(id: assignee?.assigneeID ?? -1,
-                                             name: assignee?.groupName ?? "",
-                                             externalId: assignee?.externalId,
-                                             status: assignee?.status,
-                                             parentGroupId: assignee?.parentGroupId,
-                                             groups: nil)
-            return (nil, reviewer)
-        }
     }
 }
 

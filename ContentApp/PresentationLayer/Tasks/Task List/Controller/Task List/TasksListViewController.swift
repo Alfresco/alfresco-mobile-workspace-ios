@@ -42,7 +42,6 @@ class TasksListViewController: SystemSearchViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         filterBaseView.isHidden = true
         createTaskButton.isHidden = true
         emptyListView.isHidden = true
@@ -57,6 +56,7 @@ class TasksListViewController: SystemSearchViewController {
         self.dialogTransitionController = MDCDialogTransitionController()
         addAccessibility()
         updateUIForWorkflowDetails()
+        addNotifications()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,6 +82,18 @@ class TasksListViewController: SystemSearchViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    private func addNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.refreshWorkflowList(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.refreshTaskList),
+                                               object: nil)
+    }
+   
+    @objc private func refreshWorkflowList(notification: Notification) {
+        handlePullToRefresh()
+        self.viewModel.didRefreshTaskList?()
     }
     
     func addRefreshControl() {
@@ -125,7 +137,7 @@ class TasksListViewController: SystemSearchViewController {
     
     // MARK: - Get Tasks List
     func getTaskList() {
-        var state: String? = viewModel.filterParams.state ?? "active"
+        var state: String? = viewModel.filterParams.state ?? "all"
         var assignment: String?
         if state == "candidate" {
             assignment = state
@@ -319,7 +331,7 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
         if processInstanceId.isEmpty {
             showTaskDetails(for: taskNode)
         } else {
-            showWorkflowTaskDetails(for: taskNode)
+            showComplexFormTaskDetails(for: taskNode)
         }
     }
     
@@ -336,16 +348,26 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             }
         }
     }
-    
-    private func showWorkflowTaskDetails(for taskNode: TaskNode?) {
+        
+    private func showComplexFormTaskDetails(for taskNode: TaskNode?) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.workflowTaskDetail) as? WflowTaskDetailViewController {
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.complexWorkflowPage) as? ComplexFormViewController {
             viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.isEditMode = false
+            viewController.viewModel.selectedAttachments = []
+            let endDate = taskNode?.endDate
+            if endDate == nil {
+                viewController.viewModel.isShowDoneCompleteBtn = false
+            } else {
+                viewController.viewModel.isShowDoneCompleteBtn = true
+            }
+            viewController.viewModel.isComplexFirstTime = true
             viewController.viewModel.task = taskNode
+            viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
+            viewController.viewModel.isDetailWorkflow = true
             self.navigationViewController?.pushViewController(viewController, animated: true)
-            viewController.viewModel.didRefreshWorkflowList = {[weak self] in
+            viewController.viewModel.didRefreshTaskList = {[weak self] in
                 guard let sSelf = self else { return }
-                sSelf.viewModel.didRefreshTaskList?()
                 sSelf.handlePullToRefresh()
             }
         }

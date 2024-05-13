@@ -25,6 +25,7 @@ class FileManagerScreenCoordinator: Coordinator {
     private var fileManagerDataSource: FileManagerDataSource?
     var attachmentType: AttachmentType
     var didSelectAttachment: (([UploadTransfer]) -> Void)?
+    var multiSelection = true
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
@@ -37,6 +38,7 @@ class FileManagerScreenCoordinator: Coordinator {
     func start() {
         let viewController = FileManagerViewController.instantiateViewController()
         viewController.fileManagerDelegate = self
+        viewController.multiSelection = multiSelection
         viewController.modalPresentationStyle = .fullScreen
         viewController.attachmentType = self.attachmentType
         

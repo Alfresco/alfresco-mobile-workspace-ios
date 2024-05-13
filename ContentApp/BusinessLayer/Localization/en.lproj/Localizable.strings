@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Something went wrong. Contact your administrator for help. Error code: %d";
+"error-generic" = "Something went wrong. Contact your administrator for help";
 "error-login-alfresco-url" = "No authentication service can be found at the provided Alfresco URL.";
 "error-login-check-connect-url" = "Check your \"Connect to\" URL.";
 "error-login-wrong-credential" = "Wrong username or password provided.";
@@ -111,8 +112,8 @@
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
 "approved-added-favorites" = "Added to favorites";
 "approved-removed-favorites" = "Removed from favorites";
-"multiple-items-added-favorites" = "%d items added to favorites";
-"multiple-items-removed-favorites" = "%d items removed from favorites";
+"multiple-items-added-favorites" = "%d item(s) added to favorites";
+"multiple-items-removed-favorites" = "%d item(s) removed from favorites";
 "approved-moved-trash" = "%@ moved to trash";
 "approved-restored" = "%@ restored";
 "approved-deleted" = "%@ deleted";
@@ -122,12 +123,12 @@
 "approved-upload-media" = "Media scheduled for upload.";
 "approved-moved-folder" = "%@ moved successfully.";
 "approved-update" = "%@ was updated";
-"approved-moved-multiple-files-to-folder" = "%d items moved successfully.";
-"approved-multiple-remove-offline" = "%d items will no longer be available offline.";
-"approved-multiple-mark-offline" = "%d items will be made available offline.";
-"approved-multiple-moved-to-trash" = "%d items moved to trash";
-"multiple-items-restored" = "%d items restored";
-"multiple-items-deleted" = "%d items deleted";
+"approved-moved-multiple-files-to-folder" = "%d item(s) moved successfully.";
+"approved-multiple-remove-offline" = "%d item(s) will no longer be available offline.";
+"approved-multiple-mark-offline" = "%d item(s) will be made available offline.";
+"approved-multiple-moved-to-trash" = "%d item(s) moved to trash";
+"multiple-items-restored" = "%d item(s) restored";
+"multiple-items-deleted" = "%d item(s) deleted";
 
 
 // MARK: - Settings Screen
@@ -260,7 +261,7 @@
 "dialog-session-unavailable-message" = "Tap to launch Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet unavailable";
 "dialog-internet-unavailable-message" = "Please check your internet connection and Try again";
-"dialog-multi-delete-message" = "%d items will be permanently deleted.";
+"dialog-multi-delete-message" = "%d item(s) will be permanently deleted.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";
@@ -320,9 +321,9 @@
 "identifier-title" = "Identifier";
 "add-comment-placeholder" = "Add a comment...";
 "comments-title" = "Comments";
-"title-multiple-comment" = "%d comments";
+"title-multiple-comment" = "%d comment(s)";
 "attached-files-title" = "Attached files";
-"title-multiple-attachments" = "%d attachments";
+"title-multiple-attachments" = "%d Attachment(s)";
 "view-all-title" = "View all";
 "read-more" = "Read More";
 "no-attached-files-placeholder" = "No Attached Files";
@@ -443,8 +444,24 @@
 "claim-title" = "Claim";
 "release-title" = "Release";
 "created_date" = "Created Date";
+"actions" = "Actions";
+"empty-attachFiles-description" = "Looks like you haven’t added any files yet.\n(Max file size: %.01f MB)";
+"no-folder-attached" = "No Attached Folder";
+"multiple-folder" = "%d Folder";
+"select" = "Select";
+"info" = "Information";
+"complete" = "Complete";
+"no-name" = "No Name";
+"enter-atleast-characters" = "Enter atleast %d characters";
+"enter-maximum-characters" = "Enter maximum %d characters";
+"cannot-be-less-than" = "Can't be less than %@";
+"cannot-be-greater-than" = "Can't be greater than %@";
+"use-a-different-number-format" = "Use a different number format";
+"not-able-to-attach-the-selected-content-in-this-form" = "Not able to attach the selected content in this form.";
+"maximum-file-size-for-uploads" = "Please note: Maximum file size for uploads is %.01f MB.";
+
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";
 "check-box-multi-select" = "Check box";
-"maximum-items-selection-message" = "Maximum %d items can be selected";
+"maximum-items-selection-message" = "Maximum %d item(s) can be selected";

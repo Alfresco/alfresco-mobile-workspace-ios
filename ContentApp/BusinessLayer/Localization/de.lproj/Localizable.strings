@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Etwas ist schiefgelaufen. Kontaktieren Sie Ihren Administrator für Hilfe. Fehlercode: %d";
+"error-generic" = "Etwas ist schiefgelaufen. Kontaktieren Sie Ihren Administrator für Hilfe";
 "error-login-alfresco-url" = "An der angegebenen Alfresco-URL kann kein Authentifizierungsdienst gefunden werden.";
 "error-login-check-connect-url" = "Überprüfen Sie die URL unter \"Verbinden mit\".";
 "error-login-wrong-credential" = "Benutzername oder Passwort falsch.";
@@ -370,7 +371,7 @@
 "search-placeholder" = "Suchen...";
 "dialog-discard-edit-task-message" = "Sollen die Änderungen verworfen werden?";
 "delete-attachment-alert-title" = "Eine Datei löschen?";
-"add-attachments" = "Anhänge hinzufügen";
+"add-attachments" = "Dateien anhängen";
 "file-size-exceed-error" = "Die gewählte Dateigröße darf beim Hochladen %.1f MB nicht überschreiten.";
 
 // MARK: - Appleford Accessibility
@@ -434,6 +435,7 @@
 "claim-title" = "Beanspruchen";
 "release-title" = "Anspruch aufheben";
 "created_date" = "Datum der Erstellung";
+"actions" = "Aktionen";
 
 // MARK: - Multi select localization
 "multiple-items-added-favorites" = "%d Elemente zu Favoriten hinzugefügt";
@@ -447,3 +449,4 @@
 "dialog-multi-delete-message" = "%d Elemente werden permanent gelöscht.";
 "multiple-selected-items-count" = "%d Ausgewählt";
 "check-box-multi-select" = "Kontrollkästchen";
+"maximum-items-selection-message" = "Es können maximal %d Elemente ausgewählt werden";

@@ -41,6 +41,15 @@ struct CellConstants {
         static let taskAssignee = "TaskAssigneeTableViewCell"
         static let addTaskAttachment = "AddAttachmentTableViewCell"
         static let spaceCell = "SpaceTableViewCell"
+        
+        static let multiLineTextComplexForm = "MultiLineTextTableViewCell"
+        static let singleLineTextComplexForm = "SingleLineTextTableViewCell"
+        static let datePickerTextComplexForm = "DatePickerTableViewCell"
+        static let assigneeTableViewCell = "AssigneeTableViewCell"
+        static let dropDownTableViewCell = "DropDownTableViewCell"
+        static let hyperlinkTableViewCell = "HyperlinkTableViewCell"
+        static let checkBoxTableViewCell = "CheckBoxTableViewCell"
+        static let outcomesTableViewCell = "OutcomesTableViewCell"
+        static let addAttachmentComplexTableViewCell = "AddAttachmentComplexTableViewCell"
     }
 }
-

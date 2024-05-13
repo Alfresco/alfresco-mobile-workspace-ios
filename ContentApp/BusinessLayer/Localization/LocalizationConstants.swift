@@ -108,6 +108,7 @@ struct LocalizationConstants {
 
     struct Errors {
         static let generic = NSLocalizedString("error-login-generic", comment: "")
+        static let errorGeneric = NSLocalizedString("error-generic", comment: "")
         static let noAuthAlfrescoURL = NSLocalizedString("error-login-alfresco-url", comment: "")
         static let checkConnectURL = NSLocalizedString("error-login-check-connect-url", comment: "")
         static let wrongCredentials = NSLocalizedString("error-login-wrong-credential", comment: "")
@@ -419,6 +420,21 @@ struct LocalizationConstants {
         static let releaseTitle = NSLocalizedString("release-title", comment: "")
         static let createdDate = NSLocalizedString("created_date", comment: "")
         static let noneTitle = NSLocalizedString("None", comment: "")
+        static let actions = NSLocalizedString("actions", comment: "")
+        static let attachFilesDescription = NSLocalizedString("empty-attachFiles-description", comment: "")
+        static let noFolderAttached = NSLocalizedString("no-folder-attached", comment: "")
+        static let multipleFolder = NSLocalizedString("multiple-folder", comment: "")
+        static let select = NSLocalizedString("select", comment: "")
+        static let info = NSLocalizedString("info", comment: "")
+        static let complete = NSLocalizedString("complete", comment: "")
+        static let noName = NSLocalizedString("no-name", comment: "")
+        static let enterAtleastCharacters = NSLocalizedString("enter-atleast-characters", comment: "")
+        static let enterMaximumCharacters = NSLocalizedString("enter-maximum-characters", comment: "")
+        static let cannotBeLessThan = NSLocalizedString("cannot-be-less-than", comment: "")
+        static let cannotBeGreaterThan = NSLocalizedString("cannot-be-greater-than", comment: "")
+        static let useADifferentNumberFormat = NSLocalizedString("use-a-different-number-format", comment: "")
+        static let notAbleToAttachTheSelectedContent = NSLocalizedString("not-able-to-attach-the-selected-content-in-this-form", comment: "")
+        static let maximumFileSizeForUploads = NSLocalizedString("maximum-file-size-for-uploads", comment: "")
     }
     
     struct MultipleFilesSelection {

@@ -48,6 +48,9 @@ class SystemSearchViewController: SystemThemableViewController {
             } else {
                 self.navigationItem.rightBarButtonItems = [searchBarButtonItem]
             }
+            if let isAttachment = appDelegate()?.isAPSAttachmentFlow, isAttachment {
+                self.navigationItem.rightBarButtonItems = [searchBarButtonItem]
+            }
             addBackButton()
         }
     }
@@ -225,6 +228,7 @@ class SystemSearchViewController: SystemThemableViewController {
             self.navigationController?.popViewController(animated: true)
         } else {
             appDelegate()?.isMoveFilesAndFolderFlow = false
+            appDelegate()?.isAPSAttachmentFlow = false
             self.navigationController?.dismiss(animated: true)
         }
     }

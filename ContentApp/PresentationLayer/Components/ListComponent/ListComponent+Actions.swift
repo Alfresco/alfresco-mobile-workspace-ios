@@ -131,9 +131,9 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         displaySnackbar(with: snackBarMessage, type: .approve)
     }
     
-    @objc func triggerMoveNotifyService() {
+    @objc func triggerMoveNotifyService(folderId: String, folderName: String) {
         let notificationName = Notification.Name(rawValue: KeyConstants.Notification.moveFileFolderFinished)
-        let notification = Notification(name: notificationName)
+        let notification = Notification(name: notificationName, object: nil, userInfo: ["id": folderId, "name": folderName])
         NotificationCenter.default.post(notification)
     }
 
@@ -231,11 +231,13 @@ extension ListComponentViewController {
     
     private func startWorkflowAction(appDefinition: WFlowAppDefinitions?, node: [ListNode]) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.startWorkflowPage) as? StartWorkflowViewController {
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.complexWorkflowPage) as? ComplexFormViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.appDefinition = appDefinition
             viewController.viewModel.isEditMode = true
             viewController.viewModel.selectedAttachments = node
+            viewController.viewModel.isAttachment = true
+            viewController.viewModel.isComplexFirstTime = true
             viewController.viewModel.tempWorkflowId = UIFunction.currentTimeInMilliSeconds()
             self.navigationViewController?.pushViewController(viewController, animated: true)
         }

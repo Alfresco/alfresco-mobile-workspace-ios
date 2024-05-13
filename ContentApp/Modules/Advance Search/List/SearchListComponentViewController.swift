@@ -27,6 +27,7 @@ class SearchListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var headerDivider: UIView!
     @IBOutlet weak var listViewDivider: UIView!
+    @IBOutlet weak var buttonsViewHeightConstant: NSLayoutConstraint!
     @IBOutlet weak var applyButton: MDCButton!
     @IBOutlet weak var resetButton: MDCButton!
     @IBOutlet weak var tableView: UITableView!
@@ -44,6 +45,9 @@ class SearchListComponentViewController: SystemThemableViewController {
         baseView.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
         tableView.estimatedRowHeight = 1000
+        if listViewModel.isComplexFormsFlow == true {
+            buttonsViewHeightConstant.constant = 0
+        }
         controller.updatedSelectedValues()
         applyLocalization()
         applyComponentsThemes()
@@ -136,6 +140,13 @@ class SearchListComponentViewController: SystemThemableViewController {
         self.listViewModel.rowViewModels.addObserver() { [weak self] (rows) in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
+            }
+        }
+        
+        // observer value for complex forms
+        self.listViewModel.isValueSelectedForComplexForms.addObserver { [weak self] (isUpdated) in
+            if isUpdated {
+                self?.applyButtonAction(Any.self)
             }
         }
     }

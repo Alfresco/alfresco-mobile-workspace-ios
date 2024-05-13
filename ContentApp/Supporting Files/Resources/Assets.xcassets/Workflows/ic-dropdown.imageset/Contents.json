@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-dropdown.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
