@@ -41,7 +41,8 @@ class StartWorkflowViewModel: NSObject {
     var task: TaskNode?
     var isShowDoneCompleteBtn = false
     var isComplexFirstTime = false
-    
+    var isAssigneeAndLoggedInSame = false
+    var isClaimProcess = false
     var taskId: String {
         return task?.taskID ?? ""
     }
@@ -77,6 +78,7 @@ class StartWorkflowViewModel: NSObject {
     var userName: String? {
         if isAllowedToEditAssignee {
             let apsUserID = UserProfile.apsUserID
+            isAssigneeAndLoggedInSame = apsUserID == assigneeUserId
             if apsUserID == assigneeUserId && isSingleReviewer {
                 return LocalizationConstants.EditTask.meTitle
             } else if let groupName = assignee?.groupName, !groupName.isEmpty {
@@ -150,21 +152,50 @@ class StartWorkflowViewModel: NSObject {
     func workflowTaskDetails(completionHandler: @escaping (_ error: Error?) -> Void) {
         guard services?.connectivityService?.hasInternetConnection() == true else { return }
         self.isLoading.value = true
-        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            TasksAPI.getTaskForm(taskId: self.taskId) {[weak self] data, fields, error in
+            var grpError: Error? = nil
+            let group = DispatchGroup()
+            group.enter()
+            
+            TasksAPI.getTasksDetails(with: sSelf.taskId) {[weak self] data, error in
                 guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
+                if data != nil {
+                    let taskNodes = TaskNodeOperations.processNodes(for: [data!])
+                    if !taskNodes.isEmpty {
+                        sSelf.task = taskNodes.first
+                        sSelf.isAssigneeAndLoggedInSame = sSelf.task?.assignee?.assigneeID == UserProfile.apsUserID
+                        sSelf.isClaimProcess = sSelf.task?.memberOfCandidateGroup == true && !sSelf.isAssigneeAndLoggedInSame
 
+                    }
+                    
+                } else {
+                    grpError = error
+                }
+                group.leave()
+            }
+            group.enter()
+            TasksAPI.getTaskForm(taskId: sSelf.taskId) { data, fields, error in
                 if data != nil {
                     sSelf.formData = data
                     sSelf.formFields = fields
-                    completionHandler(nil)
-                } else {
-                    completionHandler(error)
                 }
+                group.leave()
+            }
+            group.notify(queue: .main) {
+                sSelf.isLoading.value = false
+                completionHandler(grpError)
             }
         })
+    }
+    
+    func claimOrUnclaimTask(taskId: String, isClaimTask: Bool, completionHandler: @escaping (_ error: Error?) -> Void){
+        self.isLoading.value = true
+        TasksAPI.claimOrUnclaimTask(taskId: taskId, isClaimTask: isClaimTask) { data, error in
+            completionHandler(error)
+            self.isLoading.value = false
+        }
     }
     
     // MARK: - Check Assignee type

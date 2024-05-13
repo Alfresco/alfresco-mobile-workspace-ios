@@ -45,6 +45,7 @@ class ComplexFormViewController: SystemSearchViewController {
     lazy var controller: ComplexFormController = { return ComplexFormController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     private var saveId = 1045
     private var completeId = 1046
+    private var releaseId = 1047
     private var completeString = "Complete"
 
     // MARK: - View did load
@@ -156,6 +157,8 @@ class ComplexFormViewController: SystemSearchViewController {
         if viewModel.isDetailWorkflow {
             if name == LocalizationConstants.General.save && id == saveId {
                 saveWorkflowAction()
+            } else if id == releaseId {
+                claimAndReleasewrkFlowAction(isClaim: false)
             } else {
                 taskFormWorkflowAction(outcome: name)
             }
@@ -191,6 +194,17 @@ class ComplexFormViewController: SystemSearchViewController {
                 sSelf.backButtonAction()
             }
         })
+    }
+    
+    private func claimAndReleasewrkFlowAction(isClaim: Bool) {
+        let taskId = self.viewModel.taskId
+        self.viewModel.claimOrUnclaimTask(taskId: taskId, isClaimTask: isClaim) {[weak self] error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.updateTaskList()
+                sSelf.backButtonAction()
+            }
+        }
     }
     
     private func updateTaskList() {
@@ -395,7 +409,11 @@ class ComplexFormViewController: SystemSearchViewController {
     
     // MARK: - Save Button Action
     @IBAction func saveButtonAction(_ sender: UIButton) {
-        self.startWorkflowAPIIntegration(name: sender.titleLabel?.text ?? "", id: saveId)
+        if viewModel.isClaimProcess {
+            claimAndReleasewrkFlowAction(isClaim: true)
+        } else {
+            self.startWorkflowAPIIntegration(name: sender.titleLabel?.text ?? "", id: saveId)
+        }
     }
     
     // MARK: - Complete Button Action
@@ -412,8 +430,12 @@ class ComplexFormViewController: SystemSearchViewController {
             viewController.coordinatorServices = coordinatorServices
             if var outcomes = viewModel.formData?.outcomes {
                 if viewModel.isDetailWorkflow {
-                    if let newOutcome = self.createOutcome() {
+                    
+                    if let newOutcome = self.createOutcome(with: saveId, and: LocalizationConstants.General.save) {
                         outcomes.insert(newOutcome, at: 0)
+                    }
+                    if viewModel.isAssigneeAndLoggedInSame, let releaseOutcome = self.createOutcome(with: releaseId, and: LocalizationConstants.Workflows.releaseTitle) {
+                        outcomes.insert(releaseOutcome, at: 0)
                     }
                 }
                 viewController.outcomes = outcomes
@@ -510,7 +532,13 @@ extension ComplexFormViewController {
     }
     
     fileprivate func detailOutcome() {
-        if let outcomes = viewModel.formData?.outcomes {
+        
+        if viewModel.isClaimProcess == true {
+            saveButton.setTitle(LocalizationConstants.Workflows.claimTitle, for: .normal)
+            saveButton.isEnabled = true
+            saveButton.isUserInteractionEnabled = true
+            saveButton.isHidden = false
+        } else if let outcomes = viewModel.formData?.outcomes {
             switch outcomes.count {
             case 0, 1:
                 noDetailOutcome(outcomes: outcomes)
@@ -519,8 +547,9 @@ extension ComplexFormViewController {
             default:
                 break
             }
-            applyTheme()
+            
         }
+        applyTheme()
     }
     
     fileprivate func noDetailOutcome(outcomes: [Outcome]) {
@@ -543,12 +572,12 @@ extension ComplexFormViewController {
     }
     
     // Create Save Outcome
-    fileprivate func createOutcome() -> Outcome? {
+    fileprivate func createOutcome(with id: Int, and name: String) -> Outcome? {
         // Example JSON data
         let jsonString = """
         {
-            "id": \(saveId),
-            "name": "\(LocalizationConstants.General.save)"
+            "id": \(id),
+            "name": "\(name)"
         }
         """
         
