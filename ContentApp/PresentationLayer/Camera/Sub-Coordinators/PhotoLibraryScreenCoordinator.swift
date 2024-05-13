@@ -103,8 +103,6 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
             }
         }
         
-        
-        
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
         else { return }
 

@@ -40,7 +40,7 @@
                                 <buttonConfiguration key="configuration" style="plain" image="ic-add"/>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zNU-51-kfM">
-                                <rect key="frame" x="20" y="45" width="60" height="50"/>
+                                <rect key="frame" x="20" y="45" width="90" height="50"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8P9-lA-hIi" userLabel="userImageView">
                                         <rect key="frame" x="10" y="10" width="30" height="30"/>
@@ -66,13 +66,24 @@
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SEX-6B-1Qn">
+                                        <rect key="frame" x="60" y="15" width="20" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="4LJ-Pp-a1I"/>
+                                            <constraint firstAttribute="height" constant="20" id="Aid-2P-qzD"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain"/>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="g9S-5P-nM5" firstAttribute="centerY" secondItem="kjL-BS-jWP" secondAttribute="centerY" id="66A-VO-zB1"/>
-                                    <constraint firstAttribute="trailing" secondItem="g9S-5P-nM5" secondAttribute="trailing" constant="10" id="VSS-8A-HsG"/>
+                                    <constraint firstAttribute="trailing" secondItem="SEX-6B-1Qn" secondAttribute="trailing" constant="10" id="S7v-7r-aC1"/>
                                     <constraint firstItem="8P9-lA-hIi" firstAttribute="leading" secondItem="zNU-51-kfM" secondAttribute="leading" constant="10" id="eU1-1J-mjj"/>
                                     <constraint firstItem="8P9-lA-hIi" firstAttribute="centerY" secondItem="zNU-51-kfM" secondAttribute="centerY" id="g1f-yg-3uQ"/>
+                                    <constraint firstItem="SEX-6B-1Qn" firstAttribute="centerY" secondItem="g9S-5P-nM5" secondAttribute="centerY" id="hoG-BM-VRo"/>
+                                    <constraint firstItem="SEX-6B-1Qn" firstAttribute="leading" secondItem="g9S-5P-nM5" secondAttribute="trailing" constant="10" id="q6q-zq-ESx"/>
                                     <constraint firstItem="g9S-5P-nM5" firstAttribute="leading" secondItem="8P9-lA-hIi" secondAttribute="trailing" constant="10" id="xwR-Wx-ev0"/>
                                 </constraints>
                             </view>
@@ -102,6 +113,7 @@
             <connections>
                 <outlet property="addUserButton" destination="CVb-11-sfG" id="UeX-A9-tMf"/>
                 <outlet property="baseView" destination="Kkc-ED-wmG" id="LV3-rS-v46"/>
+                <outlet property="deleteButton" destination="SEX-6B-1Qn" id="5of-Qr-DSd"/>
                 <outlet property="peopleLabel" destination="pwE-vd-2Eb" id="yLz-Me-qDT"/>
                 <outlet property="userImageBaseView" destination="8P9-lA-hIi" id="vt8-yF-E1i"/>
                 <outlet property="userImageView" destination="kjL-BS-jWP" id="PEx-xp-K1L"/>

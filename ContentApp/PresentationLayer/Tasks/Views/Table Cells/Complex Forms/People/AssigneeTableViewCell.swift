@@ -27,6 +27,7 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
     @IBOutlet weak var userImageBaseView: UIView!
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var userLabel: UILabel!
+    @IBOutlet weak var deleteButton: UIButton!
     var viewModel: AssigneeTableViewCellViewModel?
     var service: MaterialDesignThemingService?
     
@@ -36,6 +37,8 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         userImageBaseView.layer.cornerRadius = userImageBaseView.frame.size.height/2.0
         userView.layer.cornerRadius = userView.frame.size.height/2.0
         addUserButton.setTitle("", for: .normal)
+        deleteButton.setTitle("", for: .normal)
+        deleteButton.isHidden = true
     }
     
     func setup(viewModel: RowViewModel) {
@@ -51,6 +54,9 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         peopleLabel.accessibilityLabel = peopleLabel.text
         peopleLabel.accessibilityHint = peopleLabel.text
         peopleLabel.accessibilityValue = peopleLabel.text
+        
+        deleteButton.accessibilityTraits = .staticText
+        deleteButton.accessibilityIdentifier = "deleteButton"
     }
     
     func applyCellTheme(with service: MaterialDesignThemingService?) {
@@ -66,16 +72,26 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         baseView.backgroundColor = currentTheme.surfaceColor
         userView.backgroundColor = currentTheme.onSurface5Color
         addUserButton.setImage(UIImage(named: "ic-edit-icon"), for: .normal)
+        deleteButton.setImage(UIImage(named: "icn-cross"), for: .normal)
         updateUserImage()
     }
     
     private func updateUserImage() {
         guard let currentTheme = service?.activeTheme else { return }
         
-        if let userName = viewModel?.userName {
+        let userName = viewModel?.userName ?? ""
+        if !userName.isEmpty {
+            userLabel.isHidden = false
             userLabel.text = userName
+            userImageView.isHidden = false
             let attributes = getTextAttributes()
             userImageView.setImageForName(userName, backgroundColor: currentTheme.onSurface12Color, circular: true, textAttributes: attributes, gradient: false)
+            deleteButton.isHidden = false
+        } else {
+            userLabel.text = ""
+            userLabel.isHidden = true
+            userImageView.isHidden = true
+            deleteButton.isHidden = true
         }
     }
     

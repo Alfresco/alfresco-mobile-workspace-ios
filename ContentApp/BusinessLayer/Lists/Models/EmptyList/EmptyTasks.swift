@@ -51,5 +51,6 @@ struct WorkflowsNotConfigured: EmptyListProtocol {
 struct EmptyAttachFiles: EmptyListProtocol {
     var icon = UIImage(named: "ic-empty-list-recents")
     var title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
-    var description = LocalizationConstants.Workflows.attachFilesDescription
+    var description = String(format: LocalizationConstants.Workflows.attachFilesDescription, KeyConstants.FileSize.workflowFileSize)
+    
 }

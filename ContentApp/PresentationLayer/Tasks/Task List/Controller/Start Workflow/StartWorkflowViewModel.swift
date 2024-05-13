@@ -106,8 +106,12 @@ class StartWorkflowViewModel: NSObject {
     
     var screenTitle: String? {
         if isDetailWorkflow {
-            let name = task?.name ?? ""
-            return name.isEmpty ? LocalizationConstants.Workflows.noName : LocalizationConstants.Workflows.workflowTitle
+            if task != nil {
+                let name = task?.name ?? ""
+                return name.isEmpty ? LocalizationConstants.Workflows.noName : name
+            } else {
+                return LocalizationConstants.Workflows.workflowTitle
+            }
         } else {
             return LocalizationConstants.Accessibility.startWorkflow
         }

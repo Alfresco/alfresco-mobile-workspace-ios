@@ -30,7 +30,9 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
             let localAttachments = workflowOperationsModel?.attachments.value ?? []
             let attachments = localAttachments.filter { $0.parentGuid == tempWorkflowId }
             if !attachments.isEmpty {
-                return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count)
+                let sizeLimitString = String(format: LocalizationConstants.Workflows.maximumFileSizeForUploads, KeyConstants.FileSize.workflowFileSize)
+                let combinedString = "\(String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count))\n\(sizeLimitString)"
+                return combinedString
             }
         }
         

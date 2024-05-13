@@ -126,8 +126,6 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             }
         }
         
-        
-        
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier,
               let mediaPath = mediaFilesFolderPath else { return }
         
