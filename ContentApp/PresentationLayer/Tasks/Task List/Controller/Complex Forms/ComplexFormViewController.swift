@@ -178,6 +178,8 @@ class ComplexFormViewController: SystemSearchViewController {
                 if !isError {
                     sSelf.updateWorkflowsList()
                     sSelf.backButtonAction()
+                } else {
+                    sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
                 }
             })
         }
@@ -189,6 +191,8 @@ class ComplexFormViewController: SystemSearchViewController {
             if !isError {
                 sSelf.updateTaskList()
                 sSelf.backButtonAction()
+            } else {
+                sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
             }
         })
     }
@@ -200,6 +204,8 @@ class ComplexFormViewController: SystemSearchViewController {
             if !isError {
                 sSelf.updateTaskList()
                 sSelf.backButtonAction()
+            } else {
+                sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
             }
         })
     }
@@ -211,6 +217,8 @@ class ComplexFormViewController: SystemSearchViewController {
             if error == nil {
                 sSelf.updateTaskList()
                 sSelf.backButtonAction()
+            } else {
+                sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
             }
         }
     }

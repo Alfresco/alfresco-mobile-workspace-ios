@@ -108,6 +108,7 @@ struct LocalizationConstants {
 
     struct Errors {
         static let generic = NSLocalizedString("error-login-generic", comment: "")
+        static let errorGeneric = NSLocalizedString("error-generic", comment: "")
         static let noAuthAlfrescoURL = NSLocalizedString("error-login-alfresco-url", comment: "")
         static let checkConnectURL = NSLocalizedString("error-login-check-connect-url", comment: "")
         static let wrongCredentials = NSLocalizedString("error-login-wrong-credential", comment: "")

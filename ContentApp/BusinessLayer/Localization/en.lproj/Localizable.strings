@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Something went wrong. Contact your administrator for help. Error code: %d";
+"error-generic" = "Something went wrong. Contact your administrator for help";
 "error-login-alfresco-url" = "No authentication service can be found at the provided Alfresco URL.";
 "error-login-check-connect-url" = "Check your \"Connect to\" URL.";
 "error-login-wrong-credential" = "Wrong username or password provided.";

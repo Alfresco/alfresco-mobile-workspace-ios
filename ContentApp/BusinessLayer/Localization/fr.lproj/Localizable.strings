@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Un problème est survenu. Pour obtenir de l'aide, contactez votre administrateur Alfresco. Code d'erreur : %d";
+"error-generic" = "Un problème est survenu. Pour obtenir de l'aide, contactez votre administrateur Alfresco";
 "error-login-alfresco-url" = "Aucun service d'authentification trouvé à l'URL Alfresco spécifiée.";
 "error-login-check-connect-url" = "Vérifiez l'URL à laquelle vous souhaitez vous connecter.";
 "error-login-wrong-credential" = "Nom d'utilisateur ou mot de passe incorrect.";
