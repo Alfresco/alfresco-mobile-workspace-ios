@@ -19,12 +19,6 @@
 import Foundation
 import UIKit
 
-// MARK: - File Size
-enum FileSize: Int {
-    case tenMB = 10
-    case hundredMB = 100
-}
-
 // MARK: - Empty Tasks
 struct EmptyTasks: EmptyListProtocol {
     var icon = UIImage(named: "ic-empty-list-tasks")
@@ -57,6 +51,6 @@ struct WorkflowsNotConfigured: EmptyListProtocol {
 struct EmptyAttachFiles: EmptyListProtocol {
     var icon = UIImage(named: "ic-empty-list-recents")
     var title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
-    var description = String(format: LocalizationConstants.Workflows.attachFilesDescription, FileSize.tenMB.rawValue)
+    var description = String(format: LocalizationConstants.Workflows.attachFilesDescription, KeyConstants.FileSize.workflowFileSize)
     
 }

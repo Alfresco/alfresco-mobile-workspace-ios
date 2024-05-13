@@ -444,7 +444,7 @@
 "release-title" = "Release";
 "created_date" = "Created Date";
 "actions" = "Actions";
-"empty-attachFiles-description" = "Looks like you haven’t added any files yet.\n(Max file size: %d MB)";
+"empty-attachFiles-description" = "Looks like you haven’t added any files yet.\n(Max file size: %.01f MB)";
 "no-folder-attached" = "No Attached Folder";
 "multiple-folder" = "%d Folder";
 "select" = "Select";
@@ -457,7 +457,7 @@
 "cannot-be-greater-than" = "Can't be greater than %@";
 "use-a-different-number-format" = "Use a different number format";
 "not-able-to-attach-the-selected-content-in-this-form" = "Not able to attach the selected content in this form.";
-"maximum-file-size-for-uploads" = "Please note: Maximum file size for uploads is %d MB.";
+"maximum-file-size-for-uploads" = "Please note: Maximum file size for uploads is %.01f MB.";
 
 
 // MARK: - Multiple selections
