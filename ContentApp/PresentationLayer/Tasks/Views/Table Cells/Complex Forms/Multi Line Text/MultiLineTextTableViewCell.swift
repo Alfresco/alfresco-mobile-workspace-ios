@@ -24,6 +24,7 @@ class MultiLineTextTableViewCell: UITableViewCell, CellConfigurable, CellThemeAp
     @IBOutlet weak var textArea: MDCOutlinedTextArea!    
     var viewModel: MultiLineTextTableCellViewModel?
     var service: MaterialDesignThemingService?
+    var didEditing: ((_ isBegin: Bool) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -96,7 +97,12 @@ extension MultiLineTextTableViewCell: UITextViewDelegate {
         viewModel.didChangeText?(newText)
         return true
     }
-    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        didEditing?(true)
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        didEditing?(false)
+    }
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         guard let viewModel = self.viewModel else { return true }
         viewModel.didChangeText?("")

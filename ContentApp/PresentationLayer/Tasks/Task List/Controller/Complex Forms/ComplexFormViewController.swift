@@ -47,6 +47,7 @@ class ComplexFormViewController: SystemSearchViewController {
     private var completeId = 1046
     private var releaseId = 1047
     private var completeString = "Complete"
+    var multilineTVIndexPath: IndexPath?
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -140,6 +141,10 @@ class ComplexFormViewController: SystemSearchViewController {
     @objc private func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height + tableView.rowHeight, right: 0)
+        }
+        if let indexPath = multilineTVIndexPath {
+            tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+            tableView.scrollIndicatorInsets = tableView.contentInset
         }
     }
     
@@ -711,9 +716,12 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
             configureAttachmentCells(localViewModel, cell, indexPath)
         } else if cell is SingleLineTextTableViewCell, let localViewModel = rowViewModel as? SingleLineTextTableCellViewModel {
             configureDisplayCells(localViewModel, cell, indexPath)
+        } else if cell is MultiLineTextTableViewCell {
+            (cell as? MultiLineTextTableViewCell)?.didEditing = {[weak self] isBegin in
+                self?.multilineTVIndexPath = isBegin ? indexPath : nil
+            }
         }
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let rowViewModel = viewModel.rowViewModels.value[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: controller.cellIdentifier(for: rowViewModel), for: indexPath)
