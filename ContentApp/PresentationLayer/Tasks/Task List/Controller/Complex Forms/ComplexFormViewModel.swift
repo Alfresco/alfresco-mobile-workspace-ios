@@ -46,22 +46,13 @@ class ComplexFormViewModel: NSObject {
         return dateFormatter.string(from: date)
     }
     func convertStringToDateTime(dateStr: String) -> Date? {
-        // Create an instance of DateFormatter
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        formatter.timeZone = TimeZone(identifier: "UTC")
-        
-        // Convert the string to a Date object
-        return formatter.date(from: dateStr)
+        let newDate = dateStr.toDate(withFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        return newDate
     }
     func convertStringToDate(dateStr: String) -> Date? {
         // Create an instance of DateFormatter
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MM-yyyy"
-        formatter.timeZone = TimeZone(identifier: "UTC")
-        
-        // Convert the string to a Date object
-        return formatter.date(from: dateStr)
+        let newDate = dateStr.toDate(withFormat: "dd-MM-yyyy")
+        return newDate
     }
     
     func checkRequiredField(formFields: [Field], completion: @escaping (Bool) -> Void) {
