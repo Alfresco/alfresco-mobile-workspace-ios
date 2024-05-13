@@ -46,7 +46,7 @@ class DropDownTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         textField.placeholder = viewModel.placeholder
         textField.keyboardType = viewModel.keyboardType
         textField.leadingViewMode = .always
-        textField.trailingView = UIImageView(image: UIImage(named: "ic-drop-down"))
+        textField.trailingView = UIImageView(image: UIImage(named: "ic-dropdown"))
         addAccessibility()
     }
     private func addAccessibility() {

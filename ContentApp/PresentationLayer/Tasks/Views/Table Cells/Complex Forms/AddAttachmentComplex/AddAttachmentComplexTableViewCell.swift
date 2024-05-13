@@ -69,8 +69,6 @@ class AddAttachmentComplexTableViewCell: UITableViewCell, CellConfigurable, Cell
         addAccessibility()
     }
     
-    
-    
     private func addAccessibility() {
         titleLabel.accessibilityTraits = .staticText
         titleLabel.accessibilityLabel = ""

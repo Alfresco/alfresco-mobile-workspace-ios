@@ -322,7 +322,7 @@
 "comments-title" = "Comments";
 "title-multiple-comment" = "%d comment(s)";
 "attached-files-title" = "Attached files";
-"title-multiple-attachments" = "%d attachment(s)";
+"title-multiple-attachments" = "%d Attachment(s)";
 "view-all-title" = "View all";
 "read-more" = "Read More";
 "no-attached-files-placeholder" = "No Attached Files";
@@ -444,13 +444,21 @@
 "release-title" = "Release";
 "created_date" = "Created Date";
 "actions" = "Actions";
-"empty-attachFiles-description" = "Looks like you haven’t added any files yet.";
-"no-folder-attached" = "No Folder Attached";
+"empty-attachFiles-description" = "Looks like you haven’t added any files yet.\n(Max file size: %.01f MB)";
+"no-folder-attached" = "No Attached Folder";
 "multiple-folder" = "%d Folder";
 "select" = "Select";
 "info" = "Information";
 "complete" = "Complete";
 "no-name" = "No Name";
+"enter-atleast-characters" = "Enter atleast %d characters";
+"enter-maximum-characters" = "Enter maximum %d characters";
+"cannot-be-less-than" = "Can't be less than %@";
+"cannot-be-greater-than" = "Can't be greater than %@";
+"use-a-different-number-format" = "Use a different number format";
+"not-able-to-attach-the-selected-content-in-this-form" = "Not able to attach the selected content in this form.";
+"maximum-file-size-for-uploads" = "Please note: Maximum file size for uploads is %.01f MB.";
+
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";

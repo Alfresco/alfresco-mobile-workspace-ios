@@ -58,9 +58,11 @@ class MultiLineTextTableCellViewModel: RowViewModel {
         guard maxLength != 0 else { return }
         let numberOfChars = text.count
         if numberOfChars < minLength {
-            errorMessage = "Enter atleast \(minLength) characters"
+            errorMessage = String(format: LocalizationConstants.Workflows.enterAtleastCharacters,
+                                  minLength)
         } else if numberOfChars > maxLength {
-            errorMessage = "Enter maximum \(maxLength) characters"
+            errorMessage = String(format: LocalizationConstants.Workflows.enterMaximumCharacters,
+                                  maxLength)
         } else {
             errorMessage = nil
         }

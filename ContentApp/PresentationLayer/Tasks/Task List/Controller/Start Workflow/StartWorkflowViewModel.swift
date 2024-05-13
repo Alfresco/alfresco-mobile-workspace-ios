@@ -43,6 +43,7 @@ class StartWorkflowViewModel: NSObject {
     var isComplexFirstTime = false
     var isAssigneeAndLoggedInSame = false
     var isClaimProcess = false
+    var isAttachment = false
     var taskId: String {
         return task?.taskID ?? ""
     }
@@ -107,8 +108,12 @@ class StartWorkflowViewModel: NSObject {
     
     var screenTitle: String? {
         if isDetailWorkflow {
-            let name = task?.name ?? ""
-            return name.isEmpty ? LocalizationConstants.Workflows.noName : LocalizationConstants.Workflows.workflowTitle
+            if task != nil {
+                let name = task?.name ?? ""
+                return name.isEmpty ? LocalizationConstants.Workflows.noName : name
+            } else {
+                return LocalizationConstants.Workflows.workflowTitle
+            }
         } else {
             return LocalizationConstants.Accessibility.startWorkflow
         }
@@ -190,7 +195,7 @@ class StartWorkflowViewModel: NSObject {
         })
     }
     
-    func claimOrUnclaimTask(taskId: String, isClaimTask: Bool, completionHandler: @escaping (_ error: Error?) -> Void){
+    func claimOrUnclaimTask(taskId: String, isClaimTask: Bool, completionHandler: @escaping (_ error: Error?) -> Void) {
         self.isLoading.value = true
         TasksAPI.claimOrUnclaimTask(taskId: taskId, isClaimTask: isClaimTask) { data, error in
             completionHandler(error)

@@ -56,65 +56,113 @@ class ComplexFormController: NSObject {
     // MARK: - Build View Models
     func buildViewModel() {
         var rowViewModels = [RowViewModel]()
-        for field in viewModel.formFields {
-            let type = field.type
-            switch type {
-            case ComplexFormFieldType.multiLineText.rawValue:
-                let cellVM = multiLineTextCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.singleLineText.rawValue:
-                let cellVM = singleLineTextCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.numberField.rawValue:
-                let cellVM = numberTextCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.amountField.rawValue:
-                let cellVM = amountTextCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.displayValue.rawValue:
-                let cellVM = displayValueCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.displayText.rawValue:
-                let cellVM = displayTextCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.date.rawValue:
-                let cellVM = dateCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.dateTime.rawValue:
-                let cellVM = dateTimeCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.people.rawValue:
-                let cellVM = peopleCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.group.rawValue:
-                let cellVM = groupCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.dropDown.rawValue:
-                let cellVM = dropDownCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.radioButton.rawValue:
-                let cellVM = radioButtonCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.hyperlink.rawValue:
-                let cellVM = hyperlinkCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.checkbox.rawValue:
-                let cellVM = checkBoxCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.upload.rawValue:
-                let cellVM = attachmentCellVM(for: field)
-                rowViewModels.append(cellVM)
-            case ComplexFormFieldType.selectfolder.rawValue:
-                let cellVM = attachmentCellVM(for: field)
-                rowViewModels.append(cellVM)
-            default:
-                AlfrescoLog.debug("No matching field")
+        let localFormFields = viewModel.formFields
+        if !localFormFields.isEmpty {
+            if viewModel.isAttachment {
+                checkAttachments(localFormFields: localFormFields)
             }
-            
-            self.viewModel.rowViewModels.value = rowViewModels
+            for field in localFormFields {
+                let type = field.type
+                switch type {
+                case ComplexFormFieldType.multiLineText.rawValue:
+                    let cellVM = multiLineTextCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.singleLineText.rawValue:
+                    let cellVM = singleLineTextCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.numberField.rawValue:
+                    let cellVM = numberTextCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.amountField.rawValue:
+                    let cellVM = amountTextCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.displayValue.rawValue:
+                    let cellVM = displayValueCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.displayText.rawValue:
+                    let cellVM = displayTextCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.date.rawValue:
+                    let cellVM = dateCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.dateTime.rawValue:
+                    let cellVM = dateTimeCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.people.rawValue:
+                    let cellVM = peopleCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.group.rawValue:
+                    let cellVM = groupCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.dropDown.rawValue:
+                    let cellVM = dropDownCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.radioButton.rawValue:
+                    let cellVM = radioButtonCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.hyperlink.rawValue:
+                    let cellVM = hyperlinkCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.checkbox.rawValue:
+                    let cellVM = checkBoxCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.upload.rawValue:
+                    let cellVM = attachmentCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                case ComplexFormFieldType.selectfolder.rawValue:
+                    let cellVM = attachmentCellVM(for: field)
+                    rowViewModels.append(cellVM)
+                default:
+                    AlfrescoLog.debug("No matching field")
+                }
+                
+                self.viewModel.rowViewModels.value = rowViewModels
+            }
         }
     }
     
+    private func checkAttachments(localFormFields: [Field]) {
+        // Filter the upload fields
+        let uploadFields = localFormFields.filter { $0.type == ComplexFormFieldType.upload.rawValue }
+        
+        if !uploadFields.isEmpty {
+            // Check the multipal value for all upload fields
+            let multipalValues = uploadFields.map { $0.params?.multipal ?? false }
+            
+            let falseValues = multipalValues.filter { !$0 }
+            
+            if !falseValues.isEmpty {
+                // Condition: multipalValues contains one or more false values
+                print("multipalValues contains one or more false values")
+                // Insert field.value = "ABC" on the first false value
+                if let index = multipalValues.firstIndex(where: { !$0 }) {
+                    self.updateAttachment(uploadFields: uploadFields, index: index)
+                }
+            } else {
+                // Condition: multipalValues contains only true values
+                print("multipalValues contains only true values")
+                // Insert field.value = "ABC" on the first true value
+                if let index = multipalValues.firstIndex(where: { $0 }) {
+                    self.updateAttachment(uploadFields: uploadFields, index: index)
+                }
+            }
+        } else {
+            // Upload field is not available
+            print("Upload field is not available")
+            Snackbar.display(with: LocalizationConstants.Workflows.notAbleToAttachTheSelectedContent,
+                             type: .error,
+                             automaticallyDismisses: true, finish: nil)
+        }
+    }
+    
+    private func updateAttachment(uploadFields: [Field], index: Int) {
+        let attachments = viewModel.workflowOperationsModel?.attachments.value ?? []
+        if let firstAttachment = attachments.first {
+            let value = TaskAttachmentOperations.processWorkflowAttachmentszFromValueElement(for: firstAttachment, taskId: "")
+            uploadFields[index].value = .valueElementArray([value])
+        }
+    }
+
     // MARK: - Multi Line Text View
     private func multiLineTextCellVM(for field: Field) -> MultiLineTextTableCellViewModel {
         let rowVM = MultiLineTextTableCellViewModel(field: field)
@@ -191,8 +239,11 @@ class ComplexFormController: NSObject {
     private func peopleCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .people)
         rowVM.didChangeAssignee = { [weak self] (assignee) in
-            guard let selectedAssignee = assignee else { return }
-            self?.updateAssignee(for: field, assignee: selectedAssignee)
+            if let selectedAssignee = assignee {
+                self?.updateAssignee(for: field, assignee: selectedAssignee)
+            } else {
+                self?.deleteAssignee(for: field)
+            }
         }
         return rowVM
     }
@@ -201,8 +252,11 @@ class ComplexFormController: NSObject {
     private func groupCellVM(for field: Field) -> AssigneeTableViewCellViewModel {
         let rowVM = AssigneeTableViewCellViewModel(field: field, type: .group)
         rowVM.didChangeAssignee = { [weak self] (assignee) in
-            guard let selectedAssignee = assignee else { return }
-            self?.updateAssignee(for: field, assignee: selectedAssignee)
+            if let selectedAssignee = assignee {
+                self?.updateAssignee(for: field, assignee: selectedAssignee)
+            } else {
+                self?.deleteAssignee(for: field)
+            }
         }
         return rowVM
     }
@@ -279,9 +333,14 @@ class ComplexFormController: NSObject {
     
     // MARK: - Update Assignee
     fileprivate func updateAssignee(for field: Field, assignee: TaskNodeAssignee) {
-        
+
         let taskAssignee = TaskAssignee(assigneeID: assignee.assigneeID, firstName: assignee.firstName, lastName: assignee.lastName, email: assignee.email, groupName: assignee.groupName, externalId: assignee.externalId, status: assignee.status, parentGroupId: assignee.parentGroupId)
         field.value = .assignee(taskAssignee)
+        self.checkRequiredTextField()
+    }
+    
+    fileprivate func deleteAssignee(for field: Field) {
+        field.value = nil
         self.checkRequiredTextField()
     }
     
