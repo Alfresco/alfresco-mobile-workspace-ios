@@ -153,6 +153,9 @@ class ListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func cancelMoveButtonAction(_ sender: Any) {
+        appDelegate()?.isMoveFilesAndFolderFlow = false
+        appDelegate()?.isAPSAttachmentFlow = false
+        moveFilesBottomView.isHidden = true
         triggerMoveNotifyService(folderId: "", folderName: "")
     }
     

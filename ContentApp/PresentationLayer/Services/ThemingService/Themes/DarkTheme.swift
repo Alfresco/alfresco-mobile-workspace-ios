@@ -51,6 +51,8 @@ struct DarkTheme: PresentationTheme {
     var onPrimaryColor = UIColor(hex: "#FFFFFF")
     var onPrimaryInvertedColor = UIColor(hex: "#212328")
     var onSurface12Color = UIColor(hex: "#FFFFFF", alpha: 0.12)
+    var onSurface07Color = UIColor(hex: "#FFFFFF", alpha: 0.6)
+    var onSurface012Color = UIColor(hex: "#FFFFFF", alpha: 0.12)
 
     var primaryVariantT1Color = UIColor(hex: "#6EACFF")
     var primaryColorVariant = UIColor(hex: "#2E2E2E")

@@ -23,16 +23,18 @@ class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     var attachmentsCount: String? {
         if attachmentType == .task {
-            if attachments.value.count > 1 {
-                return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.value.count)
-            }
+            return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.value.count)
         } else if attachmentType == .workflow {
             let localAttachments = workflowOperationsModel?.attachments.value ?? []
             let attachments = localAttachments.filter { $0.parentGuid == tempWorkflowId }
             if !attachments.isEmpty {
-                let sizeLimitString = String(format: LocalizationConstants.Workflows.maximumFileSizeForUploads, KeyConstants.FileSize.workflowFileSize)
-                let combinedString = "\(String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count))\n\(sizeLimitString)"
-                return combinedString
+                if !isWorkflowTaskAttachments {
+                    let sizeLimitString = String(format: LocalizationConstants.Workflows.maximumFileSizeForUploads, KeyConstants.FileSize.workflowFileSize)
+                    let combinedString = "\(String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count))\n\(sizeLimitString)"
+                    return combinedString
+                } else {
+                    return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.count)
+                }
             }
         }
         

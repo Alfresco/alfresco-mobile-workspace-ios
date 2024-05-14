@@ -393,12 +393,12 @@ class ComplexFormViewController: SystemSearchViewController {
         saveButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         saveButton.setShadowColor(.clear, for: .normal)
         saveButton.setTitleColor(.white, for: .normal)
-                
+       
         completeButton.applyContainedTheme(withScheme: dialogButtonScheme)
         completeButton.isUppercaseTitle = false
         completeButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         completeButton.setShadowColor(.clear, for: .normal)
-        saveButton.setTitleColor(.white, for: .normal)
+        completeButton.setTitleColor(.white, for: .normal)
         
         actionButton.mode = .expanded
         actionButton.isUppercaseTitle = false
@@ -407,6 +407,18 @@ class ComplexFormViewController: SystemSearchViewController {
         
         outcomeView.backgroundColor = currentTheme.surfaceColor
         saveButtonStackView.backgroundColor = currentTheme.surfaceColor
+        
+        saveButton.setBackgroundColor(currentTheme.onSurface012Color,
+                                         for: .disabled)
+        saveButton.setTitleColor(currentTheme.onSurface012Color, for: .disabled)
+        
+        completeButton.setBackgroundColor(currentTheme.onSurface012Color,
+                                         for: .disabled)
+        completeButton.setTitleColor(currentTheme.onSurface012Color, for: .disabled)
+        
+        actionButton.setBackgroundColor(currentTheme.onSurface012Color,
+                                         for: .disabled)
+        actionButton.setTitleColor(currentTheme.onSurface012Color, for: .disabled)
     }
     
     // MARK: - Set up Bindings

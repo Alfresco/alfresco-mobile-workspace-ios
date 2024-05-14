@@ -39,6 +39,8 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         addUserButton.setTitle("", for: .normal)
         deleteButton.setTitle("", for: .normal)
         deleteButton.isHidden = true
+        addUserButton.setImage(UIImage(named: "ic-edit-icon"), for: .normal)
+        deleteButton.setImage(UIImage(named: "icn-cross"), for: .normal)
     }
     
     func setup(viewModel: RowViewModel) {
@@ -71,8 +73,7 @@ class AssigneeTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         userLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         baseView.backgroundColor = currentTheme.surfaceColor
         userView.backgroundColor = currentTheme.onSurface5Color
-        addUserButton.setImage(UIImage(named: "ic-edit-icon"), for: .normal)
-        deleteButton.setImage(UIImage(named: "icn-cross"), for: .normal)
+        deleteButton.tintColor = currentTheme.onSurface07Color
         updateUserImage()
     }
     
