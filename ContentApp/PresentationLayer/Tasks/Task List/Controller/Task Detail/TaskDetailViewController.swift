@@ -151,8 +151,13 @@ class TaskDetailViewController: SystemSearchViewController {
     private func checkForCompleteTaskButton() {
         DispatchQueue.main.async {
             if self.viewModel.isAllowedToCompleteTask() {
-                self.completeTaskView.isHidden = false
-                self.tableView.contentInset.bottom = 90
+                if self.viewModel.isComplexForm {
+                    self.completeTaskView.isHidden = true
+                    self.tableView.contentInset.bottom = 50
+                } else {
+                    self.completeTaskView.isHidden = false
+                    self.tableView.contentInset.bottom = 90
+                }
             } else {
                 self.completeTaskView.isHidden = true
                 self.tableView.contentInset.bottom = 50

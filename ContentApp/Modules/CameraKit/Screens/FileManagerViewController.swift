@@ -23,6 +23,7 @@ class FileManagerViewController: UIViewController {
     weak var fileManagerDelegate: FileManagerAssetDelegate?
     var fileManagerDataSource: FileManagerDataSource?
     var attachmentType: AttachmentType = .content
+    var multiSelection = true
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -46,7 +47,7 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
     func showDocumentPicker() {
         let supportedTypes: [UTType] = [UTType.image, UTType.package, UTType.text, UTType.appleProtectedMPEG4Video, UTType.appleArchive, UTType.audio, UTType.content]
         let pickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes, asCopy: true)
-        pickerViewController.allowsMultipleSelection = true
+        pickerViewController.allowsMultipleSelection = multiSelection
         pickerViewController.delegate = self
         pickerViewController.modalPresentationStyle = .fullScreen
         self.present(pickerViewController, animated: false)
@@ -54,18 +55,22 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         var isFileSizeExcceds = false
-        if attachmentType == .task {
-            for url in urls where url.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
+        
+        if attachmentType == .task || attachmentType == .workflow {
+            let fileLimit = attachmentType == .task ? KeyConstants.FileSize.taskFileSize : KeyConstants.FileSize.workflowFileSize
+            for url in urls where url.fileSizeInMB() > fileLimit {
                 isFileSizeExcceds = true
                 break
             }
+            if isFileSizeExcceds { // show error about maximum file size
+                self.dismiss(animated: true) {
+                    self.showErrorMaximumFileSizeExcceds(fileLimit: fileLimit)
+                }
+            }
         }
         
-        if isFileSizeExcceds { // show error about maximum file size
-            self.dismiss(animated: true) {
-                self.showErrorMaximumFileSizeExcceds()
-            }
-        } else {
+
+        if !isFileSizeExcceds { // show error about maximum file size
             fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate, isScannedDocument: false)
             self.dismiss(animated: true, completion: nil)
         }
@@ -75,13 +80,14 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    private func showErrorMaximumFileSizeExcceds() {
-        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, KeyConstants.FileSize.taskFileSize )
+    private func showErrorMaximumFileSizeExcceds(fileLimit: Double) {
+        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, fileLimit)
         Snackbar.display(with: errorMessage,
                          type: .error,
                          presentationHostViewOverride: self.navigationController?.viewControllers.last?.view,
                          finish: nil)
     }
+    
 }
 
 // MARK: - Storyboard Instantiable

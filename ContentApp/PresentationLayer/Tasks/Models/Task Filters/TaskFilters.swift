@@ -54,5 +54,13 @@ class TaskOptions: Codable {
         case value
         case accessibilityIdentifier
     }
+    
+    init(label: String?, query: String?, value: String?, isSelected: Bool = false, accessibilityIdentifier: String?) {
+        self.label = label
+        self.query = query
+        self.value = value
+        self.isSelected = isSelected
+        self.accessibilityIdentifier = accessibilityIdentifier
+    }
 }
 

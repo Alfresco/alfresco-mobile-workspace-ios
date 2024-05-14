@@ -22,7 +22,7 @@ class FilesandFolderListViewController: SystemThemableViewController {
     private let searchButtonAspectRatio: CGFloat = 30.0
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
     var sourceNodeToMove: [ListNode]?
-    var didSelectDismissAction: (() -> Void)?
+    var didSelectDismissAction: ((String?, String?) -> Void)?
 
     // MARK: - View did load
     override func viewDidLoad() {
@@ -34,6 +34,10 @@ class FilesandFolderListViewController: SystemThemableViewController {
         self.navigationController?.presentationController?.delegate = self
         activateTheme()
         showPersonalFiles()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func activateTheme() {
@@ -56,8 +60,10 @@ class FilesandFolderListViewController: SystemThemableViewController {
     }
     
     @objc private func handleFilesFolderMoveFinishedNotification(notification: Notification) {
+        guard let id = notification.userInfo!["id"], let fName = notification.userInfo!["name"] as? String else { return }
+        let folderId: String = "\(id)"
         resetMoveFilesAndFolderFlow()
-        self.didSelectDismissAction?()
+        self.didSelectDismissAction?(folderId, fName)
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -69,6 +75,8 @@ extension FilesandFolderListViewController: UIAdaptivePresentationControllerDele
     
     func resetMoveFilesAndFolderFlow() {
         appDelegate()?.isMoveFilesAndFolderFlow = false
+        appDelegate()?.isAPSAttachmentFlow = false
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

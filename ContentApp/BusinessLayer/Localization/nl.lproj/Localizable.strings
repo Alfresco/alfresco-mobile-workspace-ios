@@ -77,7 +77,7 @@
 "favorites" = "Favorieten";
 "browse" = "Bladeren";
 "offline" = "Offline";
-"preview-capture-asset" = "Preview";
+"preview-capture-asset" = "Voorbeeld";
 "gallery-upload" = "Foto's";
 
 
@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Er is iets fout gegaan. Neem contact op met uw beheerder voor hulp. Foutcode: %d";
+"error-generic" = "Er is iets fout gegaan. Neem contact op met uw beheerder voor hulp";
 "error-login-alfresco-url" = "Kan geen verificatieservice vinden op de opgegeven Alfresco-URL.";
 "error-login-check-connect-url" = "Controleer de URL waarmee u verbinding wilt maken.";
 "error-login-wrong-credential" = "Onjuiste gebruikersnaam of wachtwoord opgegeven.";
@@ -451,3 +452,4 @@
 "dialog-multi-delete-message" = "%d items worden permanent verwijderd.";
 "multiple-selected-items-count" = "%d Geselecteerd";
 "check-box-multi-select" = "Selectievakje";
+"maximum-items-selection-message" = "Er kunnen maximaal %d items worden geselecteerd";

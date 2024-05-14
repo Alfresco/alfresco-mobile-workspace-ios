@@ -83,39 +83,44 @@ class TaskDetailController: NSObject {
             rowViewModels.append(statusCellVM())
         }
         
-        rowViewModels.append(identifierCellVM())
-        
-        /* comments */
-        if taskHeaderCellVM() != nil {
-            rowViewModels.append(taskHeaderCellVM()!)
-        }
-        
-        if latestCommentCellVM() != nil {
-            rowViewModels.append(latestCommentCellVM()!)
-        }
-        
-        if !viewModel.isTaskCompleted {
-            rowViewModels.append(addCommentCellVM())
-        }
-        
-        /* attachments */
-        if viewModel.isAttachmentsLoaded {
-            rowViewModels.append(spaceCellVM())
+        if !viewModel.isComplexForm {
             
-            if attachmentsHeaderCellVM() != nil {
-                rowViewModels.append(attachmentsHeaderCellVM()!)
+            rowViewModels.append(identifierCellVM(isHideDivider: false))
+            
+            /* comments */
+            if taskHeaderCellVM() != nil {
+                rowViewModels.append(taskHeaderCellVM()!)
             }
             
-            if addAttachmentCellVM() != nil {
-                rowViewModels.append(addAttachmentCellVM()!)
+            if latestCommentCellVM() != nil {
+                rowViewModels.append(latestCommentCellVM()!)
             }
             
-            if attachmentsPlaceholderCellVM() != nil {
-                rowViewModels.append(attachmentsPlaceholderCellVM()!)
+            if !viewModel.isTaskCompleted {
+                rowViewModels.append(addCommentCellVM())
             }
             
-            let attachments = attachmentsCellVM()
-            rowViewModels.append(contentsOf: attachments)
+            /* attachments */
+            if viewModel.isAttachmentsLoaded {
+                rowViewModels.append(spaceCellVM())
+                
+                if attachmentsHeaderCellVM() != nil {
+                    rowViewModels.append(attachmentsHeaderCellVM()!)
+                }
+                
+                if addAttachmentCellVM() != nil {
+                    rowViewModels.append(addAttachmentCellVM()!)
+                }
+                
+                if attachmentsPlaceholderCellVM() != nil {
+                    rowViewModels.append(attachmentsPlaceholderCellVM()!)
+                }
+                
+                let attachments = attachmentsCellVM()
+                rowViewModels.append(contentsOf: attachments)
+            }
+        } else {
+            rowViewModels.append(identifierCellVM(isHideDivider: true))
         }
         
         self.viewModel.rowViewModels.value = rowViewModels
@@ -205,8 +210,8 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
-    private func identifierCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: false, isEditMode: false, editImage: nil)
+    private func identifierCellVM(isHideDivider: Bool) -> InfoTableCellViewModel {
+        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: isHideDivider, isEditMode: false, editImage: nil)
         return rowVM
     }
     

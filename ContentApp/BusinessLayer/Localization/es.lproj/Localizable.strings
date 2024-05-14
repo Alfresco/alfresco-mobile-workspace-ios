@@ -72,7 +72,7 @@
 "sync-failed" = "Error al sincronizar";
 
 // MARK: - Tabs Titles
-"settings" = "﻿Ajustes";
+"settings" = "?Ajustes";
 "recent" = "Reciente";
 "favorites" = "Favoritos";
 "browse" = "Explorar";
@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Ha surgido un error. Contacte a su administrador para obtener ayuda. Cód. de error: %d";
+"error-generic" = "Ha surgido un error. Contacte a su administrador para obtener ayuda";
 "error-login-alfresco-url" = "No se ha encontrado un servicio de autenticación en la URL de Alfresco indicada.";
 "error-login-check-connect-url" = "Compruebe la URL indicada en \"Conectar a\".";
 "error-login-wrong-credential" = "Nombre de usuario o contraseña indicados incorrectos.";
@@ -451,3 +452,4 @@
 "dialog-multi-delete-message" = "%d elementos serán eliminados permanentemente.";
 "multiple-selected-items-count" = "%d Seleccionado";
 "check-box-multi-select" = "Casilla de verificación";
+"maximum-items-selection-message" = "Solo se puede seleccionar un máximo de %d elementos";

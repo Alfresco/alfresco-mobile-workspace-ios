@@ -31,3 +31,36 @@ enum AttachmentType: String, Codable {
     case workflow = "workflow"
     case content = "content"
 }
+
+// MARK: - Complex Form Fields
+enum ComplexFormFieldType: String {
+    case multiLineText = "multi-line-text"
+    case singleLineText = "text"
+    case numberField = "integer"
+    case amountField = "amount"
+    case displayValue = "readonly"
+    case displayText = "readonly-text"
+    case dateTime = "datetime"
+    case date = "date"
+    case people = "people"
+    case group = "functional-group"
+    case dropDown = "dropdown"
+    case radioButton = "radio-buttons"
+    case hyperlink = "hyperlink"
+    case checkbox = "boolean"
+    case outcomes = "outcomes"
+    case upload = "upload"
+    case selectfolder = "select-folder"
+}
+
+// MARK: - Field type
+enum FieldType: String, Codable {
+    case date = "date"
+    case dateTime = "datetime"
+    case integer = "integer"
+    case amount = "amount"
+    case bool = "boolean"
+    case string = "string"
+    case people = "people"
+    case upload = "upload"
+}

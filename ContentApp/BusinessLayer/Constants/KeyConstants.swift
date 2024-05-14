@@ -52,6 +52,7 @@ struct KeyConstants {
         static let internetCheck = "kInternetCheckNotification"
         static let bannerQueryParam = "mobileapps=true"
         static let refreshWorkflows = "kRefreshWorkflowsNotification"
+        static let refreshTaskList = "kRefreshTaskListNotification"
     }
     
     struct AdvanceSearch {
@@ -83,5 +84,6 @@ struct KeyConstants {
     
     struct FileSize {
         static let taskFileSize = 100.0
+        static let workflowFileSize = 10.0
     }
 }

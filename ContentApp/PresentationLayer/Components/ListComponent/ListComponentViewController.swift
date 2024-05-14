@@ -57,6 +57,8 @@ class ListComponentViewController: SystemThemableViewController {
     var sourceNodeToMove: [ListNode]?
     var navigationViewController: UINavigationController?
     var multipleSelectionHeader: MultipleSelectionHeaderView? = .fromNib()
+    var folderId = ""
+    var isAPSAttachmentFlow = false
     
     // MARK: - View Life Cycle
     
@@ -87,7 +89,13 @@ class ListComponentViewController: SystemThemableViewController {
         listActionButton.isUppercaseTitle = false
         listActionButton.setTitle(viewModel.listActionTitle(), for: .normal)
         listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
-        moveFilesBottomView.isHidden = viewModel.shouldHideMoveItemView()
+        if let isAttachment = appDelegate()?.isAPSAttachmentFlow, isAttachment {
+            isAPSAttachmentFlow = isAttachment
+            createButton.isHidden = isAttachment
+            moveFilesBottomView.isHidden = isAttachment
+        } else {
+            moveFilesBottomView.isHidden = viewModel.shouldHideMoveItemView()
+        }
 
         if viewModel.shouldDisplayCreateButton() ||
             viewModel.shouldDisplayListActionButton() {
@@ -134,16 +142,20 @@ class ListComponentViewController: SystemThemableViewController {
     
     // MARK: - Move files
     @IBAction func moveFilesButtonAction(_ sender: Any) {
-        guard let source = self.sourceNodeToMove, let destination = self.destinationNodeToMove else { return }
-        let menu = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder,
-                              type: .moveToFolder)
-        self.listItemActionDelegate?.moveNodeTapped(for: source, destinationNode: destination, delegate: self, actionMenu: menu)
+        if isAPSAttachmentFlow {
+            triggerMoveNotifyService(folderId: folderId, folderName: destinationNodeToMove?.title ?? "")
+        } else {
+            guard let source = self.sourceNodeToMove, let destination = self.destinationNodeToMove else { return }
+            let menu = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder,
+                                  type: .moveToFolder)
+            self.listItemActionDelegate?.moveNodeTapped(for: source, destinationNode: destination, delegate: self, actionMenu: menu)
+        }
     }
     
     @IBAction func cancelMoveButtonAction(_ sender: Any) {
-        appDelegate()?.isMoveFilesAndFolderFlow = false
+        appDelegate()?.isAPSAttachmentFlow = false
         moveFilesBottomView.isHidden = true
-        triggerMoveNotifyService()
+        triggerMoveNotifyService(folderId: "", folderName: "")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -221,7 +233,8 @@ class ListComponentViewController: SystemThemableViewController {
         moveFilesBottomView.backgroundColor = currentTheme.surfaceColor
         moveFilesButton.applyContainedTheme(withScheme: buttonScheme)
         moveFilesButton.isUppercaseTitle = false
-        moveFilesButton.setTitle(LocalizationConstants.Buttons.moveHere, for: .normal)
+        let buttonTitle = isAPSAttachmentFlow ? LocalizationConstants.Workflows.select : LocalizationConstants.Buttons.moveHere
+        moveFilesButton.setTitle(buttonTitle, for: .normal)
         moveFilesButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         moveFilesButton.setShadowColor(.clear, for: .normal)
         
@@ -463,8 +476,21 @@ extension ListComponentViewController: ListPageControllerDelegate {
         } else {
             listActionButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
         }
-        moveFilesBottomView.isHidden = (viewModel?.shouldHideMoveItemView() ?? true)
-
+        if isAPSAttachmentFlow {
+            createButton.isHidden = isAPSAttachmentFlow
+            let createdByUserId = source?.createdByUser._id
+            if createdByUserId != nil {
+                if createdByUserId == "System" {
+                    moveFilesBottomView.isHidden = isAPSAttachmentFlow
+                } else {
+                    folderId = source?._id ?? ""
+                    moveFilesBottomView.isHidden = false
+                }
+            }
+        } else {
+            moveFilesBottomView.isHidden = (viewModel?.shouldHideMoveItemView() ?? true)
+        }
+        
         let isListEmpty = model.isEmpty()
         emptyListView.isHidden = !isListEmpty
         if isListEmpty {

@@ -52,6 +52,8 @@ struct DefaultTheme: PresentationTheme {
     var onPrimaryColor = UIColor(hex: "#FFFFFF")
     var onPrimaryInvertedColor = UIColor(hex: "#212328")
     var onSurface12Color = UIColor(hex: "#212121", alpha: 0.12)
+    var onSurface07Color = UIColor(hex: "#212328", alpha: 0.7)
+    var onSurface012Color = UIColor(hex: "#212328", alpha: 0.12)
 
     var primaryVariantT1Color = UIColor(hex: "#0052AE")
     var primaryColorVariant = UIColor(hex: "#FFFFFF")

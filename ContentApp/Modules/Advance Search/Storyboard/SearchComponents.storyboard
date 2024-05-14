@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -394,6 +394,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="93" id="CQu-B0-rRy"/>
                                             <constraint firstItem="NaB-i8-SvC" firstAttribute="bottom" secondItem="X8C-L4-kof" secondAttribute="bottom" id="DvD-fr-4tj"/>
                                             <constraint firstAttribute="trailing" secondItem="S8H-LB-GCV" secondAttribute="trailing" id="Eha-mj-hbs"/>
                                             <constraint firstItem="6hu-j1-Okv" firstAttribute="top" secondItem="dHi-eT-fyS" secondAttribute="top" constant="10" id="HJK-4b-mGX"/>
@@ -434,6 +435,7 @@
                     <connections>
                         <outlet property="applyButton" destination="X8C-L4-kof" id="2CE-pi-IB8"/>
                         <outlet property="baseView" destination="2Di-rl-Jy5" id="gvS-SS-8HS"/>
+                        <outlet property="buttonsViewHeightConstant" destination="CQu-B0-rRy" id="2is-eM-Rqa"/>
                         <outlet property="dismissButton" destination="bVP-dy-0Kf" id="EVR-qG-FiK"/>
                         <outlet property="headerDivider" destination="wlm-QL-99F" id="kuU-Da-1s6"/>
                         <outlet property="headerTitleLabel" destination="Iad-lJ-mEo" id="7oi-QQ-Ug6"/>

@@ -52,6 +52,8 @@ protocol PresentationTheme {
     var onPrimaryColor: UIColor { get }
     var onPrimaryInvertedColor: UIColor { get }
     var onSurface12Color: UIColor { get }
+    var onSurface07Color: UIColor { get }
+    var onSurface012Color: UIColor { get }
 
     var primaryVariantT1Color: UIColor { get }
     var primaryColorVariant: UIColor { get }

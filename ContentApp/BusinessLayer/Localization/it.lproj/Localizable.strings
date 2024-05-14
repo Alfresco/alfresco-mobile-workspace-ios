@@ -93,6 +93,7 @@
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Si è verificato un problema. Per assistenza, contatta il tuo amministratore. Codice errore: %d";
+"error-generic" = "Si è verificato un problema. Per assistenza, contatta il tuo amministratore";
 "error-login-alfresco-url" = "Non è stato trovato alcun servizio di autenticazione all'URL di Alfresco specificato.";
 "error-login-check-connect-url" = "Verifica l'URL di connessione.";
 "error-login-wrong-credential" = "Nome utente o password non corretti.";
@@ -265,7 +266,7 @@
 "empty-favorites-description" = "A quanto pare non hai aggiunto nulla.";
 "empty-folder-title" = "La cartella è vuota";
 "empty-folder-description" = "A quanto pare qui non c'è nulla.";
-"empty-search-title" = "Oops!";
+"empty-search-title" = "Ops!";
 "empty-search-description" = "Non riusciamo a trovare ciò che stai cercando.";
 "empty-offline-title" = "Nessun contenuto offline";
 "empty-offline-description" = "Il contenuto che hai reso disponibile offline verrà visualizzato qui.";
@@ -373,7 +374,7 @@
 "me-title" = "Io";
 "search-placeholder" = "Cerca...";
 "dialog-discard-edit-task-message" = "Vuoi ignorare le modifiche?";
-"delete-attachment-alert-title" = "Vuoi eliminare un file?";
+"delete-attachment-alert-title" = "Eliminare un file?";
 "add-attachments" = "Aggiungi allegati";
 "file-size-exceed-error" = "Le dimensioni del file selezionato per il caricamento non possono superare %.1f MB.";
 
@@ -451,3 +452,4 @@
 "dialog-multi-delete-message" = "%d elementi verranno eliminati definitivamente.";
 "multiple-selected-items-count" = "%d Selezionato";
 "check-box-multi-select" = "Casella di controllo";
+"maximum-items-selection-message" = "Possono essere selezionati massimo %d elementi";
