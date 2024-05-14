@@ -150,6 +150,7 @@ class ComplexFormViewController: SystemSearchViewController {
     
     @objc private func keyboardWillHide(notification: NSNotification) {
         tableView.contentInset = .zero
+        tableView.scrollIndicatorInsets = .zero
     }
     
     // MARK: - Start workflow API integration
