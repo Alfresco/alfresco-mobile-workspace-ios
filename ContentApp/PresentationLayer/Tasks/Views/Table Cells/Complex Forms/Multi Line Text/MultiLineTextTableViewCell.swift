@@ -93,7 +93,7 @@ extension MultiLineTextTableViewCell: UITextViewDelegate {
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text) 
         viewModel.checkForErrorMessages(for: newText)
         applyTextViewComponentTheme()
-        addAccessibility()
+        viewModel.text = newText
         viewModel.didChangeText?(newText)
         return true
     }
