@@ -76,10 +76,6 @@ steps:
   inputs:
     secureFile: '$(provisioning_profile_share)'
 
-- script: |
-    sudo xcode-select -s /Applications/Xcode_14.3.app
-  displayName: Selects a specific version of Xcode
-
 - task: CmdLine@2
   displayName: 'Build and Pilot'
   inputs:
