@@ -17,6 +17,11 @@ on:
         type: string
         required: false
         default: 1.9
+      create_sandbox:
+       description: 'use a sandbox for scan'
+       type: boolean
+       required: false
+       default: false
 
     
 jobs:
@@ -89,6 +94,6 @@ jobs:
             -createprofile true \
             -criticality VeryHigh \
             -sandboxname iOS_AMW-${{ inputs.sandbox_name }} \
-            -createsandbox true \
+            -createsandbox ${{ inputs.create_sandbox }}  \
             -version "Scan from GitHub job : ${{ github.run_id }}-${{ github.run_number }}-version-${{ inputs.version }}" \
             -filepath veracode
