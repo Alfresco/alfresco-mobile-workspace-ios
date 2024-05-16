@@ -12,6 +12,12 @@ on:
         type: string
         required: false
         default: Dev
+      version:
+        description: 'version  '
+        type: string
+        required: false
+        default: 1.9
+
     
 jobs:
   static_analysis:
@@ -84,5 +90,5 @@ jobs:
             -criticality VeryHigh \
             -sandboxname iOS_AMW-${{ inputs.sandbox_name }} \
             -createsandbox true \
-            -version "IOS_AMW-${{ steps.date.outputs.date }}" \
+            -version "Scan from GitHub job : ${{ github.run_id }}-${{ github.run_number }}-version-${{ inputs.version }}" \
             -filepath veracode
