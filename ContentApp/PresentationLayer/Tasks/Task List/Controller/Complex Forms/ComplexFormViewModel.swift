@@ -154,6 +154,25 @@ class ComplexFormViewModel: NSObject {
         }
         return true
     }
+        
+    func extractSubdomain(from urlString: String) -> String? {
+        if let url = URL(string: urlString), let host = url.host {
+            let components = host.components(separatedBy: ".")
+            if components.count >= 3 {
+                let lastIndex = components.count - 2
+                return components[lastIndex]
+            }
+        }
+        return nil
+    }
+    
+    func isValidURL(_ urlString: String) -> Bool {
+        if let url = URL(string: urlString) {
+            // Check if the URL scheme and host are not nil
+            return url.scheme != nil && url.host != nil
+        }
+        return false
+    }
 }
 
 // MARK: - Start Workflow

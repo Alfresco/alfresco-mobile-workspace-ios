@@ -39,6 +39,8 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     var fractionLength = 0
     var isHiddenSelectBtn = true
     var attachments = [ListNode]()
+    var appDefinition: WFlowAppDefinitions?
+    var field: Field
     
     var name: String? {
         if fieldRequired {
@@ -75,6 +77,7 @@ class SingleLineTextTableCellViewModel: RowViewModel {
     }
     
     init(field: Field, type: ComplexFormFieldType) {
+        self.field = field
         let text = ValueUnion.string(field.value?.getStringValue() ?? "").getStringValue()
         let parmsType = field.params?.field?.type ?? ""
         
@@ -99,6 +102,10 @@ class SingleLineTextTableCellViewModel: RowViewModel {
                     stringText = Self.getUserName(field: field)
                 case .upload:
                     stringText = Self.getAttachmentsCount(for: field, attachments: &attachments, isHiddenSelectBtn: &isHiddenSelectBtn)
+                case .text, .multilineText:
+                    isHiddenSelectBtn = false
+                    stringText = text ?? ""
+                    self.appDefinition = WFlowAppDefinitions(addDefinitionID: 123, defaultAppId: "", name: "", description: stringText, modelId: 0, theme: "", icon: "", deploymentId: "", tenantId: 0)
                 }
             } else {
                 stringText = text ?? ""
