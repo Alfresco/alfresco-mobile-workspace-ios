@@ -92,7 +92,6 @@ public struct VersionContentService: Codable {
         }
         return false
     }
-
     func serverEdition() -> String? {
         return edition
     }

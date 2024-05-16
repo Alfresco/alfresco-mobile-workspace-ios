@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AddAttachmentComplexTableViewCell" customModule="ContentApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0g-Zb-7LA">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqK-iT-mmA" userLabel="titleLabel">
+                                <rect key="frame" x="20" y="10" width="0.0" height="0.0"/>
+                                <accessibility key="accessibilityConfiguration" identifier="titleScreen">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="St3-sc-oIw" userLabel="attachmentCount">
+                                <rect key="frame" x="20" y="25" width="249" height="0.0"/>
+                                <accessibility key="accessibilityConfiguration" identifier="titleScreen">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ys-7z-lPg" userLabel="attachmentButton">
+                                <rect key="frame" x="270" y="5" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="fLO-XK-9yt"/>
+                                    <constraint firstAttribute="height" constant="30" id="zWa-L3-xTp"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="icn-attachment"/>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="heO-W9-PjI" userLabel="RemoveValue">
+                                <rect key="frame" x="270" y="10" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="qLS-AC-954"/>
+                                    <constraint firstAttribute="height" constant="30" id="vkj-sX-JdM"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="ic-cross-grey"/>
+                                <connections>
+                                    <action selector="actionRemoveFolder:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="yRA-FB-OqV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="9Ys-7z-lPg" firstAttribute="top" secondItem="a0g-Zb-7LA" secondAttribute="top" constant="5" id="F6P-gd-E0l"/>
+                            <constraint firstItem="dqK-iT-mmA" firstAttribute="top" secondItem="a0g-Zb-7LA" secondAttribute="top" constant="10" id="KzN-yX-iYw"/>
+                            <constraint firstItem="St3-sc-oIw" firstAttribute="leading" secondItem="a0g-Zb-7LA" secondAttribute="leading" constant="20" symbolic="YES" id="Nf0-UC-eS9"/>
+                            <constraint firstItem="heO-W9-PjI" firstAttribute="trailing" secondItem="9Ys-7z-lPg" secondAttribute="trailing" id="UGP-su-kkm"/>
+                            <constraint firstItem="heO-W9-PjI" firstAttribute="centerY" secondItem="St3-sc-oIw" secondAttribute="centerY" id="UnL-cf-kBe"/>
+                            <constraint firstAttribute="trailing" secondItem="9Ys-7z-lPg" secondAttribute="trailing" constant="20" id="YpB-D6-xat"/>
+                            <constraint firstItem="St3-sc-oIw" firstAttribute="top" secondItem="dqK-iT-mmA" secondAttribute="bottom" constant="15" id="ifJ-Ks-S0f"/>
+                            <constraint firstItem="dqK-iT-mmA" firstAttribute="leading" secondItem="a0g-Zb-7LA" secondAttribute="leading" constant="20" id="jGD-Ox-vC6"/>
+                            <constraint firstItem="heO-W9-PjI" firstAttribute="leading" secondItem="St3-sc-oIw" secondAttribute="trailing" constant="1" id="ypU-Mc-dbK"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="a0g-Zb-7LA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="9h3-18-ELv"/>
+                    <constraint firstAttribute="bottom" secondItem="a0g-Zb-7LA" secondAttribute="bottom" id="HL3-9p-xfH"/>
+                    <constraint firstItem="a0g-Zb-7LA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="O5w-Dh-GY0"/>
+                    <constraint firstAttribute="trailing" secondItem="a0g-Zb-7LA" secondAttribute="trailing" id="VJG-jy-3y7"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="attachmentButton" destination="9Ys-7z-lPg" id="G9v-c5-rbg"/>
+                <outlet property="attachmentCount" destination="St3-sc-oIw" id="8yL-hh-jzw"/>
+                <outlet property="baseView" destination="a0g-Zb-7LA" id="Vkv-KN-b94"/>
+                <outlet property="removeAttachmentButton" destination="heO-W9-PjI" id="Hz7-BQ-pj7"/>
+                <outlet property="titleLabel" destination="dqK-iT-mmA" id="bpw-L1-HBQ"/>
+            </connections>
+            <point key="canvasLocation" x="74.809160305343511" y="-1.4084507042253522"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic-cross-grey" width="40" height="40"/>
+        <image name="icn-attachment" width="48" height="48"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

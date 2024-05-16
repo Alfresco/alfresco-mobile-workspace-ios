@@ -27,6 +27,7 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
     var isOpenAfterTaskCreation = false
     var isEditTask = false
     var readOnlyTask: TaskNode?
+    var isComplexForm = false
 
     var editButtonTitle: String {
         if isEditTask {

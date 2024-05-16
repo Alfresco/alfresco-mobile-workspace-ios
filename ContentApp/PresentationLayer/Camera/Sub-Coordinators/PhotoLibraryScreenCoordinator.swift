@@ -25,6 +25,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     private var galleryDataSource: PhotoGalleryDataSource?
     var attachmentType: AttachmentType
     var didSelectAttachment: (([UploadTransfer]) -> Void)?
+    var multiSelection = true
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
@@ -38,6 +39,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
         let viewController = PhotoGalleryViewController.instantiateViewController()
         viewController.cameraDelegate = self
         viewController.modalPresentationStyle = .fullScreen
+        viewController.multiSelection = multiSelection
 
         requestAuthorizationPhotoLibraryUsage { [weak self] (granted) in
             if granted {
@@ -83,21 +85,22 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
         
         var isFileSizeExcceds = false
+        
         if attachmentType == .task || attachmentType == .workflow {
+            let fileLimit = attachmentType == .task ? KeyConstants.FileSize.taskFileSize : KeyConstants.FileSize.workflowFileSize
             for capturedAsset in capturedAssets {
                 let assetURL = URL(fileURLWithPath: capturedAsset.path)
-                if assetURL.fileSizeInMB() > KeyConstants.FileSize.taskFileSize {
+                if assetURL.fileSizeInMB() > fileLimit {
                     isFileSizeExcceds = true
                     break
                 }
             }
-        }
-        
-        if isFileSizeExcceds { // show error about maximum file size
-            DispatchQueue.main.async {
-                self.showErrorMaximumFileSizeExcceds()
+            if isFileSizeExcceds { // show error about maximum file size
+                DispatchQueue.main.async {
+                    self.showErrorMaximumFileSizeExcceds(fileLimit: fileLimit)
+                }
+                return
             }
-            return
         }
         
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
@@ -150,8 +153,8 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
         }
     }
     
-    private func showErrorMaximumFileSizeExcceds() {
-        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, KeyConstants.FileSize.taskFileSize )
+    private func showErrorMaximumFileSizeExcceds(fileLimit: Double) {
+        let errorMessage = String(format: LocalizationConstants.EditTask.errorFileSizeExceeds, fileLimit)
 
         Snackbar.display(with: errorMessage,
                          type: .error,
