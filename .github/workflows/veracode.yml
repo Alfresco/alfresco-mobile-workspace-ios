@@ -10,7 +10,8 @@ on:
       sandbox_name:
         description: 'sandbox_name '
         type: string
-        required: true
+        required: false
+        default: Dev
     
 jobs:
   static_analysis:
@@ -21,6 +22,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
         
       - name: Setup
 #        env: 
@@ -77,7 +82,7 @@ jobs:
             -appname "iOS AMW" \
             -createprofile true \
             -criticality VeryHigh \
-            -sandboxname iOS_AMW-$sandbox_name \
+            -sandboxname iOS_AMW-${{ inputs.sandbox_name }} \
             -createsandbox true \
-            -version "commit:${{ github.sha }},run_id:${{ github.run_id }},attempt_nr:${{ github.run_attempt }}" \
+            -version "IOS_AMW-${{ steps.date.outputs.date }}" \
             -filepath veracode
