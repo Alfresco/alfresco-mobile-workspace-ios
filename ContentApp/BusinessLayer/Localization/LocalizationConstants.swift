@@ -435,6 +435,7 @@ struct LocalizationConstants {
         static let useADifferentNumberFormat = NSLocalizedString("use-a-different-number-format", comment: "")
         static let notAbleToAttachTheSelectedContent = NSLocalizedString("not-able-to-attach-the-selected-content-in-this-form", comment: "")
         static let maximumFileSizeForUploads = NSLocalizedString("maximum-file-size-for-uploads", comment: "")
+        static let hasInvalidUrl = NSLocalizedString("has-invalid-url", comment: "")
     }
     
     struct MultipleFilesSelection {

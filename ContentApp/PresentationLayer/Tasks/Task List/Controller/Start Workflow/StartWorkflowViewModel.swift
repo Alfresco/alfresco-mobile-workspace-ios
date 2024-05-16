@@ -160,7 +160,7 @@ class StartWorkflowViewModel: NSObject {
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            var grpError: Error? = nil
+            var grpError: Error?
             let group = DispatchGroup()
             group.enter()
             
@@ -168,12 +168,13 @@ class StartWorkflowViewModel: NSObject {
                 guard let sSelf = self else { return }
                 if data != nil {
                     let taskNodes = TaskNodeOperations.processNodes(for: [data!])
-                    if !taskNodes.isEmpty {
-                        sSelf.task = taskNodes.first
-                        sSelf.isAssigneeAndLoggedInSame = sSelf.task?.assignee?.assigneeID == UserProfile.apsUserID
-                        sSelf.isClaimProcess = sSelf.task?.memberOfCandidateGroup == true && !sSelf.isAssigneeAndLoggedInSame
-
+                    sSelf.task = taskNodes.first
+                    if !taskNodes.isEmpty, sSelf.task?.memberOfCandidateGroup == true {
+                        if let assigneeId = taskNodes.first?.assignee?.assigneeID, assigneeId <= 0 {
+                            sSelf.isClaimProcess = true
+                        }
                     }
+                    sSelf.isAssigneeAndLoggedInSame = taskNodes.first?.assignee?.assigneeID == UserProfile.apsUserID
                     
                 } else {
                     grpError = error
@@ -193,6 +194,10 @@ class StartWorkflowViewModel: NSObject {
                 completionHandler(grpError)
             }
         })
+    }
+    
+    func isReleaseOutcomeRequired() -> Bool {
+        return self.task?.memberOfCandidateGroup == true && isAssigneeAndLoggedInSame == true
     }
     
     func claimOrUnclaimTask(taskId: String, isClaimTask: Bool, completionHandler: @escaping (_ error: Error?) -> Void) {

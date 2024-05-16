@@ -484,8 +484,7 @@ class ComplexFormViewController: SystemSearchViewController {
                     if let newOutcome = self.createOutcome(with: saveId, and: LocalizationConstants.General.save) {
                         outcomes.insert(newOutcome, at: 0)
                     }
-                    if viewModel.isAssigneeAndLoggedInSame, let releaseOutcome = self.createOutcome(with: releaseId, and: LocalizationConstants.Workflows.releaseTitle) {
-                        outcomes.insert(releaseOutcome, at: 0)
+                    if viewModel.isReleaseOutcomeRequired(), let releaseOutcome = self.createOutcome(with: releaseId, and: LocalizationConstants.Workflows.releaseTitle) {                        outcomes.insert(releaseOutcome, at: 0)
                     }
                 }
                 viewController.outcomes = outcomes
@@ -588,7 +587,7 @@ extension ComplexFormViewController {
             saveButton.isEnabled = true
             saveButton.isUserInteractionEnabled = true
             saveButton.isHidden = false
-        } else if let outcomes = viewModel.formData?.outcomes {
+        } else if viewModel.isAssigneeAndLoggedInSame, let outcomes = viewModel.formData?.outcomes {
             switch outcomes.count {
             case 0, 1:
                 noDetailOutcome(outcomes: outcomes)
@@ -711,9 +710,10 @@ extension ComplexFormViewController: UITableViewDelegate, UITableViewDataSource 
         }
         
     fileprivate func configureDisplayCells(_ localViewModel: SingleLineTextTableCellViewModel, _ cell: UITableViewCell, _ indexPath: IndexPath) {
+        let singleLineTextTableViewCell = cell as?  SingleLineTextTableViewCell
+        singleLineTextTableViewCell?.selectButton.tag = indexPath.row
+        singleLineTextTableViewCell?.selectButton.addTarget(self, action: #selector(selectButtonAction(button:)), for: .touchUpInside)
         
-        (cell as?  SingleLineTextTableViewCell)?.selectButton.tag = indexPath.row
-        (cell as?  SingleLineTextTableViewCell)?.selectButton.addTarget(self, action: #selector(viewAllAttachments(button:)), for: .touchUpInside)
     }
     
     fileprivate func applyTheme(_ cell: UITableViewCell) {
@@ -986,8 +986,27 @@ extension ComplexFormViewController {
     @objc func hyperlinkButtonAction(button: UIButton) {
         let rowViewModel = viewModel.rowViewModels.value[button.tag]
         guard let localViewModel = rowViewModel as? HyperlinkTableViewCellViewModel else { return }
-        let urlSting = localViewModel.hyperlinkUrl ?? ""
-        openFilePreviewController(notificationURL: urlSting)
+        let hyperlinkUrl = localViewModel.hyperlinkUrl ?? ""
+        
+        if self.complexFormViewModel.isValidURL(hyperlinkUrl) {
+            let hostName = AuthenticationParameters.parameters().fullHostnameURL
+            let subDomain = self.complexFormViewModel.extractSubdomain(from: hostName) ?? ""
+            if hyperlinkUrl.contains(subDomain) {
+                openFilePreviewController(notificationURL: hyperlinkUrl)
+            } else {
+                guard let url = URL(string: hyperlinkUrl) else {
+                    return
+                }
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        } else {
+            let errorString = String(format: "%@ %@", localViewModel.name ?? "", LocalizationConstants.Workflows.hasInvalidUrl)
+            displaySnackbar(with: errorString, type: .error)
+        }
     }
     
     private func openFilePreviewController(notificationURL: String) {
@@ -1136,9 +1155,35 @@ extension ComplexFormViewController {
         }
     }
     
-    @objc func viewAllAttachments(button: UIButton) {
+    @objc func selectButtonAction(button: UIButton) {
         let rowViewModel = viewModel.rowViewModels.value[button.tag]
         guard let localViewModel = rowViewModel as? SingleLineTextTableCellViewModel else { return }
+        let parmsType = localViewModel.field.params?.field?.type ?? ""
+        
+        let paramsType = localViewModel.field.params?.field?.type ?? ""
+        
+        guard let fieldType = FieldType(rawValue: paramsType) else { return }
+        
+        switch fieldType {
+        case .upload:
+            viewAllAttachments(localViewModel: localViewModel)
+        default:
+            tapSingleMultiField(localViewModel: localViewModel)
+        }
+    }
+    
+    private func tapSingleMultiField(localViewModel: SingleLineTextTableCellViewModel) {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDescription) as? TaskDescriptionDetailViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.appDefinition = localViewModel.appDefinition
+            viewController.viewModel.completeComplexFormTitle = localViewModel.name ?? ""
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true)
+        }
+    }
+    
+    func viewAllAttachments(localViewModel: SingleLineTextTableCellViewModel) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
             viewController.coordinatorServices = coordinatorServices
