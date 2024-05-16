@@ -21,10 +21,15 @@ import UIKit
 class TaskDescriptionDetailViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     var appDefinition: WFlowAppDefinitions?
+    var completeComplexFormTitle = ""
     
     var headerTitle: String {
         if appDefinition != nil {
-            return LocalizationConstants.Workflows.workflowTitle
+            if completeComplexFormTitle.isEmpty {
+                return LocalizationConstants.Workflows.workflowTitle
+            } else {
+                return completeComplexFormTitle
+            }
         }
         return LocalizationConstants.EditTask.taskTitle
     }

@@ -63,4 +63,6 @@ enum FieldType: String, Codable {
     case string = "string"
     case people = "people"
     case upload = "upload"
+    case text = "text"
+    case multilineText = "multi-line-text"
 }

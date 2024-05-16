@@ -394,7 +394,7 @@
 "dialog-discard-edit-task-message" = "Do you want to discard the changes?";
 "delete-attachment-alert-title" = "Delete a file?";
 "add-attachments" = "Add attachments";
-"file-size-exceed-error" = "The selected file size cannot exceed %.1f MB to upload.";
+"file-size-exceed-error" = "Maximum file size for uploads is %.1f MB.";
 
 // MARK: - Appleford Accessibility
 "connect-to-textfield" = "Connect to Text Field";
@@ -465,16 +465,17 @@
 "info" = "Information";
 "complete" = "Complete";
 "no-name" = "No Name";
-"enter-atleast-characters" = "Enter atleast %d characters";
-"enter-maximum-characters" = "Enter maximum %d characters";
+"enter-atleast-characters" = "Enter at least %d characters";
+"enter-maximum-characters" = "Enter a maximum of %d characters";
 "cannot-be-less-than" = "Can't be less than %@";
 "cannot-be-greater-than" = "Can't be greater than %@";
 "use-a-different-number-format" = "Use a different number format";
-"not-able-to-attach-the-selected-content-in-this-form" = "Not able to attach the selected content in this form.";
+"not-able-to-attach-the-selected-content-in-this-form" = "Unable to attach the selected content in this form.";
 "maximum-file-size-for-uploads" = "Please note: Maximum file size for uploads is %.01f MB.";
+"has-invalid-url" = "has invalid URL";
 
 
 // MARK: - Multiple selections
 "multiple-selected-items-count" = "%d Selected";
 "check-box-multi-select" = "Check box";
-"maximum-items-selection-message" = "Maximum %d item(s) can be selected";
+"maximum-items-selection-message" = "Select a maximum of %d item(s)";
