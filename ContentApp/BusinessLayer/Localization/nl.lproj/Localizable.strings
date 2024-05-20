@@ -376,7 +376,7 @@
 "dialog-discard-edit-task-message" = "Wilt u de wijzigingen negeren?";
 "delete-attachment-alert-title" = "Bestand verwijderen?";
 "add-attachments" = "Bijlagen toevoegen";
-"file-size-exceed-error" = "Het geselecteerde bestand mag niet groter zijn dan %.1f MB om te kunnen worden geüpload.";
+"file-size-exceed-error" = "Maximum bestandsformaat voor uploads is %.1f MB.";
 
 // MARK: - Appleford Accessibility
 "connect-to-textfield" = "Verbinden met tekstveld";
@@ -439,6 +439,22 @@
 "claim-title" = "Claimen";
 "release-title" = "Vrijgeven";
 "created_date" = "Datum gemaakt";
+"actions" = "Acties";
+"empty-attachFiles-description" = "Het lijkt erop dat je nog geen bestanden hebt toegevoegd\n(max bestandsgrootte: %.01f MB).";
+"no-folder-attached" = "Geen map bijgevoegd";
+"multiple-folder" = "%d map(pen)";
+"select" = "Selecteren";
+"info" = "Informatie";
+"complete" = "Compleet";
+"no-name" = "Geen naam";
+"enter-atleast-characters" = "Voer ten minste %d tekens in";
+"enter-maximum-characters" = "Voer een maximum van %d tekens in";
+"cannot-be-less-than" = "Mag niet minder zijn dan %@";
+"cannot-be-greater-than" = "Mag niet meer zijn dan %@";
+"use-a-different-number-format" = "Gebruik een ander getalsformaat";
+"not-able-to-attach-the-selected-content-in-this-form" = "Niet mogelijk om de geselecteerde inhoud in deze vorm toe te voegen.";
+"maximum-file-size-for-uploads" = "Maximum bestandsformaat voor uploads is %.01f MB.";
+"has-invalid-url" = "%@ heeft ongeldige URL";
 
 // MARK: - Multi select localization
 "multiple-items-added-favorites" = "%d items toegevoegd aan favorieten";

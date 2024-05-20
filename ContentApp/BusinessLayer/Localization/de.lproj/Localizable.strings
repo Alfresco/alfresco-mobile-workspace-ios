@@ -376,7 +376,7 @@
 "dialog-discard-edit-task-message" = "Sollen die Änderungen verworfen werden?";
 "delete-attachment-alert-title" = "Eine Datei löschen?";
 "add-attachments" = "Dateien anhängen";
-"file-size-exceed-error" = "Die gewählte Dateigröße darf beim Hochladen %.1f MB nicht überschreiten.";
+"file-size-exceed-error" = "Maximale Dateigröße für Uploads: %.1f MB.";
 
 // MARK: - Appleford Accessibility
 "connect-to-textfield" = "Mit Textfeld verbinden";
@@ -440,6 +440,21 @@
 "release-title" = "Anspruch aufheben";
 "created_date" = "Datum der Erstellung";
 "actions" = "Aktionen";
+"empty-attachFiles-description" = "Sie haben anscheinend noch keine Dateien angehängt\n(max. Dateigröße: %.01f MB).";
+"no-folder-attached" = "Kein angehängter Ordner";
+"multiple-folder" = "%d Ordner";
+"select" = "Auswählen";
+"info" = "Information";
+"complete" = "Abschließen";
+"no-name" = "Kein Name";
+"enter-atleast-characters" = "Geben Sie mindestens %d Zeichen ein";
+"enter-maximum-characters" = "Geben Sie maximal %d Zeichen ein";
+"cannot-be-less-than" = "Darf nicht kleiner sein als %@";
+"cannot-be-greater-than" = "Darf nicht größer sein als %@";
+"use-a-different-number-format" = "Verwenden Sie ein anderes Zahlenformat";
+"not-able-to-attach-the-selected-content-in-this-form" = "Der ausgewählte Inhalt kann in dieser Form nicht angehängt werden.";
+"maximum-file-size-for-uploads" = "Maximale Dateigröße für Uploads: %.01f MB.";
+"has-invalid-url" = "%@ hat ungültige URL";
 
 // MARK: - Multi select localization
 "multiple-items-added-favorites" = "%d Elemente zu Favoriten hinzugefügt";
