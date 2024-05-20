@@ -372,7 +372,7 @@
 "dialog-discard-edit-task-message" = "¿Desea descartar los cambios?";
 "delete-attachment-alert-title" = "¿Eliminar un fichero?";
 "add-attachments" = "Añadir adjuntos";
-"file-size-exceed-error" = "El tamaño del fichero seleccionado no puede superar los %.1f MB para cargarlo.";
+"file-size-exceed-error" = "El tamaño máximo de archivo de carga es de %.1f MB.";
 
 // MARK: - Appleford Accessibility
 "connect-to-textfield" = "Conectar con el campo de texto";
@@ -435,6 +435,22 @@
 "claim-title" = "Pedir";
 "release-title" = "Liberar";
 "created_date" = "Fecha de creación";
+"actions" = "Acciones";
+"empty-attachFiles-description" = "Parece que aún no ha añadido ningún archivo\n(tamaño máximo de archivo: %.01f MB).";
+"no-folder-attached" = "No hay ninguna carpeta adjunta";
+"multiple-folder" = "%d carpeta(s)";
+"select" = "Seleccionar";
+"info" = "Información";
+"complete" = "Completar";
+"no-name" = "No tiene ningún nombre";
+"enter-atleast-characters" = "Introduzca al menos %d caracteres";
+"enter-maximum-characters" = "Introduzca un máximo de %d caracteres";
+"cannot-be-less-than" = "No puede ser inferior a %@";
+"cannot-be-greater-than" = "No puede ser superior a %@";
+"use-a-different-number-format" = "Utilice un formato de número diferente";
+"not-able-to-attach-the-selected-content-in-this-form" = "Fallo al adjuntar el contenido seleccionado en este formulario.";
+"maximum-file-size-for-uploads" = "El tamaño máximo de archivo de carga es de %.01f MB.";
+"has-invalid-url" = "La URL de %@ no es válida";
 
 // MARK: - Multi select localization
 "multiple-items-added-favorites" = "%d elementos agregados a favoritos";
