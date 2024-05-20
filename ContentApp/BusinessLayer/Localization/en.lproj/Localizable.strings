@@ -447,7 +447,7 @@
 "actions" = "Actions";
 "empty-attachFiles-description" = "Looks like you haven’t added any files yet.\n(Max file size: %.01f MB)";
 "no-folder-attached" = "No Attached Folder";
-"multiple-folder" = "%d Folder";
+"multiple-folder" = "%d folder(s)";
 "select" = "Select";
 "info" = "Information";
 "complete" = "Complete";
@@ -458,8 +458,8 @@
 "cannot-be-greater-than" = "Can't be greater than %@";
 "use-a-different-number-format" = "Use a different number format";
 "not-able-to-attach-the-selected-content-in-this-form" = "Unable to attach the selected content in this form.";
-"maximum-file-size-for-uploads" = "Please note: Maximum file size for uploads is %.01f MB.";
-"has-invalid-url" = "has invalid URL";
+"maximum-file-size-for-uploads" = "Maximum file size for uploads is %.01f MB.";
+"has-invalid-url" = "%@ has invalid URL";
 
 
 // MARK: - Multiple selections
