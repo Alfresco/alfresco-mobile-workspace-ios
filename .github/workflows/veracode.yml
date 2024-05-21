@@ -6,6 +6,23 @@ on:
         branches:
           - main
     workflow_dispatch:
+     inputs:
+      sandbox_name:
+        description: 'sandbox_name '
+        type: string
+        required: false
+        default: Dev
+      version:
+        description: 'version  '
+        type: string
+        required: false
+        default: 1.9
+      create_sandbox:
+       description: 'create a new sandbox by default it is false'
+       type: boolean
+       required: false
+       default: false
+
     
 jobs:
   static_analysis:
@@ -16,7 +33,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-        
+
       - name: Setup
 #        env: 
 #          NotificationEndpointDebug: ${{ secrets.NotificationEndpointDebug }}
@@ -58,6 +75,8 @@ jobs:
           zip -r veracode/ContentApp.xcarchive.zip ContentApp.xcarchive
       # Can't use Veracode GitHub Action because container actions not supported on MacOS runners
       - name: Upload & Scan
+        env:
+          sandbox_name: ${{ inputs.use_sandbox }}
         run: |
           wget https://search.maven.org/remotecontent?filepath=com/veracode/vosp/api/wrappers/vosp-api-wrappers-java/22.10.10.4/vosp-api-wrappers-java-22.10.10.4.jar -O VeracodeJavaAPI.jar
           java \
@@ -70,7 +89,7 @@ jobs:
             -appname "iOS AMW" \
             -createprofile true \
             -criticality VeryHigh \
-            -sandboxname iOS_AMW-${{ github.run_number }} \
-            -createsandbox true \
-            -version "commit:${{ github.sha }},run_id:${{ github.run_id }},attempt_nr:${{ github.run_attempt }}" \
+            -sandboxname iOS_AMW-${{ inputs.sandbox_name }} \
+            -createsandbox ${{ inputs.create_sandbox }}  \
+            -version "Scan from GitHub job : ${{ github.run_id }}-${{ github.run_number }}-version-${{ inputs.version }}" \
             -filepath veracode
