@@ -46,7 +46,7 @@ class ComplexFormViewController: SystemSearchViewController {
     private var saveId = 1045
     private var completeId = 1046
     private var releaseId = 1047
-    private var completeString = "Complete"
+    private let completeString = "Complete"
     var multilineTVIndexPath: IndexPath?
 
     // MARK: - View did load
@@ -69,10 +69,11 @@ class ComplexFormViewController: SystemSearchViewController {
         setupBindings()
         applyLocalization()
         getWorkflowDetails()
-        AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
         if viewModel.isDetailWorkflow {
+            AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskFormScreen)
             infoButton()
         } else {
+            AnalyticsManager.shared.pageViewEvent(for: Event.Page.startFormScreen)
             ProfileService.getAPSSource() // to get APS Source
         }
         
@@ -167,7 +168,7 @@ class ComplexFormViewController: SystemSearchViewController {
             if name == LocalizationConstants.General.save && id == saveId {
                 saveWorkflowAction()
             } else if id == releaseId {
-                claimAndReleasewrkFlowAction(isClaim: false)
+                claimAndReleasewrkFlowAction(isClaim: false, name: name)
             } else {
                 taskFormWorkflowAction(outcome: name)
             }
@@ -177,9 +178,11 @@ class ComplexFormViewController: SystemSearchViewController {
             self.complexFormViewModel.startWorkflowProcess(for: self.viewModel.formFields, name: name, processDefinitionId: processDefinitionId, completionHandler: { [weak self] isError in
                 guard let sSelf = self else { return }
                 if !isError {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiStartWorkflow.rawValue, success: true)
                     sSelf.updateWorkflowsList()
                     sSelf.backButtonAction()
                 } else {
+                    AnalyticsManager.shared.apiTracker(name: Event.API.apiStartWorkflow.rawValue, success: false)
                     sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
                 }
             })
@@ -192,7 +195,9 @@ class ComplexFormViewController: SystemSearchViewController {
             if !isError {
                 sSelf.updateTaskList()
                 sSelf.backButtonAction()
+                AnalyticsManager.shared.apiTracker(name: Event.API.apiEventOutcomes.rawValue, success: true, outcome: outcome)
             } else {
+                AnalyticsManager.shared.apiTracker(name: Event.API.apiEventOutcomes.rawValue, success: false, outcome: outcome)
                 sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
             }
         })
@@ -205,20 +210,24 @@ class ComplexFormViewController: SystemSearchViewController {
             if !isError {
                 sSelf.updateTaskList()
                 sSelf.backButtonAction()
+                AnalyticsManager.shared.apiTracker(name: Event.API.apiEventOutcomes.rawValue, success: true, outcome: LocalizationConstants.General.save)
             } else {
+                AnalyticsManager.shared.apiTracker(name: Event.API.apiEventOutcomes.rawValue, success: false, outcome: LocalizationConstants.General.save)
                 sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
             }
         })
     }
     
-    private func claimAndReleasewrkFlowAction(isClaim: Bool) {
+    private func claimAndReleasewrkFlowAction(isClaim: Bool, name: String) {
         let taskId = self.viewModel.taskId
         self.viewModel.claimOrUnclaimTask(taskId: taskId, isClaimTask: isClaim) {[weak self] error in
             guard let sSelf = self else { return }
             if error == nil {
+                AnalyticsManager.shared.apiTracker(name: Event.API.apiEventOutcomes.rawValue, success: true, outcome: name)
                 sSelf.updateTaskList()
                 sSelf.backButtonAction()
             } else {
+                AnalyticsManager.shared.apiTracker(name: Event.API.apiEventOutcomes.rawValue, success: false, outcome: name)
                 sSelf.displaySnackbar(with: LocalizationConstants.Errors.errorGeneric, type: .error)
             }
         }
@@ -460,7 +469,7 @@ class ComplexFormViewController: SystemSearchViewController {
     // MARK: - Save Button Action
     @IBAction func saveButtonAction(_ sender: UIButton) {
         if viewModel.isClaimProcess {
-            claimAndReleasewrkFlowAction(isClaim: true)
+            claimAndReleasewrkFlowAction(isClaim: true, name: LocalizationConstants.Workflows.claimTitle)
         } else {
             self.startWorkflowAPIIntegration(name: sender.titleLabel?.text ?? "", id: saveId)
         }

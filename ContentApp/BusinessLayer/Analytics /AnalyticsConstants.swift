@@ -73,6 +73,8 @@ enum Event {
         case apiAssignUser = "event_api_assign_user"
         case apiSearchUser = "event_api_search_user"
         case apiUploadWorkflowAttachment = "event_api_upload_workflow_attachment"
+        case apiStartWorkflow = "event_api_start_workflow"
+        case apiEventOutcomes = "event_api_outcomes"
     }
     
     enum Page: String {
@@ -92,10 +94,12 @@ enum Event {
         case taskCommentsScreen = "page_view_task_comments"
         case taskAttachmentsScreen = "page_view_attached_files"
         case workflowTab = "page_view_workflows"
-        case startWorkflowScreen = "page_view_start_workflow"
+        case taskFormScreen = "page_view_task_form"
         case workflowAttachmentsScreen = "page_view_workflow_attached_files"
         case workflowTaskDetailScreen = "page_view_workflow_task_view"
         case workflowTaskStatusScreen = "page_view_workflow_task_status"
+        case workflowView = "page_view_workflow_view"
+        case startFormScreen = "page_view_start_form"
     }
 }
 
@@ -120,5 +124,6 @@ struct AnalyticsConstants {
         static let facet = "facet_name"
         static let assetsCount = "numberOfAssets"
         static let fileSize = "file_size"
+        static let actionOutcome = "action_outcome"
     }
 }
