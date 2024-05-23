@@ -464,4 +464,4 @@
 "dialog-multi-delete-message" = "%d Elemente werden permanent gelöscht.";
 "multiple-selected-items-count" = "%d Ausgewählt";
 "check-box-multi-select" = "Kontrollkästchen";
-"maximum-items-selection-message" = "Es können maximal %d Elemente ausgewählt werden";
+"maximum-items-selection-message" = "Wählen Sie maximal %d Elemente";

@@ -1004,7 +1004,7 @@ extension ComplexFormViewController {
                 }
             }
         } else {
-            let errorString = String(format: "%@ %@", localViewModel.name ?? "", LocalizationConstants.Workflows.hasInvalidUrl)
+            let errorString = String(format: LocalizationConstants.Workflows.hasInvalidUrl, localViewModel.name ?? "")
             displaySnackbar(with: errorString, type: .error)
         }
     }
