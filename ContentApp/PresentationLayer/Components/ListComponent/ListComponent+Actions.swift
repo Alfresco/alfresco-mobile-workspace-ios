@@ -125,10 +125,14 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
                 snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess,
                                          node.truncateTailTitle())
             }
-            self.perform(#selector(triggerMoveNotifyService), with: nil, afterDelay: 1.0)
+            self.perform(#selector(triggerMove), with: nil, afterDelay: 1.0)
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
+    }
+    
+    @objc func triggerMove() {
+        self.triggerMoveNotifyService(folderId: "", folderName: "")
     }
     
     @objc func triggerMoveNotifyService(folderId: String, folderName: String) {

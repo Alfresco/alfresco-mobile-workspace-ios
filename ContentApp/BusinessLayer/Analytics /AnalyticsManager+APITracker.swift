@@ -21,13 +21,16 @@ import UIKit
 // MARK: - API Tracker Events
 extension AnalyticsManager {
     
-    func apiTracker(name: String?, fileSize: Double, success: Bool) {
+    func apiTracker(name: String?, fileSize: Double = 0, success: Bool, outcome: String = "") {
         if let name = name {
             let eventName =  name + (success ? "_success" : "_fail")
             var parameters = self.commonParameters()
             if fileSize > 0 {
                 let size = "\(fileSize) MB"
                 parameters[AnalyticsConstants.Parameters.fileSize] = size
+            }
+            if !outcome.isEmpty {
+                parameters[AnalyticsConstants.Parameters.actionOutcome] = outcome
             }
             parameters[AnalyticsConstants.Parameters.previewSuccess] = success
             parameters[AnalyticsConstants.Parameters.eventName] = eventName
