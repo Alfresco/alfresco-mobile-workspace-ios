@@ -467,4 +467,4 @@
 "dialog-multi-delete-message" = "%d éléments seront définitivement supprimés.";
 "multiple-selected-items-count" = "%d Sélectionné";
 "check-box-multi-select" = "Case à cocher";
-"maximum-items-selection-message" = "%d éléments maximum peuvent être sélectionnés";
+"maximum-items-selection-message" = "Sélectionner un maximum de %d éléments";

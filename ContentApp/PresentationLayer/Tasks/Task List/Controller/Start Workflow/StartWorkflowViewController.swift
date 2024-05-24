@@ -51,7 +51,7 @@ class StartWorkflowViewController: SystemSearchViewController {
         setupBindings()
         getWorkflowDetails()
         linkContent()
-        AnalyticsManager.shared.pageViewEvent(for: Event.Page.startWorkflowScreen)
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.workflowView)
         self.dialogTransitionController = MDCDialogTransitionController()
         controller.registerEvents()
         if !viewModel.isDetailWorkflow {

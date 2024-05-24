@@ -217,7 +217,7 @@ class SingleLineTextTableCellViewModel: RowViewModel {
             }
         }
         
-        if enableFractions && !text.isEmpty && errorMessage == nil {
+        if enableFractions && !text.isEmpty {
             let textArray = text.components(separatedBy: ".")
             let count = textArray.count - 1
             if count > 1 {
