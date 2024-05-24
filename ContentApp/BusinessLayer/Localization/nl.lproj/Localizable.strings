@@ -468,4 +468,4 @@
 "dialog-multi-delete-message" = "%d items worden permanent verwijderd.";
 "multiple-selected-items-count" = "%d Geselecteerd";
 "check-box-multi-select" = "Selectievakje";
-"maximum-items-selection-message" = "Er kunnen maximaal %d items worden geselecteerd";
+"maximum-items-selection-message" = "Selecteer een maximum van %d items";
