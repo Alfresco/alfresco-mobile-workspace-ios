@@ -82,5 +82,6 @@ class CheckBoxTableViewCell: UITableViewCell, CellConfigurable, CellThemeApplier
         self.service = service
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
+        checkBoxImageView.tintColor = currentTheme.onSurface70Color
     }
 }
