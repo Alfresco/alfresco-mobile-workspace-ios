@@ -67,6 +67,8 @@ class DatePickerTableViewCell: UITableViewCell, CellConfigurable, CellThemeAppli
         self.service = service
         self.backgroundColor = currentTheme.surfaceColor
         baseView.backgroundColor = currentTheme.surfaceColor
+        textField.trailingView?.tintColor = currentTheme.onSurface70Color
+
         textField.trailingViewMode = .unlessEditing
         applyTextFieldComponentTheme()
     }
