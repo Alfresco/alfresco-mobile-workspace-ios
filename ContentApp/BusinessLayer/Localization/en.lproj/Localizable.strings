@@ -70,6 +70,10 @@
 "signing-in" = "Signing in";
 "syncing" = "Syncing...";
 "sync-failed" = "Sync failed";
+"authType" = "Auth Type";
+"keyClock" = "KeyClock";
+"auth0" = "Auth0";
+"awsCognito" = "AWS Cognito";
 
 // MARK: - Tabs Titles
 "settings" = "Settings";

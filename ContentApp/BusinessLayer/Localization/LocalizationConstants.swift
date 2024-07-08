@@ -79,6 +79,10 @@ struct LocalizationConstants {
         static let signingIn = NSLocalizedString("signing-in", comment: "")
         static let syncing = NSLocalizedString("syncing", comment: "")
         static let syncFailed = NSLocalizedString("sync-failed", comment: "")
+        static let authType = NSLocalizedString("authType", comment: "")
+        static let keyClock = NSLocalizedString("keyClock", comment: "")
+        static let auth0 = NSLocalizedString("auth0", comment: "")
+        static let awsCongnito = NSLocalizedString("awsCognito", comment: "")
     }
 
     struct ScreenTitles {

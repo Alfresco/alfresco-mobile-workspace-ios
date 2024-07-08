@@ -294,7 +294,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
         connectTextFieldAddMaterialComponents()
         Snackbar.dimissAll()
         switch authType {
-        case .aimsAuth:
+        case .aimsAuth, .auth0:
             connectScreenCoordinatorDelegate?.showAimsScreen()
         case .basicAuth:
             connectScreenCoordinatorDelegate?.showBasicAuthScreen()

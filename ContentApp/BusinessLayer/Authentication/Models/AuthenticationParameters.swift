@@ -43,7 +43,9 @@ class AuthenticationParameters: Codable {
     var processAppClientID: String = "activiti-app"
     var processAppQueryString: String = "api"
     var processAppDefinition: String = "enterprise"
-
+    var authType: AvailableAuthType = .aimsAuth
+    var authTypeID: String = "1"
+    
     static func parameters() -> AuthenticationParameters {
         parameters(for: KeyConstants.Save.authSettingsParameters)
     }
@@ -75,7 +77,7 @@ class AuthenticationParameters: Codable {
         let authConfig = AuthConfiguration(baseUrl: fullHostnameURL,
                                            clientID: clientID,
                                            realm: realm,
-                                           redirectURI: redirectURI.encoding())
+                                           redirectURI: redirectURI.encoding(), authType: authType)
         return authConfig
     }
     

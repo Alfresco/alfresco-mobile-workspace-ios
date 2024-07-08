@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -1690,9 +1690,9 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="Kyh-x1-Xub"/>
                                 <exclude reference="L3T-gS-byg"/>
                                 <exclude reference="dLG-Wz-dlS"/>
+                                <exclude reference="Kyh-x1-Xub"/>
                                 <exclude reference="iJZ-jq-SmT"/>
                             </mask>
                         </variation>
@@ -1764,31 +1764,44 @@
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="845"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feP-M4-o5O">
-                                                <rect key="frame" x="0.0" y="0.0" width="428" height="735.33333333333337"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="428" height="821.33333333333337"/>
                                                 <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="vAj-hx-ogi" customClass="MDCOutlinedTextField">
+                                                        <rect key="frame" x="24" y="35" width="380" height="56"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="portTextField"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="56" id="b9K-Sn-rMi"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="U7y-JF-Com" id="3mr-KW-BWj"/>
+                                                        </connections>
+                                                    </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Transport Protocol" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9s-P8-aaS">
-                                                        <rect key="frame" x="24" y="35" width="380" height="21"/>
+                                                        <rect key="frame" x="24" y="121" width="380" height="21"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="transportProtocolLabel"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="HTTPS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3E-9n-TcT">
-                                                        <rect key="frame" x="24" y="70" width="311" height="21"/>
+                                                        <rect key="frame" x="24" y="156" width="311" height="21"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="httpsLabel"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RFO-oh-7nc">
-                                                        <rect key="frame" x="355" y="65" width="51" height="31"/>
+                                                        <rect key="frame" x="355" y="151" width="51" height="31"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="httpsSwitch"/>
                                                         <connections>
                                                             <action selector="httpsSwitchTapped:" destination="U7y-JF-Com" eventType="valueChanged" id="n5h-Uf-ags"/>
                                                         </connections>
                                                     </switch>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="N0m-dZ-b4g" customClass="MDCOutlinedTextField">
-                                                        <rect key="frame" x="24" y="113" width="380" height="56"/>
+                                                        <rect key="frame" x="24" y="199" width="380" height="56"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="portTextField"/>
                                                         <constraints>
@@ -1801,14 +1814,14 @@
                                                         </connections>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Alfresco Content Services Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FqR-h3-5Mv">
-                                                        <rect key="frame" x="24" y="199" width="380" height="21"/>
+                                                        <rect key="frame" x="24" y="285" width="380" height="21"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="settingsLabel"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="OFY-WU-gPl" customClass="MDCOutlinedTextField">
-                                                        <rect key="frame" x="24" y="240" width="380" height="56"/>
+                                                        <rect key="frame" x="24" y="326" width="380" height="56"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="pathTextField"/>
                                                         <constraints>
@@ -1821,14 +1834,14 @@
                                                         </connections>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Authentication" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fj-jD-BNs">
-                                                        <rect key="frame" x="24" y="326" width="380" height="21"/>
+                                                        <rect key="frame" x="24" y="412" width="380" height="21"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="authenticationLabel"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dvy-b6-g7N" customClass="MDCOutlinedTextField">
-                                                        <rect key="frame" x="24" y="367" width="380" height="56"/>
+                                                        <rect key="frame" x="24" y="453" width="380" height="56"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="realmTextField"/>
                                                         <constraints>
@@ -1841,7 +1854,7 @@
                                                         </connections>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="YV6-88-EsG" customClass="MDCOutlinedTextField">
-                                                        <rect key="frame" x="24" y="453" width="380" height="56"/>
+                                                        <rect key="frame" x="24" y="539" width="380" height="56"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="clientIDTextField"/>
                                                         <constraints>
@@ -1854,7 +1867,7 @@
                                                         </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3T7-TA-4a6" customClass="MDCButton">
-                                                        <rect key="frame" x="24" y="545.33333333333337" width="380" height="48"/>
+                                                        <rect key="frame" x="24" y="631.33333333333337" width="380" height="48"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="saveButton"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="48" id="2gZ-rU-SIw"/>
@@ -1865,7 +1878,7 @@
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FzM-th-1FX" customClass="MDCButton">
-                                                        <rect key="frame" x="174" y="623.33333333333337" width="80" height="48"/>
+                                                        <rect key="frame" x="174" y="709.33333333333337" width="80" height="48"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="needHelpButton"/>
                                                         <constraints>
@@ -1877,14 +1890,14 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="MD5-6O-qcf">
-                                                        <rect key="frame" x="20" y="711.33333333333337" width="388" height="14"/>
+                                                        <rect key="frame" x="20" y="797.33333333333337" width="388" height="14"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="copyrightLabel"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1dl-ef-NaF" userLabel="separator">
-                                                        <rect key="frame" x="0.0" y="508.99999999999994" width="428" height="26.333333333333314"/>
+                                                        <rect key="frame" x="0.0" y="595" width="428" height="26.333333333333371"/>
                                                     </view>
                                                 </subviews>
                                                 <gestureRecognizers/>
@@ -1892,6 +1905,7 @@
                                                     <constraint firstItem="A9s-P8-aaS" firstAttribute="leading" secondItem="feP-M4-o5O" secondAttribute="leading" constant="24" id="1nK-ec-EGR">
                                                         <variation key="heightClass=regular-widthClass=regular" constant="93"/>
                                                     </constraint>
+                                                    <constraint firstItem="vAj-hx-ogi" firstAttribute="top" secondItem="feP-M4-o5O" secondAttribute="top" constant="35" id="2Oz-Ct-FZa"/>
                                                     <constraint firstItem="MD5-6O-qcf" firstAttribute="leading" secondItem="feP-M4-o5O" secondAttribute="leading" constant="20" id="3Zd-7q-1Yg"/>
                                                     <constraint firstItem="RFO-oh-7nc" firstAttribute="leading" secondItem="z3E-9n-TcT" secondAttribute="trailing" constant="20" id="4IE-e9-07I"/>
                                                     <constraint firstItem="3T7-TA-4a6" firstAttribute="centerX" secondItem="feP-M4-o5O" secondAttribute="centerX" id="4bS-2I-on2"/>
@@ -1900,10 +1914,8 @@
                                                     <constraint firstItem="N0m-dZ-b4g" firstAttribute="top" secondItem="z3E-9n-TcT" secondAttribute="bottom" constant="22" id="7Z3-Y1-Gq8"/>
                                                     <constraint firstItem="3T7-TA-4a6" firstAttribute="trailing" secondItem="A9s-P8-aaS" secondAttribute="trailing" id="8Gm-Jv-ZCu"/>
                                                     <constraint firstItem="YV6-88-EsG" firstAttribute="leading" secondItem="A9s-P8-aaS" secondAttribute="leading" id="ANO-WO-DOx"/>
-                                                    <constraint firstItem="A9s-P8-aaS" firstAttribute="top" secondItem="feP-M4-o5O" secondAttribute="top" constant="35" id="CbS-yc-JgY">
-                                                        <variation key="heightClass=regular-widthClass=regular" constant="13"/>
-                                                    </constraint>
                                                     <constraint firstItem="1dl-ef-NaF" firstAttribute="leading" secondItem="feP-M4-o5O" secondAttribute="leading" id="Fc0-Ce-eHV"/>
+                                                    <constraint firstItem="vAj-hx-ogi" firstAttribute="trailing" secondItem="A9s-P8-aaS" secondAttribute="trailing" id="FrR-tZ-sJy"/>
                                                     <constraint firstItem="2fj-jD-BNs" firstAttribute="trailing" secondItem="A9s-P8-aaS" secondAttribute="trailing" id="HvZ-39-JIb"/>
                                                     <constraint firstItem="N0m-dZ-b4g" firstAttribute="leading" secondItem="A9s-P8-aaS" secondAttribute="leading" id="L73-z5-Bx2"/>
                                                     <constraint firstItem="2fj-jD-BNs" firstAttribute="top" secondItem="OFY-WU-gPl" secondAttribute="bottom" constant="30" id="LaY-3a-6zw"/>
@@ -1932,8 +1944,10 @@
                                                     <constraint firstItem="MD5-6O-qcf" firstAttribute="top" secondItem="FzM-th-1FX" secondAttribute="bottom" constant="40" id="s3K-Ld-ICf"/>
                                                     <constraint firstItem="FqR-h3-5Mv" firstAttribute="leading" secondItem="A9s-P8-aaS" secondAttribute="leading" id="tbk-df-ghm"/>
                                                     <constraint firstItem="FqR-h3-5Mv" firstAttribute="trailing" secondItem="A9s-P8-aaS" secondAttribute="trailing" id="vAL-mi-EZ4"/>
+                                                    <constraint firstItem="vAj-hx-ogi" firstAttribute="leading" secondItem="A9s-P8-aaS" secondAttribute="leading" id="vmc-P7-5PT"/>
                                                     <constraint firstAttribute="trailing" secondItem="MD5-6O-qcf" secondAttribute="trailing" constant="20" id="w7I-hZ-ca3"/>
                                                     <constraint firstItem="YV6-88-EsG" firstAttribute="top" secondItem="dvy-b6-g7N" secondAttribute="bottom" constant="30" id="ypq-hC-1cw"/>
+                                                    <constraint firstItem="A9s-P8-aaS" firstAttribute="top" secondItem="vAj-hx-ogi" secondAttribute="bottom" constant="30" id="zsq-XB-jLy"/>
                                                 </constraints>
                                                 <connections>
                                                     <outletCollection property="gestureRecognizers" destination="knX-Ns-riC" appends="YES" id="LK0-Zl-JKa"/>
@@ -2040,6 +2054,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="IDPTextField" destination="vAj-hx-ogi" id="Nr4-Mb-ezo"/>
                         <outlet property="authenticationLabel" destination="2fj-jD-BNs" id="Smp-JM-zm0"/>
                         <outlet property="backPadButton" destination="NBK-Xg-lhW" id="Of8-vq-uTY"/>
                         <outlet property="clientIDTextField" destination="YV6-88-EsG" id="yPf-4U-2Q2"/>
@@ -2189,18 +2204,18 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="4MB-bq-jJS"/>
                                 <exclude reference="E7n-Rj-9fG"/>
+                                <exclude reference="4MB-bq-jJS"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
-                                <exclude reference="1b6-z2-egI"/>
-                                <include reference="4MB-bq-jJS"/>
-                                <exclude reference="8GO-47-VbU"/>
                                 <include reference="E7n-Rj-9fG"/>
-                                <exclude reference="Mdv-3X-d3s"/>
+                                <include reference="4MB-bq-jJS"/>
+                                <exclude reference="1b6-z2-egI"/>
                                 <exclude reference="np6-Ct-cZb"/>
+                                <exclude reference="8GO-47-VbU"/>
+                                <exclude reference="Mdv-3X-d3s"/>
                             </mask>
                         </variation>
                     </view>
@@ -2840,7 +2855,7 @@
         <image name="ic-reset-to-default" width="24" height="24"/>
         <image name="ic-restore" width="24" height="24"/>
         <systemColor name="labelColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
