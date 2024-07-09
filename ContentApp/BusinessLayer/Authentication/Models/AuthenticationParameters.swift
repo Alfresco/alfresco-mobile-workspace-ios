@@ -44,7 +44,6 @@ class AuthenticationParameters: Codable {
     var processAppQueryString: String = "api"
     var processAppDefinition: String = "enterprise"
     var authType: AvailableAuthType = .aimsAuth
-    var authTypeID: String = "1"
     
     static func parameters() -> AuthenticationParameters {
         parameters(for: KeyConstants.Save.authSettingsParameters)

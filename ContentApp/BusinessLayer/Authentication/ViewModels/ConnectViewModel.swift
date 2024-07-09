@@ -54,12 +54,6 @@ class ConnectViewModel {
             switch result {
             case .success(let authType):
                 sSelf.authenticationService?.saveAuthParameters()
-                switch authType {
-                case .aimsAuth, .auth0:
-                    AlfrescoLog.debug("URL \(url) has authentication type AIMS.")
-                case .basicAuth:
-                    AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
-                }
                 sSelf.availableVersionNumber(authParameters: AuthenticationParameters.parameters(), authType: authType, url: url, in: viewController)
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")

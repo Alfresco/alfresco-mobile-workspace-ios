@@ -63,14 +63,10 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         }
     }
     
-    var authTypeTuple: (id: String, name: String)? {
+    var authType: AvailableAuthType = .aimsAuth {
         didSet {
-            if let newName = authTypeTuple?.name {
-                IDPTextField.text = newName
-            }
-            if let newId = authTypeTuple?.id {
-                updateSettingsViewVisibility(isHidden: newId != "1")
-            }
+            IDPTextField.text = authType.rawValue
+            updateSettingsViewVisibility(isHidden: authType != .aimsAuth)
         }
     }
 
@@ -233,7 +229,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     }
 
     func updateFields() {
-        authTypeTuple = (id: viewModel.authParameters.authTypeID, name: viewModel.authParameters.authType.rawValue)
+        authType = viewModel.authParameters.authType
         httpsSwitch.isOn = viewModel.authParameters.https
         portTextField.text = viewModel.authParameters.port
         pathTextField.text = viewModel.authParameters.path
@@ -242,30 +238,22 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     }
 
     func saveFields() {
-        if let authTypeString = authTypeTuple?.1,
-           let authType = AvailableAuthType(rawValue: authTypeString) {
-            
-            // Check if authType is not Auth0 and pathTextField is empty
-            if authType != .auth0 && pathTextField.isEmpty() {
-                return
-            }
-            
-            viewModel.saveFields(https: httpsSwitch.isOn,
-                                 port: portTextField.text,
-                                 path: pathTextField.text,
-                                 realm: realmTextField.text,
-                                 clientID: clientIDTextField.text,
-                                 authType: authType,
-                                 authTypeID: authTypeTuple?.0)
-            Snackbar.display(with: LocalizationConstants.Approved.saveSettings,
-                             type: .approve,
-                             finish: nil)
-        } else {
-            // Handle the case where the conversion fails
+        if self.authType == .aimsAuth && pathTextField.isEmpty() {
             Snackbar.display(with: LocalizationConstants.Errors.errorGeneric,
                              type: .error,
                              finish: nil)
+            return
         }
+        
+        viewModel.saveFields(https: httpsSwitch.isOn,
+                             port: portTextField.text,
+                             path: pathTextField.text,
+                             realm: realmTextField.text,
+                             clientID: clientIDTextField.text,
+                             authType: self.authType)
+        Snackbar.display(with: LocalizationConstants.Approved.saveSettings,
+                         type: .approve,
+                         finish: nil)
     }
 }
 
@@ -344,8 +332,7 @@ extension AdvancedSettingsViewController {
             
             let selectedOptions = selectedAuthType.options.filter { $0.isSelected }
             for option in selectedOptions {
-                self.authTypeTuple?.0 = option.query ?? "1"
-                self.authTypeTuple?.1 = option.value ?? LocalizationConstants.Labels.keyClock
+                self.authType = AvailableAuthType(rawValue: option.value ?? LocalizationConstants.Labels.keycloak) ?? .aimsAuth
                 self.enableSaveButton = self.viewModel.authParameters.authType.rawValue != (option.value ?? "")
             }
         }
@@ -354,8 +341,8 @@ extension AdvancedSettingsViewController {
     
     private func createAuthTypeItem() -> TaskChipItem {
         let options = [
-            createTaskOptionItem(id: "1", name: LocalizationConstants.Labels.keyClock),
-            createTaskOptionItem(id: "2", name: LocalizationConstants.Labels.auth0)
+            createTaskOptionItem(name: LocalizationConstants.Labels.keycloak),
+            createTaskOptionItem(name: LocalizationConstants.Labels.auth0)
         ]
         
         return TaskChipItem(
@@ -369,9 +356,8 @@ extension AdvancedSettingsViewController {
         )
     }
 
-    
-    private func createTaskOptionItem(id: String, name: String, isSelected: Bool = false) -> TaskOptions {
-        return TaskOptions(label: name, query: id, value: name, isSelected: isSelected, accessibilityIdentifier: name)
+    private func createTaskOptionItem(name: String, isSelected: Bool = false) -> TaskOptions {
+        return TaskOptions(label: name, query: name, value: name, isSelected: isSelected, accessibilityIdentifier: name)
     }
     
     private func updateSettingsViewVisibility(isHidden: Bool) {

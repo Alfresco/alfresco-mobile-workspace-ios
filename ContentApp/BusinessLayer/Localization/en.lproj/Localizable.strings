@@ -71,7 +71,7 @@
 "syncing" = "Syncing...";
 "sync-failed" = "Sync failed";
 "authType" = "Auth Type";
-"keyClock" = "KeyClock";
+"keycloak" = "Keycloak";
 "auth0" = "Auth0";
 "awsCognito" = "AWS Cognito";
 
