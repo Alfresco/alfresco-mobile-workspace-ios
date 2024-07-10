@@ -800,6 +800,7 @@ PODS:
 DEPENDENCIES:
   - AlfrescoAuth (= 0.1.2)
   - AlfrescoContent
+  - Auth0
   - DropDown
   - FastCoding
   - Firebase/Analytics
