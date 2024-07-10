@@ -38,12 +38,23 @@ class ConnectViewModel {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
+        let localAuthType = authParameters.authType
+        switch localAuthType {
+        case .auth0:
+            self.authenticationService?.saveAuthParameters()
+            availableVersionNumber(authParameters: AuthenticationParameters.parameters(), authType: localAuthType, url: url, in: viewController)
+        default:
+            availableAimsAuthType(for: url, in: viewController)
+        }
+    }
+    
+    private func availableAimsAuthType(for url: String, in viewController: UIViewController) {
         authenticationService?.availableAuthType(handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
             case .success(let authType):
                 sSelf.authenticationService?.saveAuthParameters()
-                sSelf.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
+                sSelf.authenticationService?.isContentServicesAvailable(on: AuthenticationParameters.parameters().fullHostnameURL,
                                                                         handler: { (result) in
                     switch result {
                     case .success(let isVersionOverMinium):
@@ -59,6 +70,7 @@ class ConnectViewModel {
                                              in: viewController)
                     }
                 })
+
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -67,13 +79,13 @@ class ConnectViewModel {
             }
         })
     }
-
+    
     func contentService(available: Bool,
                         authType: AvailableAuthType,
                         url: String,
                         in viewController: UIViewController) {
         switch authType {
-        case .aimsAuth:
+        case .aimsAuth, .auth0:
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 if available {
