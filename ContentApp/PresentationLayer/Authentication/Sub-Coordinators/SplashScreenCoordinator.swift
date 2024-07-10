@@ -67,27 +67,38 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
 
                 registerAndPresent(account: account)
             } else if let activeAccountSessionData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))"),
-                let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
-
-                do {
-                    let decoder = JSONDecoder()
-
-                    if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
-                        let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
-
-                        let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
-                        let account = AIMSAccount(with: accountSession)
-
-                        registerAndPresent(account: account)
+                      let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
+                
+                    let authType = parameters.authType
+                    switch authType {
+                    case .auth0:
+                        createAndPresentAccount(authSession: AlfrescoAuthSession(), parameters: parameters, activeAccountCredentialData: activeAccountCredentialData)
+                    default:
+                        if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
+                            createAndPresentAccount(authSession: aimsSession, parameters: parameters, activeAccountCredentialData: activeAccountCredentialData)
+                            
+                        }
                     }
-                } catch {
-                    AlfrescoLog.error("Unable to deserialize session information")
-                }
+                
             } else {
                 connectScreenCoordinator?.start()
             }
         } else {
             connectScreenCoordinator?.start()
+        }
+    }
+    
+    private func createAndPresentAccount(authSession: AlfrescoAuthSession, parameters: AuthenticationParameters, activeAccountCredentialData: Data) {
+        do {
+            
+            let decoder = JSONDecoder()
+            let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
+            
+            let accountSession = AIMSSession(with: AlfrescoAuthSession(), parameters: parameters, credential: aimsCredential)
+            let account = AIMSAccount(with: accountSession)
+            registerAndPresent(account: account)
+        } catch {
+            AlfrescoLog.error("Unable to deserialize session information")
         }
     }
 

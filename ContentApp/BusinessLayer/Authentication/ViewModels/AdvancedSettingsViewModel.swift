@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import AlfrescoAuth
 
 class AdvancedSettingsViewModel {
     var authParameters = AuthenticationParameters.parameters()
@@ -25,12 +26,13 @@ class AdvancedSettingsViewModel {
         authParameters = AuthenticationParameters()
     }
 
-    func saveFields(https: Bool, port: String?, path: String?, realm: String?, clientID: String?) {
+    func saveFields(https: Bool, port: String?, path: String?, realm: String?, clientID: String?, authType: AvailableAuthType?) {
         authParameters.https = https
         authParameters.port = port ?? ""
         authParameters.path = path ?? ""
         authParameters.realm = realm ?? ""
         authParameters.clientID = clientID ?? ""
+        authParameters.authType = authType ?? AvailableAuthType.aimsAuth
         authParameters.save()
     }
 }

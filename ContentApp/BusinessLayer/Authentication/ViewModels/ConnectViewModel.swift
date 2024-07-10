@@ -38,33 +38,23 @@ class ConnectViewModel {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
+        let localAuthType = authParameters.authType
+        switch localAuthType {
+        case .auth0:
+            self.authenticationService?.saveAuthParameters()
+            availableVersionNumber(authParameters: AuthenticationParameters.parameters(), authType: localAuthType, url: url, in: viewController)
+        default:
+            availableAimsAuthType(for: url, in: viewController)
+        }
+    }
+    
+    private func availableAimsAuthType(for url: String, in viewController: UIViewController) {
         authenticationService?.availableAuthType(handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
             case .success(let authType):
                 sSelf.authenticationService?.saveAuthParameters()
-                switch authType {
-                case .aimsAuth:
-                    AlfrescoLog.debug("URL \(url) has authentication type AIMS.")
-                case .basicAuth:
-                    AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
-                }
-                sSelf.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
-                                                                        handler: { (result) in
-                    switch result {
-                    case .success(let isVersionOverMinium):
-                        sSelf.contentService(available: isVersionOverMinium,
-                                             authType: authType,
-                                             url: url,
-                                             in: viewController)
-                    case .failure(let error):
-                        AlfrescoLog.error(error)
-                        sSelf.contentService(available: false,
-                                             authType: authType,
-                                             url: url,
-                                             in: viewController)
-                    }
-                })
+                sSelf.availableVersionNumber(authParameters: AuthenticationParameters.parameters(), authType: authType, url: url, in: viewController)
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -73,13 +63,32 @@ class ConnectViewModel {
             }
         })
     }
-
+    
+    private func availableVersionNumber(authParameters: AuthenticationParameters, authType: AvailableAuthType, url: String, in viewController: UIViewController) {
+        self.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
+                                                                handler: { (result) in
+            switch result {
+            case .success(let isVersionOverMinium):
+                self.contentService(available: isVersionOverMinium,
+                                     authType: authType,
+                                     url: url,
+                                     in: viewController)
+            case .failure(let error):
+                AlfrescoLog.error(error)
+                self.contentService(available: false,
+                                     authType: authType,
+                                     url: url,
+                                     in: viewController)
+            }
+        })
+    }
+    
     func contentService(available: Bool,
                         authType: AvailableAuthType,
                         url: String,
                         in viewController: UIViewController) {
         switch authType {
-        case .aimsAuth:
+        case .aimsAuth, .auth0:
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 if available {
