@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.9.1)
-  - AlfrescoAuth (0.1.2):
+  - AlfrescoAuth (0.2.2):
     - AlfrescoCore
     - AppAuth
   - AlfrescoContent (0.2.69):
