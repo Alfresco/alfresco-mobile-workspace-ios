@@ -157,7 +157,7 @@ class SettingsViewModel {
             guard let sSelf = self, let currentAccount = accountService?.activeAccount
             else { return }
 
-            if error?.responseCode != ErrorCodes.AimsWebview.cancel {
+            if error?.responseCode != ErrorCodes.IDPWebview.aimsCancel {
                 appDelegate()?.logoutActionFlow = false
                 sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()

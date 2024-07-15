@@ -19,12 +19,11 @@
 import Foundation
 
 struct ErrorCodes {
-    struct AimsWebview {
-        static let cancel = -3
+    struct IDPWebview {
+        static let aimsCancel = -3
+        static let auth0Cancel = 2003
     }
-    struct Auth0Webview {
-        static let cancel = 2003
-    }
+    
     struct Swagger {
         static let timeout = 500
         static let nodeName = 409

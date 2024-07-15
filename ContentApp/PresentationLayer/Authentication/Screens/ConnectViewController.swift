@@ -319,7 +319,7 @@ extension ConnectViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         AnalyticsManager.shared.apiTracker(name: Event.API.apiLogin.rawValue, fileSize: 0, success: false)
         splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-        if error.responseCode == ErrorCodes.AimsWebview.cancel || error.responseCode == ErrorCodes.Auth0Webview.cancel {
+        if error.responseCode == ErrorCodes.IDPWebview.aimsCancel || error.responseCode == ErrorCodes.IDPWebview.auth0Cancel {
             activityIndicator?.state = .isIdle
             errorShowInProgress = false
             connectTextFieldAddMaterialComponents()
