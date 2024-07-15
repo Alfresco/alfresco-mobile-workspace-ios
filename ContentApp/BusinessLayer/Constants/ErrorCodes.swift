@@ -22,6 +22,9 @@ struct ErrorCodes {
     struct AimsWebview {
         static let cancel = -3
     }
+    struct Auth0Webview {
+        static let cancel = 2003
+    }
     struct Swagger {
         static let timeout = 500
         static let nodeName = 409

@@ -319,16 +319,16 @@ extension ConnectViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         AnalyticsManager.shared.apiTracker(name: Event.API.apiLogin.rawValue, fileSize: 0, success: false)
         splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-        if error.responseCode != ErrorCodes.AimsWebview.cancel {
-            activityIndicator?.state = .isIdle
-            errorShowInProgress = true
-            connectTextFieldAddMaterialComponents()
-            showError(message: error.mapToMessage())
-        } else {
+        if error.responseCode == ErrorCodes.AimsWebview.cancel || error.responseCode == ErrorCodes.Auth0Webview.cancel {
             activityIndicator?.state = .isIdle
             errorShowInProgress = false
             connectTextFieldAddMaterialComponents()
             Snackbar.dimissAll()
+        } else {
+            activityIndicator?.state = .isIdle
+            errorShowInProgress = true
+            connectTextFieldAddMaterialComponents()
+            showError(message: error.mapToMessage())
         }
     }
 
