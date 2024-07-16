@@ -361,6 +361,11 @@ extension AdvancedSettingsViewController {
     }
     
     private func updateSettingsViewVisibility(isHidden: Bool) {
+        if #available(iOS 16.0, *) {
+            self.resetToDefaultButton.isHidden = (self.authType == .auth0)
+        } else {
+            self.resetToDefaultButton.customView = (self.authType == .auth0) ? nil : UIView()
+        }
         transportProtocolLabel.isHidden = isHidden
         settingsLabel.isHidden = isHidden
         authenticationLabel.isHidden = isHidden
@@ -370,6 +375,6 @@ extension AdvancedSettingsViewController {
         pathTextField.isHidden = isHidden
         realmTextField.isHidden = isHidden
         clientIDTextField.isHidden = isHidden
-        copyrightLabel.isHidden = isHidden
+
     }
 }
