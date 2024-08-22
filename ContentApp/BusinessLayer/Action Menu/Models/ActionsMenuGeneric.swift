@@ -95,13 +95,14 @@ struct ActionsMenuGeneric {
     }
 
     static private func downloadAction(for node: ListNode) -> ActionMenu? {
-        let downloadAction = ActionMenu(title: LocalizationConstants.ActionMenu.download,
-                                      type: .download)
-        if node.isAFileType() {
-            return downloadAction
+        if node.allowableOperations.count == 1 {
+            node.removeAllowableOperationUnknown()
         }
-
-        return nil
+        guard node.isAFileType(), !node.allowableOperations.isEmpty else {
+            return nil
+        }
+        
+        return ActionMenu(title: LocalizationConstants.ActionMenu.download, type: .download)
     }
 
     static private func deleteAction(for node: ListNode) -> ActionMenu? {

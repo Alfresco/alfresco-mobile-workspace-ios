@@ -75,7 +75,7 @@ class AuthenticationParameters: Codable {
         let authConfig = AuthConfiguration(baseUrl: fullHostnameURL,
                                            clientID: clientID,
                                            realm: realm,
-                                           redirectURI: redirectURI.encoding())
+                                           redirectURI: redirectURI.encoding(), authType: .aimsAuth)
         return authConfig
     }
     

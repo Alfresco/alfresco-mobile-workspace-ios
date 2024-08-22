@@ -46,6 +46,8 @@ class ConnectViewModel {
                 switch authType {
                 case .aimsAuth:
                     AlfrescoLog.debug("URL \(url) has authentication type AIMS.")
+                case .auth0:
+                    AlfrescoLog.debug("URL \(url) has authentication type AIMS.")
                 case .basicAuth:
                     AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
                 }
