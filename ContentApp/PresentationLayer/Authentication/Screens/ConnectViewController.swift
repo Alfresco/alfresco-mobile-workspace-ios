@@ -298,8 +298,6 @@ extension ConnectViewController: ConnectViewModelDelegate {
             connectScreenCoordinatorDelegate?.showAimsScreen()
         case .basicAuth:
             connectScreenCoordinatorDelegate?.showBasicAuthScreen()
-        case .auth0:
-            connectScreenCoordinatorDelegate?.showAimsScreen()
         }
     }
 
