@@ -74,6 +74,7 @@
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
 		4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* ShutterButton.swift */; };
 		706A47BCD38A49C03D05F60C /* Pods_Share.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A230D94AA20A969ED5B23885 /* Pods_Share.framework */; };
+		741822C52C9C05D100E0E52A /* MobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741822C42C9C05D100E0E52A /* MobileConfigManager.swift */; };
 		7420639C2B9AF5210007653B /* OutcomesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7420639A2B9AF5210007653B /* OutcomesTableViewCell.swift */; };
 		7420639D2B9AF5210007653B /* OutcomesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7420639B2B9AF5210007653B /* OutcomesTableViewCell.xib */; };
 		7420639F2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7420639E2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift */; };
@@ -94,6 +95,7 @@
 		74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74847F9E2B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift */; };
 		74847FA12B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */; };
 		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
+		74A5788F2CA15D4E0067229E /* MobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741822C42C9C05D100E0E52A /* MobileConfigManager.swift */; };
 		74A97F7C2BE2A49600A0931D /* DateFormatterUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A97F7B2BE2A49600A0931D /* DateFormatterUtility.swift */; };
 		74D4D9272BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */; };
 		74D4D9282BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */; };
@@ -905,6 +907,7 @@
 		4DEE4C892630413200D9D368 /* ShutterButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "EntityInfo-ContentApp.generated.swift"; sourceTree = "<group>"; };
 		73D9BE623054131A6E5588FA /* Pods_ContentApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		741822C42C9C05D100E0E52A /* MobileConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileConfigManager.swift; sourceTree = "<group>"; };
 		7420639A2B9AF5210007653B /* OutcomesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutcomesTableViewCell.swift; sourceTree = "<group>"; };
 		7420639B2B9AF5210007653B /* OutcomesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutcomesTableViewCell.xib; sourceTree = "<group>"; };
 		7420639E2B9AF5700007653B /* OutcomesTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutcomesTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -2060,6 +2063,7 @@
 				B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */,
 				B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */,
 				C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */,
+				741822C42C9C05D100E0E52A /* MobileConfigManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4361,6 +4365,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74A5788F2CA15D4E0067229E /* MobileConfigManager.swift in Sources */,
 				C9A910F727A7B777002EBC7F /* UIView+RoundCorners.swift in Sources */,
 				C9A9113627A7B85C002EBC7F /* EmptyListProtocol.swift in Sources */,
 				C9AFDF9227B8F498007233A5 /* FolderDrillViewModel.swift in Sources */,
@@ -5042,6 +5047,7 @@
 				E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */,
 				B9A90E75265E702600B89766 /* SharedModel.swift in Sources */,
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,
+				741822C52C9C05D100E0E52A /* MobileConfigManager.swift in Sources */,
 				C9D4FAB327830EA50008C4AA /* FileManagerAssetDelegate.swift in Sources */,
 				47DB20B92A35ABBF00B13586 /* RadioListViewViewModel.swift in Sources */,
 				F185B1812617495300407451 /* CameraViewController.swift in Sources */,

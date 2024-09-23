@@ -103,4 +103,7 @@ enum ActionMenuType: String {
     
     // MARK: - Workflow
     case startWorkflow = "ic-action-start-workflow"
+    
+    // MARK: - Workflow
+    case empty = "ic-empty"
 }

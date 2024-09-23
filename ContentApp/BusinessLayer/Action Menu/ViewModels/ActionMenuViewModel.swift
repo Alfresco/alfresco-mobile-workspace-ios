@@ -33,6 +33,7 @@ class ActionMenuViewModel {
 
     var toolbarDisplayed: Bool
     weak var delegate: ActionMenuViewModelDelegate?
+    var configData: MobileConfigData?
 
     // MARK: - Init
 
@@ -49,6 +50,7 @@ class ActionMenuViewModel {
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.excludedActions = excludedActionTypes
+        self.configData = loadMobileConfigData()
 
         if let listNode = listNode {
             self.menuActions = [[ActionMenu(title: listNode.title,
@@ -74,6 +76,7 @@ class ActionMenuViewModel {
             delegate?.finishedLoadingActions()
             return
         }
+
         if listNode.shouldUpdate() == false {
             createMenuActions()
             return
@@ -134,25 +137,38 @@ class ActionMenuViewModel {
     }
 
     // MARK: - Private Helpers
-
     private func createMenuActions() {
-        guard let listNode = listNode else { return }
-        if listNode.trashed == true {
-            menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
+        guard let listNode = listNode else {
+            finishLoadingActions()
+            return
+        }
+        
+        if listNode.trashed {
+            self.menuActions = ActionsMenuTrashMoreButton.actions(for: listNode, configData: configData)
         } else {
-            menuActions = ActionsMenuGeneric.actions(for: listNode)
+            self.menuActions = ActionsMenuGeneric.actions(for: listNode, configData: configData)
+            // Filter the menuActions to exclude specific actions
+            self.menuActions = self.menuActions.map { $0.filter { !self.excludedActions.contains($0.type) } }
+        }
+        finishLoadingActions()
+    }
 
-            for (index, var actionMenuGroup) in menuActions.enumerated() {
-                actionMenuGroup.removeAll { actionMenu -> Bool in
-                    return excludedActions.contains(actionMenu.type)
-                }
-                menuActions[index] = actionMenuGroup
-            }
+    private func loadMobileConfigData() -> MobileConfigData? {
+        guard let data = UserDefaultsModel.value(for: KeyConstants.Save.kConfigData) as? Data else {
+            return nil
         }
 
+        let decoder = JSONDecoder()
+        do {
+            return try decoder.decode(MobileConfigData.self, from: data)
+        } catch {
+            return nil
+        }
+    }
+
+    private func finishLoadingActions() {
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.delegate?.finishedLoadingActions()
+            self?.delegate?.finishedLoadingActions()
         }
     }
 
@@ -174,6 +190,11 @@ class ActionMenuViewModel {
 
     private func addActionToOpenMenu(in array: [ActionMenu]) {
         toolbarActions.append(contentsOf: array)
-        toolbarActions.append(ActionMenu(title: "", type: .more))
+        guard let listNode = listNode else { return }
+        let enabledMenus = self.configData?.featuresMobile.menu.filter { $0.enabled }
+        let fileMenuIds: [MenuId] = [.openWith, .addFavorite, .removeFavorite, .startProcess, .rename, .move, .addOffline, .removeOffline, .trash]
+        if enabledMenus?.contains(where: { fileMenuIds.contains($0.id) }) ?? Bool() {
+            toolbarActions.append(ActionMenu(title: "", type: .more))
+        }
     }
 }

@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import AlfrescoContent
 
 protocol ListComponentViewModelDelegate: AnyObject {
     func didUpdateListActionState(enable: Bool)
@@ -28,11 +29,45 @@ class ListComponentViewModel {
     var pageViewName: String?
     var isMultipleFileSelectionEnabled = false
     var selectedMultipleItems = [ListNode]()
+    
+    var isFileAvailable = true
+    var isMultiFileAvailable = true
+    var isFolderAvailable = true
+    var isMultiFolderAvailable = true
+    var isTrashAvailable = true
+    
+    let fileMenuIds: [MenuId] = [.openWith, .addFavorite, .removeFavorite, .startProcess, .rename, .move, .addOffline, .removeOffline, .trash]
+    let multiSelectFileMenuIds: [MenuId] = [.addFavorite, .removeFavorite, .startProcess, .move, .addOffline, .removeOffline, .trash]
+    let folderMenuIds: [MenuId] = [.addFavorite, .removeFavorite, .rename, .move, .addOffline, .removeOffline, .trash]
+    let multiSelectFolderMenuIds: [MenuId] = [.addFavorite, .removeFavorite, .move, .addOffline, .removeOffline, .trash]
+    let trashMenuIds: [MenuId] = [.permanentlyDelete, .restore]
 
     init(model: ListComponentModelProtocol) {
         self.model = model
     }
+    
+    func getAvailableMenus() {
+        guard let configData = MobileConfigManager.shared.loadMobileConfigData() else {
+            return }
+        
+        // Fetch enabled menus from config data
+        let enabledMenus = configData.featuresMobile.menu.filter { $0.enabled }
+        
+        // Check availability of file and folder menus
+        isFileAvailable = enabledMenus.contains(where: { fileMenuIds.contains($0.id) })
+        isMultiFileAvailable = enabledMenus.contains(where: { multiSelectFileMenuIds.contains($0.id) })
+        isFolderAvailable = enabledMenus.contains(where: { folderMenuIds.contains($0.id) })
+        isMultiFolderAvailable = enabledMenus.contains(where: { multiSelectFolderMenuIds.contains($0.id) })
+        isTrashAvailable = enabledMenus.contains(where: { trashMenuIds.contains($0.id) })
+    }
 
+    func checkMoveEnabled() -> Bool {
+        if let configData = MobileConfigManager.shared.loadMobileConfigData() {
+            return configData.featuresMobile.menu.contains { $0.id == .move && $0.enabled }
+        }
+        return true
+    }
+    
     func emptyList() -> EmptyListProtocol {
         return EmptyFolder()
     }
