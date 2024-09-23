@@ -684,7 +684,6 @@ extension ListComponentViewController {
                 sSelf.resetMultipleSelectionView()
             }
             
-            guard let viewModel = self.viewModel else { return }
             multipleSelectionHeader.didSelectMoreButtonAction = {[weak self] in
                 guard let sSelf = self,
                       let model = sSelf.pageController?.dataSource else { return }
