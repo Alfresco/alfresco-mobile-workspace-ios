@@ -69,7 +69,7 @@ class MultipleSelectionActionMenuViewModel {
     private func createMenuActions() {
         guard let node = nodes.first else { finishLoadingActions() 
             return }
-        let configData = loadMobileConfigData()
+        let configData = MobileConfigManager.shared.loadMobileConfigData()
         
         if node.trashed {
             menuActions = MultipleFileActionsMenuTrashMoreButton.actions(for: nodes, configData: configData)
@@ -77,19 +77,6 @@ class MultipleSelectionActionMenuViewModel {
             menuActions = MultipleFilesActionMenuGeneric.actions(for: nodes, configData: configData)
         }
         finishLoadingActions()
-    }
-    
-    private func loadMobileConfigData() -> MobileConfigData? {
-        guard let data = UserDefaultsModel.value(for: KeyConstants.Save.kConfigData) as? Data else {
-            return nil
-        }
-
-        let decoder = JSONDecoder()
-        do {
-            return try decoder.decode(MobileConfigData.self, from: data)
-        } catch {
-            return nil
-        }
     }
     
     private func finishLoadingActions() {

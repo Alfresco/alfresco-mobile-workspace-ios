@@ -50,7 +50,7 @@ class ActionMenuViewModel {
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.excludedActions = excludedActionTypes
-        self.configData = loadMobileConfigData()
+        self.configData = MobileConfigManager.shared.loadMobileConfigData()
 
         if let listNode = listNode {
             self.menuActions = [[ActionMenu(title: listNode.title,
@@ -151,19 +151,6 @@ class ActionMenuViewModel {
             self.menuActions = self.menuActions.map { $0.filter { !self.excludedActions.contains($0.type) } }
         }
         finishLoadingActions()
-    }
-
-    private func loadMobileConfigData() -> MobileConfigData? {
-        guard let data = UserDefaultsModel.value(for: KeyConstants.Save.kConfigData) as? Data else {
-            return nil
-        }
-
-        let decoder = JSONDecoder()
-        do {
-            return try decoder.decode(MobileConfigData.self, from: data)
-        } catch {
-            return nil
-        }
     }
 
     private func finishLoadingActions() {
