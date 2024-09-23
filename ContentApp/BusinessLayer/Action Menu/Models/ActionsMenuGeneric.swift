@@ -17,9 +17,11 @@
 //
 
 import Foundation
+import AlfrescoContent
 
 struct ActionsMenuGeneric {
-    static func actions(for node: ListNode) -> [[ActionMenu]] {
+    
+    static func actions(for node: ListNode, configData: MobileConfigData?) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
 
         let infoAction = ActionMenu(title: node.title,
@@ -28,90 +30,97 @@ struct ActionsMenuGeneric {
 
         var actions2: [ActionMenu] = []
 
-        if let action = downloadAction(for: node) {
-            actions2.append(action)
-        }
-
-        if let action = favoriteAction(for: node) {
-            actions2.append(action)
-        }
-        
-        if let action = startWorkflowAction(for: node) {
-            actions2.append(action)
-        }
-        
-        if let action = renameNodeAction(for: node) {
-            actions2.append(action)
-        }
-        
-        if let action = moveToFolderAction(for: node) {
-            actions2.append(action)
-        }
-        
-        if let action = offlineAction(for: node) {
-            actions2.append(action)
-        }
-        
-        if let action = deleteAction(for: node) {
-            actions2.append(action)
+        // Append available actions to actions2
+        [openWithAction(for: node, configData: configData),
+         favoriteAction(for: node, configData: configData),
+         startWorkflowAction(for: node, configData: configData),
+         renameNodeAction(for: node, configData: configData),
+         moveToFolderAction(for: node, configData: configData),
+         offlineAction(for: node, configData: configData),
+         deleteAction(for: node, configData: configData)].forEach {
+            if let action = $0 { actions2.append(action) }
         }
 
         actions.append([infoAction])
+        if actions2.isEmpty {
+            let emptyAction = ActionMenu(title: LocalizationConstants.Workflows.workflowsUnavailableTitle, type: .empty)
+            actions2.append(emptyAction)
+        }
+           
         actions.append(actions2)
 
         return actions
     }
 
-    // MARK: Private Helpers
+    // MARK: - Common Helper Method
 
-    static private func favoriteAction(for node: ListNode) -> ActionMenu? {
-        if node.markedFor == .upload &&
-            node.syncStatus != .synced {
-            return nil
-        }
-        let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
-                                      type: .addFavorite)
-        let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
-                                         type: .removeFavorite)
-        return (node.favorite == true) ? removeFavAction : addFavAction
+    static private func isMenuItemEnabled(configData: MobileConfigData?, id: MenuId) -> Bool {
+        // Return true if configData is nil to avoid skipping actions when configData is missing
+        guard let configData = configData else { return true }
+        return configData.featuresMobile.menu.contains { $0.id == id && $0.enabled }
     }
 
-    static private func offlineAction(for node: ListNode) -> ActionMenu? {
-        if node.markedFor == .upload &&
-            node.syncStatus != .synced {
+    // MARK: - Action Methods
+
+    static private func favoriteAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+        let addFavoriteEnabled = isMenuItemEnabled(configData: configData, id: .addFavorite)
+        let removeFavoriteEnabled = isMenuItemEnabled(configData: configData, id: .removeFavorite)
+        
+        // Return nil if both actions are disabled
+        guard addFavoriteEnabled || removeFavoriteEnabled else {
             return nil
         }
-        let markOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.markOffline,
-                                       type: .markOffline)
-        let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
-                                       type: .removeOffline)
-        let enableAction = node.isAFileType() || node.isAFolderType()
 
-        if enableAction {
-            return node.isMarkedOffline() ? removeOffAction : markOffAction
+        let isFavorite = node.favorite ?? false
+        
+        // Return the appropriate action based on enabled status and favorite state
+        if addFavoriteEnabled && removeFavoriteEnabled {
+            return isFavorite
+                ? ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite, type: .removeFavorite)
+                : ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite, type: .addFavorite)
         }
 
+        if addFavoriteEnabled && !isFavorite {
+            return ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite, type: .addFavorite)
+        }
+
+        if removeFavoriteEnabled && isFavorite {
+            return ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite, type: .removeFavorite)
+        }
+        
         return nil
     }
 
-    static private func downloadAction(for node: ListNode) -> ActionMenu? {
-        if node.allowableOperations.count == 1 {
-            node.removeAllowableOperationUnknown()
-        }
-        guard node.isAFileType(), !node.allowableOperations.isEmpty else {
+    static private func offlineAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+        guard !(node.markedFor == .upload && node.syncStatus != .synced),
+              (node.isAFileType() || node.isAFolderType()),
+              isMenuItemEnabled(configData: configData, id: .addOffline) || isMenuItemEnabled(configData: configData, id: .removeOffline) else {
             return nil
         }
-        
+
+        return node.isMarkedOffline() ?
+            ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline, type: .removeOffline) :
+            ActionMenu(title: LocalizationConstants.ActionMenu.markOffline, type: .markOffline)
+    }
+
+    static private func openWithAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+        guard node.isAFileType(),
+              !node.allowableOperations.isEmpty,
+              isMenuItemEnabled(configData: configData, id: .openWith) else {
+            return nil
+        }
+
         return ActionMenu(title: LocalizationConstants.ActionMenu.download, type: .download)
     }
 
-    static private func deleteAction(for node: ListNode) -> ActionMenu? {
-        if node.markedFor == .upload &&
-            node.syncStatus != .synced {
+    static private func deleteAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+        guard !(node.markedFor == .upload && node.syncStatus != .synced),
+              isMenuItemEnabled(configData: configData, id: .trash) else {
             return nil
         }
-        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
-                                      type: .moveTrash)
+
+        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash, type: .moveTrash)
+
         switch node.nodeType {
         case .site:
             return node.hasRole(to: .manager) ? deleteAction : nil
@@ -119,17 +128,16 @@ struct ActionsMenuGeneric {
             return node.hasPersmission(to: .delete) ? deleteAction : nil
         }
     }
-    
-    static private func moveToFolderAction(for node: ListNode) -> ActionMenu? {
-        let enableAction = node.isAFileType() || node.isAFolderType()
-        if !enableAction { return nil }
-        
-        if node.markedFor == .upload &&
-            node.syncStatus != .synced {
+
+    static private func moveToFolderAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+        guard (node.isAFileType() || node.isAFolderType()),
+              !(node.markedFor == .upload && node.syncStatus != .synced),
+              isMenuItemEnabled(configData: configData, id: .move) else {
             return nil
         }
-        let moveAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder,
-                                      type: .moveToFolder)
+
+        let moveAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder, type: .moveToFolder)
+
         switch node.nodeType {
         case .site:
             return node.hasRole(to: .manager) ? moveAction : nil
@@ -137,17 +145,16 @@ struct ActionsMenuGeneric {
             return node.hasPersmission(to: .delete) ? moveAction : nil
         }
     }
-    
-    static func renameNodeAction(for node: ListNode) -> ActionMenu? {
-        let enableAction = node.isAFileType() || node.isAFolderType()
-        if !enableAction { return nil }
 
-        if node.markedFor == .upload &&
-            node.syncStatus != .synced {
+    static private func renameNodeAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+        guard (node.isAFileType() || node.isAFolderType()),
+              !(node.markedFor == .upload && node.syncStatus != .synced),
+              isMenuItemEnabled(configData: configData, id: .rename) else {
             return nil
         }
-        let renameAction = ActionMenu(title: LocalizationConstants.ActionMenu.renameNode,
-                                      type: .renameNode)
+
+        let renameAction = ActionMenu(title: LocalizationConstants.ActionMenu.renameNode, type: .renameNode)
+
         switch node.nodeType {
         case .site:
             return node.hasRole(to: .manager) ? renameAction : nil
@@ -155,16 +162,14 @@ struct ActionsMenuGeneric {
             return node.hasPersmission(to: .delete) ? renameAction : nil
         }
     }
-    
-    static private func startWorkflowAction(for node: ListNode) -> ActionMenu? {
-        let isAPSEnable = APSService.isAPSServiceEnable ?? false
-        if isAPSEnable {
-            let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
-                                          type: .startWorkflow)
-            if node.isAFileType() {
-                return workflowAction
-            }
+
+    static private func startWorkflowAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+        guard APSService.isAPSServiceEnable ?? false,
+              node.isAFileType(),
+              isMenuItemEnabled(configData: configData, id: .startProcess) else {
+            return nil
         }
-        return nil
+
+        return ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow, type: .startWorkflow)
     }
 }

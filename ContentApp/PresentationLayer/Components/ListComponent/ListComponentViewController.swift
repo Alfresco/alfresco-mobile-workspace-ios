@@ -296,7 +296,8 @@ class ListComponentViewController: SystemThemableViewController {
         guard let model = pageController?.dataSource,
               let viewModel = viewModel,
               let dataSource = self.dataSource else { return }
-       
+        viewModel.getAvailableMenus()
+
         var indexPaths: [IndexPath] = []
         dataSource.state = forEach(model.listNodes()) { listNode in
             if listNode.guid == listNodeSectionIdentifier {
@@ -331,9 +332,11 @@ class ListComponentViewController: SystemThemableViewController {
                                     sSelf.listActionDelegate?.elementTapped(node: node)
                                 }
                             } else {
-                                sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                                                         from: model,
-                                                                                         delegate: sSelf)
+                                if viewModel.isTrashAvailable {
+                                    sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                                                             from: model,
+                                                                                             delegate: sSelf)
+                                }
                             }
                         }
                     }
@@ -631,11 +634,33 @@ extension ListComponentViewController {
             }
             
             viewModel?.selectedMultipleItems = selectedMultipleItems
+            updateMultiSelectionHeader()
             showElementsCount()
             if selectedMultipleItems.isEmpty {
                 resetMultipleSelectionView()
             }
             collectionView?.reloadData()
+        }
+    }
+    
+    private func updateMultiSelectionHeader() {
+        if let multipleSelectionHeader = self.multipleSelectionHeader {
+            
+            guard let viewModel = self.viewModel else { return }
+            let isMultiSelectEnabled = viewModel.isMultiFileAvailable
+            let isThrashedNodeAvailable = viewModel.selectedMultipleItems.contains { $0.trashed }
+            if isThrashedNodeAvailable {
+                multipleSelectionHeader.moreButton.isEnabled = viewModel.isTrashAvailable
+            } else {
+                let isFolderNodeAvailable = viewModel.selectedMultipleItems.contains { $0.isFolder }
+                if isFolderNodeAvailable {
+                    multipleSelectionHeader.moreButton.isEnabled = viewModel.isMultiFolderAvailable
+                } else {
+                    multipleSelectionHeader.moreButton.isEnabled = isMultiSelectEnabled
+                }
+            }
+            
+            multipleSelectionHeader.moveButton.isEnabled = isMultiSelectEnabled ? viewModel.checkMoveEnabled() : false
         }
     }
     

@@ -36,6 +36,7 @@ struct APIConstants {
         static let getNodeContent = "\(APIConstants.Path.version)/nodes/%@/content?attachment=false&alf_ticket=%@"
         static let getRenditionContent = "\(APIConstants.Path.version)/nodes/%@/renditions/%@/content?attachment=false&alf_ticket=%@"
         static let getProfile = "\(APIConstants.Path.base)/\(APIConstants.Path.version)/people/-me-"
+        static let appConfig = "/app-config.json"
     }
 
     struct Include {

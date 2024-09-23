@@ -17,23 +17,45 @@
 //
 
 import Foundation
+import AlfrescoContent
 
 struct ActionsMenuTrashMoreButton {
-    static func actions(for node: ListNode) -> [[ActionMenu]] {
+    static func actions(for node: ListNode, configData: MobileConfigData?) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
+        
+        // First action: node information
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
                                     icon: FileIcon.icon(for: node))
-        let permanentlyDeleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.permanentlyDelete,
-                                      type: .permanentlyDelete)
-        let restoreAction = ActionMenu(title: LocalizationConstants.ActionMenu.restore,
-                                         type: .restore)
-
-        let actions1 = [infoAction]
-        let actions2: [ActionMenu] = [restoreAction, permanentlyDeleteAction]
-
-        actions.append(actions1)
-        actions.append(actions2)
+        actions.append([infoAction])
+        
+        var actions2: [ActionMenu] = []
+        
+        // Check and add the permanently delete action if available
+        if isMenuItemEnabled(configData: configData, id: .permanentlyDelete) {
+            let permanentlyDeleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.permanentlyDelete,
+                                                     type: .permanentlyDelete)
+            actions2.append(permanentlyDeleteAction)
+        }
+        
+        // Check and add the restore action if available
+        if isMenuItemEnabled(configData: configData, id: .restore) {
+            let restoreAction = ActionMenu(title: LocalizationConstants.ActionMenu.restore,
+                                           type: .restore)
+            actions2.append(restoreAction)
+        }
+        
+        // Append available actions
+        if !actions2.isEmpty {
+            actions.append(actions2)
+        }
+        
         return actions
+    }
+
+    // Helper function to check if a specific menu item is enabled
+    static private func isMenuItemEnabled(configData: MobileConfigData?, id: MenuId) -> Bool {
+        guard let configData = configData else { return true }
+        return configData.featuresMobile.menu.contains { $0.id == id && $0.enabled }
     }
 }

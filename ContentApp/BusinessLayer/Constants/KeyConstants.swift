@@ -41,6 +41,7 @@ struct KeyConstants {
         static let apsUserId = "kAPSUserId"
         static let isAPSEnabled = "isAPSEnabled"
         static let kAPSSource = "kAPSSource"
+        static let kConfigData = "kConfigData"
     }
 
     struct Notification {

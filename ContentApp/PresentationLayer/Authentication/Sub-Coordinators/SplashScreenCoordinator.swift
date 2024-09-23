@@ -100,12 +100,13 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     private func registerAndPresent(account: AccountProtocol) {
         AlfrescoContentAPI.basePath = account.apiBasePath
         AlfrescoProcessAPI.basePath = account.processAPIBasePath
-
+        AlfrescoContentAPI.hostname = account.apiHostName
         accountService?.register(account: account)
         accountService?.activeAccount = account
 
         tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
         tabBarScreenCoordinator?.start()
+        MobileConfigManager.shared.fetchMenuOption(accountService: accountService)
         appDelegate()?.startSyncOperation()
     }
 }

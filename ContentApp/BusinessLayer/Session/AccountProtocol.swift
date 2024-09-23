@@ -28,6 +28,8 @@ protocol AccountProtocol: AnyObject {
 
     /// Path for which domain specific requests are built
     var apiBasePath: String { get }
+    
+    var apiHostName: String { get }
 
     /// Path for which domain specific requests are built for the process service
     var processAPIBasePath: String { get }
@@ -64,7 +66,7 @@ protocol AccountProtocol: AnyObject {
        [AuthenticationAPI](https://api-explorer.alfresco.com/api-explorer/#/authentication)
     */
     func createTicket()
-
+    
     /// Returns a valid authentication ticket or nil if it doesn't exist or it expired.
     func getTicket() -> String?
 

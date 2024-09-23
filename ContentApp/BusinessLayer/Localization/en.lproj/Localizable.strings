@@ -247,6 +247,8 @@
 "action-menu-upload-files" = "Upload files";
 "action-menu-move-folder" = "Move";
 "action-menu-rename-node" = "Rename";
+"action-unavailable-title" = "No Actions Available";
+"action-unavailable-message" = "Contact your administrator for help";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";
