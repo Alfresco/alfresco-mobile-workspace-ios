@@ -67,12 +67,19 @@ class MultipleSelectionActionMenuViewModel {
     // MARK: - Private Helpers
 
     private func createMenuActions() {
-        guard let node = nodes.first else { return }
-        if node.trashed == true {
-            menuActions = MultipleFileActionsMenuTrashMoreButton.actions(for: nodes)
+        guard let node = nodes.first else { finishLoadingActions() 
+            return }
+        let configData = MobileConfigManager.shared.loadMobileConfigData()
+        
+        if node.trashed {
+            menuActions = MultipleFileActionsMenuTrashMoreButton.actions(for: nodes, configData: configData)
         } else {
-            menuActions = MultipleFilesActionMenuGeneric.actions(for: nodes)
+            menuActions = MultipleFilesActionMenuGeneric.actions(for: nodes, configData: configData)
         }
+        finishLoadingActions()
+    }
+    
+    private func finishLoadingActions() {
         let isFavoriteAllowed = UIFunction.isFavoriteAllowedForACSVersion()
         if !isFavoriteAllowed {
             excludedActions.append(contentsOf: [.addFavorite, .removeFavorite])
@@ -86,7 +93,6 @@ class MultipleSelectionActionMenuViewModel {
                 menuActions[index] = actionMenuGroup
             }
         }
-        
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.delegate?.finishedLoadingActions()
@@ -107,4 +113,5 @@ class MultipleSelectionActionMenuViewModel {
             }
         }
     }
+    
 }

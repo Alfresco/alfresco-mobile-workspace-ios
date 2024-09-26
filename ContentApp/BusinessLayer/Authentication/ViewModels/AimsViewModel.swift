@@ -117,14 +117,19 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                                                  parameters: accountParams,
                                                  credential: aimsCredential)
                 let account = AIMSAccount(with: accountSession)
-
+                AlfrescoContentAPI.hostname = account.apiHostName
                 AlfrescoContentAPI.basePath = account.apiBasePath
                 AlfrescoProcessAPI.basePath = account.processAPIBasePath
 
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
-
-                self.fetchProfileInformation()
+                DispatchQueue.global(qos: .background).async {[weak self] in
+                    guard let sSelf = self else { return }
+                    MobileConfigManager.shared.fetchMenuOption(accountService: sSelf.accountService)
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.fetchProfileInformation()
+                }
             }
         case .failure(let error):
             let contentURL = authenticationService?.parameters.contentURL

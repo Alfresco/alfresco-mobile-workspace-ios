@@ -24,6 +24,9 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     var identifier: String {
         return credential.username
     }
+    var apiHostName: String {
+        return "\(parameters.fullHostnameURL)"
+    }
     var apiBasePath: String {
         return "\(parameters.fullHostnameURL)/\(parameters.path)/\(APIConstants.Path.base)"
     }

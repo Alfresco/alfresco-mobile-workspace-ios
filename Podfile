@@ -19,7 +19,7 @@ target 'ContentApp' do
   pod 'GrowingTextView'
   
   # Alfresco iOS Swift API
-  pod 'AlfrescoAuth'
+  pod 'AlfrescoAuth', '0.1.2'
   pod 'AlfrescoContent'
 
   target 'ContentAppTests' do

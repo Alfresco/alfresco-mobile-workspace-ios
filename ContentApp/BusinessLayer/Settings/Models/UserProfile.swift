@@ -171,5 +171,6 @@ class UserProfile {
         UserDefaultsModel.remove(forKey: KeyConstants.Save.displayLastName)
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.apsUserId)")
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.isAPSEnabled)")
+        UserDefaultsModel.remove(forKey: KeyConstants.Save.kConfigData)
     }
 }

@@ -102,4 +102,7 @@ enum ActionMenuType: String {
     case renameNode = "ic-action-rename"
     case scanDocuments = "ic-action-scan-documents"
     case startWorkflow = "ic-action-start-workflow"
+    
+    // MARK: - Workflow
+    case empty = "ic-empty"
 }

@@ -32,6 +32,10 @@ class AIMSAccount: AccountProtocol, Equatable {
         return "\(session.parameters.fullContentURL)/\(session.parameters.path)/\(APIConstants.Path.base)"
     }
     
+    var apiHostName: String {
+        return "\(session.parameters.fullContentURL)"
+    }
+    
     var processAPIBasePath: String {
         return "\(session.parameters.fullContentURL)/\(session.parameters.processAppClientID)/\(session.parameters.processAppQueryString)/\(session.parameters.processAppDefinition)"
     }
@@ -141,7 +145,7 @@ extension AIMSAccount: AIMSAccountDelegate {
         createTicket()
         ProfileService.featchPersonalFilesID()
         ProfileService.fetchAPSProfileDetails()
-
+        
         if oldAccountIdentifier != identifier && !oldAccountIdentifier.isEmpty {
             UserDefaultsModel.set(value: identifier, for: KeyConstants.Save.activeAccountIdentifier)
             session.parameters.save(for: identifier)
@@ -156,7 +160,7 @@ extension AIMSAccount: AIMSAccountDelegate {
             Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))")
 
             UserProfile.removeUserProfile(forAccountIdentifier: identifier)
-
+            
             session.parameters.remove(for: oldAccountIdentifier)
         }
 

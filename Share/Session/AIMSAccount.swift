@@ -33,6 +33,10 @@ class AIMSAccount: AccountProtocol, Equatable {
         return "\(session.parameters.fullContentURL)/\(session.parameters.path)/\(APIConstants.Path.base)"
     }
     
+    var apiHostName: String {
+        return "\(session.parameters.fullContentURL)"
+    }
+    
     var processAPIBasePath: String {
         return "\(session.parameters.fullContentURL)/\(session.parameters.processAppClientID)/\(session.parameters.processAppQueryString)/\(session.parameters.processAppDefinition)"
     }

@@ -3,7 +3,7 @@ PODS:
   - AlfrescoAuth (0.1.2):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (0.2.66):
+  - AlfrescoContent (0.2.69):
     - Alamofire (~> 4.9.0)
     - TrustKit
   - AlfrescoCore (0.1.2)
@@ -794,7 +794,7 @@ PODS:
   - TrustKit (3.0.4)
 
 DEPENDENCIES:
-  - AlfrescoAuth
+  - AlfrescoAuth (= 0.1.2)
   - AlfrescoContent
   - DropDown
   - FastCoding
@@ -851,7 +851,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlfrescoAuth: 65ff558e5d65f82762dfdf54257a57ba413816e3
-  AlfrescoContent: 3b5df8e5d4522efec5874534cb3774596e6c04ec
+  AlfrescoContent: 892bd719c8ea1057e6dc66be16195d601b22afa6
   AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
@@ -886,6 +886,6 @@ SPEC CHECKSUMS:
   SwiftLint: 284cea64b6187c5d6bd83e9a548a64104d546447
   TrustKit: 403e8d2cfbff2abfc37cd41acc558dab8ec78e59
 
-PODFILE CHECKSUM: d849c5ef93477859049aaa4644ee3dd445ffe369
+PODFILE CHECKSUM: e14ef0b64d710dbbb4b04e7828d694aa3c10934a
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.14.3

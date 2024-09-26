@@ -24,18 +24,20 @@ class EmptyWorkflowListCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var imageViewEmptyWorkflows: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var emptyImageViewContraintHeight: NSLayoutConstraint!
+    
     var currentTheme: PresentationTheme?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        addAccessibility()
+        addAccessibility(title: LocalizationConstants.Accessibility.title, subtitle: LocalizationConstants.Workflows.workflowsUnavailableTitle)
     }
     
-    private func addAccessibility() {
+    private func addAccessibility(title: String, subtitle: String) {
         titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        titleLabel.accessibilityValue = LocalizationConstants.Workflows.workflowsUnavailableTitle
+        titleLabel.accessibilityValue = title
         subTitleLabel.accessibilityLabel = LocalizationConstants.Accessibility.subTitle
-        subTitleLabel.accessibilityValue = LocalizationConstants.Workflows.workflowsUnavailableMessage
+        subTitleLabel.accessibilityValue = subtitle
         
         titleLabel.accessibilityIdentifier = "title"
         subTitleLabel.accessibilityIdentifier = "sub-title"
@@ -56,5 +58,15 @@ class EmptyWorkflowListCollectionViewCell: ListSelectableCell {
     func setupData() {
         titleLabel.text = LocalizationConstants.Workflows.workflowsUnavailableTitle
         subTitleLabel.text = LocalizationConstants.Workflows.workflowsUnavailableMessage
+    }
+    
+    func setupActionData() {
+        imageViewEmptyWorkflows.isHidden = true
+        emptyImageViewContraintHeight.constant = 0
+        let title = LocalizationConstants.ActionMenu.actionUnavailableTitle
+        let subtitle = LocalizationConstants.ActionMenu.actionUnavailableMessage
+        titleLabel.text = title
+        subTitleLabel.text = subtitle
+        addAccessibility(title: title, subtitle: subtitle)
     }
 }

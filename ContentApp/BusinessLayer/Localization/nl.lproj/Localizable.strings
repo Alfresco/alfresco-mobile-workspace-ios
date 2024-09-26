@@ -241,6 +241,8 @@
 "action-menu-move-folder" = "Verplaatsen";
 "action-menu-rename-node" = "Naam wijzigen";
 "action-menu-scan-documents" = "Documenten scannen";
+"action-unavailable-title" = "Geen acties beschikbaar";
+"action-unavailable-message" = "Neem contact op met je beheerder voor hulp.";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";

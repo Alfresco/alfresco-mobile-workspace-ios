@@ -241,6 +241,8 @@
 "action-menu-move-folder" = "Sposta";
 "action-menu-rename-node" = "Rinomina";
 "action-menu-scan-documents" = "Acquisisci i documenti";
+"action-unavailable-title" = "Nessuna azione disponibile";
+"action-unavailable-message" = "Contattare l'amministratore per ottenere assistenza.";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Elimina";

@@ -18,9 +18,11 @@
 
 import Foundation
 import UIKit
+import AlfrescoContent
 
 struct MultipleFilesActionMenuGeneric {
-    static func actions(for nodes: [ListNode]) -> [[ActionMenu]] {
+    
+    static func actions(for nodes: [ListNode], configData: MobileConfigData?) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
 
         let infoAction = ActionMenu(title: String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, nodes.count),
@@ -29,137 +31,159 @@ struct MultipleFilesActionMenuGeneric {
 
         var multipleActions: [ActionMenu] = []
 
-        if let action = favoriteAction(for: nodes) {
-            multipleActions.append(action)
+        // Append available actions
+        [favoriteAction(for: nodes, configData: configData),
+         startWorkflowAction(for: nodes, configData: configData),
+         moveToFolderAction(for: nodes, configData: configData),
+         offlineAction(for: nodes, configData: configData),
+         deleteAction(for: nodes, configData: configData)].forEach {
+            if let action = $0 { multipleActions.append(action) }
         }
-        
-        if let action = startWorkflowAction(for: nodes) {
-            multipleActions.append(action)
-        }
-        
-        if let action = moveToFolderAction(for: nodes) {
-            multipleActions.append(action)
-        }
-        
-        if let action = offlineAction(for: nodes) {
-            multipleActions.append(action)
-        }
-        
-        if let action = deleteAction(for: nodes) {
-            multipleActions.append(action)
-        }
-        
+
         actions.append([infoAction])
         actions.append(multipleActions)
 
         return actions
     }
 
-    // MARK: Private Helpers
-    
-    static func getFilteredNodes(for nodes: [ListNode]) -> [ListNode] {
-        let filteredNodes = nodes.filter { (($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined)) || ($0.markedFor == .upload && $0.syncStatus == .synced)}
-        return filteredNodes
+    // MARK: - Helper Methods
+
+    static private func isMenuItemEnabled(configData: MobileConfigData?, id: MenuId) -> Bool {
+        // If configData is nil, assume all actions are allowed (skip config check)
+        guard let configData = configData else { return true }
+        return configData.featuresMobile.menu.contains { $0.id == id && $0.enabled }
     }
 
-    static func moveToFolderAction(for nodes: [ListNode]) -> ActionMenu? {
-        
-        let filteredNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
-        if !filteredNodes.isEmpty {
-            var isMoveAllowed = false
-            for node in filteredNodes where node.hasPersmission(to: .delete) {
-                isMoveAllowed = true
-                break
-            }
-            if isMoveAllowed {
-                let moveAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder,
-                                              type: .moveToFolder)
-                return moveAction
-            }
-        }
-        return nil
+    static private func getFilteredNodes(for nodes: [ListNode]) -> [ListNode] {
+        return nodes.filter { (($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined)) || ($0.markedFor == .upload && $0.syncStatus == .synced) }
     }
-    
-    static func favoriteAction(for nodes: [ListNode]) -> ActionMenu? {
+
+    // MARK: - Action Methods
+
+    static private func favoriteAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+        // Check if either addFavorite or removeFavorite is enabled
+        let addFavoriteEnabled = isMenuItemEnabled(configData: configData, id: .addFavorite)
+        let removeFavoriteEnabled = isMenuItemEnabled(configData: configData, id: .removeFavorite)
+
+        // Return nil if both are disabled
+        guard addFavoriteEnabled || removeFavoriteEnabled else {
+            return nil
+        }
+
+        // Get filtered nodes
+        let filteredNodes = getFilteredNodes(for: nodes)
+        if filteredNodes.isEmpty { return nil }
+
+        // Determine if add or remove favorite action is needed
+        let hasNonFavoriteNode = filteredNodes.contains { $0.favorite == false || $0.favorite == nil }
+        let hasFavoriteNode = filteredNodes.contains { $0.favorite == true }
+
+        if addFavoriteEnabled && removeFavoriteEnabled {
+            // When both add and remove favorite are enabled, return based on node's current favorite status
+            return hasNonFavoriteNode
+                ? ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite, type: .addFavorite)
+                : ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite, type: .removeFavorite)
+        }
+
+        if addFavoriteEnabled {
+            // Only return add favorite if there's any non-favorite node
+            return hasNonFavoriteNode
+                ? ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite, type: .addFavorite)
+                : nil
+        }
+
+        if removeFavoriteEnabled {
+            // Only return remove favorite if there's any favorite node
+            return hasFavoriteNode
+                ? ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite, type: .removeFavorite)
+                : nil
+        }
+
+        // Return nil if neither add nor remove favorite is enabled
+        return nil
+
+    }
+
+    static private func offlineAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+        // Check if either addOffline or removeOffline is enabled
+        let addOfflineEnabled = isMenuItemEnabled(configData: configData, id: .addOffline)
+        let removeOfflineEnabled = isMenuItemEnabled(configData: configData, id: .removeOffline)
         
-        let filteredNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
-        if !filteredNodes.isEmpty {
-            var isAddFavAllowed = false
-            for node in filteredNodes where node.favorite == false || node.favorite == nil {
-                isAddFavAllowed = true
-                break
-            }
-            let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
-                                          type: .addFavorite)
-            let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
-                                             type: .removeFavorite)
-            return (isAddFavAllowed == true) ? addFavAction : removeFavAction
+        // Return nil if both are disabled
+        guard addOfflineEnabled || removeOfflineEnabled else {
+            return nil
+        }
+
+        // Filter nodes based on their status and type
+        let filteredNodes = nodes.filter {
+            ($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending || ($0.isAFolderType() && $0.isMarkedOffline())) &&
+            ($0.isAFileType() || $0.isAFolderType())
+        }
+        if filteredNodes.isEmpty { return nil }
+
+        // Determine if the mark or remove offline action is needed
+        let hasOfflineNode = filteredNodes.contains { $0.isMarkedOffline() }
+        
+        if addOfflineEnabled && removeOfflineEnabled {
+            return hasOfflineNode
+                ? ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline, type: .removeOffline)
+                : ActionMenu(title: LocalizationConstants.ActionMenu.markOffline, type: .markOffline)
+        }
+        
+        if addOfflineEnabled && !hasOfflineNode {
+            return ActionMenu(title: LocalizationConstants.ActionMenu.markOffline, type: .markOffline)
+        }
+        
+        if removeOfflineEnabled && hasOfflineNode {
+            return ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline, type: .removeOffline)
         }
         
         return nil
     }
 
-    static func offlineAction(for nodes: [ListNode]) -> ActionMenu? {
-        
-        let filteredNodes = nodes.filter { (($0.syncStatus == .synced || $0.syncStatus == .undefined || $0.syncStatus == .pending) || ($0.isAFolderType() && $0.isMarkedOffline())) && ($0.isAFileType() || $0.isAFolderType())}
-        if !filteredNodes.isEmpty {
-            var isMarkOfflineAllowed = false
-            for node in filteredNodes where !node.isMarkedOffline() {
-                isMarkOfflineAllowed = true
-                break
-            }
-            
-            let markOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.markOffline,
-                                           type: .markOffline)
-            let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
-                                           type: .removeOffline)
-            return isMarkOfflineAllowed ? markOffAction : removeOffAction
+    static private func moveToFolderAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+        guard isMenuItemEnabled(configData: configData, id: .move) else {
+            return nil
         }
 
-        return nil
+        let filteredNodes = getFilteredNodes(for: nodes)
+        if filteredNodes.isEmpty { return nil }
+
+        let isMoveAllowed = filteredNodes.contains { $0.hasPersmission(to: .delete) }
+        return isMoveAllowed ? ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder, type: .moveToFolder) : nil
     }
 
-    static func deleteAction(for nodes: [ListNode]) -> ActionMenu? {
-        
-        let filteredNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
-        if !filteredNodes.isEmpty {
-            var isAllowedToDelete = false
-            
-            for node in filteredNodes {
-                if node.nodeType == .site && node.hasRole(to: .manager) {
-                    isAllowedToDelete = true
-                    break
-                } else if node.hasPersmission(to: .delete) {
-                    isAllowedToDelete = true
-                    break
-                }
-            }
-            
-            if isAllowedToDelete {
-                let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
-                                              type: .moveTrash)
-                return deleteAction
-            }
+    static private func deleteAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+        guard isMenuItemEnabled(configData: configData, id: .trash) else {
+            return nil
         }
-        
-        return nil
+
+        let filteredNodes = getFilteredNodes(for: nodes)
+        if filteredNodes.isEmpty { return nil }
+
+        let isAllowedToDelete = filteredNodes.contains {
+            ($0.nodeType == .site && $0.hasRole(to: .manager)) || $0.hasPersmission(to: .delete)
+        }
+
+        return isAllowedToDelete ? ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash, type: .moveTrash) : nil
     }
-    
-    static func startWorkflowAction(for nodes: [ListNode]) -> ActionMenu? {
+
+    static private func startWorkflowAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
         let filteredNodes = nodes.filter {$0.isAFolderType()}
         if !filteredNodes.isEmpty {
             return nil
         } else {
-            let isAPSEnable = APSService.isAPSServiceEnable ?? false
-            if isAPSEnable {
-                let tempNodes = MultipleFilesActionMenuGeneric.getFilteredNodes(for: nodes)
-                if !tempNodes.isEmpty {
-                    let workflowAction = ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow,
-                                                  type: .startWorkflow)
-                    return workflowAction
-                }
+            guard isMenuItemEnabled(configData: configData, id: .startProcess),
+                  APSService.isAPSServiceEnable == true else {
+                return nil
             }
+            
+            let tempNodes = getFilteredNodes(for: nodes).filter { !$0.isAFolderType() }
+            
+            // If there are no filtered nodes (meaning all are folders), return nil
+            guard !tempNodes.isEmpty else { return nil }
+            
+            return ActionMenu(title: LocalizationConstants.Accessibility.startWorkflow, type: .startWorkflow)
         }
-        return nil
     }
 }

@@ -45,12 +45,6 @@ class ConnectViewModel {
             switch result {
             case .success(let authType):
                 sSelf.authenticationService?.saveAuthParameters()
-                switch authType {
-                case .aimsAuth:
-                    AlfrescoLog.debug("URL \(url) has authentication type AIMS.")
-                case .basicAuth:
-                    AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
-                }
                 sSelf.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
                                                                         handler: { (result) in
                     switch result {
