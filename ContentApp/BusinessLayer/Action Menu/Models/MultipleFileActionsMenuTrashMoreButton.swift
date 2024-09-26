@@ -17,24 +17,51 @@
 //
 
 import Foundation
+import AlfrescoContent
 
 struct MultipleFileActionsMenuTrashMoreButton {
-    static func actions(for nodes: [ListNode]) -> [[ActionMenu]] {
+    
+    static func actions(for nodes: [ListNode], configData: MobileConfigData?) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
-        
+
         let infoAction = ActionMenu(title: String(format: LocalizationConstants.MultipleFilesSelection.multipleItemsCount, nodes.count),
                                     type: .node,
                                     icon: nil)
-        let permanentlyDeleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.permanentlyDelete,
-                                      type: .permanentlyDelete)
-        let restoreAction = ActionMenu(title: LocalizationConstants.ActionMenu.restore,
-                                         type: .restore)
 
-        let actions1 = [infoAction]
-        let actions2: [ActionMenu] = [restoreAction, permanentlyDeleteAction]
+        var actions2: [ActionMenu] = []
 
-        actions.append(actions1)
+        // Append available actions
+        [permanentlyDeleteAction(configData: configData),
+         restoreAction(configData: configData)].forEach {
+            if let action = $0 { actions2.append(action) }
+        }
+
+        actions.append([infoAction])
         actions.append(actions2)
         return actions
+    }
+
+    // MARK: - Helper Methods
+
+    static private func isMenuItemEnabled(configData: MobileConfigData?, id: MenuId) -> Bool {
+        // If configData is nil, assume all actions are allowed (skip config check)
+        guard let configData = configData else { return true }
+        return configData.featuresMobile.menu.contains { $0.id == id && $0.enabled }
+    }
+
+    // MARK: - Action Methods
+
+    static private func permanentlyDeleteAction(configData: MobileConfigData?) -> ActionMenu? {
+        guard isMenuItemEnabled(configData: configData, id: .permanentlyDelete) else {
+            return nil
+        }
+        return ActionMenu(title: LocalizationConstants.ActionMenu.permanentlyDelete, type: .permanentlyDelete)
+    }
+
+    static private func restoreAction(configData: MobileConfigData?) -> ActionMenu? {
+        guard isMenuItemEnabled(configData: configData, id: .restore) else {
+            return nil
+        }
+        return ActionMenu(title: LocalizationConstants.ActionMenu.restore, type: .restore)
     }
 }

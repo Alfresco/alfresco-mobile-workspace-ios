@@ -90,6 +90,7 @@
 		74731C2D2B875BD600828167 /* HyperlinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74731C2B2B875BD600828167 /* HyperlinkTableViewCell.swift */; };
 		74731C2E2B875BD600828167 /* HyperlinkTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */; };
 		74731C302B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74731C2F2B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift */; };
+		747EB6712CA5762500FD59FD /* MobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747EB6702CA5762500FD59FD /* MobileConfigManager.swift */; };
 		7483935B2B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748393592B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift */; };
 		7483935C2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7483935A2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib */; };
 		7483935E2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7483935D2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift */; };
@@ -100,6 +101,7 @@
 		74D4D9272BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */; };
 		74D4D9282BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */; };
 		74D4D92A2BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */; };
+		74FD9DDF2CA57981006EFE4E /* MobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747EB6702CA5762500FD59FD /* MobileConfigManager.swift */; };
 		B5E392CD597158BADA51B20F /* EntityInfo-ContentApp.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */; };
 		B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
 		B906B71D268C624C008EC273 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B906B71C268C624C008EC273 /* TimerView.swift */; };
@@ -934,6 +936,7 @@
 		74731C2B2B875BD600828167 /* HyperlinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperlinkTableViewCell.swift; sourceTree = "<group>"; };
 		74731C2C2B875BD600828167 /* HyperlinkTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HyperlinkTableViewCell.xib; sourceTree = "<group>"; };
 		74731C2F2B875C0D00828167 /* HyperlinkTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HyperlinkTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		747EB6702CA5762500FD59FD /* MobileConfigManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MobileConfigManager.swift; sourceTree = "<group>"; };
 		748393592B8DD91D008C2DC7 /* CheckBoxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxTableViewCell.swift; sourceTree = "<group>"; };
 		7483935A2B8DD91D008C2DC7 /* CheckBoxTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CheckBoxTableViewCell.xib; sourceTree = "<group>"; };
 		7483935D2B8DD94A008C2DC7 /* CheckBoxTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -2099,6 +2102,7 @@
 				B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */,
 				B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */,
 				C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */,
+				747EB6702CA5762500FD59FD /* MobileConfigManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4412,6 +4416,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74FD9DDF2CA57981006EFE4E /* MobileConfigManager.swift in Sources */,
 				C9A910F727A7B777002EBC7F /* UIView+RoundCorners.swift in Sources */,
 				C9A9113627A7B85C002EBC7F /* EmptyListProtocol.swift in Sources */,
 				C9AFDF9227B8F498007233A5 /* FolderDrillViewModel.swift in Sources */,
@@ -4697,6 +4702,7 @@
 				C973EC6C2726BD9300912015 /* ListItemCellViewModel.swift in Sources */,
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
 				C9205C6A28A0D6AE00DEF5AC /* TaskProperties+APIs.swift in Sources */,
+				747EB6712CA5762500FD59FD /* MobileConfigManager.swift in Sources */,
 				C947C5BF27D0D9CA0000D902 /* UploadNodesViewModel.swift in Sources */,
 				C9A7598F289BB0CC006603E0 /* TasksListViewModel.swift in Sources */,
 				E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */,

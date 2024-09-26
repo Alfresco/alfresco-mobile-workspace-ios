@@ -36,6 +36,10 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var checkBoxImageView: UIImageView!
     weak var delegate: ListElementCollectionViewCellDelegate?
     var currentTheme: PresentationTheme?
+    var isFileMoreButtonEnabled = false
+    var isFolderMoreButtonEnabled = false
+    var isTrashMoreButtonEnabled = false
+    var enableMultiSelect = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -231,8 +235,30 @@ extension ListElementCollectionViewCell {
 // MARK: - Multiple file selection
 extension ListElementCollectionViewCell {
     
-    func setMultipleFileSelection(isMultipleFileSelectionEnabled: Bool) {
+    func setMultipleFileSelection(isMultipleFileSelectionEnabled: Bool, listNode: ListNode?) {
+        guard let listNode = listNode else { return }
+
+        let isMoreButtonEnabled = listNode.isFile ? isFileMoreButtonEnabled : isFolderMoreButtonEnabled
+        if listNode.trashed {
+            if isTrashMoreButtonEnabled || enableMultiSelect {
+                updateMultipleFileSelection(isMultipleFileSelectionEnabled: isMultipleFileSelectionEnabled)
+            } else {
+                moreButton.isEnabled = false
+                checkBoxImageView.isHidden = true
+            }
+        } else {
+            if isMoreButtonEnabled || enableMultiSelect {
+                updateMultipleFileSelection(isMultipleFileSelectionEnabled: isMultipleFileSelectionEnabled)
+            } else {
+                moreButton.isEnabled = false
+                checkBoxImageView.isHidden = true
+            }
+        }
+    }
+
+    private func updateMultipleFileSelection(isMultipleFileSelectionEnabled: Bool) {
         let isMoveFilesAndFolderFlow = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+        
         if isMultipleFileSelectionEnabled && !isMoveFilesAndFolderFlow {
             moreButton.isHidden = true
             checkBoxImageView.isHidden = false
@@ -243,7 +269,7 @@ extension ListElementCollectionViewCell {
             checkBoxImageView.isHidden = true
         }
     }
-    
+
     func setMultipleSelectedItem(for nodes: [ListNode], tappedNode: ListNode?) {
         guard let tappedNode = tappedNode else { return }
         if nodes.contains(tappedNode) {

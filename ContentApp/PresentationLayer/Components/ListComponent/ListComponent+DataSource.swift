@@ -103,13 +103,18 @@ class ListComponentDataSource: DataSource {
             guard let cell = collectionView
                     .dequeueReusableCell(withReuseIdentifier: identifierElement,
                                          for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
+            
+            cell.isFileMoreButtonEnabled = (node?.isFile ?? false) ? configuration.viewModel.isFileAvailable : false
+            cell.isFolderMoreButtonEnabled = (node?.isFolder ?? false) ? configuration.viewModel.isFolderAvailable : false
+            cell.isTrashMoreButtonEnabled = configuration.viewModel.isTrashAvailable
+            cell.enableMultiSelect = configuration.viewModel.isMultipleFileSelectionEnabled
             let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow ?? false
             cell.node = node
             cell.delegate = configuration.cellDelegate
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
-            cell.setMultipleFileSelection(isMultipleFileSelectionEnabled: configuration.viewModel.isMultipleFileSelectionEnabled)
+            cell.setMultipleFileSelection(isMultipleFileSelectionEnabled: configuration.viewModel.isMultipleFileSelectionEnabled, listNode: node)
             cell.setMultipleSelectedItem(for: configuration.viewModel.selectedMultipleItems, tappedNode: node)
 
             if node?.nodeType == .fileLink || node?.nodeType == .folderLink {

@@ -26,6 +26,7 @@ class ActionMenuViewController: SystemThemableViewController {
     var actionMenuModel: ActionMenuViewModel?
     var nodeActionsModel: NodeActionsViewModel?
     let actionMenuCellHeight: CGFloat = 55.0
+    let emptyViewHeight: CGFloat = 130.0
     var didSelectAction: ((ActionMenu) -> Void)?
 
     // MARK: - View Life Cycle
@@ -35,7 +36,7 @@ class ActionMenuViewController: SystemThemableViewController {
 
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
-
+        registerCells()
         actionMenuModel?.delegate = self
         activityIndicator.startAnimating()
         actionMenuModel?.fetchNodeInformation()
@@ -44,8 +45,13 @@ class ActionMenuViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
-        collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        if let actions = actionMenuModel?.actions().flatMap({ $0 }),
+           actions.contains(where: { $0.type.rawValue == ActionMenuType.empty.rawValue }) {
+            collectionViewContraintHeight.constant = emptyViewHeight + actionMenuCellHeight
+        } else {
+            let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
+            collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        }
         activityIndicator.center = CGPoint(x: view.center.x,
                                            y: collectionViewContraintHeight.constant / 2)
         view.isHidden = false
@@ -81,6 +87,10 @@ class ActionMenuViewController: SystemThemableViewController {
     }
 
     // MARK: - Private Utils
+    
+    private func registerCells() {
+        collectionView.register(UINib(nibName: CellConstants.CollectionCells.emptyWorkflowList, bundle: nil), forCellWithReuseIdentifier: CellConstants.CollectionCells.emptyWorkflowList)
+    }
 
     private func calculatePreferredSize(_ size: CGSize) {
         let targetSize = CGSize(width: size.width,
@@ -115,22 +125,39 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
             return UICollectionViewCell()
         }
         let action = actionMenuModel.actions()[indexPath.section][indexPath.row]
-        let identifier = String(describing: ActionMenuCollectionViewCell.self)
-        let cell =
+        if action.type.rawValue == ActionMenuType.empty.rawValue {
+            let reuseIdentifier = String(describing: EmptyWorkflowListCollectionViewCell.self)
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
+                                                             for: indexPath) as? EmptyWorkflowListCollectionViewCell {
+                cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+                cell.setupActionData()
+                return cell
+            }
+        } else {
+            let identifier = String(describing: ActionMenuCollectionViewCell.self)
+            let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                for: indexPath) as? ActionMenuCollectionViewCell
-        cell?.action = action
-        cell?.accessibilityIdentifier = action.type.rawValue
-        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell?.sectionSeparator.isHidden = !(actionMenuModel.shouldShowSectionSeparator(for: indexPath))
-        return cell ?? UICollectionViewCell()
+            cell?.action = action
+            cell?.accessibilityIdentifier = action.type.rawValue
+            cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
+            cell?.sectionSeparator.isHidden = !(actionMenuModel.shouldShowSectionSeparator(for: indexPath))
+            return cell ?? UICollectionViewCell()
+        }
+        return UICollectionViewCell()
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width,
-                      height: actionMenuCellHeight)
+        let action = actionMenuModel?.actions()[indexPath.section][indexPath.row]
+        if action?.type.rawValue == ActionMenuType.empty.rawValue {
+            return CGSize(width: collectionView.frame.width,
+                          height: emptyViewHeight)
+        } else {
+            return CGSize(width: collectionView.frame.width,
+                          height: actionMenuCellHeight)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -152,8 +179,13 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
 
 extension ActionMenuViewController: ActionMenuViewModelDelegate {
     func finishedLoadingActions() {
-        let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
-        collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        if let actions = actionMenuModel?.actions().flatMap({ $0 }),
+           actions.contains(where: { $0.type.rawValue == ActionMenuType.empty.rawValue }) {
+            collectionViewContraintHeight.constant = emptyViewHeight + actionMenuCellHeight
+        } else {
+            let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
+            collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        }
         collectionView.reloadData()
         activityIndicator.stopAnimating()
     }

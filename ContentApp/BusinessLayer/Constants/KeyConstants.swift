@@ -41,6 +41,7 @@ struct KeyConstants {
         static let apsUserId = "kAPSUserId"
         static let isAPSEnabled = "isAPSEnabled"
         static let kAPSSource = "kAPSSource"
+        static let kConfigData = "kConfigData"
     }
     struct Notification {
         static let showLoginScreen = "kShowLoginScreenNotification"
@@ -53,6 +54,7 @@ struct KeyConstants {
         static let bannerQueryParam = "mobileapps=true"
         static let refreshWorkflows = "kRefreshWorkflowsNotification"
         static let refreshTaskList = "kRefreshTaskListNotification"
+        static let refreshRecentList = "kRefreshRecentListNotification"
     }
     
     struct AdvanceSearch {

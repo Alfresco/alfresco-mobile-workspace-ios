@@ -162,7 +162,7 @@ class SettingsViewModel {
                 sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()
                 accountService?.delete(account: currentAccount)
-                
+                MobileConfigManager.shared.invalidateCache()
                 // delete pending uploading nodes if user is explicitly log out
                 let listNodeDataAccessor = ListNodeDataAccessor()
                 listNodeDataAccessor.removeAllPendingUploadNodes()

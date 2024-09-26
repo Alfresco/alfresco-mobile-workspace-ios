@@ -241,6 +241,8 @@
 "action-menu-move-folder" = "Verschieben";
 "action-menu-rename-node" = "Umbenennen";
 "action-menu-scan-documents" = "Dokumente scannen";
+"action-unavailable-title" = "Keine Aktionen verfügbar";
+"action-unavailable-message" = "Wenden Sie sich an Ihren Administrator, um Hilfe zu erhalten.";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Löschen";
