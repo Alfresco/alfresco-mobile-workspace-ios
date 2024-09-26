@@ -238,6 +238,8 @@
 "action-menu-upload-files" = "Cargar ficheros";
 "action-menu-move-folder" = "Mover";
 "action-menu-rename-node" = "Cambiar nombre";
+"action-unavailable-title" = "No hay acciones disponibles";
+"action-unavailable-message" = "Póngase en contacto con su administrador para obtener ayuda.";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
