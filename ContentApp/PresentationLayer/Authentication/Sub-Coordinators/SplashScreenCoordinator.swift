@@ -106,7 +106,12 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
 
         tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
         tabBarScreenCoordinator?.start()
-        MobileConfigManager.shared.fetchMenuOption(accountService: accountService)
-        appDelegate()?.startSyncOperation()
+        DispatchQueue.global(qos: .background).async {[weak self] in
+            guard let sSelf = self else { return }
+            MobileConfigManager.shared.fetchMenuOption(accountService: sSelf.accountService)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            appDelegate()?.startSyncOperation()
+        }
     }
 }

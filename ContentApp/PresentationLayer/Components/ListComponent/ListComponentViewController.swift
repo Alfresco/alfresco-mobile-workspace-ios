@@ -22,6 +22,8 @@ import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 import Micro
 
+var notificationObserver: NSObjectProtocol?
+
 class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var emptyListView: UIView!
@@ -64,7 +66,6 @@ class ListComponentViewController: SystemThemableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         progressView.isAccessibilityElement = false
         // Configure collection view data source and delegate
         guard let viewModel = self.viewModel,
@@ -135,9 +136,23 @@ class ListComponentViewController: SystemThemableViewController {
                                                selector: #selector(self.handleSyncStartedNotification(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
+        
+        // Refresh Recent List
+        if notificationObserver == nil {
+            notificationObserver = NotificationCenter.default.addObserver(forName: Notification.Name(KeyConstants.Notification.refreshRecentList),
+                                                                          object: nil,
+                                                                          queue: .main) { [weak self] notification in
+                self?.handleReSignIn(notification: notification)
+            }
+        }
+        
         observeConnectivity()
         setAccessibility()
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Move files
@@ -291,7 +306,7 @@ class ListComponentViewController: SystemThemableViewController {
     @objc private func handleReSignIn(notification: Notification) {
         pageController?.refreshList()
     }
-    
+        
     private func reloadDataSource() {
         guard let model = pageController?.dataSource,
               let viewModel = viewModel,

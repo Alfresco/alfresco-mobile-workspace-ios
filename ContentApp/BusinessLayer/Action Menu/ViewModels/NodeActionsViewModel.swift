@@ -294,7 +294,11 @@ class NodeActionsViewModel {
 
         FavoritesAPI.createFavorite(personId: APIConstants.me,
                                     favoriteBodyCreate: jsonBody) { [weak self] (_, error) in
-            guard let sSelf = self else { return }
+            guard let sSelf = self else { 
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: KeyConstants.Notification.refreshRecentList),
+                                                object: nil,
+                                                userInfo: nil)
+                return }
             if error == nil {
                 node.favorite = true
                 action.type = .removeFavorite
@@ -313,7 +317,11 @@ class NodeActionsViewModel {
 
         FavoritesAPI.deleteFavorite(personId: APIConstants.me,
                                     favoriteId: node.guid) { [weak self] (_, error) in
-            guard let sSelf = self else { return }
+            guard let sSelf = self else { 
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: KeyConstants.Notification.refreshRecentList),
+                                                object: nil,
+                                                userInfo: nil)
+                return }
             if error == nil {
                 node.favorite = false
                 action.type = .addFavorite
