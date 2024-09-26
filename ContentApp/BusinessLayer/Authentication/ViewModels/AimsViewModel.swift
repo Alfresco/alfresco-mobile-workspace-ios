@@ -122,7 +122,10 @@ extension AimsViewModel: AlfrescoAuthDelegate {
 
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
-                MobileConfigManager.shared.fetchMenuOption(accountService: accountService)
+                DispatchQueue.global(qos: .background).async {[weak self] in
+                    guard let sSelf = self else { return }
+                    MobileConfigManager.shared.fetchMenuOption(accountService: sSelf.accountService)
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.fetchProfileInformation()
                 }

@@ -55,6 +55,7 @@ struct KeyConstants {
         static let bannerQueryParam = "mobileapps=true"
         static let refreshWorkflows = "kRefreshWorkflowsNotification"
         static let refreshTaskList = "kRefreshTaskListNotification"
+        static let refreshRecentList = "kRefreshRecentListNotification"
     }
     
     struct AdvanceSearch {
