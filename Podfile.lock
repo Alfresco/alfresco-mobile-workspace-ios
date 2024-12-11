@@ -801,7 +801,6 @@ PODS:
 DEPENDENCIES:
   - AlfrescoAuth
   - AlfrescoContent
-  - Auth0
   - DropDown
   - FastCoding
   - Firebase/Analytics
@@ -896,6 +895,6 @@ SPEC CHECKSUMS:
   SwiftLint: 3fe909719babe5537c552ee8181c0031392be933
   TrustKit: 403e8d2cfbff2abfc37cd41acc558dab8ec78e59
 
-PODFILE CHECKSUM: 3bd6c1a7567e2d8a6ce647fe22745081b286cc5c
+PODFILE CHECKSUM: d43e94498cf8d20f153b48cd5657af47d7ce4b56
 
 COCOAPODS: 1.14.3

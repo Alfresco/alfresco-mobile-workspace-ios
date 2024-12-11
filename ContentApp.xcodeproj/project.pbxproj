@@ -98,6 +98,8 @@
 		74D4D9272BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */; };
 		74D4D9282BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */; };
 		74D4D92A2BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */; };
+		74E39A4C2CFEE59D00F7B9B1 /* GetContentServiceAuthType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E39A4B2CFEE57C00F7B9B1 /* GetContentServiceAuthType.swift */; };
+		74E39A4D2CFEE59D00F7B9B1 /* GetContentServiceAuthType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E39A4B2CFEE57C00F7B9B1 /* GetContentServiceAuthType.swift */; };
 		A24BD3F41371BDA3E3A64E53 /* Pods_ContentApp_ContentAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */; };
 		B5E392CD597158BADA51B20F /* EntityInfo-ContentApp.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */; };
 		B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
@@ -929,6 +931,7 @@
 		74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCell.swift; sourceTree = "<group>"; };
 		74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttachmentComplexTableViewCell.xib; sourceTree = "<group>"; };
 		74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		74E39A4B2CFEE57C00F7B9B1 /* GetContentServiceAuthType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContentServiceAuthType.swift; sourceTree = "<group>"; };
 		978127C511FEA1D69B063806 /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A230D94AA20A969ED5B23885 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp_ContentAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2169,6 +2172,7 @@
 			children = (
 				B99D9BB924866F1400FBFC9B /* GetContentServicesProfile.swift */,
 				E382C59C251A40820000D561 /* GetContentServicesServerInformation.swift */,
+				74E39A4B2CFEE57C00F7B9B1 /* GetContentServiceAuthType.swift */,
 			);
 			path = APIRequests;
 			sourceTree = "<group>";
@@ -4565,6 +4569,7 @@
 				C992F4D427FAC754002C4D41 /* CreateNodeSheetCoordinator.swift in Sources */,
 				C9A911AD27A7BB95002EBC7F /* DarkTheme.swift in Sources */,
 				C9A9110227A7B798002EBC7F /* UILabel+Theming.swift in Sources */,
+				74E39A4D2CFEE59D00F7B9B1 /* GetContentServiceAuthType.swift in Sources */,
 				C9A9111E27A7B80F002EBC7F /* AuthenticationParameters.swift in Sources */,
 				C9AFDF9E27B8F790007233A5 /* SystemSearchViewController.swift in Sources */,
 				C9A910DA27A7B719002EBC7F /* PDFRenderer.swift in Sources */,
@@ -4601,6 +4606,7 @@
 				C915CDDA28905B9800819F86 /* TaskFilters.swift in Sources */,
 				E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */,
 				C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */,
+				74E39A4C2CFEE59D00F7B9B1 /* GetContentServiceAuthType.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,
 				B9DBB21B256537840098CF18 /* OperationQueueService.swift in Sources */,
