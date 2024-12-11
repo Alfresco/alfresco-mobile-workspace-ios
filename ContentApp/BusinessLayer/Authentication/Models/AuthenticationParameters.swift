@@ -46,7 +46,6 @@ class AuthenticationParameters: Codable {
     var authType: AvailableAuthType = .aimsAuth
     var clientSecret: String = ""
     var auth0BaseUrl: String = ""
-    var auth0LogoutUrl: String = ""
     
     static func parameters() -> AuthenticationParameters {
         parameters(for: KeyConstants.Save.authSettingsParameters)
