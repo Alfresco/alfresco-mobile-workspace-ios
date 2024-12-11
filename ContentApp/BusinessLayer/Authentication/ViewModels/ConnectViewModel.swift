@@ -64,7 +64,6 @@ class ConnectViewModel {
             authParameters.auth0BaseUrl = host
             let auth0RedirectUri = String(format: "com.alfresco.contentapp://%@/ios/com.alfresco.contentapp/callback", host.replacingOccurrences(of: "https://", with: ""))
             authParameters.redirectURI = auth0RedirectUri
-            authParameters.auth0LogoutUrl = appConfigDetails.oauth2?.logoutUrl ?? ""
             
         } else {
             authParameters.authType = .aimsAuth
