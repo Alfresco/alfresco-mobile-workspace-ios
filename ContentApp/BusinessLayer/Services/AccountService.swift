@@ -62,7 +62,7 @@ class AccountService: AccountServiceProtocol, Service {
 
     private var connectivityService: ConnectivityService?
     private var kvoConnectivity: NSKeyValueObservation?
-    private (set) var accounts: [AccountProtocol] = []
+    private(set) var accounts: [AccountProtocol] = []
 
     var activeAccount: AccountProtocol? {
         didSet {

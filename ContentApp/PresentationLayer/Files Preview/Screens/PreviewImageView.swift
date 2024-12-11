@@ -56,7 +56,7 @@ class ImagePreview: UIView {
 
     // MARK: - Public Utils
 
-    func displayImage(from url: URL, handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
+    func displayImage(from url: URL, handler: @escaping (_image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
         guard let imageView = self.imageViewZoom?.zoomView else { return }
 
         let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,

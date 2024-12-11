@@ -30,10 +30,10 @@ class AIMSSession {
         return extractUsername(from: credential?.accessToken)
     }
 
-    private (set) var session: AlfrescoAuthSession?
+    private(set) var session: AlfrescoAuthSession?
     private var alfrescoAuth: AlfrescoAuth?
-    private (set) var parameters: AuthenticationParameters
-    private (set) var credential: AlfrescoCredential?
+    private(set) var parameters: AuthenticationParameters
+    private(set) var credential: AlfrescoCredential?
 
     private var refreshGroup = DispatchGroup()
     private var refreshGroupRequestCount = 0
