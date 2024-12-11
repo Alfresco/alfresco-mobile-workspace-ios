@@ -83,6 +83,24 @@ class ConnectViewModel {
             case .success(let appConfigDetails):
                 sSelf.updateAuthParameter(appConfigDetails: appConfigDetails, authParameters: authParameters)
                 sSelf.availableAimsAuthType(for: url, in: viewController)
+            case .success(let authType):
+                sSelf.authenticationService?.saveAuthParameters()
+                sSelf.authenticationService?.isContentServicesAvailable(on: AuthenticationParameters.parameters().fullHostnameURL,
+                                                                        handler: { (result) in
+                    switch result {
+                    case .success(let isVersionOverMinium):
+                        sSelf.contentService(available: isVersionOverMinium,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
+                    case .failure(let error):
+                        AlfrescoLog.error(error)
+                        sSelf.contentService(available: false,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
+                    }
+                })
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {

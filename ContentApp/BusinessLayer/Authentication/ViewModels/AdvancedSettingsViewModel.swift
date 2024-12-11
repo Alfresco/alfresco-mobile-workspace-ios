@@ -17,7 +17,6 @@
 //
 
 import Foundation
-import AlfrescoAuth
 
 class AdvancedSettingsViewModel {
     var authParameters = AuthenticationParameters.parameters()
