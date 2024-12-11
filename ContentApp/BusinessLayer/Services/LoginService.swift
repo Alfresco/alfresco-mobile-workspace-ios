@@ -58,8 +58,8 @@ public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIErro
 
 class AuthenticationService: AuthenticationServiceProtocol, Service {
     
-    private (set) var parameters: AuthenticationParameters
-    private (set) lazy var alfrescoAuth: AlfrescoAuth = {
+    private(set) var parameters: AuthenticationParameters
+    private(set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = parameters.authenticationConfiguration()
         return AlfrescoAuth(configuration: authConfig)
     }()
