@@ -82,31 +82,27 @@ class ConnectViewModel {
             switch result {
             case .success(let authType):
                 sSelf.authenticationService?.saveAuthParameters()
-                sSelf.availableVersionNumber(authParameters: AuthenticationParameters.parameters(), authType: authType, url: url, in: viewController)
+                sSelf.authenticationService?.isContentServicesAvailable(on: AuthenticationParameters.parameters().fullHostnameURL,
+                                                                        handler: { (result) in
+                    switch result {
+                    case .success(let isVersionOverMinium):
+                        sSelf.contentService(available: isVersionOverMinium,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
+                    case .failure(let error):
+                        AlfrescoLog.error(error)
+                        sSelf.contentService(available: false,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
+                    }
+                })
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     sSelf.delegate?.authServiceUnavailable(with: error)
                 }
-            }
-        })
-    }
-    
-    private func availableVersionNumber(authParameters: AuthenticationParameters, authType: AvailableAuthType, url: String, in viewController: UIViewController) {
-        self.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
-                                                                handler: { (result) in
-            switch result {
-            case .success(let isVersionOverMinium):
-                self.contentService(available: isVersionOverMinium,
-                                     authType: authType,
-                                     url: url,
-                                     in: viewController)
-            case .failure(let error):
-                AlfrescoLog.error(error)
-                self.contentService(available: false,
-                                     authType: authType,
-                                     url: url,
-                                     in: viewController)
             }
         })
     }
