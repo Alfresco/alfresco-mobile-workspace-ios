@@ -22,7 +22,6 @@ import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_OutlinedTextFields
 import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
-import AlfrescoAuth
 
 class AdvancedSettingsViewController: SystemThemableViewController {
 
