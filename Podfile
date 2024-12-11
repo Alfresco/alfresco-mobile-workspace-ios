@@ -17,7 +17,6 @@ target 'ContentApp' do
   pod 'DropDown'
   pod 'MaterialComponents'
   pod 'GrowingTextView'
-  pod 'Auth0'
 
   # Alfresco iOS Swift API
   pod 'AlfrescoContent'
