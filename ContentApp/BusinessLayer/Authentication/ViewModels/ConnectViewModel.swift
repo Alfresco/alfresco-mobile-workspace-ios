@@ -62,15 +62,18 @@ class ConnectViewModel {
             authParameters.clientSecret = appConfigDetails.oauth2?.secret ?? ""
             let host = appConfigDetails.oauth2?.host ?? ""
             authParameters.auth0BaseUrl = host
-            let auth0RedirectUri = String(format: "com.alfresco.contentapp://%@/ios/com.alfresco.contentapp/callback", host.replacingOccurrences(of: "https://", with: ""))
+            guard let url = URL(string: host),
+                  let auth0Host = url.host else { return }
+            let auth0RedirectUri = String(format: "com.alfresco.contentapp://%@/ios/com.alfresco.contentapp/callback", auth0Host)
             authParameters.redirectURI = auth0RedirectUri
             
         } else {
-            authParameters.authType = .aimsAuth
-            authParameters.realm = "alfresco"
-            authParameters.clientID = "alfresco-ios-acs-app"
-            authParameters.clientSecret = ""
-            authParameters.redirectURI = "iosacsapp://aims/auth"
+            let oldParameters = AuthenticationParameters.parameters()
+            authParameters.authType = oldParameters.authType
+            authParameters.realm = oldParameters.realm
+            authParameters.clientID = oldParameters.clientID
+            authParameters.clientSecret = oldParameters.clientSecret
+            authParameters.redirectURI = oldParameters.redirectURI
         }
         authenticationService?.update(authenticationParameters: authParameters)
         
