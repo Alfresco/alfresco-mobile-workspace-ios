@@ -55,7 +55,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     func popViewControllerFromContainer() {
         self.connectScreenCoordinator?.popViewController()
     }
-    
+
     func showLoginContainerView() {
         if let activeAccountIdentifier = UserDefaultsModel.value(for: KeyConstants.Save.activeAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
@@ -74,6 +74,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
 
                     if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
                         let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
+
                         let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
                         let account = AIMSAccount(with: accountSession)
 
