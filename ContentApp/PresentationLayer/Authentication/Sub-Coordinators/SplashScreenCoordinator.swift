@@ -55,7 +55,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     func popViewControllerFromContainer() {
         self.connectScreenCoordinator?.popViewController()
     }
-    
+
     func showLoginContainerView() {
         if let activeAccountIdentifier = UserDefaultsModel.value(for: KeyConstants.Save.activeAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
@@ -74,6 +74,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
 
                     if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
                         let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
+
                         let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
                         let account = AIMSAccount(with: accountSession)
 
@@ -99,12 +100,18 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     private func registerAndPresent(account: AccountProtocol) {
         AlfrescoContentAPI.basePath = account.apiBasePath
         AlfrescoProcessAPI.basePath = account.processAPIBasePath
-
+        AlfrescoContentAPI.hostname = account.apiHostName
         accountService?.register(account: account)
         accountService?.activeAccount = account
 
         tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
         tabBarScreenCoordinator?.start()
-        appDelegate()?.startSyncOperation()
+        DispatchQueue.global(qos: .background).async {[weak self] in
+            guard let sSelf = self else { return }
+            MobileConfigManager.shared.fetchMenuOption(accountService: sSelf.accountService)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            appDelegate()?.startSyncOperation()
+        }
     }
 }
