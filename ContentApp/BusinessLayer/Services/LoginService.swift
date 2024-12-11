@@ -50,11 +50,14 @@ protocol AuthenticationServiceProtocol {
     ///   - stringURL: URL to check the version
     ///   - handler: Signals the success or failure of the operation with additional error information
     func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<Bool, APIError>) -> Void))
+    
+    func availableAuthTypeServer(on stringUrl: String, handler: @escaping ((Result<AppConfigDetails, APIError>) -> Void))
 }
 
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
 class AuthenticationService: AuthenticationServiceProtocol, Service {
+    
     private (set) var parameters: AuthenticationParameters
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = parameters.authenticationConfiguration()
@@ -110,7 +113,22 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
             }
         })
     }
-
+    
+    func availableAuthTypeServer(on stringUrl: String, handler: @escaping ((Result<AppConfigDetails, APIError>) -> Void)) {
+        apiClient = APIClient(with: String(format: "%@", stringUrl))
+        _ = apiClient?.send(GetContentServiceAuthType(), completion: { (result) in
+            switch result {
+            case .success(let response):
+                if let tempResponse = response {
+                    handler(.success(tempResponse))
+                }
+                
+            case .failure(let error):
+                handler(.failure(error))
+            }
+        })
+    }
+    
     func saveAuthParameters() {
         parameters.save()
     }

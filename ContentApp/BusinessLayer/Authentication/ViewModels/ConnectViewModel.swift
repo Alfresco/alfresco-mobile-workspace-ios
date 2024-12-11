@@ -38,14 +38,43 @@ class ConnectViewModel {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
-        let localAuthType = authParameters.authType
-        switch localAuthType {
-        case .auth0:
-            self.authenticationService?.saveAuthParameters()
-            availableVersionNumber(authParameters: AuthenticationParameters.parameters(), authType: localAuthType, url: url, in: viewController)
-        default:
-            availableAimsAuthType(for: url, in: viewController)
+        authenticationService?.availableAuthTypeServer(on: authParameters.fullHostnameURL, handler: { [weak self] (result) in
+            guard let sSelf = self else { return }
+            switch result {
+            case .success(let appConfigDetails):
+                sSelf.updateAuthParameter(appConfigDetails: appConfigDetails, authParameters: authParameters)
+                sSelf.availableAimsAuthType(for: url, in: viewController)
+            case .failure(let error):
+                AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    sSelf.delegate?.authServiceUnavailable(with: error)
+                }
+            }
+        })
+    }
+    
+    private func updateAuthParameter(appConfigDetails: AppConfigDetails, authParameters: AuthenticationParameters) {
+        
+        if let authType = appConfigDetails.oauth2?.authType, authType == "auth0" {
+            authParameters.authType = .auth0
+            authParameters.realm = appConfigDetails.oauth2?.audience ?? ""
+            authParameters.clientID = appConfigDetails.oauth2?.clientId ?? ""
+            authParameters.clientSecret = appConfigDetails.oauth2?.secret ?? ""
+            let host = appConfigDetails.oauth2?.host ?? ""
+            authParameters.auth0BaseUrl = host
+            let auth0RedirectUri = String(format: "com.alfresco.contentapp://%@/ios/com.alfresco.contentapp/callback", host.replacingOccurrences(of: "https://", with: ""))
+            authParameters.redirectURI = auth0RedirectUri
+            authParameters.auth0LogoutUrl = appConfigDetails.oauth2?.logoutUrl ?? ""
+            
+        } else {
+            authParameters.authType = .aimsAuth
+            authParameters.realm = "alfresco"
+            authParameters.clientID = "alfresco-ios-acs-app"
+            authParameters.clientSecret = ""
+            authParameters.redirectURI = "iosacsapp://aims/auth"
         }
+        authenticationService?.update(authenticationParameters: authParameters)
+        
     }
     
     private func availableAimsAuthType(for url: String, in viewController: UIViewController) {

@@ -62,26 +62,14 @@ class AdvancedSettingsViewController: SystemThemableViewController {
             saveButton.isEnabled = enableSaveButton
         }
     }
-    
-    var authType: AvailableAuthType = .aimsAuth {
-        didSet {
-            IDPTextField.text = authType.rawValue
-            updateSettingsViewVisibility(isHidden: authType != .aimsAuth)
-        }
-    }
 
     let unsecuredDefaultPort = "80"
     let securedDefaultPort = "443"
-    
-    var authTypeItem: TaskChipItem?
-    
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        DispatchQueue.global(qos: .background).async {
-            self.authTypeItem = self.createAuthTypeItem()
-        }
         addLocalization()
         enableSaveButton = false
         updateFields()
@@ -151,7 +139,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         httpsLabel.text = LocalizationConstants.Labels.https
         copyrightLabel.text = String(format: LocalizationConstants.copyright,
                                      Calendar.current.component(.year, from: Date()))
-        IDPTextField.label.text = LocalizationConstants.Labels.authType
+
         portTextField.label.text = LocalizationConstants.TextFieldPlaceholders.port
         pathTextField.label.text = LocalizationConstants.TextFieldPlaceholders.path + "*"
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
@@ -190,8 +178,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
             let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton),
             let smallButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginSmallButton),
             let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        
-        IDPTextField.applyTheme(withScheme: loginTextFieldScheme)
+
         portTextField.applyTheme(withScheme: loginTextFieldScheme)
         pathTextField.applyTheme(withScheme: loginTextFieldScheme)
         clientIDTextField.applyTheme(withScheme: loginTextFieldScheme)
@@ -223,13 +210,12 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
         needHelpButton.applyTextTheme(withScheme: smallButtonScheme)
         needHelpButton.isUppercaseTitle = false
-        
+
         view.backgroundColor = currentTheme.surfaceColor
         navigationPadBar.backgroundColor = currentTheme.surfaceColor
     }
 
     func updateFields() {
-        authType = viewModel.authParameters.authType
         httpsSwitch.isOn = viewModel.authParameters.https
         portTextField.text = viewModel.authParameters.port
         pathTextField.text = viewModel.authParameters.path
@@ -238,19 +224,15 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     }
 
     func saveFields() {
-        if self.authType == .aimsAuth && pathTextField.isEmpty() {
-            Snackbar.display(with: LocalizationConstants.Errors.errorGeneric,
-                             type: .error,
-                             finish: nil)
+        if pathTextField.isEmpty() {
             return
         }
-        
         viewModel.saveFields(https: httpsSwitch.isOn,
-                             port: portTextField.text,
-                             path: pathTextField.text,
-                             realm: realmTextField.text,
-                             clientID: clientIDTextField.text,
-                             authType: self.authType)
+                         port: portTextField.text,
+                         path: pathTextField.text,
+                         realm: realmTextField.text,
+                         clientID: clientIDTextField.text)
+
         Snackbar.display(with: LocalizationConstants.Approved.saveSettings,
                          type: .approve,
                          finish: nil)
@@ -262,14 +244,8 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
-            // If the textField is the IDPTextField, trigger the authTypeSelection and prevent editing
-            if textField == IDPTextField {
-                authTypeSelection()
-                return false
-            }
-            // If the textField is not the IDPTextField, enable the save button based on the pathTextField's content
-            enableSaveButton = !pathTextField.isEmpty()
-            return true
+        enableSaveButton = !pathTextField.isEmpty()
+        return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -317,64 +293,3 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
 // MARK: - Storyboard Instantiable
 
 extension AdvancedSettingsViewController: StoryboardInstantiable { }
-
-extension AdvancedSettingsViewController {
-    private func authTypeSelection() {
-        let viewController = SearchListComponentViewController.instantiateViewController()
-        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
-        bottomSheet.dismissOnDraggingDownSheet = false
-        viewController.coordinatorServices = coordinatorServices
-        viewController.listViewModel.isRadioList = true
-        viewController.listViewModel.isComplexFormsFlow = true
-        viewController.listViewModel.taskChip = authTypeItem
-        viewController.taskFilterCallBack = { [weak self] selectedChip, isBackButtonTapped in
-            guard !isBackButtonTapped, let self = self, let selectedAuthType = selectedChip else { return }
-            
-            let selectedOptions = selectedAuthType.options.filter { $0.isSelected }
-            for option in selectedOptions {
-                self.authType = AvailableAuthType(rawValue: option.value ?? LocalizationConstants.Labels.keycloak) ?? .aimsAuth
-                self.enableSaveButton = self.viewModel.authParameters.authType.rawValue != (option.value ?? "")
-            }
-        }
-        self.present(bottomSheet, animated: true, completion: nil)
-    }
-    
-    private func createAuthTypeItem() -> TaskChipItem {
-        let options = [
-            createTaskOptionItem(name: LocalizationConstants.Labels.keycloak),
-            createTaskOptionItem(name: LocalizationConstants.Labels.auth0)
-        ]
-        
-        return TaskChipItem(
-            chipId: 0,
-            name: LocalizationConstants.Labels.authType,
-            selectedValue: LocalizationConstants.Labels.authType,
-            componentType: .text,
-            query: "",
-            options: options,
-            accessibilityIdentifier: LocalizationConstants.Labels.authType
-        )
-    }
-
-    private func createTaskOptionItem(name: String, isSelected: Bool = false) -> TaskOptions {
-        return TaskOptions(label: name, query: name, value: name, isSelected: isSelected, accessibilityIdentifier: name)
-    }
-    
-    private func updateSettingsViewVisibility(isHidden: Bool) {
-        if #available(iOS 16.0, *) {
-            self.resetToDefaultButton.isHidden = (self.authType == .auth0)
-        } else {
-            self.resetToDefaultButton.customView = (self.authType == .auth0) ? nil : UIView()
-        }
-        transportProtocolLabel.isHidden = isHidden
-        settingsLabel.isHidden = isHidden
-        authenticationLabel.isHidden = isHidden
-        httpsLabel.isHidden = isHidden
-        httpsSwitch.isHidden = isHidden
-        portTextField.isHidden = isHidden
-        pathTextField.isHidden = isHidden
-        realmTextField.isHidden = isHidden
-        clientIDTextField.isHidden = isHidden
-
-    }
-}
