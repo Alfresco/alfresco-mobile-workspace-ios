@@ -34,7 +34,6 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
 
-    @IBOutlet weak var IDPTextField: MDCOutlinedTextField!
     @IBOutlet weak var transportProtocolLabel: UILabel!
     @IBOutlet weak var settingsLabel: UILabel!
     @IBOutlet weak var authenticationLabel: UILabel!
