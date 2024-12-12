@@ -64,6 +64,7 @@ class AIMSAccount: AccountProtocol, Equatable {
 
     func removeAuthenticationParameters() {
         session.parameters.remove(for: identifier)
+        session.parameters.remove(for: KeyConstants.Save.authSettingsParameters)
     }
 
     func removeAuthenticationCredentials() {
