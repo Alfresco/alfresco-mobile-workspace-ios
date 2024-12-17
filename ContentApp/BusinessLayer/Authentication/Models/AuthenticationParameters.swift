@@ -63,6 +63,10 @@ class AuthenticationParameters: Codable {
     func save() {
         save(for: KeyConstants.Save.authSettingsParameters)
     }
+    
+    func remove() {
+        remove(for: KeyConstants.Save.authSettingsParameters)
+    }
 
     func save(for accountIdentifier: String) {
         UserDefaultsModel.set(value: try? PropertyListEncoder().encode(self), for: accountIdentifier)
