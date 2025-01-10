@@ -44,14 +44,8 @@ class BrowseScreenCoordinator: PresentingCoordinator,
         let viewController = BrowseViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.browse
 
-        let searchViewModel = browseDataSource.globalSearchViewModel
         let browseViewModel = browseDataSource.browseViewModel
-        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
-                                                      services: coordinatorServices)
-        viewController.searchPageController = searchPageController
-
         viewController.listViewModel = browseViewModel
-        viewController.searchViewModel = searchViewModel
 
         viewController.coordinatorServices = coordinatorServices
         viewController.browseScreenCoordinatorDelegate = self
