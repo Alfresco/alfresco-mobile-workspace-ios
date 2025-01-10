@@ -97,6 +97,13 @@
 		74906AC22B6B8BF70021D359 /* ComplexFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */; };
 		74A5788F2CA15D4E0067229E /* MobileConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741822C42C9C05D100E0E52A /* MobileConfigManager.swift */; };
 		74A97F7C2BE2A49600A0931D /* DateFormatterUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A97F7B2BE2A49600A0931D /* DateFormatterUtility.swift */; };
+		74C2AD3C2D2EB6430014052C /* ShareSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C2AD3B2D2EB6370014052C /* ShareSearchViewModel.swift */; };
+		74C2AD3E2D30FE620014052C /* BrowserScreenViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90E3832255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift */; };
+		74C2AD442D310B640014052C /* BrowseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C2AD432D310B640014052C /* BrowseViewModel.swift */; };
+		74C2AD472D310D210014052C /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C2AD462D310D210014052C /* BrowseViewController.swift */; };
+		74C2AD482D310E0F0014052C /* MyLibrariesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E72265E656400B89766 /* MyLibrariesModel.swift */; };
+		74C2AD4B2D3112A80014052C /* BrowseScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C2AD4A2D3112A80014052C /* BrowseScreenCoordinator.swift */; };
+		74C2AD4C2D3113BE0014052C /* ListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */; };
 		74D4D9272BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */; };
 		74D4D9282BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */; };
 		74D4D92A2BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */; };
@@ -931,6 +938,10 @@
 		74847F9F2B5A88DA00EEC9D8 /* DatePickerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerTableViewCell.xib; sourceTree = "<group>"; };
 		74906AC12B6B8BF70021D359 /* ComplexFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexFormViewModel.swift; sourceTree = "<group>"; };
 		74A97F7B2BE2A49600A0931D /* DateFormatterUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterUtility.swift; sourceTree = "<group>"; };
+		74C2AD3B2D2EB6370014052C /* ShareSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSearchViewModel.swift; sourceTree = "<group>"; };
+		74C2AD432D310B640014052C /* BrowseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewModel.swift; sourceTree = "<group>"; };
+		74C2AD462D310D210014052C /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
+		74C2AD4A2D3112A80014052C /* BrowseScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseScreenCoordinator.swift; sourceTree = "<group>"; };
 		74D4D9252BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCell.swift; sourceTree = "<group>"; };
 		74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttachmentComplexTableViewCell.xib; sourceTree = "<group>"; };
 		74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -1811,6 +1822,23 @@
 				74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */,
 			);
 			path = People;
+			sourceTree = "<group>";
+		};
+		74C2AD2C2D2BC46D0014052C /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				74C2AD432D310B640014052C /* BrowseViewModel.swift */,
+				74C2AD462D310D210014052C /* BrowseViewController.swift */,
+			);
+			path = Browse;
+			sourceTree = "<group>";
+		};
+		74C2AD3A2D2EB6280014052C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				74C2AD3B2D2EB6370014052C /* ShareSearchViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		74D4D9242BBD1E8B00AD93CD /* AddAttachmentComplex */ = {
@@ -2916,6 +2944,7 @@
 		C9A9FB3827ABB30F0091B7E8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				74C2AD2C2D2BC46D0014052C /* Browse */,
 				C9A9FB3A27ABB30F0091B7E8 /* Share */,
 			);
 			path = Controllers;
@@ -2997,6 +3026,7 @@
 				C9AFDF7A27B8EE32007233A5 /* BrowseTopLevelFolderScreenCoordinator.swift */,
 				C9AFDF8027B8EF5C007233A5 /* FolderChildrenScreenCoordinator.swift */,
 				C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */,
+				74C2AD4A2D3112A80014052C /* BrowseScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -3105,6 +3135,7 @@
 		C9E79E7527A3E653002BC5A0 /* Share */ = {
 			isa = PBXGroup;
 			children = (
+				74C2AD3A2D2EB6280014052C /* ViewModel */,
 				C9C03BB327AB014500DA49B2 /* ShareDebug.entitlements */,
 				C99786B627F738C70033DB3E /* Action Menu */,
 				C93A06AD27B91A530027097B /* Extensions */,
@@ -4384,13 +4415,16 @@
 				C9A9110727A7B7AC002EBC7F /* LoginComponentsThemingServiceWorker.swift in Sources */,
 				C99786C127F760060033DB3E /* FavouriteEvent.swift in Sources */,
 				C9A910FD27A7B78B002EBC7F /* NSAttributedString+LocalizedHTML.swift in Sources */,
+				74C2AD482D310E0F0014052C /* MyLibrariesModel.swift in Sources */,
 				C9C7F22A27BB82940039A6AE /* FolderDrillModel.swift in Sources */,
 				C9AFDF8627B8F0FE007233A5 /* SearchModelProtocol.swift in Sources */,
+				74C2AD4C2D3113BE0014052C /* ListCoordinatorProtocol.swift in Sources */,
 				C9A9114727A7B8C6002EBC7F /* SearchChipItem.swift in Sources */,
 				C9AFDFA627B9003E007233A5 /* DeleteNodeMapper.swift in Sources */,
 				C9A9110127A7B795002EBC7F /* UICollectionView+ItemIndex.swift in Sources */,
 				C918812027AA41B900F850DF /* ThemingService.swift in Sources */,
 				C9A9112027A7B814002EBC7F /* NeedHelpModelProtocol.swift in Sources */,
+				74C2AD3E2D30FE620014052C /* BrowserScreenViewModelFactory.swift in Sources */,
 				C9A9117427A7B9E4002EBC7F /* KeychainWrapper.swift in Sources */,
 				C9A9108127A7B45B002EBC7F /* LocationService.swift in Sources */,
 				C9A910EA27A7B746002EBC7F /* PageFetchableCollectionView.swift in Sources */,
@@ -4438,11 +4472,13 @@
 				C9A9117527A7B9EE002EBC7F /* DiskService.swift in Sources */,
 				C9A910C927A7B6CB002EBC7F /* ImagePreview.swift in Sources */,
 				C99786BE27F75F2A0033DB3E /* ListComponent+Actions.swift in Sources */,
+				74C2AD442D310B640014052C /* BrowseViewModel.swift in Sources */,
 				C93A06AF27B91A530027097B /* StoryboardInstantiable.swift in Sources */,
 				C9AFDF8827B8F28C007233A5 /* GlobalSearchModel.swift in Sources */,
 				C9C7F23127BB82D30039A6AE /* Coordinator.swift in Sources */,
 				C9A9114C27A7B902002EBC7F /* FilePreview.swift in Sources */,
 				C9C7F22C27BB82940039A6AE /* SearchModel.swift in Sources */,
+				74C2AD4B2D3112A80014052C /* BrowseScreenCoordinator.swift in Sources */,
 				C9A9116027A7B989002EBC7F /* Date+Grouped.swift in Sources */,
 				C9AFDF7327B8CA72007233A5 /* FileIcon.swift in Sources */,
 				C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */,
@@ -4514,6 +4550,7 @@
 				C9A9110327A7B79A002EBC7F /* UImage+Color.swift in Sources */,
 				C963196227DA0EF800BE8746 /* URLExtension.swift in Sources */,
 				C918811B27AA417200F850DF /* Constants.swift in Sources */,
+				74C2AD3C2D2EB6430014052C /* ShareSearchViewModel.swift in Sources */,
 				C9B6D27027C936D100CF0C73 /* SearchViewModel.swift in Sources */,
 				C9A9115027A7B918002EBC7F /* MultipleChoiceItem.swift in Sources */,
 				C9A910DB27A7B71B002EBC7F /* PDFRenderer+FilePreviewProtocol.swift in Sources */,
@@ -4529,6 +4566,7 @@
 				C9AFDF6C27B8CA44007233A5 /* RecentSearchCollectionViewCell.swift in Sources */,
 				C9A911B527A7BBF5002EBC7F /* RowViewModel.swift in Sources */,
 				C9A9FB3427AB8EFE0091B7E8 /* UIViewController+Dialog.swift in Sources */,
+				74C2AD472D310D210014052C /* BrowseViewController.swift in Sources */,
 				C92F3DC327BFEEA700952C59 /* SyncStatusEvent.swift in Sources */,
 				C99786BA27F739530033DB3E /* MoveEvent.swift in Sources */,
 				C9A9119627A7BA74002EBC7F /* FileAsset.swift in Sources */,
