@@ -27,7 +27,7 @@ import MaterialComponents.MaterialDialogs
 @objc(ShareExtensionViewController)
 class ShareViewController: SystemThemableViewController {
     lazy var viewModel = ShareViewModel()
-    private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
+    private var browseScreenCoordinator: BrowseScreenCoordinator?
     
     // MARK: - View did load
     override func viewDidLoad() {
@@ -127,7 +127,7 @@ class ShareViewController: SystemThemableViewController {
         viewModel.accountService?.register(account: account)
         viewModel.accountService?.activeAccount = account
         DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
-            self.showPersonalFiles()
+           self.showBrowseScreen()
         }
     }
     
@@ -181,14 +181,15 @@ class ShareViewController: SystemThemableViewController {
 
 // MARK: - Show Personal Files
 extension ShareViewController {
-    func showPersonalFiles() {
+    
+    func showBrowseScreen() {
         if let navigationViewController = self.navigationController {
-            let browseNode = BrowseNode(type: .personalFiles)
-            let staticFolderScreenCoordinator =
-                BrowseTopLevelFolderScreenCoordinator(with: navigationViewController,
+            let browseNode = BrowseNode(type: .myLibraries)
+            let staticScreenCoordinator =
+            BrowseScreenCoordinator(with: navigationViewController,
                                                       browseNode: browseNode)
-            staticFolderScreenCoordinator.start()
-            self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
+            staticScreenCoordinator.start()
+            self.browseScreenCoordinator = staticScreenCoordinator
         }
     }
 }

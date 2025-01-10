@@ -20,19 +20,26 @@ import Foundation
 
 enum BrowseType: String {
     case personalFiles = "PersonalFiles"
+    case myLibraries = "MyLibraries"
 }
 
 struct BrowseNode {
     var title: String
     var icon: String
     var type: BrowseType
+    var accessibilityId: String?
 
     init(type: BrowseType) {
         self.type = type
         switch type {
         case .personalFiles:
-            self.title = LocalizationConstants.AppExtension.saveToAlfresco
+            self.title = LocalizationConstants.BrowseStaticList.personalFiles
             self.icon = "ic-personal_files"
+            self.accessibilityId = "personal-files"
+        case .myLibraries:
+            self.title = LocalizationConstants.BrowseStaticList.myLibraries
+            self.icon = "ic-my_libraries"
+            self.accessibilityId = "my-libraries"
         }
     }
 }
