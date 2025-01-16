@@ -39,6 +39,8 @@ class TopLevelBrowseViewModelFactory {
         switch type {
         case .personalFiles:
             return personalFilesViewModel()
+        case .myLibraries:
+            return myLibrariesViewModel()
         default:
             return defaultViewModel()
         }
@@ -60,7 +62,7 @@ class TopLevelBrowseViewModelFactory {
             }
         default:
             let searchModel = GlobalSearchModel(with: services)
-            let globalSearchViewModel = GlobalSearchViewModel(model: searchModel)
+            let globalSearchViewModel = ShareSearchViewModel(model: searchModel)
         
             return globalSearchViewModel
         }
@@ -93,6 +95,20 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: model,
                                   for: SyncStatusEvent.self,
                                   nodeTypes: [.file, .folder])
+        return viewModel
+    }
+    
+    private func myLibrariesViewModel() -> ListComponentViewModel {
+        let eventBusService = services.eventBusService
+
+        let model = MyLibrariesModel(services: services)
+        let viewModel = ListComponentViewModel(model: model)
+        eventBusService?.register(observer: model,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.site])
+        eventBusService?.register(observer: model,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.site])
         return viewModel
     }
 

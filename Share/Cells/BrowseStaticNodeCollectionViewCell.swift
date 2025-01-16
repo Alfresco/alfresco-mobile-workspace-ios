@@ -21,6 +21,8 @@ import UIKit
 class BrowseStaticNodeCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var sepratorView: UIView!
+    
     var node: BrowseNode? {
         didSet {
             if let node = node {
@@ -29,9 +31,15 @@ class BrowseStaticNodeCollectionViewCell: ListSelectableCell {
                 switch node.type {
                 case .personalFiles:
                     self.accessibilityIdentifier = "personalFilesCell"
+                case .myLibraries:
+                    self.accessibilityIdentifier = "myLibrariesCell"
                 }
             }
         }
+    }
+    
+    func configureSeparator(isLastCell: Bool) {
+        sepratorView.isHidden = isLastCell
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
