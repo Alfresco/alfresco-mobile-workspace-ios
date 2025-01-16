@@ -5,7 +5,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'ContentApp' do
-  pod 'SwiftLint'
+  pod 'SwiftLint', '~> 0.48.0'
   pod 'JWTDecode'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
@@ -21,8 +21,6 @@ target 'ContentApp' do
   # Alfresco iOS Swift API
   pod 'AlfrescoAuth', '0.1.2'
   pod 'AlfrescoContent'
-  pod 'AlfrescoAuth'
-
 
   target 'ContentAppTests' do
     inherit! :search_paths

@@ -21,7 +21,7 @@ import UIKit
 
 class FilePreviewFactory {
     static func getPreview(for previewType: FilePreviewType, and url: URL, on size: CGSize,
-                           completion: @escaping (_view: UIView, _ error: Error?) -> Void) {
+                           completion: @escaping(_ view: UIView, _ error: Error?) -> Void) {
         switch previewType {
         case .image:
             let previewImageView = PreviewImageView(frame: CGRect(origin: .zero, size: size))

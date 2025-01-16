@@ -26,7 +26,7 @@ protocol TabBarScreenDelegate: AnyObject {
 class TabBarMainViewController: UITabBarController {
     let bottomNavigationBar = MDCBottomNavigationBar()
     let dividerView = UIView()
-    var tabBarItems = [UITabBarItem]()
+    var tabs = [UITabBarItem]()
 
     var connectivityService: ConnectivityService?
     var themingService: MaterialDesignThemingService?
@@ -109,13 +109,13 @@ class TabBarMainViewController: UITabBarController {
 
         bottomNavigationBar.titleVisibility = .always
         bottomNavigationBar.alignment = .centered
-        bottomNavigationBar.items = tabBarItems
+        bottomNavigationBar.items = tabs
 
         if connectivityService?.hasInternetConnection() == false {
-            bottomNavigationBar.selectedItem = tabBarItems[3] // offline tab
+            bottomNavigationBar.selectedItem = tabs[3] // offline tab
             self.selectedIndex = 3
         } else {
-            bottomNavigationBar.selectedItem = tabBarItems.first
+            bottomNavigationBar.selectedItem = tabs.first
         }
         bottomNavigationBar.delegate = self
     }

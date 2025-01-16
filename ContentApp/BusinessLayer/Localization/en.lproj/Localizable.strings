@@ -249,8 +249,6 @@
 "action-menu-upload-files" = "Upload files";
 "action-menu-move-folder" = "Move";
 "action-menu-rename-node" = "Rename";
-"action-unavailable-title" = "No Actions Available";
-"action-unavailable-message" = "Contact your administrator for help.";
 
 "action-menu-scan-documents" = "Scan documents";
 "action-unavailable-title" = "No Actions Available";

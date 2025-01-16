@@ -71,14 +71,14 @@ class ListElementCollectionViewCell: ListSelectableCell {
         moreButton.tintColor = currentTheme.onSurface70Color
         syncStatusImageView.tintColor = currentTheme.onSurface70Color
         
-        if node?.nodeType == .folder || node?.nodeType == .site {
-            self.isUserInteractionEnabled = true
-            disableView.backgroundColor = .clear
-            disableView.alpha = 0
-        } else {
+        if node?.nodeType != .folder {
             self.isUserInteractionEnabled = false
             disableView.backgroundColor = currentTheme.surface60Color
             disableView.alpha = 1
+        } else {
+            self.isUserInteractionEnabled = true
+            disableView.backgroundColor = .clear
+            disableView.alpha = 0
         }
     }
     

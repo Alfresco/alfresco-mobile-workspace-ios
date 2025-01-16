@@ -294,7 +294,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
         connectTextFieldAddMaterialComponents()
         Snackbar.dimissAll()
         switch authType {
-        case .aimsAuth, .auth0:
+        case .aimsAuth:
             connectScreenCoordinatorDelegate?.showAimsScreen()
         case .basicAuth:
             connectScreenCoordinatorDelegate?.showBasicAuthScreen()
@@ -319,16 +319,16 @@ extension ConnectViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         AnalyticsManager.shared.apiTracker(name: Event.API.apiLogin.rawValue, fileSize: 0, success: false)
         splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-        if error.responseCode == ErrorCodes.IDPWebview.aimsCancel || error.responseCode == ErrorCodes.IDPWebview.auth0Cancel {
-            activityIndicator?.state = .isIdle
-            errorShowInProgress = false
-            connectTextFieldAddMaterialComponents()
-            Snackbar.dimissAll()
-        } else {
+        if error.responseCode != ErrorCodes.AimsWebview.cancel {
             activityIndicator?.state = .isIdle
             errorShowInProgress = true
             connectTextFieldAddMaterialComponents()
             showError(message: error.mapToMessage())
+        } else {
+            activityIndicator?.state = .isIdle
+            errorShowInProgress = false
+            connectTextFieldAddMaterialComponents()
+            Snackbar.dimissAll()
         }
     }
 

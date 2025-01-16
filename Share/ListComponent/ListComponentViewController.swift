@@ -329,9 +329,6 @@ extension ListComponentViewController: ListPageControllerDelegate {
             return
         }
         uploadButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
-        let hasSiteNode = model.listNodes().contains { $0.nodeType == .site }
-        uploadFilesView.isHidden = hasSiteNode
-
         let isListEmpty = model.isEmpty()
         emptyListView.isHidden = !isListEmpty
         if isListEmpty {

@@ -73,7 +73,7 @@ class TabBarScreenCoordinator: Coordinator {
         tasksTabBarItem.tag = 2
         offlineTabBarItem.tag = 3
         browseTabBarItem.tag = 4
-        viewController.tabBarItems = [recentTabBarItem,
+        viewController.tabs = [recentTabBarItem,
                                favoritesTabBarItem,
                                tasksTabBarItem,
                                offlineTabBarItem,

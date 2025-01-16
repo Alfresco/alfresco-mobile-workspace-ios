@@ -132,7 +132,6 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 }
             }
         case .failure(let error):
-            authenticationService?.parameters.remove()
             let contentURL = authenticationService?.parameters.contentURL
             AlfrescoLog.error("Error \(String(describing: contentURL)) login with aims : \(error.localizedDescription)")
             DispatchQueue.main.async { [weak self] in

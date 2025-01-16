@@ -30,10 +30,10 @@ class AIMSSession {
         return extractUsername(from: credential?.accessToken)
     }
 
-    private(set) var session: AlfrescoAuthSession?
+    private (set) var session: AlfrescoAuthSession?
     private var alfrescoAuth: AlfrescoAuth?
-    private(set) var parameters: AuthenticationParameters
-    private(set) var credential: AlfrescoCredential?
+    private (set) var parameters: AuthenticationParameters
+    private (set) var credential: AlfrescoCredential?
 
     private var refreshGroup = DispatchGroup()
     private var refreshGroupRequestCount = 0
@@ -242,7 +242,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
                 handler(nil)
             case .failure(let error):
                 AlfrescoLog.error("Failed to log out. Reason: \(error)")
-                if error.responseCode != ErrorCodes.IDPWebview.aimsCancel {
+                if error.responseCode != ErrorCodes.AimsWebview.cancel {
                     self.session = nil
                     invalidateSessionRefresh()
                 }

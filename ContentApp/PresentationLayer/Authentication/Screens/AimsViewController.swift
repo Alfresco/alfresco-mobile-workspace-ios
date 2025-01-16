@@ -169,7 +169,7 @@ extension AimsViewController: UITextFieldDelegate {
 
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
-        if error.responseCode != ErrorCodes.IDPWebview.aimsCancel {
+        if error.responseCode != ErrorCodes.AimsWebview.cancel {
             Snackbar.display(with: error.mapToMessage(), type: .error, finish: nil)
         }
     }

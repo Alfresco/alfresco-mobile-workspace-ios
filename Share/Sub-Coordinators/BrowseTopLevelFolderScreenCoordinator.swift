@@ -37,7 +37,6 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
         let viewController = ListViewController()
         viewController.title = browseNode.title
         viewController.fileManagerDelegate = self
-        viewController.isChildFolder = true
         
         let accountIdentifier = self.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
         let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
@@ -51,10 +50,12 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
         let searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
         let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
                                                       services: coordinatorServices)
+
         viewController.pageController = pageController
         viewController.searchPageController = searchPageController
         viewController.viewModel = viewModel
         viewController.searchViewModel = searchViewModel
+
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
         self.listController = viewController
