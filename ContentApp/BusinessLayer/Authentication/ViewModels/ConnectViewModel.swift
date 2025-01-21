@@ -66,7 +66,9 @@ class ConnectViewModel {
             authParameters.auth0BaseUrl = host
             guard let url = URL(string: host),
                   let auth0Host = url.host else { return }
-            let auth0RedirectUri = String(format: "com.alfresco.contentapp://%@/ios/com.alfresco.contentapp/callback", auth0Host)
+            guard let bundleID = Bundle.main.bundleIdentifier else { return }
+            let auth0RedirectUri = String(format: "%@://%@/ios/%@/callback", bundleID, auth0Host, bundleID)
+
             authParameters.redirectURI = auth0RedirectUri
             
         } else {
