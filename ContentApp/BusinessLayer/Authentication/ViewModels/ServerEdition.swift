@@ -28,7 +28,7 @@ class ServerEdition: NSObject {
         
         if let activeAccountIdentifier = UserDefaults.standard.value(forKey: KeyConstants.Save.activeAccountIdentifier) as? String {
             let hostname = AuthenticationParameters.parameters(for: activeAccountIdentifier).hostname
-            self.viewModel?.availableAuthType(for: hostname, in: nil, isCheckForServerEditionOnly: true)
+            self.viewModel?.availableAuthTypes(for: hostname, in: nil, isCheckForServerEditionOnly: true)
         }
     }
 }

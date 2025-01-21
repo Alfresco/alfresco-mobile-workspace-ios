@@ -36,16 +36,58 @@ class ConnectViewModel {
         accountService = ApplicationBootstrap.shared().repository.service(of: AccountService.identifier) as? AccountService
     }
 
-    func availableAuthType(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
+    func availableAuthTypes(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
+        authenticationService?.availableAuthTypeServer(on: authParameters.fullHostnameURL, handler: { [weak self] (result) in
+            guard let sSelf = self else { return }
+            switch result {
+            case .success(let appConfigDetails):
+                sSelf.updateAuthParameter(appConfigDetails: appConfigDetails, authParameters: authParameters)
+                sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
+            case .failure(let error):
+                AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    sSelf.delegate?.authServiceUnavailable(with: error)
+                }
+            }
+        })
+    }
+    
+    private func updateAuthParameter(appConfigDetails: AppConfigDetails, authParameters: AuthenticationParameters) {
+        
+        if let authType = appConfigDetails.oauth2?.authType, authType == "auth0" {
+            authParameters.authType = .auth0
+            authParameters.realm = appConfigDetails.oauth2?.audience ?? ""
+            authParameters.clientID = appConfigDetails.oauth2?.clientId ?? ""
+            authParameters.clientSecret = appConfigDetails.oauth2?.secret ?? ""
+            let host = appConfigDetails.oauth2?.host ?? ""
+            authParameters.auth0BaseUrl = host
+            guard let url = URL(string: host),
+                  let auth0Host = url.host else { return }
+            let auth0RedirectUri = String(format: "com.alfresco.contentapp://%@/ios/com.alfresco.contentapp/callback", auth0Host)
+            authParameters.redirectURI = auth0RedirectUri
+            
+        } else {
+            let oldParameters = AuthenticationParameters.parameters()
+            authParameters.authType = oldParameters.authType
+            authParameters.realm = oldParameters.realm
+            authParameters.clientID = oldParameters.clientID
+            authParameters.clientSecret = oldParameters.clientSecret
+            authParameters.redirectURI = oldParameters.redirectURI
+        }
+        authenticationService?.update(authenticationParameters: authParameters)
+        
+    }
+    
+    private func availableAimsAuthType(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
         authenticationService?.availableAuthType(handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
             case .success(let authType):
                 sSelf.authenticationService?.saveAuthParameters()
-                sSelf.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
+                sSelf.authenticationService?.isContentServicesAvailable(on: AuthenticationParameters.parameters().fullHostnameURL,
                                                                         handler: { (result) in
                     switch result {
                     case .success(let response):
@@ -68,6 +110,7 @@ class ConnectViewModel {
                         }
                     }
                 })
+
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -76,19 +119,19 @@ class ConnectViewModel {
             }
         })
     }
-
+    
     func contentService(available: Bool,
                         authType: AvailableAuthType,
                         url: String,
                         in viewController: UIViewController?) {
         switch authType {
-        case .aimsAuth:
+        case .aimsAuth, .auth0:
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 if available {
                     sSelf.delegate?.authServiceByPass()
-                    if let viewController = viewController {
-                        sSelf.aimsViewModel?.loginByPass(repository: url, in: viewController)
+                    if let localViewController = viewController {
+                        sSelf.aimsViewModel?.loginByPass(repository: url, in: localViewController)
                     }
                 } else {
                     sSelf.delegate?.authServiceAvailable(for: authType)
@@ -112,3 +155,4 @@ class ConnectViewModel {
         })
     }
 }
+
