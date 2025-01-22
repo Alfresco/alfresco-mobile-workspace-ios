@@ -34,7 +34,7 @@ class ConnectViewModel {
         authenticationService = loginService
     }
 
-    func availableAuthType(for url: String, in viewController: UIViewController) {
+    func availableAuthTypes(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
@@ -43,7 +43,7 @@ class ConnectViewModel {
             switch result {
             case .success(let appConfigDetails):
                 sSelf.updateAuthParameter(appConfigDetails: appConfigDetails, authParameters: authParameters)
-                sSelf.availableAimsAuthType(for: url, in: viewController)
+                sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -64,7 +64,8 @@ class ConnectViewModel {
             authParameters.auth0BaseUrl = host
             guard let url = URL(string: host),
                   let auth0Host = url.host else { return }
-            let auth0RedirectUri = String(format: "com.alfresco.contentapp://%@/ios/com.alfresco.contentapp/callback", auth0Host)
+            guard let bundleID = Bundle.main.bundleIdentifier else { return }
+                        let auth0RedirectUri = String(format: "%@://%@/ios/%@/callback", bundleID, auth0Host, bundleID)
             authParameters.redirectURI = auth0RedirectUri
             
         } else {
@@ -79,7 +80,7 @@ class ConnectViewModel {
         
     }
     
-    private func availableAimsAuthType(for url: String, in viewController: UIViewController) {
+    private func availableAimsAuthType(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
         authenticationService?.availableAuthType(handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
@@ -88,17 +89,22 @@ class ConnectViewModel {
                 sSelf.authenticationService?.isContentServicesAvailable(on: AuthenticationParameters.parameters().fullHostnameURL,
                                                                         handler: { (result) in
                     switch result {
-                    case .success(let isVersionOverMinium):
-                        sSelf.contentService(available: isVersionOverMinium,
-                                             authType: authType,
-                                             url: url,
-                                             in: viewController)
+                    case .success(let response):
+                        let isVersionOverMinium = (response?.isVersionOverMinium()) ?? false
+                        if isCheckForServerEditionOnly == false {
+                            sSelf.contentService(available: isVersionOverMinium,
+                                                 authType: authType,
+                                                 url: url,
+                                                 in: viewController)
+                        }
                     case .failure(let error):
                         AlfrescoLog.error(error)
-                        sSelf.contentService(available: false,
-                                             authType: authType,
-                                             url: url,
-                                             in: viewController)
+                        if isCheckForServerEditionOnly == false {
+                            sSelf.contentService(available: false,
+                                                 authType: authType,
+                                                 url: url,
+                                                 in: viewController)
+                        }
                     }
                 })
 
@@ -114,14 +120,16 @@ class ConnectViewModel {
     func contentService(available: Bool,
                         authType: AvailableAuthType,
                         url: String,
-                        in viewController: UIViewController) {
+                        in viewController: UIViewController?) {
         switch authType {
         case .aimsAuth, .auth0:
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 if available {
                     sSelf.delegate?.authServiceByPass()
-                    sSelf.aimsViewModel?.loginByPass(repository: url, in: viewController)
+                    if let localViewController = viewController {
+                        sSelf.aimsViewModel?.loginByPass(repository: url, in: localViewController)
+                    }
                 } else {
                     sSelf.delegate?.authServiceAvailable(for: authType)
                 }
