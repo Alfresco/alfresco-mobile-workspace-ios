@@ -49,7 +49,8 @@ protocol AuthenticationServiceProtocol {
     /// - Parameters:
     ///   - stringURL: URL to check the version
     ///   - handler: Signals the success or failure of the operation with additional error information
-    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<Bool, APIError>) -> Void))
+    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<VersionContentService?, APIError>) -> Void))
+
     
     func availableAuthTypeServer(on stringUrl: String, handler: @escaping ((Result<AppConfigDetails, APIError>) -> Void))
 }
@@ -100,14 +101,13 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
             }
         })
     }
-
-    func isContentServicesAvailable(on stringURL: String,
-                                    handler: @escaping ((Result<Bool, APIError>) -> Void)) {
+    
+    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<VersionContentService?, APIError>) -> Void)) {
         apiClient = APIClient(with: String(format: "%@/%@/", stringURL, parameters.path))
         _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
             switch result {
             case .success(let response):
-                handler(.success(response?.isVersionOverMinium() ?? false))
+                handler(.success(response))
             case .failure(let error):
                 handler(.failure(error))
             }

@@ -112,7 +112,7 @@ class ConnectViewController: SystemThemableViewController {
             return
         }
         activityIndicator?.state = .isLoading
-        viewModel?.availableAuthType(for: connectURL, in: self)
+        viewModel?.availableAuthTypes(for: connectURL, in: self)
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {

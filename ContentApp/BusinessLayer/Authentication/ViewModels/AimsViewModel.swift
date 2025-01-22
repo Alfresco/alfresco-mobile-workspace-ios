@@ -43,8 +43,8 @@ class AimsViewModel {
                                                           handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
-            case .success(let isVersionOverMinium):
-                guard isVersionOverMinium else {
+            case .success(let response):
+                guard let isVersionOverMinium = response?.isVersionOverMinium(), isVersionOverMinium == true else {
                     DispatchQueue.main.async { [weak self] in
                         guard let sSelf = self else { return }
                         sSelf.delegate?.logInFailed(with: APIError(domain: ""))
