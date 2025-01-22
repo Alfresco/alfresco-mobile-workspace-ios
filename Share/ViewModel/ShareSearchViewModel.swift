@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2025 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,15 +18,18 @@
 
 import Foundation
 
-struct ErrorCodes {
-    struct IDPWebview {
-        static let aimsCancel = -3
-        static let auth0Cancel = 2003
+class ShareSearchViewModel: SearchViewModel {
+
+    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+        return searchModel.isNodePathEnabled()
     }
-    
-    struct Swagger {
-        static let timeout = 500
-        static let nodeName = 409
-        static let unauthorized = 401
+
+    override func shouldDisplaySearchBar() -> Bool {
+        return false
+    }
+
+    override func shouldDisplaySearchButton() -> Bool {
+        return false
     }
 }
+

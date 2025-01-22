@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,15 +18,10 @@
 
 import Foundation
 
-struct ErrorCodes {
-    struct IDPWebview {
-        static let aimsCancel = -3
-        static let auth0Cancel = 2003
-    }
-    
-    struct Swagger {
-        static let timeout = 500
-        static let nodeName = 409
-        static let unauthorized = 401
+class BrowseViewModel {
+    var list: [[BrowseNode]]
+
+    init() {
+        list = [[BrowseNode(type: .personalFiles), BrowseNode(type: .myLibraries)]]
     }
 }
