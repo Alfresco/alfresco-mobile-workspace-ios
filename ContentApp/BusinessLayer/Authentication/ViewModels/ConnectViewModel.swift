@@ -55,27 +55,16 @@ class ConnectViewModel {
     
     private func updateAuthParameter(appConfigDetails: AppConfigDetails, authParameters: AuthenticationParameters) {
         
-        if let authType = appConfigDetails.oauth2?.authType, authType == "auth0" {
-            authParameters.authType = .auth0
-            authParameters.realm = appConfigDetails.oauth2?.audience ?? ""
-            authParameters.clientID = appConfigDetails.oauth2?.clientId ?? ""
-            authParameters.clientSecret = appConfigDetails.oauth2?.secret ?? ""
-            let host = appConfigDetails.oauth2?.host ?? ""
-            authParameters.auth0BaseUrl = host
-            guard let url = URL(string: host),
-                  let auth0Host = url.host else { return }
-            guard let bundleID = Bundle.main.bundleIdentifier else { return }
-                        let auth0RedirectUri = String(format: "%@://%@/ios/%@/callback", bundleID, auth0Host, bundleID)
-            authParameters.redirectURI = auth0RedirectUri
-            
-        } else {
-            let oldParameters = AuthenticationParameters.parameters()
-            authParameters.authType = oldParameters.authType
-            authParameters.realm = oldParameters.realm
-            authParameters.clientID = oldParameters.clientID
-            authParameters.clientSecret = oldParameters.clientSecret
-            authParameters.redirectURI = oldParameters.redirectURI
-        }
+        authParameters.hostNameURL = appConfigDetails.mobileSetting?.host ?? ""
+        authParameters.https = appConfigDetails.mobileSetting?.https ?? false
+        authParameters.port = String(appConfigDetails.mobileSetting?.port ?? 0)
+        authParameters.realm = appConfigDetails.mobileSetting?.realm ?? ""
+        authParameters.path = appConfigDetails.mobileSetting?.contentServicePath ?? ""
+        authParameters.clientSecret = appConfigDetails.mobileSetting?.secret ?? ""
+        authParameters.scope = appConfigDetails.mobileSetting?.scope ?? ""
+        authParameters.audience = appConfigDetails.mobileSetting?.audience ?? ""
+        authParameters.clientID = appConfigDetails.mobileSetting?.iOS?.clientId ?? ""
+        authParameters.redirectURI = appConfigDetails.mobileSetting?.iOS?.redirectUri ?? ""
         authenticationService?.update(authenticationParameters: authParameters)
         
     }
@@ -122,7 +111,7 @@ class ConnectViewModel {
                         url: String,
                         in viewController: UIViewController?) {
         switch authType {
-        case .aimsAuth, .auth0:
+        case .aimsAuth:
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 if available {

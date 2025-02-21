@@ -29,7 +29,7 @@ class ConnectViewController: SystemThemableViewController {
     @IBOutlet weak var productLabel: UILabel!
     @IBOutlet weak var connectTextField: MDCOutlinedTextField!
     @IBOutlet weak var connectButton: MDCButton!
-    @IBOutlet weak var advancedSettingsButton: MDCButton!
+//    @IBOutlet weak var advancedSettingsButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
     @IBOutlet weak var copyrightLabel: UILabel!
 
@@ -141,7 +141,7 @@ class ConnectViewController: SystemThemableViewController {
         connectTextField.label.text = LocalizationConstants.TextFieldPlaceholders.connect
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .normal)
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .disabled)
-        advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
+//        advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelpAlfresco, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright,
                                      Calendar.current.component(.year, from: Date()))
@@ -160,8 +160,8 @@ class ConnectViewController: SystemThemableViewController {
         connectButton.accessibilityIdentifier = "connect-button"
         connectButton.accessibilityLabel = LocalizationConstants.Buttons.connect
 
-        advancedSettingsButton.accessibilityIdentifier = "advance-settings-button"
-        advancedSettingsButton.accessibilityLabel = LocalizationConstants.Buttons.advancedSetting
+//        advancedSettingsButton.accessibilityIdentifier = "advance-settings-button"
+//        advancedSettingsButton.accessibilityLabel = LocalizationConstants.Buttons.advancedSetting
         
         needHelpButton.accessibilityIdentifier = "need-help-button"
         needHelpButton.accessibilityLabel = LocalizationConstants.Buttons.needHelpAlfresco
@@ -183,8 +183,8 @@ class ConnectViewController: SystemThemableViewController {
         connectButton.isUppercaseTitle = false
         connectButton.setShadowColor(.clear, for: .normal)
 
-        advancedSettingsButton.applyTextTheme(withScheme: smallButtonSceheme)
-        advancedSettingsButton.isUppercaseTitle = false
+//        advancedSettingsButton.applyTextTheme(withScheme: smallButtonSceheme)
+//        advancedSettingsButton.isUppercaseTitle = false
 
         needHelpButton.applyTextTheme(withScheme: smallButtonSceheme)
         needHelpButton.isUppercaseTitle = false
@@ -294,7 +294,8 @@ extension ConnectViewController: ConnectViewModelDelegate {
         connectTextFieldAddMaterialComponents()
         Snackbar.dimissAll()
         switch authType {
-        case .aimsAuth, .auth0:
+        case .aimsAuth:
+
             connectScreenCoordinatorDelegate?.showAimsScreen()
         case .basicAuth:
             connectScreenCoordinatorDelegate?.showBasicAuthScreen()
