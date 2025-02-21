@@ -19,7 +19,6 @@
 import UIKit
 
 protocol SplashScreenDelegate: AnyObject {
-    func showAdvancedSettingsScreen()
     func backPadButtonNeedsTo(hide: Bool)
     func backPadButton(userInteraction: Bool)
 }
@@ -192,11 +191,6 @@ extension SplashViewController: SplashScreenDelegate {
         } else {
             backButton.isHidden = true
         }
-    }
-
-    func showAdvancedSettingsScreen() {
-        self.view.endEditing(true)
-        coordinatorDelegate?.showAdvancedSettingsScreen()
     }
 
     func backPadButton(userInteraction: Bool) {

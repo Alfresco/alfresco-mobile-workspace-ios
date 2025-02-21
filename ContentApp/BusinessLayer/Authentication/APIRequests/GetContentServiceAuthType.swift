@@ -41,12 +41,7 @@ struct GetContentServiceAuthType: APIRequest {
 
 struct AppConfigDetails: Codable {
     let oauth2: OAuth2Data?
-    let mobileSetting: MobileSettings?
-    
-    enum CodingKeys: String, CodingKey {
-            case oauth2
-            case mobileSetting = "mobileSettings"
-        }
+    let mobileSettings: MobileSettings?
 }
 
 struct OAuth2Data: Codable {

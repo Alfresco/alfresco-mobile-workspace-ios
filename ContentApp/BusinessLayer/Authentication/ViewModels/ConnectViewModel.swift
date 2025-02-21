@@ -55,16 +55,16 @@ class ConnectViewModel {
     
     private func updateAuthParameter(appConfigDetails: AppConfigDetails, authParameters: AuthenticationParameters) {
         
-        authParameters.hostNameURL = appConfigDetails.mobileSetting?.host ?? ""
-        authParameters.https = appConfigDetails.mobileSetting?.https ?? false
-        authParameters.port = String(appConfigDetails.mobileSetting?.port ?? 0)
-        authParameters.realm = appConfigDetails.mobileSetting?.realm ?? ""
-        authParameters.path = appConfigDetails.mobileSetting?.contentServicePath ?? ""
-        authParameters.clientSecret = appConfigDetails.mobileSetting?.secret ?? ""
-        authParameters.scope = appConfigDetails.mobileSetting?.scope ?? ""
-        authParameters.audience = appConfigDetails.mobileSetting?.audience ?? ""
-        authParameters.clientID = appConfigDetails.mobileSetting?.iOS?.clientId ?? ""
-        authParameters.redirectURI = appConfigDetails.mobileSetting?.iOS?.redirectUri ?? ""
+        authParameters.hostNameURL = appConfigDetails.mobileSettings?.host ?? ""
+        authParameters.https = appConfigDetails.mobileSettings?.https ?? false
+        authParameters.port = String(appConfigDetails.mobileSettings?.port ?? 0)
+        authParameters.realm = appConfigDetails.mobileSettings?.realm ?? ""
+        authParameters.path = appConfigDetails.mobileSettings?.contentServicePath ?? ""
+        authParameters.clientSecret = appConfigDetails.mobileSettings?.secret ?? ""
+        authParameters.scope = appConfigDetails.mobileSettings?.scope ?? ""
+        authParameters.audience = appConfigDetails.mobileSettings?.audience ?? ""
+        authParameters.clientID = appConfigDetails.mobileSettings?.iOS?.clientId ?? ""
+        authParameters.redirectURI = appConfigDetails.mobileSettings?.iOS?.redirectUri ?? ""
         authenticationService?.update(authenticationParameters: authParameters)
         
     }
