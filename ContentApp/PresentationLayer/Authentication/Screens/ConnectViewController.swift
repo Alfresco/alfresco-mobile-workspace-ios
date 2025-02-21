@@ -277,7 +277,6 @@ extension ConnectViewController: ConnectViewModelDelegate {
         Snackbar.dimissAll()
         switch authType {
         case .aimsAuth:
-
             connectScreenCoordinatorDelegate?.showAimsScreen()
         case .basicAuth:
             connectScreenCoordinatorDelegate?.showBasicAuthScreen()
