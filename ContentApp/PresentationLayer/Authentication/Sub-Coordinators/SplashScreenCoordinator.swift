@@ -23,7 +23,6 @@ import FastCoding
 
 protocol SplashScreenCoordinatorDelegate: AnyObject {
     func showLoginContainerView()
-    func showAdvancedSettingsScreen()
     func popViewControllerFromContainer()
 }
 
@@ -89,12 +88,6 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
         } else {
             connectScreenCoordinator?.start()
         }
-    }
-
-    func showAdvancedSettingsScreen() {
-        let advancedSettingsCoordinator = AdvancedSettingsScreenCoordinator(with: presenter)
-        advancedSettingsCoordinator.start()
-        self.advancedSettingsCoordinator = advancedSettingsCoordinator
     }
 
     private func registerAndPresent(account: AccountProtocol) {

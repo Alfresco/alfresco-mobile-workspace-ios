@@ -39,9 +39,9 @@ struct GetContentServiceAuthType: APIRequest {
     }
 }
 
-
 struct AppConfigDetails: Codable {
     let oauth2: OAuth2Data?
+    let mobileSettings: MobileSettings?
 }
 
 struct OAuth2Data: Codable {
@@ -62,4 +62,21 @@ struct OAuth2Data: Codable {
     let skipIssuerCheck: Bool?
     let strictDiscoveryDocumentValidation: Bool?
     let authType: String?
+}
+
+struct MobileSettings: Codable {
+    let host: String?
+    let https: Bool
+    let port: Int
+    let realm: String?
+    let contentServicePath: String?
+    let secret: String?
+    let scope: String?
+    let audience: String?
+    let iOS: iOSData?
+}
+
+struct iOSData: Codable {
+    let redirectUri: String?
+    let clientId: String?
 }

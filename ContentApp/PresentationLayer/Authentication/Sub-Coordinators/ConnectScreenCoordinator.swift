@@ -20,7 +20,6 @@ import UIKit
 import AlfrescoCore
 
 protocol ConnectScreenCoordinatorDelegate: AnyObject {
-    func showAdvancedSettingsScreen()
     func showBasicAuthScreen()
     func showAimsScreen()
     func showNeedHelpSheet()
@@ -77,13 +76,6 @@ class ConnectScreenCoordinator: Coordinator {
 }
 
 extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
-    func showAdvancedSettingsScreen() {
-        if let containerViewNavigationController = self.containerViewNavigationController {
-            let advancedSettingsCoordinator = AdvancedSettingsScreenCoordinator(with: containerViewNavigationController)
-            advancedSettingsCoordinator.start()
-            self.advancedSettingsCoordinator = advancedSettingsCoordinator
-        }
-    }
 
     func showBasicAuthScreen() {
         if let containerViewNavigationController = self.containerViewNavigationController {
