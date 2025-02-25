@@ -29,7 +29,6 @@ class ConnectViewModel {
     weak var delegate: ConnectViewModelDelegate?
     var authenticationService: AuthenticationService?
     var aimsViewModel: AimsViewModel?
-    var mobileSetting: MobileSettings? = nil
 
     init(with loginService: AuthenticationService?) {
         authenticationService = loginService
