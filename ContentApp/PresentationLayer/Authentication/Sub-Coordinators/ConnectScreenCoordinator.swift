@@ -30,7 +30,6 @@ class ConnectScreenCoordinator: Coordinator {
     private let presenter: SplashViewController
     private var connectViewController: ConnectViewController?
     private var containerViewNavigationController: UINavigationController?
-    private var advancedSettingsCoordinator: AdvancedSettingsScreenCoordinator?
     private var basicAuthCoordinator: BasicAuthScreenCoordinator?
     private var aimsCoordinator: AimsScreenCoordinator?
     private var needHelpCoordinator: NeedHelpCoordinator?
