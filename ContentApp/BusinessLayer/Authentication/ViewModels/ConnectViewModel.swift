@@ -33,40 +33,75 @@ class ConnectViewModel {
     init(with loginService: AuthenticationService?) {
         authenticationService = loginService
     }
-
+    
     func availableAuthTypes(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
-        let authParameters = AuthenticationParameters.parameters()
-        authParameters.hostname = url
-        authenticationService?.update(authenticationParameters: authParameters)
-        authenticationService?.availableAuthTypeServer(on: authParameters.fullHostnameURL, handler: { [weak self] (result) in
+        let authParameters = createAuthParameters(for: url)
+        
+        authenticationService?.availableAuthTypeServer(on: authParameters.fullHostnameURL) { [weak self] result in
             guard let sSelf = self else { return }
+            
             switch result {
             case .success(let appConfigDetails):
-                sSelf.updateAuthParameter(appConfigDetails: appConfigDetails, authParameters: authParameters)
+                if let mobileSettings = appConfigDetails.mobileSettings {
+                    sSelf.updateAuthParameter(mobileSettings: mobileSettings, authParameters: authParameters)
+                } else {
+                    sSelf.getAuthFromBundle(for: url, authParameters: authParameters)
+                }
                 sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
+                
             case .failure(let error):
-                AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
+                AlfrescoLog.error("Error retrieving auth type for \(url): \(error.localizedDescription)")
                 DispatchQueue.main.async {
                     sSelf.delegate?.authServiceUnavailable(with: error)
                 }
             }
-        })
+        }
     }
-    
-    private func updateAuthParameter(appConfigDetails: AppConfigDetails, authParameters: AuthenticationParameters) {
-        
-        authParameters.hostNameURL = appConfigDetails.mobileSettings?.host ?? ""
-        authParameters.https = appConfigDetails.mobileSettings?.https ?? false
-        authParameters.port = String(appConfigDetails.mobileSettings?.port ?? 0)
-        authParameters.realm = appConfigDetails.mobileSettings?.realm ?? ""
-        authParameters.path = appConfigDetails.mobileSettings?.contentServicePath ?? ""
-        authParameters.clientSecret = appConfigDetails.mobileSettings?.secret ?? ""
-        authParameters.scope = appConfigDetails.mobileSettings?.scope ?? ""
-        authParameters.audience = appConfigDetails.mobileSettings?.audience ?? ""
-        authParameters.clientID = appConfigDetails.mobileSettings?.iOS?.clientId ?? ""
-        authParameters.redirectURI = appConfigDetails.mobileSettings?.iOS?.redirectUri ?? ""
+
+    private func createAuthParameters(for url: String) -> AuthenticationParameters {
+        let authParameters = AuthenticationParameters.parameters()
+        authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
+        return authParameters
+    }
+
+    private func getAuthFromBundle(for url: String, authParameters: AuthenticationParameters) {
+        guard let fileUrl = Bundle.main.url(forResource: KeyConstants.Authentication.configFile, withExtension: KeyConstants.Tasks.configFileExtension) else {
+            AlfrescoLog.error("Configuration file not found in the bundle")
+            return
+        }
         
+        do {
+            let data = try Data(contentsOf: fileUrl)
+            if var mobileSettings = parseAppConfiguration(for: data) {
+                updateAuthParameter(mobileSettings: mobileSettings, authParameters: authParameters)
+            }
+        } catch {
+            AlfrescoLog.error("Failed to read config file: \(error.localizedDescription)")
+        }
+    }
+
+    private func parseAppConfiguration(for data: Data) -> MobileSettings? {
+        do {
+            return try JSONDecoder().decode(MobileSettings.self, from: data)
+        } catch {
+            AlfrescoLog.error("JSON decoding failed: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    private func updateAuthParameter(mobileSettings: MobileSettings, authParameters: AuthenticationParameters) {
+        authParameters.hostNameURL = mobileSettings.host ?? ""
+        authParameters.https = mobileSettings.https
+        authParameters.port = String(mobileSettings.port)
+        authParameters.realm = mobileSettings.realm ?? ""
+        authParameters.path = mobileSettings.contentServicePath ?? ""
+        authParameters.clientSecret = mobileSettings.secret ?? ""
+        authParameters.scope = mobileSettings.scope ?? ""
+        authParameters.audience = mobileSettings.audience ?? ""
+        authParameters.clientID = mobileSettings.iOS?.clientId ?? ""
+        authParameters.redirectURI = mobileSettings.iOS?.redirectUri ?? ""
+        authenticationService?.update(authenticationParameters: authParameters)
     }
     
     private func availableAimsAuthType(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
