@@ -116,6 +116,7 @@
 		74D4D92A2BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */; };
 		74E39A4C2CFEE59D00F7B9B1 /* GetContentServiceAuthType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E39A4B2CFEE57C00F7B9B1 /* GetContentServiceAuthType.swift */; };
 		74E39A4D2CFEE59D00F7B9B1 /* GetContentServiceAuthType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E39A4B2CFEE57C00F7B9B1 /* GetContentServiceAuthType.swift */; };
+		74F657542D6DB80A0038FDA6 /* mobile_setting.json in Resources */ = {isa = PBXBuildFile; fileRef = 74F657532D6DB80A0038FDA6 /* mobile_setting.json */; };
 		A24BD3F41371BDA3E3A64E53 /* Pods_ContentApp_ContentAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */; };
 		B5E392CD597158BADA51B20F /* EntityInfo-ContentApp.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */; };
 		B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
@@ -127,7 +128,6 @@
 		B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E4D247BD5A10063E938 /* Coordinator.swift */; };
 		B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */; };
 		B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */; };
-		B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */; };
 		B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */; };
 		B9233F6B25A5C700006EA4DA /* ListNodeDataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9233F6A25A5C700006EA4DA /* ListNodeDataAccessor.swift */; };
 		B9233FC025A708D1006EA4DA /* OfflineViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9233FBF25A708D1006EA4DA /* OfflineViewModelFactory.swift */; };
@@ -440,7 +440,6 @@
 		C9A9111727A7B7F7002EBC7F /* AIMSAuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BC52486850C00FBFC9B /* AIMSAuthenticationProvider.swift */; };
 		C9A9111827A7B7FB002EBC7F /* GetContentServicesProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BB924866F1400FBFC9B /* GetContentServicesProfile.swift */; };
 		C9A9111927A7B7FE002EBC7F /* GetContentServicesServerInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E382C59C251A40820000D561 /* GetContentServicesServerInformation.swift */; };
-		C9A9111B27A7B805002EBC7F /* AdvancedSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184DD247C06BE0044BE0D /* AdvancedSettingsViewModel.swift */; };
 		C9A9111E27A7B80F002EBC7F /* AuthenticationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB747247665C6004674FD /* AuthenticationParameters.swift */; };
 		C9A9111F27A7B812002EBC7F /* BasicAuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BC3248682BA00FBFC9B /* BasicAuthCredential.swift */; };
 		C9A9112027A7B814002EBC7F /* NeedHelpModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32DE52F2578F43C001A31EC /* NeedHelpModelProtocol.swift */; };
@@ -639,7 +638,6 @@
 		E31184D8247BFAFA0044BE0D /* UITextField+Replacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */; };
 		E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */; };
 		E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184DB247C01470044BE0D /* AimsViewModel.swift */; };
-		E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184DD247C06BE0044BE0D /* AdvancedSettingsViewModel.swift */; };
 		E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E315151025AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift */; };
 		E315151625AC493000DF8735 /* OfflineFoldreDrillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E315151525AC493000DF8735 /* OfflineFoldreDrillViewModel.swift */; };
 		E315151B25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E315151A25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift */; };
@@ -691,7 +689,6 @@
 		E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD41249C981A008E381F /* SettingsTableViewCellProtocol.swift */; };
 		E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD43249CB836008E381F /* SettingsLabelTableViewCell.swift */; };
 		E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */; };
-		E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */; };
 		E35FB746247664A9004674FD /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB745247664A9004674FD /* LoginService.swift */; };
 		E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB747247665C6004674FD /* AuthenticationParameters.swift */; };
 		E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB7492476693C004674FD /* String+Encoding.swift */; };
@@ -959,6 +956,7 @@
 		74D4D9262BBD1EAB00AD93CD /* AddAttachmentComplexTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAttachmentComplexTableViewCell.xib; sourceTree = "<group>"; };
 		74D4D9292BBD1EEF00AD93CD /* AddAttachmentComplexTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAttachmentComplexTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		74E39A4B2CFEE57C00F7B9B1 /* GetContentServiceAuthType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContentServiceAuthType.swift; sourceTree = "<group>"; };
+		74F657532D6DB80A0038FDA6 /* mobile_setting.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mobile_setting.json; sourceTree = "<group>"; };
 		978127C511FEA1D69B063806 /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A230D94AA20A969ED5B23885 /* Pods_Share.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Share.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9CCE104FDC5BE7BA55330CB /* Pods_ContentApp_ContentAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp_ContentAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -971,7 +969,6 @@
 		B91A5E4D247BD5A10063E938 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenCoordinator.swift; sourceTree = "<group>"; };
-		B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectScreenCoordinator.swift; sourceTree = "<group>"; };
 		B9233F6A25A5C700006EA4DA /* ListNodeDataAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNodeDataAccessor.swift; sourceTree = "<group>"; };
 		B9233FBF25A708D1006EA4DA /* OfflineViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineViewModelFactory.swift; sourceTree = "<group>"; };
@@ -1304,7 +1301,6 @@
 		E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Replacement.swift"; sourceTree = "<group>"; };
 		E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewModel.swift; sourceTree = "<group>"; };
 		E31184DB247C01470044BE0D /* AimsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewModel.swift; sourceTree = "<group>"; };
-		E31184DD247C06BE0044BE0D /* AdvancedSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViewModel.swift; sourceTree = "<group>"; };
 		E315151025AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFolderChildrenScreenCoordinator.swift; sourceTree = "<group>"; };
 		E315151525AC493000DF8735 /* OfflineFoldreDrillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFoldreDrillViewModel.swift; sourceTree = "<group>"; };
 		E315151A25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFolderChildrenViewModelFactory.swift; sourceTree = "<group>"; };
@@ -1365,7 +1361,6 @@
 		E350BD41249C981A008E381F /* SettingsTableViewCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellProtocol.swift; sourceTree = "<group>"; };
 		E350BD43249CB836008E381F /* SettingsLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLabelTableViewCell.swift; sourceTree = "<group>"; };
 		E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+VersionString.swift"; sourceTree = "<group>"; };
-		E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViewController.swift; sourceTree = "<group>"; };
 		E35FB745247664A9004674FD /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		E35FB747247665C6004674FD /* AuthenticationParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationParameters.swift; sourceTree = "<group>"; };
 		E35FB7492476693C004674FD /* String+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
@@ -1889,6 +1884,14 @@
 			path = AddAttachmentComplex;
 			sourceTree = "<group>";
 		};
+		74F657522D6DB7DE0038FDA6 /* AuthenticationJson */ = {
+			isa = PBXGroup;
+			children = (
+				74F657532D6DB80A0038FDA6 /* mobile_setting.json */,
+			);
+			path = AuthenticationJson;
+			sourceTree = "<group>";
+		};
 		B91A5E46247825CF0063E938 /* ServiceRepository */ = {
 			isa = PBXGroup;
 			children = (
@@ -2081,6 +2084,7 @@
 		B96B9AEC2480F7A80035AE97 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				74F657522D6DB7DE0038FDA6 /* AuthenticationJson */,
 				B96B9AEE2480F81A0035AE97 /* Sub-Coordinators */,
 				B96B9AED2480F8120035AE97 /* Screens */,
 			);
@@ -2092,7 +2096,6 @@
 			children = (
 				E3F5625D2476F6490091896D /* SplashViewController.swift */,
 				E334C080247582B400F74880 /* ConnectViewController.swift */,
-				E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */,
 				E31184D5247BEC9B0044BE0D /* AimsViewController.swift */,
 				E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */,
 			);
@@ -2103,7 +2106,6 @@
 			isa = PBXGroup;
 			children = (
 				B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */,
-				B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */,
 				B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */,
 				E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */,
 				E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */,
@@ -2117,7 +2119,6 @@
 			children = (
 				04377CE72D3E843300B18309 /* ServerEdition.swift */,
 				E35FB74B24766DFC004674FD /* ConnectViewModel.swift */,
-				E31184DD247C06BE0044BE0D /* AdvancedSettingsViewModel.swift */,
 				E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */,
 				E31184DB247C01470044BE0D /* AimsViewModel.swift */,
 			);
@@ -4171,6 +4172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C93A246C28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib in Resources */,
+				74F657542D6DB80A0038FDA6 /* mobile_setting.json in Resources */,
 				C9A759A9289BBB60006603E0 /* TitleTableViewCell.xib in Resources */,
 				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
 				74731C2E2B875BD600828167 /* HyperlinkTableViewCell.xib in Resources */,
@@ -4563,7 +4565,6 @@
 				C9A910F927A7B780002EBC7F /* UITextView+Theming.swift in Sources */,
 				C993504627D8D9C900E2B849 /* SyncSharedNodes.swift in Sources */,
 				C9A9113827A7B861002EBC7F /* EmptySearch.swift in Sources */,
-				C9A9111B27A7B805002EBC7F /* AdvancedSettingsViewModel.swift in Sources */,
 				C9AFDFA027B8F7AF007233A5 /* ResultViewController.swift in Sources */,
 				C9AFDF6327B8C9BF007233A5 /* ListComponent+DataSource.swift in Sources */,
 				C9C7F22427BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift in Sources */,
@@ -5028,7 +5029,6 @@
 				C9205C8928A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift in Sources */,
 				E3CF862B24E69DC7001C86B5 /* FilePreviewViewController.swift in Sources */,
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
-				E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */,
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
 				04377CDD2D3E82AA00B18309 /* ScanDocumentsViewController.swift in Sources */,
 				04377CDE2D3E82AA00B18309 /* ScanDocumentsKit.swift in Sources */,
@@ -5071,7 +5071,6 @@
 				47CA839F2A57D8990081A000 /* UITabBarController+HideShow.swift in Sources */,
 				B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */,
 				47F5A6E329DE7FED00073D7F /* WorkflowListCollectionViewCell.swift in Sources */,
-				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
 				47B782462A5D6FC30075BE39 /* MultipleFileActionsMenuTrashMoreButton.swift in Sources */,
 				C9D3B48028D878C200C919D8 /* DatePickerViewModel.swift in Sources */,
 				E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */,
@@ -5136,7 +5135,6 @@
 				47DB20B92A35ABBF00B13586 /* RadioListViewViewModel.swift in Sources */,
 				F185B1812617495300407451 /* CameraViewController.swift in Sources */,
 				C9BE5F0A2721B15A0091719D /* SearchTextComponentViewModel.swift in Sources */,
-				B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */,
 				E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */,
 				C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */,
 				E335E72C2538653A0036E090 /* ActionMenuViewController.swift in Sources */,
