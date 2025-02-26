@@ -113,18 +113,6 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
         })
     }
     
-    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<VersionContentService?, APIError>) -> Void)) {
-        apiClient = APIClient(with: String(format: "%@/%@/", stringURL, parameters.path))
-        _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
-            switch result {
-            case .success(let response):
-                handler(.success(response))
-            case .failure(let error):
-                handler(.failure(error))
-            }
-        })
-    }
-    
     func availableAuthTypeServer(on stringUrl: String, handler: @escaping ((Result<AppConfigDetails, APIError>) -> Void)) {
         apiClient = APIClient(with: String(format: "%@", stringUrl))
         _ = apiClient?.send(GetContentServiceAuthType(), completion: { (result) in
