@@ -1,22 +1,18 @@
 PODS:
   - Alamofire (4.9.1)
-  - AlfrescoAuth (0.2.2):
+  - AlfrescoAuth (0.2.6):
     - AlfrescoCore
     - AppAuth
-    - Auth0
   - AlfrescoContent (0.2.69):
     - Alamofire (~> 4.9.0)
     - TrustKit
   - AlfrescoCore (0.1.2)
-  - AppAuth (1.7.5):
-    - AppAuth/Core (= 1.7.5)
-    - AppAuth/ExternalUserAgent (= 1.7.5)
-  - AppAuth/Core (1.7.5)
-  - AppAuth/ExternalUserAgent (1.7.5):
+  - AppAuth (1.7.6):
+    - AppAuth/Core (= 1.7.6)
+    - AppAuth/ExternalUserAgent (= 1.7.6)
+  - AppAuth/Core (1.7.6)
+  - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
-  - Auth0 (2.3.2):
-    - JWTDecode (~> 3.0)
-    - SimpleKeychain (~> 1.0)
   - CocoaLumberjack (3.8.5):
     - CocoaLumberjack/Core (= 3.8.5)
   - CocoaLumberjack/Core (3.8.5)
@@ -790,7 +786,6 @@ PODS:
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
-  - SimpleKeychain (1.0.1)
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
   - SwiftLint (0.57.0)
@@ -819,7 +814,6 @@ SPEC REPOS:
     - AlfrescoContent
     - AlfrescoCore
     - AppAuth
-    - Auth0
     - CocoaLumberjack
     - DropDown
     - FastCoding
@@ -848,18 +842,16 @@ SPEC REPOS:
     - ObjectBox
     - PromisesObjC
     - PromisesSwift
-    - SimpleKeychain
     - SVGKit
     - SwiftLint
     - TrustKit
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  AlfrescoAuth: 355f05b75dca5140df61a3900d1df7fc1681e092
+  AlfrescoAuth: cbe79d482f50adba3fccadefd1ba201b17b3236a
   AlfrescoContent: 892bd719c8ea1057e6dc66be16195d601b22afa6
   AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
-  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
-  Auth0: 64da28fdc5cd499aa516dc4bfd0ace8efae2c1da
+  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   FastCoding: 3b590f7143a229780fa744b35084d85d9461587e
@@ -888,11 +880,10 @@ SPEC CHECKSUMS:
   ObjectBox: 2686c161d67e175797edd0d85f258b5edbf0a43e
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
-  SimpleKeychain: 130211269f88f038d7dc5254cf0b1b9ce978c398
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: eb47480d47c982481592c195c221d11013a679cc
   TrustKit: 403e8d2cfbff2abfc37cd41acc558dab8ec78e59
 
 PODFILE CHECKSUM: d43e94498cf8d20f153b48cd5657af47d7ce4b56
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2

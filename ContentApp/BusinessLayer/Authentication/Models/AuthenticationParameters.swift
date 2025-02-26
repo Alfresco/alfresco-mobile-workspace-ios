@@ -80,7 +80,8 @@ class AuthenticationParameters: Codable {
     }
 
     func authenticationConfiguration() -> AuthConfiguration {
-        let authConfig = AuthConfiguration(baseUrl: hostNameURL,
+        let baseUrl = hostNameURL.isEmpty ? fullHostnameURL : hostNameURL
+        let authConfig = AuthConfiguration(baseUrl: baseUrl,
                                            clientID: clientID,
                                            realm: realm,
                                            clientSecret: clientSecret, redirectURI: redirectURI.encoding(), audience: audience)
