@@ -50,7 +50,7 @@ protocol AuthenticationServiceProtocol {
     ///   - stringURL: URL to check the version
     ///   - handler: Signals the success or failure of the operation with additional error information
     func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<VersionContentService?, APIError>) -> Void))
-    
+
     func availableAuthTypeServer(on stringUrl: String, handler: @escaping ((Result<AppConfigDetails, APIError>) -> Void))
 }
 

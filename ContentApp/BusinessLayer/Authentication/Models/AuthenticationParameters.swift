@@ -23,13 +23,16 @@ class AuthenticationParameters: Codable {
     var unsecuredDefaultPort = "80"
     var securedDefaultPort = "443"
     var https = true
-    var port: String = "443"
-    var path: String = "alfresco"
-    var realm: String = "alfresco"
-    var clientID: String = "alfresco-ios-acs-app"
-    var redirectURI: String = "iosacsapp://aims/auth"
+    var port: String = ""
+    var path: String = ""
+    var realm: String = ""
+    var audience: String = ""
+    var clientID: String = ""
+    var redirectURI: String = ""
+    var scope: String = ""
     var hostname: String = ""
     var contentURL: String = ""
+    var hostNameURL: String = ""
     var fullHostnameURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", hostname)
         return urlWithPort(fullFormatURL: &fullFormatURL)
@@ -43,9 +46,7 @@ class AuthenticationParameters: Codable {
     var processAppClientID: String = "activiti-app"
     var processAppQueryString: String = "api"
     var processAppDefinition: String = "enterprise"
-    var authType: AvailableAuthType = .aimsAuth
     var clientSecret: String = ""
-    var auth0BaseUrl: String = ""
     
     static func parameters() -> AuthenticationParameters {
         parameters(for: KeyConstants.Save.authSettingsParameters)
@@ -79,11 +80,11 @@ class AuthenticationParameters: Codable {
     }
 
     func authenticationConfiguration() -> AuthConfiguration {
-        let baseUrl = (authType == .auth0) ? auth0BaseUrl : fullHostnameURL
+        let baseUrl = hostNameURL.isEmpty ? fullHostnameURL : hostNameURL
         let authConfig = AuthConfiguration(baseUrl: baseUrl,
                                            clientID: clientID,
                                            realm: realm,
-                                           clientSecret: clientSecret, redirectURI: redirectURI.encoding(), authType: authType)
+                                           clientSecret: clientSecret, redirectURI: redirectURI.encoding(), audience: audience)
         return authConfig
     }
     

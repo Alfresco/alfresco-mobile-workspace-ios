@@ -88,4 +88,8 @@ struct KeyConstants {
         static let taskFileSize = 100.0
         static let workflowFileSize = 10.0
     }
+    
+    struct Authentication {
+        static let configFile = "mobile_setting"
+    }
 }

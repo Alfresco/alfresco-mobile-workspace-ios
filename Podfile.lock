@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.9.1)
-  - AlfrescoAuth (0.2.5):
+  - AlfrescoAuth (0.2.6):
     - AlfrescoCore
     - AppAuth
   - AlfrescoContent (0.2.69):
@@ -848,7 +848,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  AlfrescoAuth: 1336b9ee998a4cb761b02f48565f0607a5b34fc1
+  AlfrescoAuth: cbe79d482f50adba3fccadefd1ba201b17b3236a
   AlfrescoContent: 892bd719c8ea1057e6dc66be16195d601b22afa6
   AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
@@ -884,6 +884,6 @@ SPEC CHECKSUMS:
   SwiftLint: 284cea64b6187c5d6bd83e9a548a64104d546447
   TrustKit: 403e8d2cfbff2abfc37cd41acc558dab8ec78e59
 
-PODFILE CHECKSUM: fe7a78df80fd622a92da047ec46c261218fe57a2
+PODFILE CHECKSUM: 7f338a3960735dd41601e6181839f84158fe9a54
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2
