@@ -35,25 +35,6 @@ class ConnectViewModel {
         authenticationService = loginService
         accountService = ApplicationBootstrap.shared().repository.service(of: AccountService.identifier) as? AccountService
     }
-
-    func availableAuthTypes(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
-        let authParameters = AuthenticationParameters.parameters()
-        authParameters.hostname = url
-        authenticationService?.update(authenticationParameters: authParameters)
-        authenticationService?.availableAuthTypeServer(on: authParameters.fullHostnameURL, handler: { [weak self] (result) in
-            guard let sSelf = self else { return }
-            switch result {
-            case .success(let appConfigDetails):
-                sSelf.updateAuthParameter(appConfigDetails: appConfigDetails, authParameters: authParameters)
-                sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
-            case .failure(let error):
-                AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
-                DispatchQueue.main.async {
-                    sSelf.delegate?.authServiceUnavailable(with: error)
-                }
-            }
-        })
-    }
     
     func availableAuthTypes(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
         let authParameters = createAuthParameters(for: url)

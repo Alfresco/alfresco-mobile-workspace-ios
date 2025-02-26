@@ -18,7 +18,7 @@ PODS:
   - CocoaLumberjack/Core (3.8.5)
   - DropDown (2.3.13)
   - FastCoding (3.3)
-  - Firebase/Analytics (11.2.0):
+  - Firebase/Analytics (11.7.0):
     - Firebase/Core
   - Firebase/Core (11.7.0):
     - Firebase/CoreOnly
@@ -884,6 +884,6 @@ SPEC CHECKSUMS:
   SwiftLint: 284cea64b6187c5d6bd83e9a548a64104d546447
   TrustKit: 403e8d2cfbff2abfc37cd41acc558dab8ec78e59
 
-PODFILE CHECKSUM: fe7a78df80fd622a92da047ec46c261218fe57a2
+PODFILE CHECKSUM: 7f338a3960735dd41601e6181839f84158fe9a54
 
 COCOAPODS: 1.16.2

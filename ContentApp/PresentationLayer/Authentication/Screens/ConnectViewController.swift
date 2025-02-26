@@ -114,16 +114,6 @@ class ConnectViewController: SystemThemableViewController {
         viewModel?.availableAuthTypes(for: connectURL, in: self)
     }
 
-    @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
-        self.view.endEditing(true)
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            splashScreenDelegate?.showAdvancedSettingsScreen()
-        } else {
-            connectScreenCoordinatorDelegate?.showAdvancedSettingsScreen()
-        }
-        Snackbar.dimissAll()
-    }
-
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
         self.view.endEditing(true)
         connectScreenCoordinatorDelegate?.showNeedHelpSheet()
