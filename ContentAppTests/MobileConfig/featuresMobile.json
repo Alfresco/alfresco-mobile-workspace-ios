@@ -1,0 +1,54 @@
+{
+    "features_mobile": {
+        "menu": [
+            {
+                "id": "app.menu.addFavourite",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.removeFavourite",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.rename",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.move",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.openWith",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.download",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.trash",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.addOffline",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.removeOffline",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.restore",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.permanentlyDelete",
+                "enabled": true
+            },
+            {
+                "id": "app.menu.startProcess",
+                "enabled": true
+            }
+        ]
+    }
+}

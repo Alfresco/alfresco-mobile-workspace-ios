@@ -82,6 +82,12 @@
 		7429D7612B7B42CC00CA930C /* DropDownTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */; };
 		7429D7632B7B431000CA930C /* DropDownTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */; };
 		742FB2AD2B985D1A00000291 /* ActionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742FB2AC2B985D1A00000291 /* ActionListViewController.swift */; };
+		743F49E02D75B3F800B033FA /* featuresMobile.json in Sources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
+		743F49E32D75E7F200B033FA /* featuresMobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
+		743F49E42D75E7FB00B033FA /* featuresMobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
+		743F49E62D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */; };
+		743F49E72D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */; };
+		743F49E82D76CFA400B033FA /* MenuConfigLoader.swift in Resources */ = {isa = PBXBuildFile; fileRef = 743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */; };
 		74657CD72B6CD82400FF3C44 /* AssigneeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */; };
 		74657CD82B6CD82400FF3C44 /* AssigneeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */; };
 		74657CDC2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */; };
@@ -921,6 +927,8 @@
 		7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropDownTableViewCell.xib; sourceTree = "<group>"; };
 		7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		742FB2AC2B985D1A00000291 /* ActionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionListViewController.swift; sourceTree = "<group>"; };
+		743F49DF2D75B3F500B033FA /* featuresMobile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = featuresMobile.json; sourceTree = "<group>"; };
+		743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuConfigLoader.swift; sourceTree = "<group>"; };
 		74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeTableViewCell.swift; sourceTree = "<group>"; };
 		74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssigneeTableViewCell.xib; sourceTree = "<group>"; };
 		74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -1769,6 +1777,15 @@
 				742FB2AC2B985D1A00000291 /* ActionListViewController.swift */,
 			);
 			path = "Action List";
+			sourceTree = "<group>";
+		};
+		743F49DE2D75B3E300B033FA /* MobileConfig */ = {
+			isa = PBXGroup;
+			children = (
+				743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */,
+				743F49DF2D75B3F500B033FA /* featuresMobile.json */,
+			);
+			path = MobileConfig;
 			sourceTree = "<group>";
 		};
 		74731C2A2B875BA300828167 /* Hyperlink */ = {
@@ -3288,6 +3305,7 @@
 		E334C05524755D9000F74880 /* ContentAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				743F49DE2D75B3E300B033FA /* MobileConfig */,
 				C95B2A2928BE01CD007841F4 /* Tasks */,
 				C9AEE041270D9D5D00880235 /* TestSearchViewModel.swift */,
 				C928AE32282A5F4900378327 /* TestNodeViewModel.swift */,
@@ -4137,6 +4155,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				743F49E32D75E7F200B033FA /* featuresMobile.json in Resources */,
 				C93A246C28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib in Resources */,
 				74F657542D6DB80A0038FDA6 /* mobile_setting.json in Resources */,
 				C9A759A9289BBB60006603E0 /* TitleTableViewCell.xib in Resources */,
@@ -4203,6 +4222,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				743F49E82D76CFA400B033FA /* MenuConfigLoader.swift in Resources */,
+				743F49E42D75E7FB00B033FA /* featuresMobile.json in Resources */,
 				C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */,
 				C95B2A3428BE1650007841F4 /* mockComments.json in Resources */,
 				47D285BC2A6108B20003DF98 /* mockNodeList.json in Resources */,
@@ -4883,6 +4904,7 @@
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
 				F1448CD32685AC1A00D90494 /* FullScreenVideoViewController.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
+				743F49E62D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
 				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,
 				C989FEA2272FD11D0081EB7E /* UITextField+MaxLength.swift in Sources */,
@@ -5123,6 +5145,8 @@
 				C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */,
 				C92E2ED529A60BC500DAFD4B /* TestModelNotifications.swift in Sources */,
 				47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */,
+				743F49E02D75B3F800B033FA /* featuresMobile.json in Sources */,
+				743F49E72D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */,
 				C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5424,7 +5448,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -5451,7 +5475,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

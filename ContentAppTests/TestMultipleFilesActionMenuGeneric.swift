@@ -50,8 +50,9 @@ final class TestMultipleFilesActionMenuGeneric: XCTestCase {
     
     func testMultipleFilesActionMenuGeneric_IfGetAllActions_ShouldReturnTrue() {
         loadListNodeFromAppBundle()
+        let configData = MenuConfigLoader.loadMenuFromAppBundle()
         if !listNodes.isEmpty {
-            let action  = MultipleFilesActionMenuGeneric.actions(for: listNodes)
+            let action  = MultipleFilesActionMenuGeneric.actions(for: listNodes, configData: configData)
             if !action.isEmpty {
                 XCTAssertTrue(true)
             }
@@ -70,8 +71,9 @@ final class TestMultipleFilesActionMenuGeneric: XCTestCase {
     
     func testMultipleFilesActionMenuGeneric_IfMoveAllowed_ShouldReturnTrue() {
         loadListNodeFromAppBundle()
+        let configData = MenuConfigLoader.loadMenuFromAppBundle()
         if !listNodes.isEmpty {
-            let action  = MultipleFilesActionMenuGeneric.moveToFolderAction(for: listNodes)
+            let action  = MultipleFilesActionMenuGeneric.moveToFolderAction(for: listNodes, configData: configData)
             if action != nil {
                 XCTAssertTrue(true)
             }
@@ -81,8 +83,9 @@ final class TestMultipleFilesActionMenuGeneric: XCTestCase {
     
     func testMultipleFilesActionMenuGeneric_IfFavAllowed_ShouldReturnTrue() {
         loadListNodeFromAppBundle()
+        let configData = MenuConfigLoader.loadMenuFromAppBundle()
         if !listNodes.isEmpty {
-            let action  = MultipleFilesActionMenuGeneric.favoriteAction(for: listNodes)
+            let action  = MultipleFilesActionMenuGeneric.favoriteAction(for: listNodes, configData: configData)
             if action != nil {
                 XCTAssertTrue(true)
             }
@@ -92,8 +95,9 @@ final class TestMultipleFilesActionMenuGeneric: XCTestCase {
     
     func testMultipleFilesActionMenuGeneric_IfOfflineAllowed_ShouldReturnTrue() {
         loadListNodeFromAppBundle()
+        let configData = MenuConfigLoader.loadMenuFromAppBundle()
         if !listNodes.isEmpty {
-            let action  = MultipleFilesActionMenuGeneric.offlineAction(for: listNodes)
+            let action  = MultipleFilesActionMenuGeneric.offlineAction(for: listNodes, configData: configData)
             if action != nil {
                 XCTAssertTrue(true)
             }
@@ -103,8 +107,9 @@ final class TestMultipleFilesActionMenuGeneric: XCTestCase {
     
     func testMultipleFilesActionMenuGeneric_IfDeleteAllowed_ShouldReturnTrue() {
         loadListNodeFromAppBundle()
+        let configData = MenuConfigLoader.loadMenuFromAppBundle()
         if !listNodes.isEmpty {
-            let action  = MultipleFilesActionMenuGeneric.deleteAction(for: listNodes)
+            let action  = MultipleFilesActionMenuGeneric.deleteAction(for: listNodes, configData: configData)
             if action != nil {
                 XCTAssertTrue(true)
             }
@@ -114,8 +119,9 @@ final class TestMultipleFilesActionMenuGeneric: XCTestCase {
     
     func testMultipleFilesActionMenuGeneric_IfStartWorkflowAllowed_ShouldReturnTrue() {
         loadListNodeFromAppBundle()
+        let configData = MenuConfigLoader.loadMenuFromAppBundle()
         if !listNodes.isEmpty {
-            let action  = MultipleFilesActionMenuGeneric.startWorkflowAction(for: listNodes)
+            let action  = MultipleFilesActionMenuGeneric.startWorkflowAction(for: listNodes, configData: configData)
             if action != nil {
                 XCTAssertTrue(true)
             }
