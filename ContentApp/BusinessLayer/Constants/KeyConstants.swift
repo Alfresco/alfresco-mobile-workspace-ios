@@ -90,10 +90,6 @@ struct KeyConstants {
         static let workflowFileSize = 10.0
     }
     
-    struct Authentication {
-        static let configFile = "mobile_setting"
-    }
-    
     struct MenuConfiguration {
         static let featuresMobile = "featuresMobile"
     }
