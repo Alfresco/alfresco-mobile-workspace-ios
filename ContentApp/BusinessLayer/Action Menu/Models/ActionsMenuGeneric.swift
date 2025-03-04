@@ -146,7 +146,7 @@ struct ActionsMenuGeneric {
         }
     }
 
-    static private func renameNodeAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
+    static func renameNodeAction(for node: ListNode, configData: MobileConfigData?) -> ActionMenu? {
         guard (node.isAFileType() || node.isAFolderType()),
               !(node.markedFor == .upload && node.syncStatus != .synced),
               isMenuItemEnabled(configData: configData, id: .rename) else {

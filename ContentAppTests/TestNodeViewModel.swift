@@ -18,8 +18,32 @@
 
 import XCTest
 @testable import ContentApp
+@testable import AlfrescoContent
 
 class TestNodeViewModel: XCTestCase {
+    
+    func loadMenuFromAppBundle() -> MobileConfigData? {
+        if let fileUrl = Bundle.main.url(forResource: KeyConstants.MenuConfiguration.featuresMobile,
+                                         withExtension: KeyConstants.Tasks.configFileExtension) {
+            do {
+                let data = try Data(contentsOf: fileUrl)
+                return parseMenuAppConfiguration(for: data)
+            } catch {
+                AlfrescoLog.error("Failed to load menu configuration: \(error.localizedDescription)")
+            }
+        }
+        return nil
+    }
+
+    private func parseMenuAppConfiguration(for data: Data) -> MobileConfigData? {
+        do {
+            let decoded = try JSONDecoder().decode(MobileConfigData.self, from: data)
+            return decoded
+        } catch {
+            AlfrescoLog.error("JSON Decoding Error: \(error.localizedDescription)")
+        }
+        return nil
+    }
 
     func testNodeViewModel_WhenValidNameProvided_ShouldReturnTrue() {
         let name = "test folder name"
@@ -35,7 +59,8 @@ class TestNodeViewModel: XCTestCase {
     
     func testNodeViewModel_WhenValidPermissionsAvailable_ShouldReturnTrue() {
         let list = ListNode()
-        let action = ActionsMenuGeneric.renameNodeAction(for: list)
+        let configData = loadMenuFromAppBundle()
+        let action = ActionsMenuGeneric.renameNodeAction(for: list, configData: configData)
         if action == nil {
             XCTAssertTrue(true)
         }

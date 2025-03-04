@@ -54,13 +54,13 @@ struct MultipleFilesActionMenuGeneric {
         return configData.featuresMobile.menu.contains { $0.id == id && $0.enabled }
     }
 
-    static private func getFilteredNodes(for nodes: [ListNode]) -> [ListNode] {
+    static func getFilteredNodes(for nodes: [ListNode]) -> [ListNode] {
         return nodes.filter { (($0.markedFor != .upload || $0.markedFor == .undefined) && ($0.syncStatus == .synced || $0.syncStatus == .undefined)) || ($0.markedFor == .upload && $0.syncStatus == .synced) }
     }
 
     // MARK: - Action Methods
 
-    static private func favoriteAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+    static func favoriteAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
         // Check if either addFavorite or removeFavorite is enabled
         let addFavoriteEnabled = isMenuItemEnabled(configData: configData, id: .addFavorite)
         let removeFavoriteEnabled = isMenuItemEnabled(configData: configData, id: .removeFavorite)
@@ -104,7 +104,7 @@ struct MultipleFilesActionMenuGeneric {
 
     }
 
-    static private func offlineAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+    static func offlineAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
         // Check if either addOffline or removeOffline is enabled
         let addOfflineEnabled = isMenuItemEnabled(configData: configData, id: .addOffline)
         let removeOfflineEnabled = isMenuItemEnabled(configData: configData, id: .removeOffline)
@@ -141,7 +141,7 @@ struct MultipleFilesActionMenuGeneric {
         return nil
     }
 
-    static private func moveToFolderAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+    static func moveToFolderAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
         guard isMenuItemEnabled(configData: configData, id: .move) else {
             return nil
         }
@@ -153,7 +153,7 @@ struct MultipleFilesActionMenuGeneric {
         return isMoveAllowed ? ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder, type: .moveToFolder) : nil
     }
 
-    static private func deleteAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+    static func deleteAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
         guard isMenuItemEnabled(configData: configData, id: .trash) else {
             return nil
         }
@@ -168,7 +168,7 @@ struct MultipleFilesActionMenuGeneric {
         return isAllowedToDelete ? ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash, type: .moveTrash) : nil
     }
 
-    static private func startWorkflowAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
+    static func startWorkflowAction(for nodes: [ListNode], configData: MobileConfigData?) -> ActionMenu? {
         let filteredNodes = nodes.filter {$0.isAFolderType()}
         if !filteredNodes.isEmpty {
             return nil
