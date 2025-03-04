@@ -85,6 +85,9 @@
 		743F49E02D75B3F800B033FA /* featuresMobile.json in Sources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
 		743F49E32D75E7F200B033FA /* featuresMobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
 		743F49E42D75E7FB00B033FA /* featuresMobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
+		743F49E62D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */; };
+		743F49E72D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */; };
+		743F49E82D76CFA400B033FA /* MenuConfigLoader.swift in Resources */ = {isa = PBXBuildFile; fileRef = 743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */; };
 		74657CD72B6CD82400FF3C44 /* AssigneeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */; };
 		74657CD82B6CD82400FF3C44 /* AssigneeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */; };
 		74657CDC2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */; };
@@ -925,6 +928,7 @@
 		7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		742FB2AC2B985D1A00000291 /* ActionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionListViewController.swift; sourceTree = "<group>"; };
 		743F49DF2D75B3F500B033FA /* featuresMobile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = featuresMobile.json; sourceTree = "<group>"; };
+		743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuConfigLoader.swift; sourceTree = "<group>"; };
 		74657CD52B6CD82400FF3C44 /* AssigneeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssigneeTableViewCell.swift; sourceTree = "<group>"; };
 		74657CD62B6CD82400FF3C44 /* AssigneeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssigneeTableViewCell.xib; sourceTree = "<group>"; };
 		74657CDB2B6CF7EC00FF3C44 /* DatePickerTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerTableViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -1778,6 +1782,7 @@
 		743F49DE2D75B3E300B033FA /* MobileConfig */ = {
 			isa = PBXGroup;
 			children = (
+				743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */,
 				743F49DF2D75B3F500B033FA /* featuresMobile.json */,
 			);
 			path = MobileConfig;
@@ -4217,6 +4222,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				743F49E82D76CFA400B033FA /* MenuConfigLoader.swift in Resources */,
 				743F49E42D75E7FB00B033FA /* featuresMobile.json in Resources */,
 				C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */,
 				C95B2A3428BE1650007841F4 /* mockComments.json in Resources */,
@@ -4898,6 +4904,7 @@
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
 				F1448CD32685AC1A00D90494 /* FullScreenVideoViewController.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
+				743F49E62D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
 				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,
 				C989FEA2272FD11D0081EB7E /* UITextField+MaxLength.swift in Sources */,
@@ -5139,6 +5146,7 @@
 				C92E2ED529A60BC500DAFD4B /* TestModelNotifications.swift in Sources */,
 				47CC530729F56FB40096A3C9 /* TestWorkflowModel.swift in Sources */,
 				743F49E02D75B3F800B033FA /* featuresMobile.json in Sources */,
+				743F49E72D76CF1F00B033FA /* MenuConfigLoader.swift in Sources */,
 				C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
