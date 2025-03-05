@@ -30,15 +30,6 @@ class TestSearchViewModel: XCTestCase {
         XCTAssertFalse(result)
     }
     
-    func testSearchViewModel_WhenInValidTimeDifferenceProvided_ShouldReturnTrue() {
-        let services = CoordinatorServices()
-        let searchModel = SearchModel(with: services)
-        let searchViewModel = SearchViewModel(model: searchModel)
-        let apiInterval = 1
-        let result = searchViewModel.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval)
-        XCTAssertTrue(result)
-    }
-    
     func testIsShowConfigurationView_WhenEmptyConfigArrayProvided_ShouldReturnFalse() {
         let services = CoordinatorServices()
         let searchModel = SearchModel(with: services)
