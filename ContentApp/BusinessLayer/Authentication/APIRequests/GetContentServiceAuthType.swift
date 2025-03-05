@@ -66,8 +66,6 @@ struct OAuth2Data: Codable {
 
 struct MobileSettings: Codable {
     let host: String?
-    let https: Bool
-    let port: Int
     let realm: String?
     let contentServicePath: String?
     let secret: String?

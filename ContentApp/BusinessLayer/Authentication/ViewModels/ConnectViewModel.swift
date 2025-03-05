@@ -45,7 +45,7 @@ class ConnectViewModel {
                 if let mobileSettings = appConfigDetails.mobileSettings {
                     sSelf.updateAuthParameter(mobileSettings: mobileSettings, authParameters: authParameters)
                 } else {
-                    sSelf.getAuthFromBundle(for: url, authParameters: authParameters)
+                    sSelf.authenticationService?.saveAuthParameters()
                 }
                 sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
                 
@@ -65,35 +65,8 @@ class ConnectViewModel {
         return authParameters
     }
 
-    private func getAuthFromBundle(for url: String, authParameters: AuthenticationParameters) {
-        guard let fileUrl = Bundle.main.url(forResource: KeyConstants.Authentication.configFile, withExtension: KeyConstants.Tasks.configFileExtension) else {
-            AlfrescoLog.error("Configuration file not found in the bundle")
-            return
-        }
-        
-        do {
-            let data = try Data(contentsOf: fileUrl)
-            if var mobileSettings = parseAppConfiguration(for: data) {
-                updateAuthParameter(mobileSettings: mobileSettings, authParameters: authParameters)
-            }
-        } catch {
-            AlfrescoLog.error("Failed to read config file: \(error.localizedDescription)")
-        }
-    }
-
-    private func parseAppConfiguration(for data: Data) -> MobileSettings? {
-        do {
-            return try JSONDecoder().decode(MobileSettings.self, from: data)
-        } catch {
-            AlfrescoLog.error("JSON decoding failed: \(error.localizedDescription)")
-            return nil
-        }
-    }
-
     private func updateAuthParameter(mobileSettings: MobileSettings, authParameters: AuthenticationParameters) {
         authParameters.hostNameURL = mobileSettings.host ?? ""
-        authParameters.https = mobileSettings.https
-        authParameters.port = String(mobileSettings.port)
         authParameters.realm = mobileSettings.realm ?? ""
         authParameters.path = mobileSettings.contentServicePath ?? ""
         authParameters.clientSecret = mobileSettings.secret ?? ""
