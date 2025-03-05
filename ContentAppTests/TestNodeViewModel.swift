@@ -18,9 +18,10 @@
 
 import XCTest
 @testable import ContentApp
+@testable import AlfrescoContent
 
 class TestNodeViewModel: XCTestCase {
-
+    
     func testNodeViewModel_WhenValidNameProvided_ShouldReturnTrue() {
         let name = "test folder name"
         let result = !name.hasSpecialCharacters()
@@ -35,7 +36,8 @@ class TestNodeViewModel: XCTestCase {
     
     func testNodeViewModel_WhenValidPermissionsAvailable_ShouldReturnTrue() {
         let list = ListNode()
-        let action = ActionsMenuGeneric.renameNodeAction(for: list)
+        let configData = MenuConfigLoader.loadMenuFromAppBundle()
+        let action = ActionsMenuGeneric.renameNodeAction(for: list, configData: configData)
         if action == nil {
             XCTAssertTrue(true)
         }
