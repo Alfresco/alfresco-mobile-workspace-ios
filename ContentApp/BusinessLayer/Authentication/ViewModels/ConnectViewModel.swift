@@ -67,8 +67,6 @@ class ConnectViewModel {
 
     private func updateAuthParameter(mobileSettings: MobileSettings, authParameters: AuthenticationParameters) {
         authParameters.hostNameURL = mobileSettings.host ?? ""
-        authParameters.https = mobileSettings.https
-        authParameters.port = String(mobileSettings.port)
         authParameters.realm = mobileSettings.realm ?? ""
         authParameters.path = mobileSettings.contentServicePath ?? ""
         authParameters.clientSecret = mobileSettings.secret ?? ""
