@@ -29,14 +29,37 @@ class ConnectViewModel {
     weak var delegate: ConnectViewModelDelegate?
     var authenticationService: AuthenticationService?
     var aimsViewModel: AimsViewModel?
-
+    
     init(with loginService: AuthenticationService?) {
         authenticationService = loginService
     }
     
     func availableAuthTypes(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
         let authParameters = createAuthParameters(for: url)
-        
+        authenticationService?.availableAuthType(handler: { [weak self] (result) in
+            guard let sSelf = self else { return }
+            switch result {
+            case .success(let authType):
+                switch authType {
+                case .basicAuth:
+                    sSelf.authenticationService?.saveAuthParameters()
+                    sSelf.checkMinimumVersion(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly, authType: authType)
+                case .aimsAuth:
+                    sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly, authType: authType, authParameters: authParameters)
+                default:
+                    break
+                }
+                
+            case .failure(let error):
+                AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    sSelf.delegate?.authServiceUnavailable(with: error)
+                }
+            }
+        })
+    }
+    
+    private func availableAimsAuthType(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false, authType: AvailableAuthType, authParameters: AuthenticationParameters) {
         authenticationService?.availableAuthTypeServer(on: authParameters.fullHostnameURL) { [weak self] result in
             guard let sSelf = self else { return }
             
@@ -44,10 +67,10 @@ class ConnectViewModel {
             case .success(let appConfigDetails):
                 if let mobileSettings = appConfigDetails.mobileSettings {
                     sSelf.updateAuthParameter(mobileSettings: mobileSettings, authParameters: authParameters)
-                } else {
-                    sSelf.authenticationService?.saveAuthParameters()
-                }
-                sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
+                } 
+                sSelf.authenticationService?.saveAuthParameters()
+
+                sSelf.checkMinimumVersion(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly, authType: authType)
                 
             case .failure(let error):
                 AlfrescoLog.error("Error retrieving auth type for \(url): \(error.localizedDescription)")
@@ -57,14 +80,14 @@ class ConnectViewModel {
             }
         }
     }
-
+    
     private func createAuthParameters(for url: String) -> AuthenticationParameters {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
         return authParameters
     }
-
+    
     private func updateAuthParameter(mobileSettings: MobileSettings, authParameters: AuthenticationParameters) {
         authParameters.hostNameURL = mobileSettings.host ?? ""
         authParameters.realm = mobileSettings.realm ?? ""
@@ -77,34 +100,19 @@ class ConnectViewModel {
         authenticationService?.update(authenticationParameters: authParameters)
     }
     
-    private func availableAimsAuthType(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false) {
-        authenticationService?.availableAuthType(handler: { [weak self] (result) in
+    private func checkMinimumVersion(for url: String, in viewController: UIViewController?, isCheckForServerEditionOnly: Bool = false, authType: AvailableAuthType) {
+        authenticationService?.isContentServicesAvailable(on: AuthenticationParameters.parameters().fullHostnameURL,
+                                                          handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
-            case .success(let authType):
-                sSelf.authenticationService?.saveAuthParameters()
-                sSelf.authenticationService?.isContentServicesAvailable(on: AuthenticationParameters.parameters().fullHostnameURL,
-                                                                        handler: { (result) in
-                    switch result {
-                    case .success(let response):
-                        let isVersionOverMinium = (response?.isVersionOverMinium()) ?? false
-                        if isCheckForServerEditionOnly == false {
-                            sSelf.contentService(available: isVersionOverMinium,
-                                                 authType: authType,
-                                                 url: url,
-                                                 in: viewController)
-                        }
-                    case .failure(let error):
-                        AlfrescoLog.error(error)
-                        if isCheckForServerEditionOnly == false {
-                            sSelf.contentService(available: false,
-                                                 authType: authType,
-                                                 url: url,
-                                                 in: viewController)
-                        }
-                    }
-                })
-
+            case .success(let response):
+                let isVersionOverMinium = (response?.isVersionOverMinium()) ?? false
+                if isCheckForServerEditionOnly == false {
+                    sSelf.contentService(available: isVersionOverMinium,
+                                         authType: authType,
+                                         url: url,
+                                         in: viewController)
+                }
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
