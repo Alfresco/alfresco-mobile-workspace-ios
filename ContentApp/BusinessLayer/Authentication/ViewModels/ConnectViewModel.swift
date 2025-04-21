@@ -50,7 +50,7 @@ class ConnectViewModel {
                 sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
                 
             case .failure(let error):
-                if error.responseCode == 404 || error.responseCode == 0 {
+                if error.responseCode == StatusCodes.code404NotFound.rawValue || error.responseCode == 0 {
                     sSelf.authenticationService?.saveAuthParameters()
                     sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
                     return
