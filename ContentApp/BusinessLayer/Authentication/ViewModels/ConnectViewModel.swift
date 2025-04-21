@@ -50,8 +50,16 @@ class ConnectViewModel {
                 sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
                 
             case .failure(let error):
-                sSelf.authenticationService?.saveAuthParameters()
-                sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
+                if error.responseCode == 404 || error.responseCode == 0 {
+                    sSelf.authenticationService?.saveAuthParameters()
+                    sSelf.availableAimsAuthType(for: url, in: viewController, isCheckForServerEditionOnly: isCheckForServerEditionOnly)
+                    return
+                }
+                AlfrescoLog.error("Error retrieving auth type for \(url): \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    sSelf.delegate?.authServiceUnavailable(with: error)
+                }
+                
             }
         }
     }
