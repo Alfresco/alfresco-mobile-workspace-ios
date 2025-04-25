@@ -4,6 +4,8 @@ pool:
   vmImage: 'macOS-13'
 
 variables:
+  - name: XCODE_VERSION
+    value: '16.0'
   - group: git-credentials
   - group: source-clear-credentials
   - group: ios-signing
