@@ -1,7 +1,7 @@
 trigger:
 - main
 pool:
-  vmImage: 'macOS-14'
+  vmImage: 'macOS-15'
 
 variables:
   - group: git-credentials
@@ -19,7 +19,13 @@ variables:
 
 steps:
 - checkout: self
-
+- task: Xcode@5
+  inputs:
+    scheme: 'ContentApp'
+    sdk: 'iphoneos'
+    configuration: 'Release'
+    packageApp: true
+    xcodeVersion: "default"
 - script: |
     xcodebuild -version
     xcrun --sdk iphoneos --show-sdk-version
