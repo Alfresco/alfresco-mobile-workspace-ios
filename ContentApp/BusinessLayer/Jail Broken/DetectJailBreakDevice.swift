@@ -32,7 +32,7 @@ let fileManager = FileManager.default
 
 // isSimulator - Returns true if it is run on Simulator
 private var isSimulator: Bool {
-    return TARGET_OS_SIMULATOR != 0
+    return ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil
 }
 
 // Array - filesPathToCheck
