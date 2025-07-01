@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.alfresco.contentapp.Share</string>
+		<string>group.com.alfresco.contentapp.ShareApp</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
