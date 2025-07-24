@@ -16,7 +16,7 @@ on:
         description: 'version  '
         type: string
         required: false
-        default: 1.9
+        default: 1.11.3
       create_sandbox:
        description: 'create a new sandbox by default it is false'
        type: boolean
@@ -28,7 +28,7 @@ jobs:
   static_analysis:
     name: Static Analysis
     # Monterey or higher is required for gen-ir
-    runs-on: macos-13
+    runs-on: macos-15
     
     steps:
       - name: checkout
