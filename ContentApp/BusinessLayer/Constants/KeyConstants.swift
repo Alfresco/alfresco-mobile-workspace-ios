@@ -67,7 +67,7 @@ struct KeyConstants {
     
     struct AppGroup {
         static let name = "group.com.alfresco.contentapp.ShareApp"
-        static let accessGroup = "W8N95J537P.com.alfresco.sharedItems"
+        static let accessGroup = "99KBFMK22S.com.alfresco.sharedItems"
         static let service = "alfrescoAppFamilyService"
         static let appURLString = "ShareExtension://"
         static let sharedFiles = "sharedFiles"
