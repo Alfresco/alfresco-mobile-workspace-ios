@@ -61,6 +61,7 @@ class ListComponentViewController: SystemThemableViewController {
     var multipleSelectionHeader: MultipleSelectionHeaderView? = .fromNib()
     var folderId = ""
     var isAPSAttachmentFlow = false
+    var connectivityService: ConnectivityService?
     
     // MARK: - View Life Cycle
     
@@ -84,7 +85,13 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.pageDelegate = self
                 
         emptyListView.isHidden = true
-        createButton.isHidden = !viewModel.shouldDisplayCreateButton()
+        let connectivityService = coordinatorServices?.connectivityService
+        if connectivityService?.hasInternetConnection() == false {
+            createButton.isHidden = true
+        } else {
+            createButton.isHidden = !viewModel.shouldDisplayCreateButton()
+        }
+        
         listActionButton.isHidden = !viewModel.shouldDisplayListActionButton()
         
         listActionButton.isUppercaseTitle = false
