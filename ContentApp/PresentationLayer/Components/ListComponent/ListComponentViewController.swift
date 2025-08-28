@@ -637,25 +637,30 @@ extension ListComponentViewController {
         
         // Prevent duplicates (same count and total)
         if uploadedCount == lastUploadedCount && totalCount == lastTotalCount {
-            return //Skipping duplicate notification
+            return // Skipping duplicate notification
         }
         
         lastUploadedCount = uploadedCount
         lastTotalCount = totalCount
         
         let message: String
+        var titleString: String = ""
         if uploadedCount >= totalCount {
             // Only show once
             guard !didShowFinalNotification else { return }
             message = "\(LocalizationConstants.AppExtension.finished): \(uploadedCount)/\(totalCount) \(LocalizationConstants.Accessibility.uploaded)"
             didShowFinalNotification = true
+            titleString = LocalizationConstants.Accessibility.uploaded
         } else {
             message = "\(uploadedCount)/\(totalCount) \(LocalizationConstants.Accessibility.uploaded)"
-
+            titleString = LocalizationConstants.AppExtension.uploadingFilesTitle
         }
-        
+        sendLocalNotification(title: titleString, message: message)
+    }
+    
+    func sendLocalNotification(title: String, message: String) {
         let content = UNMutableNotificationContent()
-        content.title = LocalizationConstants.AppExtension.uploadingFilesTitle
+        content.title = title
         content.body = message
         content.sound = .default
         content.threadIdentifier = "UploadProgress"
