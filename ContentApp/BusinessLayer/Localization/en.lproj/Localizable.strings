@@ -307,6 +307,8 @@
 "transfer-files" = "Transfers";
 "unsupported-file-format" = "Unsupported File Format";
 "search_move_warning" = "You cannot move to your own folder and subfolders.";
+"finished" = "Finished";
+"uploading_files" = "Uploading Files";
 
 // MARK: - Tasks
 "tasks-title" = "Tasks";
