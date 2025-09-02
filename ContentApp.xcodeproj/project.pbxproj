@@ -5570,7 +5570,6 @@
 			baseConfigurationReference = D117A831C5CD4ED4D3A104D3 /* Pods-ContentApp-ContentAppUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 99KBFMK22S;
 				INFOPLIST_FILE = ContentAppUITests/Info.plist;
@@ -5581,7 +5580,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile.ContentAppUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ContentApp;
