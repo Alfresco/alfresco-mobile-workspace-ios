@@ -25,7 +25,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     private var galleryDataSource: PhotoGalleryDataSource?
     var attachmentType: AttachmentType
     var didSelectAttachment: (([UploadTransfer]) -> Void)?
-    var multiSelection = false
+    var multiSelection = true
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode,
