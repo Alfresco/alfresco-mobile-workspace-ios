@@ -306,6 +306,8 @@ struct LocalizationConstants {
         static let waitingTitle = NSLocalizedString("waiting-title", comment: "")
         static let finishedUploadingMessage = NSLocalizedString("dialog-finished-uploading-message", comment: "")
         static let unsupportedFileFormat = NSLocalizedString("unsupported-file-format", comment: "")
+        static let finished = NSLocalizedString("finished", comment: "")
+        static let uploadingFilesTitle = NSLocalizedString("uploading_files", comment: "")
     }
     
     struct Tasks {

@@ -62,6 +62,9 @@ class ListComponentViewController: SystemThemableViewController {
     var folderId = ""
     var isAPSAttachmentFlow = false
     var connectivityService: ConnectivityService?
+    private var didShowFinalNotification = false
+    var lastUploadedCount: Int = 0
+    var lastTotalCount: Int = 0
     
     // MARK: - View Life Cycle
     
@@ -594,6 +597,10 @@ extension ListComponentViewController {
         if viewModel.model is RecentModel {
             let totalNodes = SyncBannerService.totalUploadNodes()
             let uploadedNodes = SyncBannerService.totalUploadedNodes()
+            let totalUploadNodes = totalNodes + uploadedNodes
+            if totalUploadNodes > 0 {
+                showUploadNotification(uploadedCount: uploadedNodes, totalCount: totalUploadNodes)
+            }
             if viewModel.shouldDisplaySyncBanner() && totalNodes > 0 && uploadingBannerView.alpha == 0 {
                 uploadingBannerView.alpha = 1
                 uploadingBannerHeight.constant = bannerHeight
@@ -620,6 +627,52 @@ extension ListComponentViewController {
             uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, totalNodes)
             uploadingPercentageLabel.text = String(format: "%.2f%%", progressPercentage)
             uploadingProgressView.progress = progress
+        }
+    }
+    
+    // MARK: - Show Progress using local notification.
+    
+    func showUploadNotification(uploadedCount: Int, totalCount: Int) {
+        guard uploadedCount > 0 else { return }
+        
+        // Prevent duplicates (same count and total)
+        if uploadedCount == lastUploadedCount && totalCount == lastTotalCount {
+            return // Skipping duplicate notification
+        }
+        
+        lastUploadedCount = uploadedCount
+        lastTotalCount = totalCount
+        
+        let message: String
+        var titleString: String = ""
+        if uploadedCount >= totalCount {
+            // Only show once
+            guard !didShowFinalNotification else { return }
+            message = "\(LocalizationConstants.AppExtension.finished): \(uploadedCount)/\(totalCount) \(LocalizationConstants.Accessibility.uploaded)"
+            didShowFinalNotification = true
+            titleString = LocalizationConstants.Accessibility.uploaded
+        } else {
+            message = "\(uploadedCount)/\(totalCount) \(LocalizationConstants.Accessibility.uploaded)"
+            titleString = LocalizationConstants.AppExtension.uploadingFilesTitle
+        }
+        sendLocalNotification(title: titleString, message: message)
+    }
+    
+    func sendLocalNotification(title: String, message: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = message
+        content.sound = .default
+        content.threadIdentifier = "UploadProgress"
+        
+        let request = UNNotificationRequest(identifier: "UploadProgressNotification",
+                                            content: content,
+                                            trigger: nil)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error posting notification: \(error.localizedDescription)")
+            }
         }
     }
     

@@ -32,6 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { // swiftlint:disable:this discouraged_optional_collection
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                // Notification permission granted
+            }
+        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        UNUserNotificationCenter.current().delegate = self
         let window = UIWindow(frame: UIScreen.main.bounds)
         let applicationCoordinator = ApplicationCoordinator(window: window)
 
@@ -177,4 +184,12 @@ extension AppDelegate: Check_Method_Of_JailBreak {
 // MARK: - APPDELEGATE SINGLETON
 func appDelegate() -> AppDelegate? {
     return  UIApplication.shared.delegate as? AppDelegate
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner]) // or [.alert, .sound]
+    }
 }
