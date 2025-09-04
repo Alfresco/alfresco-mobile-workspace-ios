@@ -185,6 +185,9 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
                                                         parentListNode: personalFilesNode(),
                                                         attachmentType: .content)
+        if ConfigurationManager.shared.isPaidUser() {
+            coordinator.multiSelection = true
+        }
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
