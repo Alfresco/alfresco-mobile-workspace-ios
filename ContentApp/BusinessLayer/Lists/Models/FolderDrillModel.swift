@@ -103,10 +103,13 @@ class FolderDrillModel: ListComponentModelProtocol {
                     let responsePagination = result?.list?.pagination
                     let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid, attachmentType: .content) { uploadTransfers in
                         guard let sSelf = self else { return }
-                        sSelf.insert(uploadTransfers: uploadTransfers,
-                                     to: &sSelf.rawListNodes,
-                                     totalItems: responsePagination?.totalItems ?? 0)
-                        sSelf.delegate?.needsDisplayStateRefresh()
+                        if sSelf.rawListNodes.count == sSelf.listNodes().count {
+                            sSelf.insert(uploadTransfers: uploadTransfers,
+                                         to: &sSelf.rawListNodes,
+                                         totalItems: responsePagination?.totalItems ?? 0)
+                            sSelf.delegate?.needsDisplayStateRefresh()
+                        }
+                       
                     }
                     sSelf.insert(uploadTransfers: uploadTransfers,
                                  to: &listNodes,
@@ -164,10 +167,12 @@ class FolderDrillModel: ListComponentModelProtocol {
                 let responsePagination = result?.list?.pagination
                 let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid, attachmentType: .content) { uploadTransfers in
                     guard let sSelf = self else { return }
-                    sSelf.insert(uploadTransfers: uploadTransfers,
-                                 to: &sSelf.rawListNodes,
-                                 totalItems: responsePagination?.totalItems ?? 0)
-                    sSelf.delegate?.needsDisplayStateRefresh()
+                    if sSelf.rawListNodes.count == sSelf.listNodes().count {
+                        sSelf.insert(uploadTransfers: uploadTransfers,
+                                     to: &sSelf.rawListNodes,
+                                     totalItems: responsePagination?.totalItems ?? 0)
+                        sSelf.delegate?.needsDisplayStateRefresh()
+                    }
                 }
                 sSelf.insert(uploadTransfers: uploadTransfers,
                              to: &listNodes,

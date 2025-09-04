@@ -123,9 +123,11 @@ class ListPageController: ListPageControllerProtocol {
             let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
                                              skipCount: pageSkipCount)
             requestInProgress = true
-            dataSource.fetchItems(with: nextPage) { [weak self] paginatedResponse in
-                guard let sSelf = self else { return }
-                sSelf.handlePaginatedResponse(response: paginatedResponse)
+            if connectivityService?.hasInternetConnection() == true {
+                dataSource.fetchItems(with: nextPage) { [weak self] paginatedResponse in
+                    guard let sSelf = self else { return }
+                    sSelf.handlePaginatedResponse(response: paginatedResponse)
+                }
             }
         }
     }
