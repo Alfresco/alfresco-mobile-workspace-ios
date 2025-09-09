@@ -182,6 +182,9 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
                                                         parentListNode: listNode,
                                                         attachmentType: .content)
+        if ConfigurationManager.shared.isPaidUser() {
+            coordinator.multiSelection = true
+        }
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
