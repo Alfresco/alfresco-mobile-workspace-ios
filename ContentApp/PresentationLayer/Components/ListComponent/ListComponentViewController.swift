@@ -667,7 +667,7 @@ extension ListComponentViewController {
         
         let request = UNNotificationRequest(identifier: "UploadProgressNotification",
                                             content: content,
-                                            trigger: nil)
+                                            trigger: UNTimeIntervalNotificationTrigger(timeInterval: 0.5, repeats: false) )
         
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {

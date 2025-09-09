@@ -190,6 +190,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner]) // or [.alert, .sound]
+        completionHandler([.banner, .list]) // or [.alert, .sound]
     }
 }
