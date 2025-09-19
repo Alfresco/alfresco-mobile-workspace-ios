@@ -298,6 +298,8 @@
 "transfer-files" = "Overdrachten";
 "unsupported-file-format" = "Niet ondersteunde bestandsindeling";
 "search_move_warning" = "Verplaatsen naar uw eigen map en submappen is niet mogelijk.";
+"finished" = "Voltooid";
+"uploading_files" = "Bestanden uploaden";
 
 // MARK: - Tasks
 "tasks-title" = "Taken";
