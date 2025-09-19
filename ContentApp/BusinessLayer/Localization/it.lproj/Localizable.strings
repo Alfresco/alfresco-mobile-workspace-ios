@@ -298,6 +298,8 @@
 "transfer-files" = "Trasferimenti";
 "unsupported-file-format" = "Formato file non supportato";
 "search_move_warning" = "Impossibile passare alla cartella personale e relative sottocartelle.";
+"finished" = "Completato";
+"uploading_files" = "Caricamento dei file";
 
 // MARK: - Tasks
 "tasks-title" = "Compiti";

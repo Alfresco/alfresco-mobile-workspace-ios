@@ -298,6 +298,8 @@
 "transfer-files" = "Transferencias";
 "unsupported-file-format" = "Formato de fichero incompatible";
 "search_move_warning" = "No puede mover a su propia carpeta y subcarpetas.";
+"finished" = "Finalizado";
+"uploading_files" = "Subiendo archivos";
 
 // MARK: - Tasks
 "tasks-title" = "Tareas";

@@ -298,6 +298,8 @@
 "transfer-files" = "Transferts";
 "unsupported-file-format" = "Format du fichier non pris en charge";
 "search_move_warning" = "Vous ne pouvez pas déplacer vers votre propre dossier et vos sous-dossiers.";
+"finished" = "Terminé";
+"uploading_files" = "Téléchargement des fichiers";
 
 // MARK: - Tasks
 "tasks-title" = "Tâches";
