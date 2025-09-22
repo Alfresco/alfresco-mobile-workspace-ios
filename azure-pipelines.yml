@@ -45,7 +45,7 @@ steps:
     sourcePath: 'ContentApp/Supporting Files/Info.plist'
     versionCodeOption: 'buildid'
     versionCode: '$(build_version)'
-    versionName: '1.11.3'
+    versionName: '1.12.0'
     printFile: true
 
 - task: CmdLine@2
