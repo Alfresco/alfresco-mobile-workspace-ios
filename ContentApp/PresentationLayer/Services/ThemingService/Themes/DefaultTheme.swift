@@ -27,6 +27,7 @@ struct DefaultTheme: PresentationTheme {
     var headline6TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 20.0), lineHeight: 1.40, letterSpacing: 0.15)
     var subtitle1TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 16.0), lineHeight: 1.50, letterSpacing: 0.15)
     var subtitle2TextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 14.0), lineHeight: 1.43, letterSpacing: 0.1)
+    var subtitle3TextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 16.0), lineHeight: 1.43, letterSpacing: 0.1)
     var buttonTextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 14.0), lineHeight: 1.71, letterSpacing: 0.1)
     var body1TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 16.0), lineHeight: 1.50, letterSpacing: 0.444444)
     var body2TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 14.0), lineHeight: 1.43, letterSpacing: 0.25)
@@ -54,6 +55,7 @@ struct DefaultTheme: PresentationTheme {
     var onSurface12Color = UIColor(hex: "#212121", alpha: 0.12)
     var onSurface07Color = UIColor(hex: "#212328", alpha: 0.7)
     var onSurface012Color = UIColor(hex: "#212328", alpha: 0.12)
+    var onSurfaceOrangeColor = UIColor(hex: "#FF6B00")
 
     var primaryVariantT1Color = UIColor(hex: "#0052AE")
     var primaryColorVariant = UIColor(hex: "#FFFFFF")

@@ -76,6 +76,12 @@ extension UILabel {
         self.font = theme.subtitle2TextStyle.font
         self.add(characterSpacing: theme.subtitle2TextStyle.letterSpacing, lineHeight: theme.subtitle2TextStyle.lineHeight)
     }
+    
+    func applyStyleSubtitle3OnSurface60(theme: PresentationTheme) {
+        self.textColor = theme.onSurface60Color
+        self.font = theme.subtitle3TextStyle.font
+        self.add(characterSpacing: theme.subtitle2TextStyle.letterSpacing, lineHeight: theme.subtitle2TextStyle.lineHeight)
+    }
 
     func applyeStyleHeadline5OnSurface(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor
@@ -103,6 +109,12 @@ extension UILabel {
     
     func applyStyleSubtitle2OnSurface30(theme: PresentationTheme) {
         self.textColor = theme.onSurface30Color
+        self.font = theme.subtitle2TextStyle.font
+        self.add(characterSpacing: theme.subtitle2TextStyle.letterSpacing, lineHeight: theme.subtitle2TextStyle.lineHeight)
+    }
+    
+    func applyStyleSubtitle2OonSurfaceOrangeColor(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceOrangeColor
         self.font = theme.subtitle2TextStyle.font
         self.add(characterSpacing: theme.subtitle2TextStyle.letterSpacing, lineHeight: theme.subtitle2TextStyle.lineHeight)
     }

@@ -27,6 +27,7 @@ protocol PresentationTheme {
     var headline6TextStyle: TextStyle { get }
     var subtitle1TextStyle: TextStyle { get }
     var subtitle2TextStyle: TextStyle { get }
+    var subtitle3TextStyle: TextStyle { get }
     var buttonTextStyle: TextStyle { get }
     var body1TextStyle: TextStyle { get }
     var body2TextStyle: TextStyle { get }
@@ -54,6 +55,7 @@ protocol PresentationTheme {
     var onSurface12Color: UIColor { get }
     var onSurface07Color: UIColor { get }
     var onSurface012Color: UIColor { get }
+    var onSurfaceOrangeColor: UIColor { get }
 
     var primaryVariantT1Color: UIColor { get }
     var primaryColorVariant: UIColor { get }

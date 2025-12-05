@@ -81,6 +81,11 @@
 		7429D7602B7B42CC00CA930C /* DropDownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429D75E2B7B42CC00CA930C /* DropDownTableViewCell.swift */; };
 		7429D7612B7B42CC00CA930C /* DropDownTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */; };
 		7429D7632B7B431000CA930C /* DropDownTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */; };
+		742D718A2EDEBBD8009864EC /* UIViewController+AskDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742D71892EDEBBD8009864EC /* UIViewController+AskDiscovery.swift */; };
+		742D71962EDEC4E9009864EC /* AskDiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742D71952EDEC4E9009864EC /* AskDiscoveryViewModel.swift */; };
+		742D71972EDEC4E9009864EC /* AskDiscoveryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742D71952EDEC4E9009864EC /* AskDiscoveryViewModel.swift */; };
+		742D719F2EDEC873009864EC /* FakeDoorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742D719E2EDEC873009864EC /* FakeDoorViewController.swift */; };
+		742D71A12EDED828009864EC /* FakeDoorScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742D71A02EDED828009864EC /* FakeDoorScreenCoordinator.swift */; };
 		742FB2AD2B985D1A00000291 /* ActionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742FB2AC2B985D1A00000291 /* ActionListViewController.swift */; };
 		743F49E02D75B3F800B033FA /* featuresMobile.json in Sources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
 		743F49E32D75E7F200B033FA /* featuresMobile.json in Resources */ = {isa = PBXBuildFile; fileRef = 743F49DF2D75B3F500B033FA /* featuresMobile.json */; };
@@ -928,6 +933,10 @@
 		7429D75E2B7B42CC00CA930C /* DropDownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCell.swift; sourceTree = "<group>"; };
 		7429D75F2B7B42CC00CA930C /* DropDownTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropDownTableViewCell.xib; sourceTree = "<group>"; };
 		7429D7622B7B431000CA930C /* DropDownTableViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownTableViewCellViewModel.swift; sourceTree = "<group>"; };
+		742D71892EDEBBD8009864EC /* UIViewController+AskDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AskDiscovery.swift"; sourceTree = "<group>"; };
+		742D71952EDEC4E9009864EC /* AskDiscoveryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskDiscoveryViewModel.swift; sourceTree = "<group>"; };
+		742D719E2EDEC873009864EC /* FakeDoorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDoorViewController.swift; sourceTree = "<group>"; };
+		742D71A02EDED828009864EC /* FakeDoorScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDoorScreenCoordinator.swift; sourceTree = "<group>"; };
 		742FB2AC2B985D1A00000291 /* ActionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionListViewController.swift; sourceTree = "<group>"; };
 		743F49DF2D75B3F500B033FA /* featuresMobile.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = featuresMobile.json; sourceTree = "<group>"; };
 		743F49E52D76CF1D00B033FA /* MenuConfigLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuConfigLoader.swift; sourceTree = "<group>"; };
@@ -1775,6 +1784,55 @@
 			path = DropDown;
 			sourceTree = "<group>";
 		};
+		742D718B2EDEC19B009864EC /* AskDiscovery */ = {
+			isa = PBXGroup;
+			children = (
+				742D718D2EDEC3E8009864EC /* Screens */,
+				742D718C2EDEC3DC009864EC /* Sub-Coordinators */,
+			);
+			path = AskDiscovery;
+			sourceTree = "<group>";
+		};
+		742D718C2EDEC3DC009864EC /* Sub-Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				742D71A02EDED828009864EC /* FakeDoorScreenCoordinator.swift */,
+			);
+			path = "Sub-Coordinators";
+			sourceTree = "<group>";
+		};
+		742D718D2EDEC3E8009864EC /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				742D719E2EDEC873009864EC /* FakeDoorViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		742D71922EDEC4A8009864EC /* AskDiscovery */ = {
+			isa = PBXGroup;
+			children = (
+				742D71942EDEC4BE009864EC /* ViewModels */,
+				742D71932EDEC4B6009864EC /* Models */,
+			);
+			path = AskDiscovery;
+			sourceTree = "<group>";
+		};
+		742D71932EDEC4B6009864EC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		742D71942EDEC4BE009864EC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				742D71952EDEC4E9009864EC /* AskDiscoveryViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		742FB2AB2B985C3800000291 /* Action List */ = {
 			isa = PBXGroup;
 			children = (
@@ -1960,6 +2018,7 @@
 		B959CCCA2476AFE500811F15 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				742D718B2EDEC19B009864EC /* AskDiscovery */,
 				C93647C52962A4800015F096 /* Notifications */,
 				E334C06F24755DA700F74880 /* Storyboard */,
 				B91A5E4C247BD5910063E938 /* Coordinator */,
@@ -2192,6 +2251,7 @@
 				B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */,
 				B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */,
 				B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */,
+				742D71892EDEBBD8009864EC /* UIViewController+AskDiscovery.swift */,
 			);
 			path = UIViewController;
 			sourceTree = "<group>";
@@ -3667,6 +3727,7 @@
 		E3A2A8FE247E7D950046582C /* BusinessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				742D71922EDEC4A8009864EC /* AskDiscovery */,
 				C97BEB7026EB36E400E05375 /* Cells */,
 				C903CBAF2881520C0080EF69 /* Storyboard Constants */,
 				F1E295CC261EF62E00C9B8EE /* PrivacyNotice */,
@@ -4597,6 +4658,7 @@
 				C92F3DC327BFEEA700952C59 /* SyncStatusEvent.swift in Sources */,
 				C99786BA27F739530033DB3E /* MoveEvent.swift in Sources */,
 				C9A9119627A7BA74002EBC7F /* FileAsset.swift in Sources */,
+				742D71962EDEC4E9009864EC /* AskDiscoveryViewModel.swift in Sources */,
 				C918812527AA421400F850DF /* ListNodeDataAccessor.swift in Sources */,
 				C9E17FF927A94C090006747E /* DatabaseService.swift in Sources */,
 				C9A9111827A7B7FB002EBC7F /* GetContentServicesProfile.swift in Sources */,
@@ -4677,6 +4739,7 @@
 				E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */,
 				C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */,
 				74E39A4C2CFEE59D00F7B9B1 /* GetContentServiceAuthType.swift in Sources */,
+				742D719F2EDEC873009864EC /* FakeDoorViewController.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,
 				B9DBB21B256537840098CF18 /* OperationQueueService.swift in Sources */,
@@ -4742,6 +4805,7 @@
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
 				476CB2DB2A34D93300207C4D /* WorkflowTaskStatusViewModel.swift in Sources */,
 				C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */,
+				742D718A2EDEBBD8009864EC /* UIViewController+AskDiscovery.swift in Sources */,
 				471993B02B3016CD00F21CBA /* MultiLineTextTableViewCell.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
@@ -5002,6 +5066,7 @@
 				B9233FC525A70ADC006EA4DA /* OfflineViewModel.swift in Sources */,
 				74847FA02B5A88DA00EEC9D8 /* DatePickerTableViewCell.swift in Sources */,
 				B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */,
+				742D71972EDEC4E9009864EC /* AskDiscoveryViewModel.swift in Sources */,
 				E3A33E3124B7317D005FFB40 /* RecentSearchCollectionViewCell.swift in Sources */,
 				B95605022501208600D955BA /* PDFRenderer.swift in Sources */,
 				B9A9F126263AEB7900F4428D /* CameraKit.swift in Sources */,
@@ -5018,6 +5083,7 @@
 				C9D4FAAD278305730008C4AA /* FileManagerScreenCoordinator.swift in Sources */,
 				C9205C8928A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift in Sources */,
 				E3CF862B24E69DC7001C86B5 /* FilePreviewViewController.swift in Sources */,
+				742D71A12EDED828009864EC /* FakeDoorScreenCoordinator.swift in Sources */,
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
 				C97BEB8326EB3B6200E05375 /* CollectionViewExtensions.swift in Sources */,

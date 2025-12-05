@@ -79,6 +79,7 @@
 "offline" = "Offline";
 "preview-capture-asset" = "Preview";
 "gallery-upload" = "Photos";
+"ask-an-agent" = "Ask an Agent";
 
 
 // MARK: - Help Textviews
@@ -356,6 +357,7 @@
 "comment-title" = "Comment";
 "send-button" = "Send button";
 "description-title" = "Description";
+"askDiscovery-Title" = "Ask Discovery";
 
 // MARK: - Task filters
 "Due date" = "Due date";
@@ -470,3 +472,11 @@
 "multiple-selected-items-count" = "%d Selected";
 "check-box-multi-select" = "Check box";
 "maximum-items-selection-message" = "Select a maximum of %d item(s)";
+
+// MARK: - Ask Discovery
+"fake-door-title" = "Knowledge Discovery is coming soon to the mobile - making it easy to extract valuable insights across your content, right from your device.";
+"fake-door-subtitle" = "Would this feature be valuable for the work you do?";
+"fake-door-thank-you" = "Thank you for your feedback!";
+"fake-door-close" = "Close";
+"fake-door-like" = "Like";
+"fake-door-dis-like" = "Dislike";

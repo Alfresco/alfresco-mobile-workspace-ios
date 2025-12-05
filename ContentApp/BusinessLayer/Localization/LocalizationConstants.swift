@@ -93,6 +93,7 @@ struct LocalizationConstants {
         static let transferFiles = NSLocalizedString("transfer-files", comment: "")
         static let tasks = NSLocalizedString("tasks-title", comment: "")
         static let workflows = NSLocalizedString("workflows-title", comment: "")
+        static let askAnAgent = NSLocalizedString("ask-an-agent", comment: "")
     }
 
     struct Help {
@@ -379,6 +380,7 @@ struct LocalizationConstants {
         static let selected = NSLocalizedString("selected", comment: "")
         static let startWorkflow = NSLocalizedString("start-workflow", comment: "")
         static let checkBox = NSLocalizedString("check-box-multi-select", comment: "")
+        static let askDiscovery = NSLocalizedString("askDiscovery-Title", comment: "")
     }
     
     struct EditTask {
@@ -445,5 +447,14 @@ struct LocalizationConstants {
     struct MultipleFilesSelection {
         static let multipleItemsCount = NSLocalizedString("multiple-selected-items-count", comment: "")
         static let maximumFileSelectionMessage = NSLocalizedString("maximum-items-selection-message", comment: "")
+    }
+    
+    struct AskDiscovery {
+        static let fakeDoorTitle = NSLocalizedString("fake-door-title", comment: "")
+        static let fakeDoorSubtitle = NSLocalizedString("fake-door-subtitle", comment: "")
+        static let fakeDoorThankYou = NSLocalizedString("fake-door-thank-you", comment: "")
+        static let fakeDoorClose = NSLocalizedString("fake-door-close", comment: "")
+        static let fakeDoorLike = NSLocalizedString("fake-door-like", comment: "")
+        static let fakeDoorDislike = NSLocalizedString("fake-door-dis-like", comment: "")
     }
 }

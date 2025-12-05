@@ -69,6 +69,7 @@ class ListViewController: SystemSearchViewController {
         if viewModel?.shouldDisplaySettingsButton() ?? false {
             addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         }
+        addAskDiscoveryButton(action: #selector(askDiscoveryButtonTapped), target: self)
 
         listController?.startLoading()
         pageController?.refreshList()
@@ -101,6 +102,10 @@ class ListViewController: SystemSearchViewController {
 
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
+    }
+    
+    @objc func askDiscoveryButtonTapped() {
+        tabBarScreenDelegate?.showAskDiscoveryScreen()
     }
 
     // MARK: - Coordinator Public Methods

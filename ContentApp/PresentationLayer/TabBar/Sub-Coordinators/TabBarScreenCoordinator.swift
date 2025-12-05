@@ -26,6 +26,7 @@ protocol TabBarScreenCoordinatorDelegate: AnyObject {
     func showSettingsScreen()
     func scrollToTopOrPopToRoot(forScreen item: Int)
     func showTasksScreen()
+    func showAskDiscoveryScreen()
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -37,6 +38,7 @@ class TabBarScreenCoordinator: Coordinator {
     private var offlineCoordinator: OfflineScreenCoordinator?
     private var settingsCoordinator: SettingsScreenCoordinator?
     private var tasksCoordinator: TasksScreenCoordinator?
+    private var fakeDoorCoordinator: FakeDoorScreenCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -96,6 +98,16 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
             tabBarMainViewController?.tabBar.isHidden = true
             settingsCoordinator = SettingsScreenCoordinator(with: navigationController)
             settingsCoordinator?.start()
+        }
+    }
+    
+    func showAskDiscoveryScreen() {
+        if let viewControllers = tabBarMainViewController?.viewControllers,
+            let selectedIndex = tabBarMainViewController?.selectedIndex,
+            let navigationController = viewControllers[selectedIndex] as? UINavigationController {
+            tabBarMainViewController?.tabBar.isHidden = true
+            fakeDoorCoordinator = FakeDoorScreenCoordinator(with: navigationController)
+            fakeDoorCoordinator?.start()
         }
     }
 
