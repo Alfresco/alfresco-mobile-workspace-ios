@@ -39,4 +39,5 @@ enum MaterialComponentsThemingScene {
     case pdfPasswordDialog
     case dialogButton
     case toolBarButton
+    case closeButton
 }
