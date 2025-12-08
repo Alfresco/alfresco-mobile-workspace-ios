@@ -62,6 +62,9 @@ enum Event {
         case workflowTakePhoto = "event_workflow_upload_photos_or_videos"
         case workflowUploadFile = "event_workflow_upload_files"
         case deleteWorkflowAttachment = "event_delete_workflow_attachment"
+        case askDiscovery = "page_view_ask_discovery_feedback"
+        case thumbsUpAskDiscovery = "event_ask_discovery_like"
+        case thumbsDownAskDiscovery = "event_ask_discovery_dis_like"
     }
     
     enum API: String {
