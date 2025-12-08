@@ -88,6 +88,24 @@ extension AnalyticsManager {
         self.logEvent(name: Event.Action.taskComplete.rawValue, parameters: parameters)
     }
     
+    func didTapAskDiscovery() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.askDiscovery.rawValue
+        self.logEvent(name: Event.Action.askDiscovery.rawValue, parameters: parameters)
+    }
+    
+    func didTapThumbsUpAskDiscovery() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.thumbsUpAskDiscovery.rawValue
+        self.logEvent(name: Event.Action.thumbsUpAskDiscovery.rawValue, parameters: parameters)
+    }
+    
+    func didTapThumbsDownAskDiscovery() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.thumbsDownAskDiscovery.rawValue
+        self.logEvent(name: Event.Action.thumbsDownAskDiscovery.rawValue, parameters: parameters)
+    }
+    
     func didTapCreateTask() {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.createTask.rawValue

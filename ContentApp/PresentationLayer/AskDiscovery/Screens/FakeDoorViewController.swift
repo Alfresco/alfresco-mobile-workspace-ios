@@ -39,6 +39,7 @@ class FakeDoorViewController: SystemThemableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        AnalyticsManager.shared.didTapAskDiscovery()
         navigationController?.setNavigationBarHidden(false, animated: true)
         thankYouLabel.isHidden = true
         thumbsUpButton.setImage(UIImage(named: "ic-thumbs-up"), for: .normal)
@@ -137,12 +138,14 @@ class FakeDoorViewController: SystemThemableViewController {
         thumbsUpButton.setImage(UIImage(named: "ic-thumbs-up-selected"), for: .normal)
         thumbsDownButton.setImage(UIImage(named: "ic-thumbs-down"), for: .normal)
         thankYouLabel.isHidden = false
+        AnalyticsManager.shared.didTapThumbsUpAskDiscovery()
     }
     
     @IBAction func thumbsDownButtonAction(_ sender: Any) {
         thumbsDownButton.setImage(UIImage(named: "ic-thumbs-down-selected"), for: .normal)
         thumbsUpButton.setImage(UIImage(named: "ic-thumbs-up"), for: .normal)
         thankYouLabel.isHidden = false
+        AnalyticsManager.shared.didTapThumbsDownAskDiscovery()
     }
     
     @IBAction func closeButtonAction(_ sender: Any) {
