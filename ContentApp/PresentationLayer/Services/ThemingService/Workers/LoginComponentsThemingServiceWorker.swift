@@ -35,6 +35,8 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
             return loginSavePadButtonContainerScheme(for: theme)
         case .toolBarButton:
             return toolBarButtonContainerScheme(for: theme)
+        case .closeButton:
+            return closeButtonContainerScheme(for: theme)
         default: return nil
         }
     }
@@ -90,6 +92,15 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
         containerScheme.colorScheme.primaryColor = theme.primaryT1Color
         containerScheme.colorScheme.onPrimaryColor = theme.onPrimaryColor
         containerScheme.typographyScheme.button = theme.toolBarTextStyle.font
+
+        return containerScheme
+    }
+    
+    private func closeButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
+        let containerScheme = MDCContainerScheme()
+        containerScheme.colorScheme.primaryColor = theme.onSurface10Color
+        containerScheme.colorScheme.onPrimaryColor = theme.onSurfaceColor
+        containerScheme.typographyScheme.button = theme.buttonTextStyle.font
 
         return containerScheme
     }

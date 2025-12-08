@@ -89,7 +89,7 @@ class FakeDoorViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        guard let closeButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .closeButton), let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         view.backgroundColor = currentTheme.surfaceColor
         let image = UIImage(color: currentTheme.surfaceColor,
@@ -112,12 +112,24 @@ class FakeDoorViewController: SystemThemableViewController {
         thankYouLabel.applyStyleSubtitle2OonSurfaceOrangeColor(theme: currentTheme)
         thankYouLabel.textAlignment = .center
         
-        closeButton.setBackgroundColor(currentTheme.onSurfaceColor,
-                                       for: .disabled)
+        closeButton.applyContainedTheme(withScheme: closeButtonScheme)
         closeButton.isUppercaseTitle = false
         closeButton.setShadowColor(.clear, for: .normal)
-        closeButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         closeButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+        
+        let themingService = coordinatorServices?.themingService
+        switch themingService?.getThemeMode() {
+        case .light:
+            thumbsUpButton.tintColor = UIColor.black
+            thumbsDownButton.tintColor = UIColor.black
+        case .dark:
+            thumbsUpButton.tintColor = .white
+            thumbsDownButton.tintColor = .white
+        default:
+            let style = UIScreen.main.traitCollection.userInterfaceStyle
+            thumbsUpButton.tintColor = (style == .dark) ? .white : .black
+            thumbsDownButton.tintColor = (style == .dark) ? .white : .black
+        }
     }
     
     // MARK: - Button Action

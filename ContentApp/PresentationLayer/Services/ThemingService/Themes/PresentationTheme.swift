@@ -56,6 +56,7 @@ protocol PresentationTheme {
     var onSurface07Color: UIColor { get }
     var onSurface012Color: UIColor { get }
     var onSurfaceOrangeColor: UIColor { get }
+    var onSurface10Color: UIColor { get }
 
     var primaryVariantT1Color: UIColor { get }
     var primaryColorVariant: UIColor { get }

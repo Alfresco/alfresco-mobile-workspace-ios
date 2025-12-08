@@ -55,6 +55,7 @@ struct DarkTheme: PresentationTheme {
     var onSurface07Color = UIColor(hex: "#FFFFFF", alpha: 0.6)
     var onSurface012Color = UIColor(hex: "#FFFFFF", alpha: 0.12)
     var onSurfaceOrangeColor = UIColor(hex: "#FF8A33")
+    var onSurface10Color =  UIColor(hex: "#FFFFFF", alpha: 0.10)
 
     var primaryVariantT1Color = UIColor(hex: "#6EACFF")
     var primaryColorVariant = UIColor(hex: "#2E2E2E")

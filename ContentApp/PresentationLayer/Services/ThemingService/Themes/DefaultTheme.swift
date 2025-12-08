@@ -56,6 +56,7 @@ struct DefaultTheme: PresentationTheme {
     var onSurface07Color = UIColor(hex: "#212328", alpha: 0.7)
     var onSurface012Color = UIColor(hex: "#212328", alpha: 0.12)
     var onSurfaceOrangeColor = UIColor(hex: "#FF6B00")
+    var onSurface10Color =  UIColor(hex: "#212328", alpha: 0.05)
 
     var primaryVariantT1Color = UIColor(hex: "#0052AE")
     var primaryColorVariant = UIColor(hex: "#FFFFFF")
