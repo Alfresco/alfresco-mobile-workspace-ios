@@ -3,6 +3,16 @@
     {
       "filename" : "ic-ask.png",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "HeaderAction.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
