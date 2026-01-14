@@ -100,6 +100,10 @@ class ListComponentViewModel {
     func shouldDisplaySettingsButton() -> Bool {
         return false
     }
+    
+    func shouldDisplayAskDiscoveryButton() -> Bool {
+        return false
+    }
 
     func performListAction() { }
 

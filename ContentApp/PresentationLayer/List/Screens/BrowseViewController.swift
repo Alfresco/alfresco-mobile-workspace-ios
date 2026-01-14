@@ -33,6 +33,7 @@ class BrowseViewController: SystemSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
+        addAskDiscoveryButton(action: #selector(askDiscoveryButtonTapped), target: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +58,10 @@ class BrowseViewController: SystemSearchViewController {
 
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
+    }
+    
+    @objc func askDiscoveryButtonTapped() {
+        tabBarScreenDelegate?.showAskDiscoveryScreen()
     }
 }
 

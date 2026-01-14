@@ -45,6 +45,10 @@ class FavoritesViewController: SystemSearchViewController {
         if folderAndFilesListViewModel?.shouldDisplaySettingsButton() ?? false {
             addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         }
+        
+        if folderAndFilesListViewModel?.shouldDisplayAskDiscoveryButton() ?? false {
+            addAskDiscoveryButton(action: #selector(askDiscoveryButtonTapped), target: self)
+        }
 
         view.addSubview(tabBar)
         view.addSubview(scrollView)
@@ -112,6 +116,10 @@ class FavoritesViewController: SystemSearchViewController {
 
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
+    }
+    
+    @objc func askDiscoveryButtonTapped() {
+        tabBarScreenDelegate?.showAskDiscoveryScreen()
     }
 
     // MARK: - Coordinator Public Methods

@@ -69,7 +69,10 @@ class ListViewController: SystemSearchViewController {
         if viewModel?.shouldDisplaySettingsButton() ?? false {
             addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         }
-        addAskDiscoveryButton(action: #selector(askDiscoveryButtonTapped), target: self)
+        
+        if viewModel?.shouldDisplayAskDiscoveryButton() ?? false {
+            addAskDiscoveryButton(action: #selector(askDiscoveryButtonTapped), target: self)
+        }
 
         listController?.startLoading()
         pageController?.refreshList()
