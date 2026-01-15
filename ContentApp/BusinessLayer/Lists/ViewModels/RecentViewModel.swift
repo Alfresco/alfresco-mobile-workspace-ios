@@ -30,6 +30,10 @@ class RecentViewModel: ListComponentViewModel {
     override func shouldDisplaySettingsButton() -> Bool {
         return true
     }
+    
+    override func shouldDisplayAskDiscoveryButton() -> Bool {
+        return true
+    }
 
     override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return true
