@@ -3,6 +3,16 @@
     {
       "filename" : "Agent Graphic@3x.png",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Knowlegde Discovery Splash Image - Dark.png",
+      "idiom" : "universal"
     }
   ],
   "info" : {
