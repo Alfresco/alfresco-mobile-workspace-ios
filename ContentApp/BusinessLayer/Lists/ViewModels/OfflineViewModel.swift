@@ -48,6 +48,10 @@ class OfflineViewModel: ListComponentViewModel {
     override func shouldDisplaySettingsButton() -> Bool {
             return true
     }
+    
+    override func shouldDisplayAskDiscoveryButton() -> Bool {
+        return true
+    }
 
     override func shouldDisplayListActionButton() -> Bool {
         return !model.rawListNodes.isEmpty

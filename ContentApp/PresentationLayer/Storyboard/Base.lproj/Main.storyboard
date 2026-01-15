@@ -2989,7 +2989,7 @@
     <resources>
         <image name="alfresco-logo" width="92" height="92"/>
         <image name="ic-action-sync-uploads" width="10" height="12"/>
-        <image name="ic-ask-discovery-splash" width="192" height="209"/>
+        <image name="ic-ask-discovery-splash" width="936" height="599"/>
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
         <image name="ic-close" width="24" height="24"/>
