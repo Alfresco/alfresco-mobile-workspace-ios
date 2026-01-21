@@ -79,8 +79,6 @@
 "offline" = "Offline";
 "preview-capture-asset" = "Preview";
 "gallery-upload" = "Photos";
-"ask-an-agent" = "Ask an Agent";
-
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services URL";
@@ -357,7 +355,6 @@
 "comment-title" = "Comment";
 "send-button" = "Send button";
 "description-title" = "Description";
-"askDiscovery-Title" = "Ask Discovery";
 
 // MARK: - Task filters
 "Due date" = "Due date";
@@ -474,9 +471,11 @@
 "maximum-items-selection-message" = "Select a maximum of %d item(s)";
 
 // MARK: - Ask Discovery
+"ask-an-agent" = "Ask an Agent";
 "fake-door-title" = "Knowledge Discovery is coming soon to the mobile - making it easy to extract valuable insights across your content, right from your device.";
 "fake-door-subtitle" = "Would this feature be valuable for the work you do?";
-"fake-door-thank-you" = "Thank you for your feedback!";
 "fake-door-close" = "Close";
+"askDiscovery-Title" = "Ask Discovery";
+"fake-door-thank-you" = "Thank you for your feedback!";
 "fake-door-like" = "Like";
 "fake-door-dis-like" = "Dislike";

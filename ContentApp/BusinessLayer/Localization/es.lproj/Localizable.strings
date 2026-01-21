@@ -469,3 +469,13 @@
 "multiple-selected-items-count" = "%d Seleccionado";
 "check-box-multi-select" = "Casilla de verificación";
 "maximum-items-selection-message" = "Seleccione un máximo de %d elementos";
+
+// MARK: - Ask Discovery
+"ask-an-agent" = "Preguntar a un agente";
+"fake-door-title" = "Knowledge Discovery llegará pronto al móvil, lo que facilitará obtener información valiosa de tus contenidos directamente desde tu dispositivo.";
+"fake-door-subtitle" = "¿Sería útil esta función para tu trabajo?";
+"fake-door-close" = "Cerrar";
+"askDiscovery-Title" = "Botón de Ask Discovery";
+"fake-door-thank-you" = "¡Gracias por tus comentarios!";
+"fake-door-like" = "Me gusta";
+"fake-door-dis-like" = "No me gusta";

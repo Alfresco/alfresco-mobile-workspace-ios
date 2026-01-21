@@ -469,3 +469,13 @@
 "multiple-selected-items-count" = "%d Geselecteerd";
 "check-box-multi-select" = "Selectievakje";
 "maximum-items-selection-message" = "Selecteer een maximum van %d items";
+
+// MARK: - Ask Discovery
+"ask-an-agent" = "Een agent vragen";
+"fake-door-title" = "Knowledge Discovery komt binnenkort naar mobiel, zodat je eenvoudig waardevolle inzichten uit je content kunt halen, rechtstreeks vanaf je apparaat.";
+"fake-door-subtitle" = "Zou deze functie nuttig zijn voor jouw werk?";
+"fake-door-close" = "Sluiten";
+"askDiscovery-Title" = "Ask‑Discovery‑knop";
+"fake-door-thank-you" = "Bedankt voor je feedback!";
+"fake-door-like" = "Vind ik leuk";
+"fake-door-dis-like" = "Vind ik niet leuk";
