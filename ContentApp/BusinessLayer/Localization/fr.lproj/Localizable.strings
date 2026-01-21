@@ -469,3 +469,13 @@
 "multiple-selected-items-count" = "%d Sélectionné";
 "check-box-multi-select" = "Case à cocher";
 "maximum-items-selection-message" = "Sélectionner un maximum de %d éléments";
+
+// MARK: - Ask Discovery
+"ask-an-agent" = "Demander à un agent";
+"fake-door-title" = "Knowledge Discovery arrive bientôt sur mobile – vous permettant d’extraire facilement des informations précieuses à partir de vos contenus, directement depuis votre appareil.";
+"fake-door-subtitle" = "Cette fonctionnalité serait‑elle utile pour votre travail ?";
+"fake-door-close" = "Fermer";
+"askDiscovery-Title" = "Bouton Ask Discovery";
+"fake-door-thank-you" = "Merci pour votre retour !";
+"fake-door-like" = "J’aime";
+"fake-door-dis-like" = "Je n’aime pas";
