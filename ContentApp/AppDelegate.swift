@@ -21,8 +21,10 @@ import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    // Retained for legacy call sites that read `appDelegate()?.window`; the
+    // window is created and owned by `SceneDelegate` under the UIScene life cycle.
     var window: UIWindow?
-    private var applicationCoordinator: ApplicationCoordinator?
+    var applicationCoordinator: ApplicationCoordinator?
     var orientationLock = UIInterfaceOrientationMask.all
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
@@ -39,22 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         UIApplication.shared.applicationIconBadgeNumber = 0
         UNUserNotificationCenter.current().delegate = self
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        let applicationCoordinator = ApplicationCoordinator(window: window)
-
-        self.window = window
-        self.applicationCoordinator = applicationCoordinator
-        let repository = applicationCoordinator.repository
-
-        if let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService {
-            window.backgroundColor = themingService.activeTheme?.surfaceColor
-        }
-
-        applicationCoordinator.start()
 
         FirebaseApp.configure()
-        let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
-        connectivityService?.startNetworkReachabilityObserver()
         UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         migrateDatabaseIfNecessary()
         AnalyticsManager.shared.appLaunched()
@@ -66,6 +54,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if isDataMigrated == false || isDataMigrated == nil {
             DatabaseMigrationService().migrateDatabase()
         }
+    }
+
+    // MARK: - UISceneSession Lifecycle
+    func application(_ application: UIApplication,
+                     configurationForConnecting connectingSceneSession: UISceneSession,
+                     options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        return UISceneConfiguration(name: "Default Configuration",
+                                    sessionRole: connectingSceneSession.role)
+    }
+
+    func application(_ application: UIApplication,
+                     didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
     }
     
     // MARK: - Start Sync
