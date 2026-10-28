@@ -1,6 +1,6 @@
 source 'https://cdn.cocoapods.org/'
 
-platform :ios, '15.0'
+platform :ios, '12.0'
 use_frameworks!
 inhibit_all_warnings!
 
@@ -45,19 +45,7 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
       config.build_settings['LD_RUNPATH_SEARCH_PATHS'] = ['$(FRAMEWORK_SEARCH_PATHS)']
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
-      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = ''
-    end
-  end
-
-  # AlfrescoContent's podspec injects EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64 (an obsolete
-  # Intel-era workaround) into the app's generated aggregate xcconfig. The loop above only touches
-  # the Pods project targets, so the app target still inherits it and builds x86_64-only, which
-  # fails to run on arm64 iOS simulators (Apple Silicon). Strip it from the aggregate xcconfigs.
-  installer.aggregate_targets.each do |aggregate_target|
-    aggregate_target.xcconfigs.each do |config_name, config_file|
-      config_file.attributes.delete('EXCLUDED_ARCHS[sdk=iphonesimulator*]')
-      config_file.save_as(aggregate_target.xcconfig_path(config_name))
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
   end
 end
