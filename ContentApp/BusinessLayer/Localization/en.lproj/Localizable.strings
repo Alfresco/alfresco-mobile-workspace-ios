@@ -280,6 +280,8 @@
 "empty-gallery-description" = "Try to add some photos or videos to your device.";
 "empty-uploads-title" = "Upload completed!";
 "empty-uploads-description" = "No more files to upload. Please view files from their respective folders.";
+"error-server-unreachable-title" = "Unable to connect to server";
+"error-server-unreachable-description" = "Check your network connection, then pull down to refresh.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace needs photos access";

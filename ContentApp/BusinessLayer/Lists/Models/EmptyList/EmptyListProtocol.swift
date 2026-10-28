@@ -24,3 +24,10 @@ protocol EmptyListProtocol {
     var title: String { get }
     var description: String { get }
 }
+
+struct EmptyServerUnreachable: EmptyListProtocol {
+    var icon = UIImage(systemName: "icloud.slash",
+                       withConfiguration: UIImage.SymbolConfiguration(pointSize: 64, weight: .light))
+    var title = LocalizationConstants.EmptyLists.serverUnreachableTitle
+    var description = LocalizationConstants.EmptyLists.serverUnreachableDescription
+}

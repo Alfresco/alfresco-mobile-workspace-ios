@@ -19,6 +19,14 @@
 import Foundation
 import AlfrescoContent
 
+private let serverUnreachableCodes: Set<URLError.Code> = [.notConnectedToInternet,
+                                                          .networkConnectionLost,
+                                                          .cannotFindHost,
+                                                          .cannotConnectToHost,
+                                                          .dnsLookupFailed,
+                                                          .timedOut,
+                                                          .secureConnectionFailed]
+
 extension Error {
     var code: Int {
         guard let err = self as? ErrorResponse else { return (self as NSError).code }
@@ -26,5 +34,16 @@ extension Error {
         case ErrorResponse.error(let code, _, _):
             return code
         }
+    }
+
+    /// True when the request failed because the server could not be reached.
+    var isServerUnreachable: Bool {
+        // Transport failures arrive wrapped with a synthetic 500 status, so check the underlying error.
+        if let response = self as? ErrorResponse, case .error(_, _, let underlying) = response {
+            return underlying.isServerUnreachable
+        }
+        let nsError = self as NSError
+        return nsError.domain == NSURLErrorDomain &&
+            serverUnreachableCodes.contains(URLError.Code(rawValue: nsError.code))
     }
 }

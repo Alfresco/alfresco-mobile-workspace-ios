@@ -272,6 +272,8 @@
 "empty-gallery-description" = "Prova ad aggiungere delle foto o dei video al tuo dispositivo.";
 "empty-uploads-title" = "Caricamento completato!";
 "empty-uploads-description" = "Nessun altro file da caricare. Verificare che i file siano presenti  nelle rispettive cartelle.";
+"error-server-unreachable-title" = "Unable to connect to server";
+"error-server-unreachable-description" = "Check your network connection, then pull down to refresh.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace deve accedere alle foto";
