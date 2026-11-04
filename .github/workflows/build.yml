@@ -42,11 +42,11 @@ jobs:
             -configuration Debug \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath build \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
             CODE_SIGNING_ALLOWED=NO
 
       - name: Package App
-        run: ditto -c -k --sequesterRsrc --keepParent build/Build/Products/Debug-iphonesimulator/ContentApp.app ContentApp-simulator.zip
+        run: ditto -c -k --sequesterRsrc --keepParent "$RUNNER_TEMP/DerivedData/Build/Products/Debug-iphonesimulator/ContentApp.app" ContentApp-simulator.zip
 
       - name: Store Artifact
         uses: actions/upload-artifact@v4
