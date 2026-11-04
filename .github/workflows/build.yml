@@ -1,0 +1,56 @@
+---
+name: build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: actions/cache@v4
+        name: Cache Pods
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('Podfile.lock') }}
+
+      - name: Install Pods
+        run: pod install
+
+      - name: Build for Simulator
+        run: |
+          xcodebuild build \
+            -workspace ContentApp.xcworkspace \
+            -scheme ContentApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package App
+        run: ditto -c -k --sequesterRsrc --keepParent build/Build/Products/Debug-iphonesimulator/ContentApp.app ContentApp-simulator.zip
+
+      - name: Store Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ContentApp-simulator-${{ github.run_number }}
+          path: ContentApp-simulator.zip
+          if-no-files-found: error
