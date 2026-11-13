@@ -44,9 +44,7 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
     emoji_regex (3.2.3)
-    faraday (1.10.6)
     excon (1.5.0)
-      logger
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -57,7 +55,9 @@ GEM
       faraday-patron (~> 1.0)
       faraday-rack (~> 1.0)
       faraday-retry (~> 1.0)
+      logger
       ruby2_keywords (>= 0.0.4)
+    faraday (1.10.6)
     faraday-cookie_jar (0.0.7)
       faraday (>= 0.8.0)
       http-cookie (~> 1.0.0)
@@ -223,7 +223,7 @@ GEM
       unf_ext
     unf_ext (0.0.8.2)
     unicode-display_width (1.8.0)
-    webrick (1.8.1)
+    webrick (1.8.2)
     word_wrap (1.0.0)
     xcodeproj (1.27.0)
       CFPropertyList (>= 2.3.3, < 4.0)
