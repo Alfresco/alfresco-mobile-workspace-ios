@@ -30,12 +30,14 @@ class DatePickerViewController: SystemThemableViewController {
     lazy var viewModel = DatePickerViewModel()
     typealias DatePickerCallBack = (_ selectedDate: Date?) -> Void
     var callBack: DatePickerCallBack?
+    private let bottomSheetTransition = DatePickerBottomSheetTransition()
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.isHidden = true
-        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.setContentHuggingPriority(.required, for: .vertical)
+        datePicker.setContentCompressionResistancePriority(.required, for: .vertical)
         applyLocalization()
         applyComponentsThemes()
         addAccessibility()
@@ -55,21 +57,11 @@ class DatePickerViewController: SystemThemableViewController {
         view.isHidden = false
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredSize(view.bounds.size)
-    }
-    
-    private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
-    }
-    
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        calculatePreferredSize(size)
+    // On iOS 26+ the inline calendar never settles inside the self-sizing MDC bottom sheet (ADST-923).
+    func presentAsBottomSheet(from presenter: UIViewController?, completion: (() -> Void)? = nil) {
+        modalPresentationStyle = .custom
+        transitioningDelegate = bottomSheetTransition
+        presenter?.present(self, animated: true, completion: completion)
     }
 
     override func willTransition(to newCollection: UITraitCollection,
@@ -119,3 +111,59 @@ extension DatePickerViewController {
 
 // MARK: - Storyboard Instantiable
 extension DatePickerViewController: SearchComponentsStoryboardInstantiable { }
+
+// MARK: - Bottom Sheet Presentation
+final class DatePickerBottomSheetTransition: NSObject, UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController,
+                                presenting: UIViewController?,
+                                source: UIViewController) -> UIPresentationController? {
+        return DatePickerBottomSheetPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+final class DatePickerBottomSheetPresentationController: UIPresentationController {
+    private let dimmingView = UIView()
+
+    override var frameOfPresentedViewInContainerView: CGRect {
+        guard let containerView = containerView else { return .zero }
+        let width = containerView.bounds.width
+        let fittingSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
+        let contentHeight = presentedViewController.view.systemLayoutSizeFitting(fittingSize,
+                                                                                  withHorizontalFittingPriority: .required,
+                                                                                  verticalFittingPriority: .fittingSizeLevel).height
+        let height = min(ceil(contentHeight) + containerView.safeAreaInsets.bottom, containerView.bounds.height)
+        return CGRect(x: 0, y: containerView.bounds.height - height, width: width, height: height)
+    }
+
+    override func presentationTransitionWillBegin() {
+        guard let containerView = containerView else { return }
+        dimmingView.backgroundColor = UIColor(white: 0, alpha: 0.4)
+        dimmingView.frame = containerView.bounds
+        dimmingView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        dimmingView.alpha = 0
+        dimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped)))
+        containerView.insertSubview(dimmingView, at: 0)
+        presentedView?.accessibilityViewIsModal = true
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { [weak self] _ in
+            self?.dimmingView.alpha = 1
+        })
+    }
+
+    override func dismissalTransitionWillBegin() {
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { [weak self] _ in
+            self?.dimmingView.alpha = 0
+        })
+    }
+
+    override func containerViewDidLayoutSubviews() {
+        super.containerViewDidLayoutSubviews()
+        let frame = frameOfPresentedViewInContainerView
+        if presentedView?.frame != frame {
+            presentedView?.frame = frame
+        }
+    }
+
+    @objc private func dimmingViewTapped() {
+        presentedViewController.dismiss(animated: true, completion: nil)
+    }
+}
