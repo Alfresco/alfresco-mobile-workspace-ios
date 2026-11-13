@@ -73,23 +73,6 @@ class TaskAssigneeViewController: SystemThemableViewController {
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        calculatePreferredSize(view.bounds.size)
-    }
-    
-    private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
-    }
-    
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        calculatePreferredSize(size)
-    }
-
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
