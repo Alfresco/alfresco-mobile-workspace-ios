@@ -579,11 +579,9 @@ extension TaskDetailViewController {
     func editDueDateAction() {
         
         let viewController = DatePickerViewController.instantiateViewController()
-        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
-        bottomSheet.dismissOnDraggingDownSheet = false
         viewController.coordinatorServices = coordinatorServices
         viewController.viewModel.selectedDate = viewModel.dueDate
-        self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+        viewController.presentAsBottomSheet(from: self.navigationController)
         viewController.callBack = { [weak self] (dueDate) in
             guard let sSelf = self else { return }
             sSelf.updateTaskDueDate(with: dueDate)
