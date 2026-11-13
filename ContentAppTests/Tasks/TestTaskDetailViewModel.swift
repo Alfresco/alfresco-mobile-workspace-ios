@@ -20,6 +20,7 @@ import XCTest
 @testable import ContentApp
 @testable import AlfrescoContent
 import Foundation
+import MaterialComponents
 
 class TestTaskDetailViewModel: XCTestCase {
     lazy var viewModel = TaskPropertiesViewModel()
@@ -37,7 +38,7 @@ class TestTaskDetailViewModel: XCTestCase {
         return nil
     }
     
-    private func parseAppConfiguration(for data: Data?) -> TaskNode?  {
+    private func parseAppConfiguration(for data: Data?) -> TaskNode? {
         if let json = data {
             do {
                 let decoded = try JSONDecoder().decode(Task.self, from: json)
@@ -79,5 +80,85 @@ class TestTaskDetailViewModel: XCTestCase {
             return
         }
         XCTAssertFalse(false)
+    }
+
+    @MainActor
+    func testDueDateSheetPresentsVisibleDatePicker() throws {
+        let viewController = DatePickerViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
+        _ = try XCTUnwrap(viewController.coordinatorServices?.themingService?.activeTheme)
+
+        try presentTaskDialog(bottomSheet, animated: true)
+
+        let responsive = expectation(description: "Date picker leaves the main queue responsive")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            responsive.fulfill()
+        }
+        wait(for: [responsive], timeout: 2)
+        XCTAssertFalse(viewController.view.isHidden)
+        XCTAssertGreaterThan(viewController.datePicker.bounds.height, 0)
+        XCTAssertGreaterThanOrEqual(viewController.preferredContentSize.height,
+                                    viewController.headerView.bounds.height + viewController.datePicker.bounds.height)
+    }
+
+    @MainActor
+    func testDueDatePickerPreservesInitialDateAndOnlyCommitsOnDone() throws {
+        let viewController = DatePickerViewController.instantiateViewController()
+        viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
+        _ = try XCTUnwrap(viewController.coordinatorServices?.themingService?.activeTheme)
+        let initialDate = Date(timeIntervalSince1970: 1_800_000_000)
+        let editedDate = initialDate.addingTimeInterval(86_400)
+        viewController.viewModel.selectedDate = initialDate
+        viewController.loadViewIfNeeded()
+        XCTAssertEqual(viewController.datePicker.date, initialDate)
+        var committedDates: [Date?] = []
+        viewController.callBack = { committedDates.append($0) }
+
+        viewController.datePicker.setDate(editedDate, animated: false)
+        viewController.cancelButtonAction(viewController.cancelButton as Any)
+        XCTAssertTrue(committedDates.isEmpty)
+        viewController.doneButtonAction(viewController.doneButton as Any)
+
+        XCTAssertEqual(committedDates, [editedDate])
+    }
+
+    @MainActor
+    func testAssigneeDialogLeavesSpaceForSearchResults() throws {
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        let viewController = try XCTUnwrap(storyboard.instantiateViewController(withIdentifier:
+            StoryboardConstants.controller.taskAssignee) as? TaskAssigneeViewController)
+        viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
+        _ = try XCTUnwrap(viewController.coordinatorServices?.themingService?.activeTheme)
+        let navigationController = UINavigationController(rootViewController: viewController)
+
+        try presentTaskDialog(navigationController)
+
+        XCTAssertGreaterThan(viewController.tableView.bounds.height, viewController.headerView.bounds.height)
+        XCTAssertTrue(viewController.view.bounds.contains(viewController.headerView.frame))
+        XCTAssertTrue(viewController.view.bounds.contains(viewController.radioButtonView.frame))
+    }
+
+    @MainActor
+    private func presentTaskDialog(_ viewController: UIViewController, animated: Bool = false) throws {
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        let presenter = UIViewController()
+        window.rootViewController = presenter
+        window.makeKeyAndVisible()
+        addTeardownBlock {
+            await MainActor.run {
+                window.isHidden = true
+                window.rootViewController = nil
+            }
+        }
+
+        let presented = expectation(description: "Task dialog presentation completes")
+        presenter.present(viewController, animated: animated) {
+            presented.fulfill()
+        }
+        wait(for: [presented], timeout: 5)
+        viewController.view.layoutIfNeeded()
     }
 }
