@@ -48,6 +48,7 @@ class TabBarMainViewController: UITabBarController {
             guard let sSelf = self else { return }
             sSelf.bottomNavigationBar.isHidden = change.newValue ?? false
             sSelf.addMaterialComponentsTheme()
+            sSelf.view.setNeedsLayout()
         }
     }
 
@@ -61,6 +62,7 @@ class TabBarMainViewController: UITabBarController {
         tabBarCoordinatorDelegate?.showBrowseScreen()
         addLocalization()
         addBottomNavigationBar()
+        hideSystemTabBarOnPad()
     }
 
     override func viewWillLayoutSubviews() {
@@ -71,6 +73,11 @@ class TabBarMainViewController: UITabBarController {
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
         layoutBottomNavBar()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        reserveSpaceForBottomNavBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -134,6 +141,26 @@ class TabBarMainViewController: UITabBarController {
                                    y: -1,
                                    width: bottomNavigationBarFrame.width,
                                    height: 1)
+    }
+
+    // iPadOS 18+ moves the system tab bar to the top, so tab screens lose the bottom inset the custom bar relies on.
+    private func reserveSpaceForBottomNavBar() {
+        guard let selected: UIViewController = selectedViewController, selected.isViewLoaded else { return }
+        let systemBottomInset: CGFloat = selected.view.safeAreaInsets.bottom - selected.additionalSafeAreaInsets.bottom
+        let systemTabBarAtBottom: Bool = systemBottomInset > view.safeAreaInsets.bottom
+        let barHeight: CGFloat = bottomNavigationBar.sizeThatFits(view.bounds.size).height
+        let extraInset: CGFloat = (systemTabBarAtBottom || bottomNavigationBar.isHidden) ? 0 : barHeight
+        viewControllers?.forEach { child in
+            if child.additionalSafeAreaInsets.bottom != extraInset {
+                child.additionalSafeAreaInsets.bottom = extraInset
+            }
+        }
+    }
+
+    // iPadOS 18+ shows the system tab bar at the top; the Material bottom bar is the app's only tab bar.
+    private func hideSystemTabBarOnPad() {
+        guard #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad else { return }
+        isTabBarHidden = true
     }
 
     func doubleTapLogic(for item: Int) {
