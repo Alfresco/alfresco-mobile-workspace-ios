@@ -20,7 +20,6 @@ import XCTest
 @testable import ContentApp
 @testable import AlfrescoContent
 import Foundation
-import MaterialComponents
 
 class TestTaskDetailViewModel: XCTestCase {
     lazy var viewModel = TaskPropertiesViewModel()
@@ -83,24 +82,25 @@ class TestTaskDetailViewModel: XCTestCase {
     }
 
     @MainActor
-    func testDueDateSheetPresentsVisibleDatePicker() throws {
+    func testDueDateSheetPresentsFullWidthCalendarAtBottom() throws {
+        executionTimeAllowance = 60
         let viewController = DatePickerViewController.instantiateViewController()
-        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
-        bottomSheet.dismissOnDraggingDownSheet = false
         viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
         _ = try XCTUnwrap(viewController.coordinatorServices?.themingService?.activeTheme)
+        let presenter = try makeTaskDialogPresenter()
 
-        try presentTaskDialog(bottomSheet, animated: true)
-
-        let responsive = expectation(description: "Date picker leaves the main queue responsive")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            responsive.fulfill()
+        let presented = expectation(description: "Date picker presentation completes")
+        viewController.presentAsBottomSheet(from: presenter) {
+            presented.fulfill()
         }
-        wait(for: [responsive], timeout: 2)
+        wait(for: [presented], timeout: 5)
+
+        let container = presenter.view.bounds
+        XCTAssertEqual(viewController.datePicker.datePickerStyle, .inline)
         XCTAssertFalse(viewController.view.isHidden)
+        XCTAssertEqual(viewController.view.frame.width, container.width, accuracy: 0.5)
+        XCTAssertEqual(viewController.view.frame.maxY, container.maxY, accuracy: 0.5)
         XCTAssertGreaterThan(viewController.datePicker.bounds.height, 0)
-        XCTAssertGreaterThanOrEqual(viewController.preferredContentSize.height,
-                                    viewController.headerView.bounds.height + viewController.datePicker.bounds.height)
     }
 
     @MainActor
@@ -142,6 +142,17 @@ class TestTaskDetailViewModel: XCTestCase {
 
     @MainActor
     private func presentTaskDialog(_ viewController: UIViewController, animated: Bool = false) throws {
+        let presenter = try makeTaskDialogPresenter()
+        let presented = expectation(description: "Task dialog presentation completes")
+        presenter.present(viewController, animated: animated) {
+            presented.fulfill()
+        }
+        wait(for: [presented], timeout: 5)
+        viewController.view.layoutIfNeeded()
+    }
+
+    @MainActor
+    private func makeTaskDialogPresenter() throws -> UIViewController {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
         let presenter = UIViewController()
@@ -153,12 +164,6 @@ class TestTaskDetailViewModel: XCTestCase {
                 window.rootViewController = nil
             }
         }
-
-        let presented = expectation(description: "Task dialog presentation completes")
-        presenter.present(viewController, animated: animated) {
-            presented.fulfill()
-        }
-        wait(for: [presented], timeout: 5)
-        viewController.view.layoutIfNeeded()
+        return presenter
     }
 }
