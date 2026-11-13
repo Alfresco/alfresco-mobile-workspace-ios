@@ -104,6 +104,26 @@ class TestTaskDetailViewModel: XCTestCase {
     }
 
     @MainActor
+    func testDueDateSheetEscapeDismissesWithoutCommitting() throws {
+        let viewController = DatePickerViewController.instantiateViewController()
+        viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
+        var committedDates: [Date?] = []
+        viewController.callBack = { committedDates.append($0) }
+        let presenter = try makeTaskDialogPresenter()
+        let presented = expectation(description: "Date picker presentation completes")
+        viewController.presentAsBottomSheet(from: presenter) {
+            presented.fulfill()
+        }
+        wait(for: [presented], timeout: 5)
+
+        XCTAssertTrue(viewController.accessibilityPerformEscape())
+        let dismissed = expectation(for: NSPredicate { _, _ in presenter.presentedViewController == nil },
+                                    evaluatedWith: nil)
+        wait(for: [dismissed], timeout: 5)
+        XCTAssertTrue(committedDates.isEmpty)
+    }
+
+    @MainActor
     func testDueDatePickerPreservesInitialDateAndOnlyCommitsOnDone() throws {
         let viewController = DatePickerViewController.instantiateViewController()
         viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
