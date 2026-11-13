@@ -35,6 +35,7 @@ class DatePickerViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.isHidden = true
+        datePicker.preferredDatePickerStyle = .wheels
         applyLocalization()
         applyComponentsThemes()
         addAccessibility()
