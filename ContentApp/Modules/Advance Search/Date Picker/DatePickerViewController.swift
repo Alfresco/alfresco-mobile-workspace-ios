@@ -38,6 +38,8 @@ class DatePickerViewController: SystemThemableViewController {
         view.isHidden = true
         datePicker.setContentHuggingPriority(.required, for: .vertical)
         datePicker.setContentCompressionResistancePriority(.required, for: .vertical)
+        // Inside the safe area the calendar's margins can't feed back into its height; rotation hung otherwise.
+        baseView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         applyLocalization()
         applyComponentsThemes()
         addAccessibility()
@@ -130,13 +132,16 @@ final class DatePickerBottomSheetPresentationController: UIPresentationControlle
     private let dimmingView = UIView()
 
     override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { return .zero }
+        guard let containerView = containerView,
+              let content = (presentedViewController as? DatePickerViewController)?.baseView else { return .zero }
         let width = containerView.bounds.width
-        let fittingSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
-        let contentHeight = presentedViewController.view.systemLayoutSizeFitting(fittingSize,
-                                                                                  withHorizontalFittingPriority: .required,
-                                                                                  verticalFittingPriority: .fittingSizeLevel).height
-        let height = min(ceil(contentHeight) + containerView.safeAreaInsets.bottom, containerView.bounds.height)
+        let insets = containerView.safeAreaInsets
+        let fittingSize = CGSize(width: width - insets.left - insets.right,
+                                 height: UIView.layoutFittingCompressedSize.height)
+        let contentHeight = content.systemLayoutSizeFitting(fittingSize,
+                                                            withHorizontalFittingPriority: .required,
+                                                            verticalFittingPriority: .fittingSizeLevel).height
+        let height = min(ceil(contentHeight) + insets.bottom, containerView.bounds.height)
         return CGRect(x: 0, y: containerView.bounds.height - height, width: width, height: height)
     }
 

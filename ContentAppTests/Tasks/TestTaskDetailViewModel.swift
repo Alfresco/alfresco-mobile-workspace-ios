@@ -104,6 +104,32 @@ class TestTaskDetailViewModel: XCTestCase {
     }
 
     @MainActor
+    func testDueDateSheetStaysAboveSafeAreaWhenRotated() throws {
+        executionTimeAllowance = 60
+        let viewController = DatePickerViewController.instantiateViewController()
+        viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
+        let presenter = try makeTaskDialogPresenter()
+        let presented = expectation(description: "Date picker presentation completes")
+        viewController.presentAsBottomSheet(from: presenter) {
+            presented.fulfill()
+        }
+        wait(for: [presented], timeout: 5)
+        let window = try XCTUnwrap(presenter.view.window)
+        let portrait = window.frame.size
+
+        for size in [CGSize(width: portrait.height, height: portrait.width), portrait] {
+            window.frame = CGRect(origin: .zero, size: size)
+            window.layoutIfNeeded()
+
+            let sheet = viewController.view.frame
+            let picker = viewController.datePicker.convert(viewController.datePicker.bounds, to: viewController.view)
+            XCTAssertEqual(sheet.width, size.width, accuracy: 0.5)
+            XCTAssertEqual(sheet.maxY, size.height, accuracy: 0.5)
+            XCTAssertLessThanOrEqual(picker.maxY, sheet.height - viewController.view.safeAreaInsets.bottom + 0.5)
+        }
+    }
+
+    @MainActor
     func testDueDateSheetEscapeDismissesWithoutCommitting() throws {
         let viewController = DatePickerViewController.instantiateViewController()
         viewController.coordinatorServices = try XCTUnwrap(appDelegate()?.applicationCoordinator).coordinatorServices
