@@ -64,6 +64,11 @@ class DatePickerViewController: SystemThemableViewController {
         presenter?.present(self, animated: true, completion: completion)
     }
 
+    override func accessibilityPerformEscape() -> Bool {
+        dismiss(animated: true, completion: nil)
+        return true
+    }
+
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
