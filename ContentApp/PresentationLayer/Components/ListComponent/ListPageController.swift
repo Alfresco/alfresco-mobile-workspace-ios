@@ -66,7 +66,8 @@ class ListPageController: ListPageControllerProtocol {
 
     private var shouldRefreshList = true
     private var requestInProgress = false
-    private var lastRequestServerUnreachable = false
+    private var serverUnreachableError: Error?
+    private var networkChangedDuringRequest = false
     var sourceNodeToMove: [ListNode]?
 
     init(dataSource: ListComponentModelProtocol, services: CoordinatorServices) {
@@ -123,8 +124,8 @@ class ListPageController: ListPageControllerProtocol {
             }
             let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
                                              skipCount: pageSkipCount)
-            requestInProgress = true
             if connectivityService?.hasInternetConnection() == true {
+                requestInProgress = true
                 dataSource.fetchItems(with: nextPage) { [weak self] paginatedResponse in
                     guard let sSelf = self else { return }
                     sSelf.handlePaginatedResponse(response: paginatedResponse)
@@ -141,7 +142,9 @@ class ListPageController: ListPageControllerProtocol {
     }
 
     func retryIfServerWasUnreachable() {
-        if lastRequestServerUnreachable {
+        if requestInProgress {
+            networkChangedDuringRequest = true
+        } else if serverUnreachableError != nil {
             refreshList()
         }
     }
@@ -156,12 +159,19 @@ class ListPageController: ListPageControllerProtocol {
 
     private func handlePaginatedResponse(response: PaginatedResponse) {
         requestInProgress = false
-        lastRequestServerUnreachable = response.error?.isServerUnreachable ?? false
+        let isServerUnreachable = response.error?.isServerUnreachable ?? false
+        serverUnreachableError = isServerUnreachable ? response.error : nil
+        let shouldRetry = isServerUnreachable && networkChangedDuringRequest &&
+            services.connectivityService?.hasInternetConnection() == true
+        networkChangedDuringRequest = false
         if let error = response.error {
             update(with: [],
                    pagination: nil,
                    error: error,
                    source: response.source)
+            if shouldRetry {
+                refreshList()
+            }
         } else if let skipCount = response.responsePagination?.skipCount {
             let results = response.results
             self.hasMoreItems =
@@ -284,7 +294,9 @@ extension ListPageController: ListComponentModelDelegate {
                                     totalItems: totalItems,
                                     skipCount: Int64(pageSkipCount),
                                     maxItems: Int64(0))
-        delegate?.didUpdateList(error: nil,
+        // Keep showing the connection error instead of the normal empty message.
+        let error: Error? = dataSource.isEmpty() ? serverUnreachableError : nil
+        delegate?.didUpdateList(error: error,
                                 pagination: pagination, source: nil)
     }
 
