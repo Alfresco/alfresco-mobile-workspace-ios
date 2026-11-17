@@ -42,8 +42,8 @@ extension Error {
         if let response = self as? ErrorResponse, case .error(_, _, let underlying) = response {
             return underlying.isServerUnreachable
         }
-        let nsError = self as NSError
-        return nsError.domain == NSURLErrorDomain &&
-            serverUnreachableCodes.contains(URLError.Code(rawValue: nsError.code))
+        // Cast instead of bridging to NSError: reading the domain of a domain-less NSError() traps.
+        guard let urlError = self as? URLError else { return false }
+        return serverUnreachableCodes.contains(urlError.code)
     }
 }
