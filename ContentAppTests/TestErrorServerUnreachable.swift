@@ -51,4 +51,15 @@ class TestErrorServerUnreachable: XCTestCase {
         let error: Error = NSError(domain: "AlfrecoAuth", code: URLError.timedOut.rawValue)
         XCTAssertFalse(error.isServerUnreachable)
     }
+
+    func testIsServerUnreachable_WhenConnectionLostOrDataNotAllowed_ShouldReturnTrue() {
+        XCTAssertTrue((URLError(.networkConnectionLost) as Error).isServerUnreachable)
+        XCTAssertTrue((URLError(.dataNotAllowed) as Error).isServerUnreachable)
+    }
+
+    func testIsServerUnreachable_WhenSynthetic500WrapsNonTransportError_ShouldReturnFalse() {
+        let validationError = NSError(domain: "Alamofire.AFError", code: 4)
+        let error: Error = ErrorResponse.error(500, Data(), validationError)
+        XCTAssertFalse(error.isServerUnreachable)
+    }
 }

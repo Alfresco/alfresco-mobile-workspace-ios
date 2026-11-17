@@ -525,7 +525,8 @@ extension ListComponentViewController: ListPageControllerDelegate {
         
         let isListEmpty = model.isEmpty()
         emptyListView.isHidden = !isListEmpty
-        let isServerUnreachable = error?.isServerUnreachable ?? false
+        // A display refresh has no error, so fall back to the last load's result.
+        let isServerUnreachable = error.map { $0.isServerUnreachable } ?? (pageController?.isServerUnreachable ?? false)
         if isListEmpty {
             let emptyList: EmptyListProtocol? = isServerUnreachable ? EmptyServerUnreachable() : viewModel?.emptyList()
             emptyListImageView.image = emptyList?.icon
@@ -555,7 +556,7 @@ extension ListComponentViewController: ListPageControllerDelegate {
             listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination, source: source)
         } else {
             stopLoadingAndScrollToTop()
-            if isServerUnreachable && !isListEmpty {
+            if isServerUnreachable && !isListEmpty && pageController?.isAutomaticRetry != true {
                 Snackbar.display(with: LocalizationConstants.EmptyLists.serverUnreachableTitle,
                                  type: .error,
                                  presentationHostViewOverride: appDelegate()?.window,

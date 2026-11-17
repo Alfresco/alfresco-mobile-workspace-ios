@@ -66,7 +66,8 @@ class ListPageController: ListPageControllerProtocol {
 
     private var shouldRefreshList = true
     private var requestInProgress = false
-    private var serverUnreachableError: Error?
+    private(set) var isServerUnreachable = false
+    private(set) var isAutomaticRetry = false
     private var networkChangedDuringRequest = false
     var sourceNodeToMove: [ListNode]?
 
@@ -135,21 +136,22 @@ class ListPageController: ListPageControllerProtocol {
     }
 
     func refreshList() {
-        currentPage = 1
-        hasMoreItems = true
-        shouldRefreshList = true
-        fetchNextPage()
+        isAutomaticRetry = false
+        startRefresh()
     }
 
     func retryIfServerWasUnreachable() {
         if requestInProgress {
             networkChangedDuringRequest = true
-        } else if serverUnreachableError != nil {
-            refreshList()
+        } else if isServerUnreachable {
+            retryAfterNetworkChange()
         }
     }
 
     func clear() {
+        isServerUnreachable = false
+        isAutomaticRetry = false
+        networkChangedDuringRequest = false
         dataSource.clear()
         delegate?.didUpdateList(error: nil,
                                 pagination: nil, source: nil)
@@ -157,21 +159,32 @@ class ListPageController: ListPageControllerProtocol {
 
     // MARK: - Private interface
 
+    private func startRefresh() {
+        currentPage = 1
+        hasMoreItems = true
+        shouldRefreshList = true
+        fetchNextPage()
+    }
+
+    private func retryAfterNetworkChange() {
+        isAutomaticRetry = true
+        startRefresh()
+    }
+
     private func handlePaginatedResponse(response: PaginatedResponse) {
         requestInProgress = false
-        let isServerUnreachable = response.error?.isServerUnreachable ?? false
-        serverUnreachableError = isServerUnreachable ? response.error : nil
+        isServerUnreachable = response.error?.isServerUnreachable ?? false
         let shouldRetry = isServerUnreachable && networkChangedDuringRequest &&
             services.connectivityService?.hasInternetConnection() == true
         networkChangedDuringRequest = false
-        if let error = response.error {
+        if shouldRetry {
+            retryAfterNetworkChange()
+        } else if let error = response.error {
             update(with: [],
                    pagination: nil,
                    error: error,
                    source: response.source)
-            if shouldRetry {
-                refreshList()
-            }
+            isAutomaticRetry = false
         } else if let skipCount = response.responsePagination?.skipCount {
             let results = response.results
             self.hasMoreItems =
@@ -182,6 +195,7 @@ class ListPageController: ListPageControllerProtocol {
             }
 
             totalItems = response.responsePagination?.maxItems ?? 0
+            isAutomaticRetry = false
             update(with: results,
                    pagination: response.responsePagination,
                    error: nil,
@@ -294,9 +308,7 @@ extension ListPageController: ListComponentModelDelegate {
                                     totalItems: totalItems,
                                     skipCount: Int64(pageSkipCount),
                                     maxItems: Int64(0))
-        // Keep showing the connection error instead of the normal empty message.
-        let error: Error? = dataSource.isEmpty() ? serverUnreachableError : nil
-        delegate?.didUpdateList(error: error,
+        delegate?.didUpdateList(error: nil,
                                 pagination: pagination, source: nil)
     }
 

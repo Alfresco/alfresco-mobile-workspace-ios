@@ -25,7 +25,9 @@ private let serverUnreachableCodes: Set<URLError.Code> = [.notConnectedToInterne
                                                           .cannotConnectToHost,
                                                           .dnsLookupFailed,
                                                           .timedOut,
-                                                          .secureConnectionFailed]
+                                                          .secureConnectionFailed,
+                                                          .dataNotAllowed,
+                                                          .internationalRoamingOff]
 
 extension Error {
     var code: Int {
