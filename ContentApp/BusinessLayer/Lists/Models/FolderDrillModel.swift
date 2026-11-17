@@ -78,8 +78,15 @@ class FolderDrillModel: ListComponentModelProtocol {
     
     private func fetchItemsForDocumentLibrary(with requestPagination: RequestPagination,
                                               completionHandler: @escaping PagedResponseCompletionHandler) {
-        self.getNodeDetails(for: listNode) { node in
-            guard let node = node else { return }
+        self.getNodeDetails(for: listNode) { node, error in
+            guard let node = node else {
+                completionHandler(PaginatedResponse(results: [],
+                                                    error: error,
+                                                    requestPagination: requestPagination,
+                                                    responsePagination: nil,
+                                                    source: nil))
+                return
+            }
             self.listNode = node
             let reqPagination = RequestPagination(maxItems: requestPagination.maxItems,
                                                   skipCount: requestPagination.skipCount)
@@ -125,18 +132,20 @@ class FolderDrillModel: ListComponentModelProtocol {
         }
     }
     
-    private func getNodeDetails(for listNode: ListNode?, completionHandler: @escaping (ListNode?) -> Void) {
+    private func getNodeDetails(for listNode: ListNode?, completionHandler: @escaping (ListNode?, Error?) -> Void) {
         let guid = listNode?.guid ?? APIConstants.my
         let relativePath = (listNode?.nodeType == .site) ? APIConstants.Path.relativeSites : nil
         nodeOperations.fetchNodeDetails(for: guid, relativePath: relativePath) {(result, error) in
-            if let error = error {
-                AlfrescoLog.error(error)
-                completionHandler(nil)
-            } else if let entry = result?.entry {
-                let node = NodeChildMapper.create(from: entry)
-                self.folderChildrenDelegate?.updateListNode(with: node)
-                completionHandler(node)
+            guard error == nil, let entry = result?.entry else {
+                if let error = error {
+                    AlfrescoLog.error(error)
+                }
+                completionHandler(nil, error)
+                return
             }
+            let node = NodeChildMapper.create(from: entry)
+            self.folderChildrenDelegate?.updateListNode(with: node)
+            completionHandler(node, nil)
         }
     }
     

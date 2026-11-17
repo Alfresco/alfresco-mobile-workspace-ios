@@ -272,6 +272,8 @@
 "empty-gallery-description" = "Essayez d'ajouter des photos ou des vidéos dans votre appareil.";
 "empty-uploads-title" = "Importation terminée !";
 "empty-uploads-description" = "Il n'y a plus de fichiers à importer. Veuillez afficher les fichiers dans leurs dossiers respectifs.";
+"error-server-unreachable-title" = "Unable to connect to server";
+"error-server-unreachable-description" = "Check your network connection, then pull down to refresh.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";

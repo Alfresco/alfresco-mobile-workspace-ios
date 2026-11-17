@@ -274,6 +274,8 @@ struct LocalizationConstants {
         static let galleryDescription = NSLocalizedString("empty-gallery-description", comment: "")
         static let uploadsTitle = NSLocalizedString("empty-uploads-title", comment: "")
         static let uploadsDescription = NSLocalizedString("empty-uploads-description", comment: "")
+        static let serverUnreachableTitle = NSLocalizedString("error-server-unreachable-title", comment: "")
+        static let serverUnreachableDescription = NSLocalizedString("error-server-unreachable-description", comment: "")
     }
 
     struct PrivacySettings {

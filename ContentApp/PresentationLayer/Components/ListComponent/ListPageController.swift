@@ -66,6 +66,7 @@ class ListPageController: ListPageControllerProtocol {
 
     private var shouldRefreshList = true
     private var requestInProgress = false
+    private var lastRequestServerUnreachable = false
     var sourceNodeToMove: [ListNode]?
 
     init(dataSource: ListComponentModelProtocol, services: CoordinatorServices) {
@@ -139,6 +140,12 @@ class ListPageController: ListPageControllerProtocol {
         fetchNextPage()
     }
 
+    func retryIfServerWasUnreachable() {
+        if lastRequestServerUnreachable {
+            refreshList()
+        }
+    }
+
     func clear() {
         dataSource.clear()
         delegate?.didUpdateList(error: nil,
@@ -149,6 +156,7 @@ class ListPageController: ListPageControllerProtocol {
 
     private func handlePaginatedResponse(response: PaginatedResponse) {
         requestInProgress = false
+        lastRequestServerUnreachable = response.error?.isServerUnreachable ?? false
         if let error = response.error {
             update(with: [],
                    pagination: nil,

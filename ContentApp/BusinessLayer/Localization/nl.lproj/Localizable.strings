@@ -272,6 +272,8 @@
 "empty-gallery-description" = "Probeer foto's of video's toe te voegen aan uw apparaat.";
 "empty-uploads-title" = "Uploaden voltooid!";
 "empty-uploads-description" = "Er zijn geen bestanden meer om te uploaden. Kijk of bestanden in de desbetreffende mappen staan.";
+"error-server-unreachable-title" = "Unable to connect to server";
+"error-server-unreachable-description" = "Check your network connection, then pull down to refresh.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";

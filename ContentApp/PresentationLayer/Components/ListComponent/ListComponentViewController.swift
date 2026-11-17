@@ -418,6 +418,9 @@ class ListComponentViewController: SystemThemableViewController {
                                                         guard let sSelf = self else { return }
                                                         sSelf.handleConnectivity()
                                                         sSelf.collectionView.reloadData()
+                                                        if sSelf.coordinatorServices?.connectivityService?.hasInternetConnection() == true {
+                                                            sSelf.pageController?.retryIfServerWasUnreachable()
+                                                        }
                                                        })
     }
     
@@ -522,8 +525,9 @@ extension ListComponentViewController: ListPageControllerDelegate {
         
         let isListEmpty = model.isEmpty()
         emptyListView.isHidden = !isListEmpty
+        let isServerUnreachable = error?.isServerUnreachable ?? false
         if isListEmpty {
-            let emptyList = viewModel?.emptyList()
+            let emptyList: EmptyListProtocol? = isServerUnreachable ? EmptyServerUnreachable() : viewModel?.emptyList()
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
@@ -551,6 +555,12 @@ extension ListComponentViewController: ListPageControllerDelegate {
             listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination, source: source)
         } else {
             stopLoadingAndScrollToTop()
+            if isServerUnreachable && !isListEmpty {
+                Snackbar.display(with: LocalizationConstants.EmptyLists.serverUnreachableTitle,
+                                 type: .error,
+                                 presentationHostViewOverride: appDelegate()?.window,
+                                 finish: nil)
+            }
         }
     }
 
